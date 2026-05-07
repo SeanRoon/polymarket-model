@@ -22,6 +22,8 @@ class PredictiveDistribution:
 
     Phase 1: backed by an array of ensemble-member values. Later phases will add
     a parametric `cdf` callable so the same `prob_in_bin` API serves EMOS too.
+    Laplace-smoothed bin counts: p_smoothed = (count + alpha) / (n + alpha * n_bins)
+    is applied at the event level in `evaluate_event`, not on the raw samples.
     """
     samples: np.ndarray            # shape (n_members,)
     unit: str                      # 'F' | 'C'
@@ -40,7 +42,7 @@ class PredictiveDistribution:
         return int(self.samples.shape[0])
 
     def prob_in_bin(self, lo: float, hi: float) -> float:
-        """Return P(lo <= X < hi) under the empirical distribution."""
+        """Return raw (unsmoothed) P(lo <= X < hi) under the empirical distribution."""
         if hi <= lo:
             return 0.0
         if math.isinf(lo) and lo < 0:
@@ -82,8 +84,16 @@ def _bin_iter_values(bin_: Bin, samples: np.ndarray) -> np.ndarray:
 def evaluate_event(
     event: WeatherEvent,
     distribution: PredictiveDistribution,
+    *,
+    laplace_alpha: float = 0.5,
 ) -> EventModelOutput:
-    """Compute P(bin) for every bin in the event under the given predictive distribution."""
+    """Compute P(bin) for every bin in the event under the given predictive distribution.
+
+    Uses Laplace (add-alpha) smoothing on the bin counts so probabilities never hit hard
+    0% or 100% from a 51-member ensemble — that would over-confidently size full-Kelly bets
+    on outcomes the ensemble simply hasn't sampled. With alpha=0.5 and 11 bins:
+      smoothed_p = (count + 0.5) / (51 + 5.5)  =>  floor ~0.009, ceiling ~0.91.
+    """
     if event.unit != distribution.unit:
         raise ValueError(
             f"unit mismatch: event.unit={event.unit!r} distribution.unit={distribution.unit!r}"
@@ -92,24 +102,26 @@ def evaluate_event(
     n = samples.shape[0]
     if n == 0:
         raise ValueError("distribution has no samples")
+    n_bins = len(event.bins)
 
     masks = [_bin_iter_values(b, samples) for b in event.bins]
     counts = np.array([mask.sum() for mask in masks], dtype=float)
-    probs = counts / n
 
-    # outside mass: any sample not captured by ANY bin
     union_mask = np.zeros(n, dtype=bool)
     for mask in masks:
         union_mask |= mask
     outside = float((~union_mask).mean())
 
-    bin_probs = [BinProb(b, float(p)) for b, p in zip(event.bins, probs, strict=True)]
+    # Laplace-smoothed bin probabilities (renormalised within the bin support).
+    smoothed = (counts + laplace_alpha) / (n + laplace_alpha * n_bins)
+
+    bin_probs = [BinProb(b, float(p)) for b, p in zip(event.bins, smoothed, strict=True)]
     return EventModelOutput(
         event=event,
         distribution=distribution,
         bin_probs=bin_probs,
         outside_bin_mass=outside,
-        sum_of_bin_probs=float(probs.sum()),
+        sum_of_bin_probs=float(smoothed.sum()),
     )
 
 
