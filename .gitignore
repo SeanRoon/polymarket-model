@@ -42,7 +42,8 @@ build/
 *.sqlite
 *.sqlite3
 *.db
-data/raw/
-data/interim/
+*.duckdb
+*.duckdb.wal
+data/
 *.csv.gz
 *.parquet
