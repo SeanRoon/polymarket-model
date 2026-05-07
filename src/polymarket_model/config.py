@@ -36,8 +36,8 @@ class Settings(BaseSettings):
     min_edge: float = 0.02
     kelly_fraction: float = 0.25
     fee_assumption: float = 0.02
-    sum_of_mids_low: float = 0.97
-    sum_of_mids_high: float = 1.04
+    sum_of_mids_low: float = 0.95
+    sum_of_mids_high: float = 1.08
     outside_bin_mass_max: float = 0.02
     max_lead_days_for_signal: int = 7
 
