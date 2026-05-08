@@ -29,7 +29,7 @@ from polymarket_model.markets.prices import floor_to_bucket
 log = get_logger(__name__)
 
 
-PRICE_FETCH_CONCURRENCY = 10
+PRICE_FETCH_CONCURRENCY = 25
 
 
 @dataclass
