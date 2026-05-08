@@ -1,12 +1,13 @@
 """Typer CLI: scan + (later) snapshot + fetch-resolution + backtest."""
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import typer
 from rich.console import Console
 
+from polymarket_model.cache import connect
 from polymarket_model.config import settings
 from polymarket_model.edge.report import render_table, write_csv, write_markdown
 from polymarket_model.edge.signals import signals_for_event
@@ -15,6 +16,7 @@ from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
 from polymarket_model.model import PredictiveDistribution, evaluate_event
 from polymarket_model.recorder import snapshot_once
+from polymarket_model.weather.nws import fetch_cli_for_date
 from polymarket_model.weather.openmeteo import DEFAULT_MODEL, fetch_daily_extreme
 
 app = typer.Typer(help="Polymarket weather edge model.", no_args_is_help=True)
@@ -123,6 +125,93 @@ def snapshot(
             f"[dim]snapshot: events={result.events_seen} bins={result.bins_seen} "
             f"rows_inserted={result.rows_inserted} errors={result.errors} "
             f"duration={(result.ended_utc - result.started_utc).total_seconds():.1f}s[/dim]"
+        )
+
+
+@app.command("fetch-resolution")
+def fetch_resolution(
+    days_back: int = typer.Option(
+        7,
+        "--days-back",
+        help="Look up CLI resolutions for any unresolved (station, date, kind) within the last N days.",
+    ),
+    station: list[str] | None = typer.Option(None, "--station", help="Limit to specific stations."),
+    quiet: bool = typer.Option(False, "--quiet", "-q"),
+) -> None:
+    """Pull NWS CLI daily-extreme observations for past markets and persist as ground truth."""
+    configure_logging()
+    console = Console()
+    log_ = get_logger(__name__)
+    today_local = date.today()
+    earliest = today_local - timedelta(days=days_back)
+    rows_inserted = 0
+    rows_skipped = 0
+    errors = 0
+
+    with connect() as con:
+        # Find (station_id, target_date_local, kind) tuples from the markets table that are
+        # in the lookback window and not already resolved.
+        params: list = [earliest]
+        sql = """
+            SELECT DISTINCT m.station_id, m.target_date_local, m.kind
+            FROM markets m
+            LEFT JOIN resolutions r
+              ON r.station_id = m.station_id
+             AND r.valid_date_local = m.target_date_local
+             AND r.kind = m.kind
+            WHERE m.station_id IS NOT NULL
+              AND m.target_date_local >= ?
+              AND m.target_date_local <= CURRENT_DATE
+              AND r.station_id IS NULL
+        """
+        if station:
+            sql += " AND m.station_id IN (" + ",".join(["?"] * len(station)) + ")"
+            params.extend([s.upper() for s in station])
+        rows = con.execute(sql, params).fetchall()
+        if not quiet:
+            console.print(f"[dim]Looking up {len(rows)} unresolved (station, date, kind) tuples.[/dim]")
+
+        # Cache CLI results per (station, date) so we don't fetch twice for high+low.
+        cache: dict[tuple[str, date], object] = {}
+        for sid, target_date, kind in rows:
+            key = (sid, target_date)
+            try:
+                obs = cache.get(key)
+                if obs is None:
+                    obs = fetch_cli_for_date(sid, target_date)
+                    cache[key] = obs
+                if obs is None:
+                    rows_skipped += 1
+                    if not quiet:
+                        console.print(f"[dim]  {sid} {target_date} {kind:>4}: not in CLI archive[/dim]")
+                    continue
+                value = obs.max_f if kind == "high" else obs.min_f
+                if value is None:
+                    rows_skipped += 1
+                    log_.warning("cli_value_missing", station_id=sid, date=target_date.isoformat(), kind=kind)
+                    continue
+                con.execute(
+                    """
+                    INSERT INTO resolutions (
+                        station_id, valid_date_local, kind, value_f, source, fetched_at_utc, raw_text
+                    ) VALUES (?, ?, ?, ?, 'nws_cli', ?, ?)
+                    ON CONFLICT (station_id, valid_date_local, kind) DO UPDATE SET
+                        value_f = EXCLUDED.value_f,
+                        fetched_at_utc = EXCLUDED.fetched_at_utc,
+                        raw_text = EXCLUDED.raw_text
+                    """,
+                    [sid, target_date, kind, value, obs.fetched_at_utc, obs.raw_text],
+                )
+                rows_inserted += 1
+                if not quiet:
+                    console.print(f"  [green]{sid} {target_date} {kind:>4}[/green] = {value:.0f}°F")
+            except Exception:
+                errors += 1
+                log_.exception("resolution_fetch_failed", station_id=sid, date=target_date.isoformat())
+
+    if not quiet:
+        console.print(
+            f"[dim]fetch-resolution: inserted={rows_inserted} skipped={rows_skipped} errors={errors}[/dim]"
         )
 
 
