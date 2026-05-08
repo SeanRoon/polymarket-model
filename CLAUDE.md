@@ -17,10 +17,10 @@ uv run pytest tests/unit/test_<file>.py -v  # run a single file
 uv run ruff check .                         # lint
 uv run mypy src                             # type-check
 uv run polymarket scan --max-lead-days 7    # generate today's edge signals (network)
-uv run polymarket snapshot                  # one-shot price snapshot to data/cache.duckdb
-uv run polymarket fetch-resolution          # backfill NWS CLI ground truth for resolved markets
-.\scripts\windows_task.ps1                  # register the 15-min snapshot recorder (Task Scheduler)
-.\scripts\windows_task.ps1 -Unregister      # remove it
+uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb  # one-shot Parquet write (same as CI)
+uv run polymarket snapshot                                            # legacy: write to local DuckDB only
+uv run polymarket fetch-resolution                                    # backfill NWS CLI ground truth
+uv run polymarket migrate-snapshots-to-parquet                        # one-time DuckDB -> Parquet export
 ```
 
 DuckDB cache is at `data/cache.duckdb` (gitignored). Inspect with `uv run python -c "import duckdb; print(duckdb.connect('data/cache.duckdb').execute('SELECT COUNT(*) FROM price_snapshots').fetchone())"`.
@@ -52,7 +52,13 @@ weather/nws.fetch_cli_for_date ───────→ cache.duckdb (resolution
 
 ### Snapshot recorder is the single highest-leverage component
 
-Polymarket's public APIs return *current* prices only — there is no clean public midpoint history. The backtest substrate must be built locally over weeks. `recorder.snapshot_once` polls every active weather market's midpoint+book in parallel (10-thread pool, ~95s for ~38 events × 11 bins) and writes idempotent rows keyed by `(token_id, snapshot_bucket_utc)` (5-min floor). `scripts/windows_task.ps1` registers a 15-minute recurrence under the current user. The laptop-asleep gap is accepted by design.
+Polymarket's public APIs return *current* prices only — there is no clean public midpoint history. The backtest substrate must be built ourselves over weeks.
+
+**Source of truth is `data/snapshots/YYYY-MM-DD/HHMM.parquet`**, one self-contained denormalized file per 5-min bucket (~30–45 KB each, ~4 MB/day). The GitHub Actions workflow `.github/workflows/snapshot.yml` runs every 15 minutes on a hosted runner, fetches all bin midpoints+books in parallel, writes the Parquet, and commits it back to `main`. Repo growth ≈ 1.4 GB/year — manageable.
+
+`recorder.snapshot_once(parquet_dir=..., write_duckdb=False)` is the path used by CI. The legacy local mode (`write_duckdb=True`) still works for debugging but isn't the canonical store. Run `polymarket migrate-snapshots-to-parquet` once to backfill the existing local DuckDB rows into Parquet.
+
+`scripts/windows_task.ps1` is **deprecated**; we used Task Scheduler briefly while bootstrapping but moved to GHA so the recorder runs even when the laptop's asleep.
 
 ### Phase status
 

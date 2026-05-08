@@ -14,8 +14,11 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from pathlib import Path
 
 import duckdb
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from polymarket_model.cache import connect
 from polymarket_model.logging_setup import get_logger
@@ -37,6 +40,7 @@ class SnapshotResult:
     bins_seen: int
     rows_inserted: int
     errors: int
+    parquet_path: Path | None = None
 
 
 def _upsert_event(con: duckdb.DuckDBPyConnection, event: WeatherEvent, now: datetime) -> None:
@@ -171,12 +175,68 @@ def _fetch_bin_price(clob: ClobClient, condition_id: str, bin_: Bin) -> _BinPric
         return _BinPrice(bin=bin_, condition_id=condition_id, midpoint=None, best_bid=None, best_ask=None, bid_size=None, ask_size=None, error=str(exc))
 
 
+def _parquet_path_for_bucket(parquet_dir: Path, bucket: datetime) -> Path:
+    return parquet_dir / f"{bucket.strftime('%Y-%m-%d')}" / f"{bucket.strftime('%H%M')}.parquet"
+
+
+def _build_snapshot_table(
+    *,
+    bucket: datetime,
+    started: datetime,
+    events: list[WeatherEvent],
+    by_token: dict[str, "_BinPrice"],
+) -> pa.Table:
+    rows: list[dict] = []
+    for event in events:
+        condition_id = event.condition_ids[0] if event.condition_ids else event.event_id
+        for b in event.bins:
+            r = by_token.get(b.yes_token_id)
+            if r is None or r.error or r.midpoint is None:
+                continue
+            rows.append({
+                "snapshot_bucket_utc": bucket,
+                "snapshot_ts_utc": started,
+                "event_id": event.event_id,
+                "condition_id": condition_id,
+                "slug": event.slug,
+                "city": event.city,
+                "kind": event.kind,
+                "unit": event.unit,
+                "target_date_local": event.target_date_local,
+                "end_date_utc": event.end_date_utc.replace(tzinfo=None),
+                "station_id": event.station_id,
+                "resolution_source": event.resolution_source,
+                "outcome_index": b.outcome_index,
+                "yes_token_id": b.yes_token_id,
+                "no_token_id": b.no_token_id,
+                "bin_label": b.label,
+                "lo_f": None if b.is_open_low else b.lo_f,
+                "hi_f": None if b.is_open_high else b.hi_f,
+                "is_open_low": b.is_open_low,
+                "is_open_high": b.is_open_high,
+                "midpoint": r.midpoint,
+                "best_bid": r.best_bid,
+                "best_ask": r.best_ask,
+                "bid_size": r.bid_size,
+                "ask_size": r.ask_size,
+            })
+    return pa.Table.from_pylist(rows)
+
+
 def snapshot_once(
     *,
     now: datetime | None = None,
     max_workers: int = PRICE_FETCH_CONCURRENCY,
+    parquet_dir: Path | None = None,
+    write_duckdb: bool = True,
 ) -> SnapshotResult:
-    """Single shot: discover, fetch prices in parallel, persist to DuckDB."""
+    """Single shot: discover, fetch prices in parallel, persist to DuckDB and/or Parquet.
+
+    parquet_dir: if provided, write a self-contained Parquet file for this bucket at
+        {parquet_dir}/YYYY-MM-DD/HHMM.parquet. Each row is fully denormalized.
+    write_duckdb: if True (default), also append to the local cache.duckdb. The GitHub Actions
+        runner sets this False since it's ephemeral.
+    """
     started = now or datetime.now(UTC)
     bucket = floor_to_bucket(started, minutes=5)
     run_id = uuid.uuid4().hex
@@ -202,49 +262,68 @@ def snapshot_once(
 
     by_token = {r.bin.yes_token_id: r for r in results}
 
-    with connect() as con:
+    parquet_path: Path | None = None
+    if parquet_dir is not None:
         try:
-            for event in events:
-                try:
-                    _upsert_event(con, event, started)
-                    _upsert_bins(con, event)
-                    condition_id = event.condition_ids[0] if event.condition_ids else event.event_id
-                    for b in event.bins:
-                        r = by_token.get(b.yes_token_id)
-                        if r is None or r.error:
-                            errors += 1
-                            if r is not None:
-                                log.warning("price_fetch_failed", token_id=b.yes_token_id, slug=event.slug, error=r.error)
-                            continue
-                        _insert_price_snapshot(
-                            con,
-                            token_id=b.yes_token_id,
-                            condition_id=condition_id,
-                            snapshot_ts_utc=started,
-                            bucket_utc=bucket,
-                            midpoint=r.midpoint,
-                            best_bid=r.best_bid,
-                            best_ask=r.best_ask,
-                            bid_size=r.bid_size,
-                            ask_size=r.ask_size,
-                        )
-                        rows_inserted += 1
-                        bins_seen += 1
-                except Exception:
-                    errors += 1
-                    log.exception("event_record_failed", slug=event.slug)
-            ended = datetime.now(UTC)
-            con.execute(
-                """
-                INSERT INTO run_log (run_id, component, started_utc, ended_utc, ok, rows_written, message)
-                VALUES (?, 'snapshot', ?, ?, ?, ?, ?)
-                """,
-                [run_id, started, ended, errors == 0, rows_inserted, f"events={len(events)} bins={bins_seen} errors={errors}"],
+            tbl = _build_snapshot_table(
+                bucket=bucket, started=started, events=events, by_token=by_token,
             )
+            parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
+            parquet_path.parent.mkdir(parents=True, exist_ok=True)
+            pq.write_table(tbl, parquet_path, compression="zstd")
+            rows_inserted += tbl.num_rows
+            bins_seen += tbl.num_rows
         except Exception:
-            log.exception("snapshot_failed_unrecoverable")
             errors += 1
-            ended = datetime.now(UTC)
+            log.exception("parquet_write_failed", path=str(parquet_path))
+
+    if write_duckdb:
+        with connect() as con:
+            try:
+                for event in events:
+                    try:
+                        _upsert_event(con, event, started)
+                        _upsert_bins(con, event)
+                        condition_id = event.condition_ids[0] if event.condition_ids else event.event_id
+                        for b in event.bins:
+                            r = by_token.get(b.yes_token_id)
+                            if r is None or r.error:
+                                errors += 1
+                                if r is not None:
+                                    log.warning("price_fetch_failed", token_id=b.yes_token_id, slug=event.slug, error=r.error)
+                                continue
+                            _insert_price_snapshot(
+                                con,
+                                token_id=b.yes_token_id,
+                                condition_id=condition_id,
+                                snapshot_ts_utc=started,
+                                bucket_utc=bucket,
+                                midpoint=r.midpoint,
+                                best_bid=r.best_bid,
+                                best_ask=r.best_ask,
+                                bid_size=r.bid_size,
+                                ask_size=r.ask_size,
+                            )
+                            if parquet_dir is None:  # only count once
+                                rows_inserted += 1
+                                bins_seen += 1
+                    except Exception:
+                        errors += 1
+                        log.exception("event_record_failed", slug=event.slug)
+                ended = datetime.now(UTC)
+                con.execute(
+                    """
+                    INSERT INTO run_log (run_id, component, started_utc, ended_utc, ok, rows_written, message)
+                    VALUES (?, 'snapshot', ?, ?, ?, ?, ?)
+                    """,
+                    [run_id, started, ended, errors == 0, rows_inserted, f"events={len(events)} bins={bins_seen} errors={errors}"],
+                )
+            except Exception:
+                log.exception("snapshot_failed_unrecoverable")
+                errors += 1
+                ended = datetime.now(UTC)
+    else:
+        ended = datetime.now(UTC)
 
     return SnapshotResult(
         started_utc=started,
@@ -253,4 +332,5 @@ def snapshot_once(
         bins_seen=bins_seen,
         rows_inserted=rows_inserted,
         errors=errors,
+        parquet_path=parquet_path,
     )

@@ -44,6 +44,12 @@ build/
 *.db
 *.duckdb
 *.duckdb.wal
-data/
 *.csv.gz
-*.parquet
+
+# Local-only contents under data/. Snapshots are tracked (committed by the GHA cron).
+data/cache.duckdb
+data/cache.duckdb.wal
+data/logs/
+data/reports/
+data/raw/
+data/interim/

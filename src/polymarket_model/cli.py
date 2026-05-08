@@ -115,17 +115,31 @@ def scan(
 @app.command()
 def snapshot(
     quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress per-event progress."),
+    parquet_dir: Path | None = typer.Option(
+        None,
+        "--parquet-dir",
+        help="Write a self-contained Parquet for this bucket under this directory. "
+             "Used by the GitHub Actions workflow to commit snapshots back to the repo.",
+    ),
+    no_duckdb: bool = typer.Option(
+        False,
+        "--no-duckdb",
+        help="Skip the local DuckDB write. Set by the ephemeral GitHub Actions runner.",
+    ),
 ) -> None:
     """One-shot price snapshot: persist current midpoints+book for every active weather market."""
     configure_logging()
     console = Console()
-    result = snapshot_once()
+    result = snapshot_once(parquet_dir=parquet_dir, write_duckdb=not no_duckdb)
     if not quiet:
-        console.print(
-            f"[dim]snapshot: events={result.events_seen} bins={result.bins_seen} "
+        msg = (
+            f"snapshot: events={result.events_seen} bins={result.bins_seen} "
             f"rows_inserted={result.rows_inserted} errors={result.errors} "
-            f"duration={(result.ended_utc - result.started_utc).total_seconds():.1f}s[/dim]"
+            f"duration={(result.ended_utc - result.started_utc).total_seconds():.1f}s"
         )
+        if result.parquet_path:
+            msg += f" parquet={result.parquet_path}"
+        console.print(f"[dim]{msg}[/dim]")
 
 
 @app.command("fetch-resolution")
@@ -213,6 +227,73 @@ def fetch_resolution(
         console.print(
             f"[dim]fetch-resolution: inserted={rows_inserted} skipped={rows_skipped} errors={errors}[/dim]"
         )
+
+
+@app.command("migrate-snapshots-to-parquet")
+def migrate_snapshots_to_parquet(
+    parquet_dir: Path = typer.Option(
+        Path("data/snapshots"),
+        "--parquet-dir",
+        help="Output root directory.",
+    ),
+    overwrite: bool = typer.Option(False, "--overwrite", help="Overwrite Parquet files that already exist."),
+) -> None:
+    """One-shot: export existing DuckDB price_snapshots into per-bucket Parquet files."""
+    import duckdb
+    import pyarrow.parquet as pq
+
+    configure_logging()
+    console = Console()
+    parquet_dir.mkdir(parents=True, exist_ok=True)
+
+    sql = """
+        SELECT
+            ps.snapshot_bucket_utc,
+            ps.snapshot_ts_utc,
+            m.condition_id AS event_id,
+            m.condition_id,
+            m.slug,
+            m.city,
+            m.kind,
+            'F' AS unit,
+            m.target_date_local,
+            m.end_date_utc,
+            m.station_id,
+            m.resolution_source,
+            mb.outcome_index,
+            mb.token_id AS yes_token_id,
+            CAST(NULL AS VARCHAR) AS no_token_id,
+            mb.outcome_label AS bin_label,
+            mb.lo_f,
+            mb.hi_f,
+            mb.is_open_low,
+            mb.is_open_high,
+            ps.midpoint,
+            ps.best_bid,
+            ps.best_ask,
+            ps.bid_size,
+            ps.ask_size
+        FROM price_snapshots ps
+        JOIN market_bins mb ON mb.token_id = ps.token_id
+        JOIN markets m ON m.condition_id = ps.condition_id
+        WHERE ps.midpoint IS NOT NULL
+    """
+    with connect(read_only=True) as con:
+        buckets = [row[0] for row in con.execute("SELECT DISTINCT snapshot_bucket_utc FROM price_snapshots ORDER BY snapshot_bucket_utc").fetchall()]
+        if not buckets:
+            console.print("[yellow]No snapshots found in cache.duckdb.[/yellow]")
+            return
+        written = skipped = 0
+        for bucket in buckets:
+            out = parquet_dir / bucket.strftime("%Y-%m-%d") / f"{bucket.strftime('%H%M')}.parquet"
+            if out.exists() and not overwrite:
+                skipped += 1
+                continue
+            reader = con.execute(sql + " AND ps.snapshot_bucket_utc = ?", [bucket]).fetch_arrow_table()
+            out.parent.mkdir(parents=True, exist_ok=True)
+            pq.write_table(reader, out, compression="zstd")
+            written += 1
+        console.print(f"[dim]migrate: {written} written, {skipped} skipped (already existed) of {len(buckets)} buckets[/dim]")
 
 
 if __name__ == "__main__":

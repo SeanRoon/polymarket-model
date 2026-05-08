@@ -1,0 +1,69 @@
+name: Snapshot Polymarket weather midpoints
+
+# Runs every 15 minutes, fetches a price snapshot from Polymarket, and commits the
+# resulting Parquet file back to the repo. Never makes a commit when there's no new
+# bucket to record (idempotent; same 5-min bucket overwrites). The runner is ephemeral,
+# so we skip the local DuckDB write — the Parquet files in the repo are the source of truth.
+
+on:
+  schedule:
+    # Every 15 minutes (best-effort; GitHub frequently delays cron during peak load).
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  # Don't fan out concurrent runs against the same branch; let a slow snapshot finish
+  # before the next one starts. Skips queued duplicates entirely.
+  group: snapshot-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Run snapshot
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb --quiet
+
+      - name: Commit + push if new files
+        run: |
+          set -euxo pipefail
+          git config user.name "polymarket-snapshot-bot"
+          git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
+          git add data/snapshots
+          if git diff --cached --quiet; then
+            echo "No new snapshot file to commit (likely a same-bucket duplicate)."
+            exit 0
+          fi
+          ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          git commit -m "Snapshot: ${ts}"
+          # Pull-rebase + push, retry once if a parallel commit landed.
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
