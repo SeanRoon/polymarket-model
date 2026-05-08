@@ -14,6 +14,7 @@ from polymarket_model.logging_setup import configure_logging, get_logger
 from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
 from polymarket_model.model import PredictiveDistribution, evaluate_event
+from polymarket_model.recorder import snapshot_once
 from polymarket_model.weather.openmeteo import DEFAULT_MODEL, fetch_daily_extreme
 
 app = typer.Typer(help="Polymarket weather edge model.", no_args_is_help=True)
@@ -107,6 +108,22 @@ def scan(
     if markdown_path:
         out_path = write_markdown(signals, markdown_path)
         console.print(f"[dim]Wrote markdown: {out_path}[/dim]")
+
+
+@app.command()
+def snapshot(
+    quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress per-event progress."),
+) -> None:
+    """One-shot price snapshot: persist current midpoints+book for every active weather market."""
+    configure_logging()
+    console = Console()
+    result = snapshot_once()
+    if not quiet:
+        console.print(
+            f"[dim]snapshot: events={result.events_seen} bins={result.bins_seen} "
+            f"rows_inserted={result.rows_inserted} errors={result.errors} "
+            f"duration={(result.ended_utc - result.started_utc).total_seconds():.1f}s[/dim]"
+        )
 
 
 if __name__ == "__main__":
