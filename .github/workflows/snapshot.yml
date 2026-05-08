@@ -4,6 +4,10 @@ name: Snapshot Polymarket weather midpoints
 # resulting Parquet file back to the repo. Never makes a commit when there's no new
 # bucket to record (idempotent; same 5-min bucket overwrites). The runner is ephemeral,
 # so we skip the local DuckDB write — the Parquet files in the repo are the source of truth.
+#
+# Note on cost: this repo is public, so GitHub Actions minutes are unlimited. If we ever
+# flip back to private, this 15-min cadence will exceed the 2,000-min/month free tier
+# (~96 runs/day x 1 min billed = 2,880/month). Drop to */30 then.
 
 on:
   schedule:

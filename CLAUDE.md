@@ -54,7 +54,9 @@ weather/nws.fetch_cli_for_date ───────→ cache.duckdb (resolution
 
 Polymarket's public APIs return *current* prices only — there is no clean public midpoint history. The backtest substrate must be built ourselves over weeks.
 
-**Source of truth is `data/snapshots/YYYY-MM-DD/HHMM.parquet`**, one self-contained denormalized file per 5-min bucket (~30–45 KB each, ~4 MB/day). The GitHub Actions workflow `.github/workflows/snapshot.yml` runs every 15 minutes on a hosted runner, fetches all bin midpoints+books in parallel, writes the Parquet, and commits it back to `main`. Repo growth ≈ 1.4 GB/year — manageable.
+**Source of truth is `data/snapshots/YYYY-MM-DD/HHMM.parquet`**, one self-contained denormalized file per 5-min bucket (~30–45 KB each, ~4 MB/day). The GitHub Actions workflow `.github/workflows/snapshot.yml` runs every 15 minutes on a hosted runner, fetches all bin midpoints+books in parallel (25-thread pool, ~40 s/run), writes the Parquet, and commits it back to `main`. Repo growth ≈ 1.4 GB/year — manageable.
+
+**Repo is public** to get unlimited GitHub Actions minutes; 15-min cadence on a private repo exceeds the 2,000-min/month free tier even with the snapshot under 60 s. If the repo ever flips back to private, drop the cron to `*/30`.
 
 `recorder.snapshot_once(parquet_dir=..., write_duckdb=False)` is the path used by CI. The legacy local mode (`write_duckdb=True`) still works for debugging but isn't the canonical store. Run `polymarket migrate-snapshots-to-parquet` once to backfill the existing local DuckDB rows into Parquet.
 
