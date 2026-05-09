@@ -18,7 +18,7 @@ from polymarket_model.weather.openmeteo import EnsembleDailyExtreme
 
 @dataclass(frozen=True)
 class PredictiveDistribution:
-    """Empirical predictive distribution over daily high/low temperature.
+    """Empirical predictive distribution over daily high/low temperature in °F.
 
     Phase 1: backed by an array of ensemble-member values. Later phases will add
     a parametric `cdf` callable so the same `prob_in_bin` API serves EMOS too.
@@ -26,14 +26,12 @@ class PredictiveDistribution:
     is applied at the event level in `evaluate_event`, not on the raw samples.
     """
     samples: np.ndarray            # shape (n_members,)
-    unit: str                      # 'F' | 'C'
     model: str                     # e.g. 'empirical_ecmwf_ifs025'
 
     @classmethod
     def from_ensemble(cls, ex: EnsembleDailyExtreme) -> "PredictiveDistribution":
         return cls(
             samples=np.asarray(ex.values, dtype=float),
-            unit=ex.unit,
             model=f"empirical_{ex.model}",
         )
 
@@ -91,13 +89,9 @@ def evaluate_event(
 
     Uses Laplace (add-alpha) smoothing on the bin counts so probabilities never hit hard
     0% or 100% from a 51-member ensemble — that would over-confidently size full-Kelly bets
-    on outcomes the ensemble simply hasn't sampled. With alpha=0.5 and 11 bins:
-      smoothed_p = (count + 0.5) / (51 + 5.5)  =>  floor ~0.009, ceiling ~0.91.
+    on outcomes the ensemble simply hasn't sampled. With alpha=0.5 and 6 bins:
+      smoothed_p = (count + 0.5) / (51 + 3)  =>  floor ~0.009, ceiling ~0.95.
     """
-    if event.unit != distribution.unit:
-        raise ValueError(
-            f"unit mismatch: event.unit={event.unit!r} distribution.unit={distribution.unit!r}"
-        )
     samples = distribution.samples
     n = samples.shape[0]
     if n == 0:
@@ -137,5 +131,5 @@ def assert_bins_cover_support(bins: Iterable[Bin]) -> tuple[bool, str]:
         return False, "no open-high bin"
     for a, b in zip(sorted_bins[:-1], sorted_bins[1:], strict=False):
         if a.hi_f != b.lo_f:
-            return False, f"gap or overlap between {a.label!r} (hi={a.hi_f}) and {b.label!r} (lo={b.lo_f})"
+            return False, f"gap or overlap between {a.subtitle!r} (hi={a.hi_f}) and {b.subtitle!r} (lo={b.lo_f})"
     return True, "ok"

@@ -1,3 +1,15 @@
+"""Discover Kalshi weather events and parse their bin structure.
+
+Each daily-temperature event (e.g. KXHIGHNY-26MAY09) contains a small set of
+mutually-exclusive binary markets. Two ticker shapes:
+  - "T<X>": threshold market. floor_strike or cap_strike is set; the other is None.
+  - "B<X.5>": between market. Both floor_strike and cap_strike set, inclusive.
+
+Daily NWS CLI temperatures are integers, so:
+  - Closed bin (B): floor=A, cap=B  ->  [A, B+1)
+  - Open-high (T): floor=X, cap=None  ->  [X+1, +inf)   (rule says "greater than X")
+  - Open-low  (T): floor=None, cap=X  ->  (-inf, X)     (rule says "less than X")
+"""
 from __future__ import annotations
 
 import math
@@ -9,286 +21,228 @@ from typing import Any
 from dateutil import parser as dtparser
 
 from polymarket_model.logging_setup import get_logger
-from polymarket_model.markets.client import GammaClient, parse_json_field
+from polymarket_model.markets.client import KalshiClient
 
 log = get_logger(__name__)
 
 
-WEATHER_TAG_ID = 84
-DAILY_TEMPERATURE_TAG_ID = 103040
+# Hard-coded weather series we scan + their resolution stations. The station_id
+# lines up with the NWS office cited in rules_primary; weather/stations.py owns
+# the lat/lon/timezone for each.
+WEATHER_SERIES: dict[str, tuple[str, str, str]] = {
+    # series_ticker: (city, kind, station_id)
+    "KXHIGHNY":  ("New York City", "high", "KNYC"),
+    "KXLOWNY":   ("New York City", "low",  "KNYC"),
+    "KXHIGHCHI": ("Chicago",       "high", "KMDW"),
+    "KXLOWTCHI": ("Chicago",       "low",  "KMDW"),
+    "KXHIGHMIA": ("Miami",         "high", "KMIA"),
+    "KXLOWMIA":  ("Miami",         "low",  "KMIA"),
+    "KXHIGHLAX": ("Los Angeles",   "high", "KLAX"),
+    "KXHIGHAUS": ("Austin",        "high", "KAUS"),
+    "KXHIGHDEN": ("Denver",        "high", "KDEN"),
+}
 
 
 @dataclass(frozen=True)
 class Bin:
-    outcome_index: int
-    yes_token_id: str
-    no_token_id: str
-    label: str
-    lo_f: float       # inclusive lower bound in event.unit (-inf for open low)
-    hi_f: float       # exclusive upper bound in event.unit (+inf for open high)
+    bin_index: int
+    market_ticker: str            # e.g. KXHIGHNY-26MAY09-B65.5
+    event_ticker: str             # e.g. KXHIGHNY-26MAY09
+    subtitle: str                 # human-readable, e.g. "65° to 66°"
+    floor_strike: float | None
+    cap_strike: float | None
+    lo_f: float                   # inclusive lower bound of [lo, hi); -inf for open-low
+    hi_f: float                   # exclusive upper bound; +inf for open-high
     is_open_low: bool
     is_open_high: bool
 
 
 @dataclass(frozen=True)
 class WeatherEvent:
-    event_id: str
-    slug: str
+    event_ticker: str             # e.g. KXHIGHNY-26MAY09
+    series_ticker: str
     title: str
-    end_date_utc: datetime
-    target_date_local: date
-    kind: str                 # 'high' | 'low'
     city: str
-    station_id: str | None
-    resolution_source: str | None
-    unit: str                 # 'F' | 'C'
-    condition_ids: list[str]
+    kind: str                     # 'high' | 'low'
+    station_id: str               # e.g. KNYC
+    target_date_local: date
+    close_time_utc: datetime
+    rules_primary: str | None
     bins: list[Bin]
     raw: dict[str, Any] = field(repr=False, default_factory=dict)
 
 
-_KIND_PATTERNS = {
-    "high": re.compile(r"\bhighest\b", re.IGNORECASE),
-    "low": re.compile(r"\blowest\b", re.IGNORECASE),
-}
-
-_SLUG_DATE_RE = re.compile(
-    r"-on-(?P<month>[a-z]+)-(?P<day>\d{1,2})-(?P<year>\d{4})$",
+# Match the "May 9, 2026" date inside an event title or rules_primary.
+_DATE_IN_TITLE = re.compile(
+    r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+"
+    r"(\d{1,2}),?\s+(\d{4})",
     re.IGNORECASE,
 )
 _MONTHS = {m.lower(): i for i, m in enumerate(
     ["January","February","March","April","May","June","July","August","September","October","November","December"], start=1
 )}
 
-# Match four-letter ICAO codes (K + 3 uppercase letters). NWS US airports are KXXX.
-_STATION_RE = re.compile(r"\b(K[A-Z]{3})\b")
+# Match a 3-letter month abbreviation in the event ticker, e.g. KXHIGHNY-26MAY09.
+_TICKER_DATE = re.compile(r"-(\d{2})([A-Z]{3})(\d{2})$")
+_MONTH_ABBR = {m.upper(): i for i, m in enumerate(
+    ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"], start=1
+)}
 
 
-def _parse_kind(title: str) -> str | None:
-    for kind, pat in _KIND_PATTERNS.items():
-        if pat.search(title):
-            return kind
-    return None
-
-
-def _parse_target_date_from_slug(slug: str) -> date | None:
-    m = _SLUG_DATE_RE.search(slug)
-    if not m:
-        return None
-    month = _MONTHS.get(m.group("month").lower())
-    if not month:
-        return None
-    try:
-        return date(int(m.group("year")), month, int(m.group("day")))
-    except ValueError:
-        return None
-
-
-def _parse_city(slug: str, title: str) -> str:
-    # Slug pattern: highest-temperature-in-{city-slug}-on-...
-    m = re.search(r"temperature-in-(.+?)-on-", slug)
-    if m:
-        city = m.group(1).replace("-", " ")
-        return city.title()
-    # Fallback: parse from title "Highest temperature in {City} on May 8?"
-    m2 = re.search(r"temperature in (.+?) on ", title or "", re.IGNORECASE)
-    if m2:
-        return m2.group(1).strip()
-    return slug
-
-
-def _extract_station_id(resolution_source: str | None) -> str | None:
-    if not resolution_source:
-        return None
-    m = _STATION_RE.search(resolution_source)
-    return m.group(1) if m else None
-
-
-def _detect_unit(label: str) -> str:
-    """Return 'F' or 'C' based on label content. Defaults to 'F'."""
-    s = label.upper()
-    if "°C" in s or "º C" in s or re.search(r"\d\s*C\b", s):
-        return "C"
-    return "F"
-
-
-def _normalize_label(label: str) -> str:
-    """Strip degree signs and unit letters so a numeric parser can work cleanly."""
-    s = label
-    for ch in ("°", "º", "Â°"):
-        s = s.replace(ch, " ")
-    s = s.lower()
-    # Replace standalone unit letters surrounded by digits/spaces with a space.
-    s = re.sub(r"(?<=\d)\s*[fc]\b", " ", s)
-    s = re.sub(r"\b[fc](?=\s|$)", " ", s)
-    return s
-
-
-def _parse_bin_label(label: str | None) -> tuple[float, float, bool, bool] | None:
-    """Parse a Polymarket bin label into half-open interval [lo, hi).
-    Returns (lo, hi, is_open_low, is_open_high) or None if unparseable.
-
-    Polymarket reports daily highs as integers in either °F (US) or °C (intl).
-    Conventions (in whatever unit the label uses):
-      "55°F or below"   -> [-inf, 56)
-      "56-57°F"         -> [56, 58)
-      "74°F or higher"  -> [74, +inf)
-      "62°F"            -> [62, 63)  (single-integer bin)
-    """
-    if not label:
-        return None
-    s = _normalize_label(label)
-
-    # Open-low: "X or below" / "below X"
-    m = re.search(r"(-?\d+)\s*or\s*below", s)
-    if m:
-        x = int(m.group(1))
-        return (-math.inf, float(x + 1), True, False)
-    m = re.search(r"below\s*(-?\d+)", s)
-    if m:
-        x = int(m.group(1))
-        return (-math.inf, float(x), True, False)
-
-    # Open-high: "X or higher / above / more / greater"
-    m = re.search(r"(-?\d+)\s*or\s*(higher|above|more|greater)", s)
-    if m:
-        x = int(m.group(1))
-        return (float(x), math.inf, False, True)
-    m = re.search(r"above\s*(-?\d+)", s)
-    if m:
-        x = int(m.group(1))
-        return (float(x + 1), math.inf, False, True)
-
-    # Range: "A-B" / "A to B" / "between A and B"
-    m = re.search(r"(-?\d+)\s*(?:-|–|to|and)\s*(-?\d+)", s)
-    if m:
-        a, b = int(m.group(1)), int(m.group(2))
-        if a > b:
-            a, b = b, a
-        return (float(a), float(b + 1), False, False)
-
-    # Single integer fallback (e.g. "6")
-    m = re.search(r"-?\d+", s)
-    if m and re.fullmatch(r"\s*-?\d+\s*", s):
-        x = int(m.group(0))
-        return (float(x), float(x + 1), False, False)
-
-    return None
-
-
-def parse_event(event: dict[str, Any]) -> WeatherEvent | None:
-    slug = event.get("slug") or ""
+def _parse_target_date(event: dict[str, Any]) -> date | None:
     title = event.get("title") or ""
-    kind = _parse_kind(title) or _parse_kind(slug)
-    if kind is None:
+    m = _DATE_IN_TITLE.search(title)
+    if m:
+        try:
+            return date(int(m.group(3)), _MONTHS[m.group(1).lower()], int(m.group(2)))
+        except (KeyError, ValueError):
+            pass
+    ticker = event.get("event_ticker") or ""
+    m2 = _TICKER_DATE.search(ticker)
+    if m2:
+        try:
+            yy, mon, dd = m2.groups()
+            year = 2000 + int(yy)
+            month = _MONTH_ABBR[mon.upper()]
+            return date(year, month, int(dd))
+        except (KeyError, ValueError):
+            pass
+    return None
+
+
+def _interval_for_market(market: dict[str, Any]) -> tuple[float, float, bool, bool] | None:
+    """Translate Kalshi (floor_strike, cap_strike) into our half-open [lo, hi) convention."""
+    floor = market.get("floor_strike")
+    cap = market.get("cap_strike")
+    ticker = market.get("ticker") or ""
+    is_t = ticker.split("-")[-1].startswith("T") if "-" in ticker else False
+
+    if floor is None and cap is None:
         return None
 
-    target_date = _parse_target_date_from_slug(slug)
-    end_date_raw = event.get("endDate")
-    end_date_utc = dtparser.isoparse(end_date_raw) if end_date_raw else datetime.now(UTC)
-    if end_date_utc.tzinfo is None:
-        end_date_utc = end_date_utc.replace(tzinfo=UTC)
+    if floor is None and cap is not None:
+        # Open-low; rule says "less than cap" (strict).
+        return (-math.inf, float(cap), True, False)
 
+    if cap is None and floor is not None:
+        # Open-high; rule says "greater than floor" (strict).
+        # Integer +1 because daily NWS CLI values are integers.
+        return (float(floor) + 1.0, math.inf, False, True)
+
+    # Closed bin: inclusive both sides; map to [floor, cap+1).
+    return (float(floor), float(cap) + 1.0, False, False)
+
+
+def parse_event(event: dict[str, Any], markets: list[dict[str, Any]]) -> WeatherEvent | None:
+    series = event.get("series_ticker")
+    if series not in WEATHER_SERIES:
+        return None
+    city, kind, station_id = WEATHER_SERIES[series]
+    target_date = _parse_target_date(event)
     if target_date is None:
-        # Fall back to UTC end-date date — close enough for slug-less cases.
-        target_date = end_date_utc.date()
-
-    city = _parse_city(slug, title)
-
-    # resolutionSource sometimes lives at event level, sometimes per-market — check event then bins.
-    resolution_source = event.get("resolutionSource")
-    station_id = _extract_station_id(resolution_source)
+        log.warning("event_target_date_unparsed", event_ticker=event.get("event_ticker"))
+        return None
 
     bins: list[Bin] = []
-    condition_ids: list[str] = []
-    units_seen: list[str] = []
-    for idx, m in enumerate(event.get("markets") or []):
-        token_ids = parse_json_field(m.get("clobTokenIds")) or []
-        if not isinstance(token_ids, list) or len(token_ids) < 2:
+    rules_primary: str | None = None
+    close_time_utc: datetime | None = None
+    for i, m in enumerate(markets):
+        if m.get("status") != "active":
             continue
-        outcomes = parse_json_field(m.get("outcomes")) or ["Yes", "No"]
-        if isinstance(outcomes, list) and len(outcomes) >= 2 and outcomes[0].lower() == "no":
-            yes_token, no_token = token_ids[1], token_ids[0]
-        else:
-            yes_token, no_token = token_ids[0], token_ids[1]
-
-        label = m.get("groupItemTitle") or m.get("question") or ""
-        parsed = _parse_bin_label(label)
-        if parsed is None:
-            log.warning("bin_label_unparseable", event_slug=slug, label=label, market_id=m.get("id"))
+        interval = _interval_for_market(m)
+        if interval is None:
+            log.warning("market_interval_unparsed", ticker=m.get("ticker"))
             continue
-        lo, hi, open_lo, open_hi = parsed
-        units_seen.append(_detect_unit(label))
+        lo, hi, open_lo, open_hi = interval
         bins.append(Bin(
-            outcome_index=idx,
-            yes_token_id=str(yes_token),
-            no_token_id=str(no_token),
-            label=label,
+            bin_index=i,
+            market_ticker=m.get("ticker") or "",
+            event_ticker=m.get("event_ticker") or event.get("event_ticker") or "",
+            subtitle=m.get("yes_sub_title") or m.get("subtitle") or "",
+            floor_strike=None if m.get("floor_strike") is None else float(m["floor_strike"]),
+            cap_strike=None if m.get("cap_strike") is None else float(m["cap_strike"]),
             lo_f=lo,
             hi_f=hi,
             is_open_low=open_lo,
             is_open_high=open_hi,
         ))
-        if m.get("conditionId"):
-            condition_ids.append(str(m["conditionId"]))
-
-        if not resolution_source and m.get("resolutionSource"):
-            resolution_source = m.get("resolutionSource")
-            station_id = _extract_station_id(resolution_source) or station_id
+        rules_primary = rules_primary or m.get("rules_primary")
+        ct = m.get("close_time")
+        if ct:
+            try:
+                ct_dt = dtparser.isoparse(ct)
+                if close_time_utc is None or ct_dt > close_time_utc:
+                    close_time_utc = ct_dt
+            except Exception:
+                pass
 
     if not bins:
         return None
 
-    # Pick the dominant unit; if mixed (shouldn't happen) prefer F.
-    unit = "C" if units_seen and units_seen.count("C") > units_seen.count("F") else "F"
+    if close_time_utc is None:
+        close_time_utc = datetime.now(UTC)
+    if close_time_utc.tzinfo is None:
+        close_time_utc = close_time_utc.replace(tzinfo=UTC)
+
+    # Sort bins by lo_f so the table reads bottom-up.
+    bins.sort(key=lambda b: (b.lo_f, b.hi_f))
+    bins = [Bin(
+        bin_index=i,
+        market_ticker=b.market_ticker,
+        event_ticker=b.event_ticker,
+        subtitle=b.subtitle,
+        floor_strike=b.floor_strike,
+        cap_strike=b.cap_strike,
+        lo_f=b.lo_f,
+        hi_f=b.hi_f,
+        is_open_low=b.is_open_low,
+        is_open_high=b.is_open_high,
+    ) for i, b in enumerate(bins)]
 
     return WeatherEvent(
-        event_id=str(event.get("id") or ""),
-        slug=slug,
-        title=title,
-        end_date_utc=end_date_utc,
-        target_date_local=target_date,
-        kind=kind,
+        event_ticker=event.get("event_ticker") or "",
+        series_ticker=series,
+        title=event.get("title") or "",
         city=city,
+        kind=kind,
         station_id=station_id,
-        resolution_source=resolution_source,
-        unit=unit,
-        condition_ids=condition_ids,
+        target_date_local=target_date,
+        close_time_utc=close_time_utc,
+        rules_primary=rules_primary,
         bins=bins,
         raw=event,
     )
 
 
-def discover_weather_events(
-    gamma: GammaClient | None = None,
-    tag_ids: tuple[int, ...] = (WEATHER_TAG_ID,),
-    limit: int = 500,
-    units: tuple[str, ...] | None = ("F",),
-) -> list[WeatherEvent]:
-    """Fetch active weather events and parse them into WeatherEvent objects.
-
-    Args:
-      units: filter by unit. Default ('F',) limits to US cities. Pass None for all units.
-    """
-    gamma = gamma or GammaClient()
-    seen: dict[str, dict[str, Any]] = {}
-    for tag_id in tag_ids:
-        for ev in gamma.list_active_events_by_tag(tag_id, limit=limit):
-            eid = str(ev.get("id"))
-            if eid and eid not in seen:
-                seen[eid] = ev
-
-    parsed: list[WeatherEvent] = []
-    for ev in seen.values():
+def discover_weather_events(client: KalshiClient | None = None) -> list[WeatherEvent]:
+    """Walk the hard-coded weather series list, fetch open events + their markets, parse."""
+    client = client or KalshiClient()
+    events: list[WeatherEvent] = []
+    for series in WEATHER_SERIES:
         try:
-            we = parse_event(ev)
+            metadata = client.get_series(series)
         except Exception:
-            log.exception("event_parse_failed", slug=ev.get("slug"))
+            log.exception("series_check_failed", series=series)
             continue
-        if we is None:
+        if metadata is None:
+            log.info("series_not_found", series=series)
             continue
-        if units is not None and we.unit not in units:
+        try:
+            open_events = client.list_open_events(series)
+        except Exception:
+            log.exception("events_list_failed", series=series)
             continue
-        parsed.append(we)
-    parsed.sort(key=lambda w: w.end_date_utc)
-    return parsed
+        for ev in open_events:
+            ticker = ev.get("event_ticker")
+            if not ticker:
+                continue
+            try:
+                markets = client.list_event_markets(ticker)
+            except Exception:
+                log.exception("markets_list_failed", event_ticker=ticker)
+                continue
+            we = parse_event(ev, markets)
+            if we is not None:
+                events.append(we)
+    events.sort(key=lambda e: (e.target_date_local, e.series_ticker))
+    return events

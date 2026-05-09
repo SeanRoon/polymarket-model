@@ -1,8 +1,14 @@
+"""Open-Meteo ensemble forecasts reduced to per-member daily high/low at a station.
+
+Kalshi settles on Local Standard Time (LST) year-round — no DST shift. So when
+we compute the "daily high" window we must use the station's *standard* offset,
+even in summer. We fetch hourly data in UTC and apply the LST window in UTC.
+"""
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import UTC, date, datetime, time, timedelta
+from datetime import UTC, date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -16,7 +22,6 @@ from polymarket_model.weather.stations import StationInfo, get_station
 log = get_logger(__name__)
 
 
-# Open-Meteo ensemble model identifiers (free; no key)
 DEFAULT_MODEL = "ecmwf_ifs025"
 SUPPORTED_MODELS = ("ecmwf_ifs025", "gfs025", "gfs_seamless", "icon_seamless")
 
@@ -29,16 +34,12 @@ class EnsembleDailyExtreme:
     station_id: str
     target_date_local: date
     kind: str                 # 'high' | 'low'
-    unit: str                 # 'F' | 'C'
+    unit: str                 # 'F'
     model: str
     fetched_at_utc: datetime
     lead_hours: int
     values: np.ndarray        # shape (n_members,)
     member_ids: np.ndarray    # shape (n_members,) ints, 0 = control
-
-    @property
-    def n_members(self) -> int:
-        return int(self.values.shape[0])
 
 
 _RETRYABLE = retry_if_exception_type((httpx.HTTPError, httpx.TimeoutException))
@@ -54,12 +55,35 @@ def _get_ensemble(params: dict) -> dict:
         return r.json()
 
 
-def _required_forecast_days(target_date_local: date, station_tz: str, *, now_utc: datetime | None = None) -> int:
+def standard_offset(tz_name: str) -> timedelta:
+    """Return the IANA timezone's standard (winter) UTC offset.
+
+    Kalshi settles on LST, which is the *winter* offset year-round. Pick a January
+    sample date so we get the no-DST offset regardless of the current season.
+    """
+    tz = ZoneInfo(tz_name)
+    sample = datetime(2024, 1, 15, 12, 0, tzinfo=tz)
+    return sample.utcoffset() or timedelta(0)
+
+
+def lst_day_window_utc(target_date_local: date, tz_name: str) -> tuple[datetime, datetime]:
+    """Return (start_utc, end_utc) for the 24-hour LST day, regardless of DST.
+
+    'Local Standard Time' midnight maps to a fixed UTC offset. Example: NY's
+    standard offset is UTC-5, so May 9 LST starts at May 9 05:00 UTC and ends
+    at May 10 05:00 UTC, even when New York is in EDT.
+    """
+    offset = standard_offset(tz_name)
+    fixed_tz = timezone(offset)
+    start_local = datetime.combine(target_date_local, time(0, 0), tzinfo=fixed_tz)
+    return start_local.astimezone(UTC), (start_local + timedelta(days=1)).astimezone(UTC)
+
+
+def _required_forecast_days(target_date_local: date, tz_name: str, *, now_utc: datetime | None = None) -> int:
     now_utc = now_utc or datetime.now(UTC)
-    tz = ZoneInfo(station_tz)
-    today_local = now_utc.astimezone(tz).date()
-    days = (target_date_local - today_local).days + 1
-    return max(1, min(16, days))
+    today_local = now_utc.astimezone(ZoneInfo(tz_name)).date()
+    days = (target_date_local - today_local).days + 2  # +2 to ensure the LST window's tail in UTC is covered
+    return max(2, min(16, days))
 
 
 def fetch_daily_extreme(
@@ -67,27 +91,26 @@ def fetch_daily_extreme(
     target_date_local: date,
     kind: str,
     *,
-    unit: str = "F",
     model: str = DEFAULT_MODEL,
     station: StationInfo | None = None,
 ) -> EnsembleDailyExtreme:
-    """Fetch ECMWF (or other) ensemble members and compute per-member daily high/low for a station/date."""
+    """Fetch ECMWF (or other) ensemble members and compute per-member daily high/low.
+
+    Returns the LST-aligned daily extreme in °F, matching Kalshi's settlement window.
+    """
     if kind not in ("high", "low"):
         raise ValueError(f"kind must be 'high' or 'low', got {kind!r}")
-    if unit not in ("F", "C"):
-        raise ValueError(f"unit must be 'F' or 'C', got {unit!r}")
 
     station = station or get_station(station_id)
     forecast_days = _required_forecast_days(target_date_local, station.timezone)
-    temperature_unit = "fahrenheit" if unit == "F" else "celsius"
 
     params = {
         "latitude": station.latitude,
         "longitude": station.longitude,
         "hourly": "temperature_2m",
         "models": model,
-        "temperature_unit": temperature_unit,
-        "timezone": station.timezone,
+        "temperature_unit": "fahrenheit",
+        "timezone": "GMT",
         "forecast_days": forecast_days,
         "wind_speed_unit": "kmh",
     }
@@ -99,14 +122,13 @@ def fetch_daily_extreme(
     if not times:
         raise RuntimeError(f"open-meteo returned empty hourly time series for {station_id}")
 
-    tz = ZoneInfo(station.timezone)
-    parsed_times = [datetime.fromisoformat(t).replace(tzinfo=tz) for t in times]
-    target_start = datetime.combine(target_date_local, time(0, 0), tzinfo=tz)
-    target_end = target_start + timedelta(days=1)
-    mask = np.array([target_start <= t < target_end for t in parsed_times])
+    parsed_times = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in times]
+    target_start_utc, target_end_utc = lst_day_window_utc(target_date_local, station.timezone)
+    mask = np.array([target_start_utc <= t < target_end_utc for t in parsed_times])
     if not mask.any():
         raise RuntimeError(
-            f"target date {target_date_local} not within forecast window for {station_id}"
+            f"target LST window for {target_date_local} ({station_id}) not in forecast horizon "
+            f"[{target_start_utc.isoformat()} .. {target_end_utc.isoformat()}]"
         )
 
     member_ids: list[int] = []
@@ -130,8 +152,6 @@ def fetch_daily_extreme(
     target_slice = members[:, mask]                      # shape (M, hours_in_target_day)
 
     if np.isnan(target_slice).any():
-        # Drop members with any NaN in the target window — typically tail-end leads near the
-        # forecast horizon. Better to discard than to bias the distribution.
         valid = ~np.isnan(target_slice).any(axis=1)
         target_slice = target_slice[valid]
         member_ids = [mid for mid, ok in zip(member_ids, valid, strict=True) if ok]
@@ -141,15 +161,14 @@ def fetch_daily_extreme(
     op = np.max if kind == "high" else np.min
     daily_values = op(target_slice, axis=1)              # shape (M,)
 
-    # Lead hours from model init proxy (now) to the centre of the local day in UTC.
-    target_centre_utc = (target_start + timedelta(hours=12)).astimezone(UTC)
+    target_centre_utc = target_start_utc + timedelta(hours=12)
     lead_hours = max(0, int((target_centre_utc - fetched_at).total_seconds() // 3600))
 
     return EnsembleDailyExtreme(
         station_id=station.station_id,
         target_date_local=target_date_local,
         kind=kind,
-        unit=unit,
+        unit="F",
         model=model,
         fetched_at_utc=fetched_at,
         lead_hours=lead_hours,

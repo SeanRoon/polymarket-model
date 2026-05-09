@@ -15,11 +15,12 @@ def render_table(signals: list[Signal], *, console: Console | None = None) -> No
     if not signals:
         console.print("[dim]No signals (no bin had |edge| above threshold).[/dim]")
         return
-    table = Table(show_header=True, header_style="bold", padding=(0, 1), title="Polymarket weather edge candidates")
+    table = Table(show_header=True, header_style="bold", padding=(0, 1), title="Kalshi weather edge candidates")
     table.add_column("Date")
     table.add_column("City")
     table.add_column("Kind", justify="center")
     table.add_column("Bin")
+    table.add_column("Ticker")
     table.add_column("Side", justify="center")
     table.add_column("Entry $", justify="right")
     table.add_column("Model p", justify="right")
@@ -35,7 +36,8 @@ def render_table(signals: list[Signal], *, console: Console | None = None) -> No
             str(s.event.target_date_local),
             s.event.city,
             s.event.kind,
-            s.bin.label.replace("°", "°"),
+            s.bin.subtitle,
+            s.market_ticker,
             f"[{side_style}]{s.direction}[/{side_style}]",
             f"{s.entry_price:.3f}",
             f"{s.model_p_yes:.3f}",
@@ -53,11 +55,13 @@ CSV_FIELDS = [
     "city",
     "kind",
     "station_id",
-    "bin_label",
+    "subtitle",
     "lo_f",
     "hi_f",
     "direction",
-    "entry_token_id",
+    "market_ticker",
+    "event_ticker",
+    "series_ticker",
     "entry_price",
     "model_p_yes",
     "market_mid_yes",
@@ -70,8 +74,6 @@ CSV_FIELDS = [
     "sum_of_mids",
     "n_members",
     "model_name",
-    "event_slug",
-    "event_id",
 ]
 
 
@@ -87,11 +89,13 @@ def write_csv(signals: list[Signal], path: Path) -> Path:
                 "city": s.event.city,
                 "kind": s.event.kind,
                 "station_id": s.event.station_id or "",
-                "bin_label": s.bin.label,
+                "subtitle": s.bin.subtitle,
                 "lo_f": s.bin.lo_f,
                 "hi_f": s.bin.hi_f,
                 "direction": s.direction,
-                "entry_token_id": s.entry_token_id,
+                "market_ticker": s.market_ticker,
+                "event_ticker": s.event.event_ticker,
+                "series_ticker": s.event.series_ticker,
                 "entry_price": s.entry_price,
                 "model_p_yes": s.model_p_yes,
                 "market_mid_yes": s.market_mid_yes,
@@ -104,8 +108,6 @@ def write_csv(signals: list[Signal], path: Path) -> Path:
                 "sum_of_mids": s.sum_of_mids,
                 "n_members": s.n_members,
                 "model_name": s.model_name,
-                "event_slug": s.event.slug,
-                "event_id": s.event.event_id,
             })
     return path
 
@@ -113,13 +115,13 @@ def write_csv(signals: list[Signal], path: Path) -> Path:
 def write_markdown(signals: list[Signal], path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     sorted_sig = sorted(signals, key=lambda x: x.abs_edge, reverse=True)
-    lines = ["# Polymarket weather edge candidates", ""]
-    lines.append("| Date | City | Kind | Bin | Side | Entry | Model p | Market | Edge | Kelly | Lead h |")
-    lines.append("|------|------|------|-----|------|------:|--------:|-------:|-----:|------:|------:|")
+    lines = ["# Kalshi weather edge candidates", ""]
+    lines.append("| Date | City | Kind | Bin | Ticker | Side | Entry | Model p | Market | Edge | Kelly | Lead h |")
+    lines.append("|------|------|------|-----|--------|------|------:|--------:|-------:|-----:|------:|------:|")
     for s in sorted_sig:
         lines.append(
             f"| {s.event.target_date_local} | {s.event.city} | {s.event.kind} | "
-            f"{s.bin.label} | {s.direction} | {s.entry_price:.3f} | {s.model_p_yes:.3f} | "
+            f"{s.bin.subtitle} | {s.market_ticker} | {s.direction} | {s.entry_price:.3f} | {s.model_p_yes:.3f} | "
             f"{s.market_mid_yes:.3f} | {s.edge_signed:+.3f} | {s.kelly_sized:.3f} | {s.lead_hours} |"
         )
     path.write_text("\n".join(lines), encoding="utf-8")

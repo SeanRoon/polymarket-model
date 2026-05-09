@@ -1,4 +1,4 @@
-"""Typer CLI: scan + (later) snapshot + fetch-resolution + backtest."""
+"""Typer CLI: scan, snapshot, fetch-resolution."""
 from __future__ import annotations
 
 from datetime import UTC, date, datetime, timedelta
@@ -19,7 +19,7 @@ from polymarket_model.recorder import snapshot_once
 from polymarket_model.weather.nws import fetch_cli_for_date
 from polymarket_model.weather.openmeteo import DEFAULT_MODEL, fetch_daily_extreme
 
-app = typer.Typer(help="Polymarket weather edge model.", no_args_is_help=True)
+app = typer.Typer(help="Kalshi weather edge model.", no_args_is_help=True)
 
 
 @app.callback()
@@ -50,7 +50,7 @@ def scan(
     cities: list[str] | None = typer.Option(None, "--city", help="Filter to one or more cities (substring match)."),
     quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress progress lines; print only the table."),
 ) -> None:
-    """Scan all active US °F weather markets and print +EV edge candidates."""
+    """Scan all active Kalshi weather markets and print +EV edge candidates."""
     configure_logging()
     log = get_logger(__name__)
     console = Console()
@@ -60,38 +60,38 @@ def scan(
 
     events = discover_weather_events()
     if not quiet:
-        console.print(f"[dim]Discovered {len(events)} active F-unit weather events.[/dim]")
+        console.print(f"[dim]Discovered {len(events)} active Kalshi weather events.[/dim]")
 
     if cities:
         wanted = [c.lower() for c in cities]
         events = [e for e in events if any(w in e.city.lower() for w in wanted)]
 
-    in_window = [e for e in events if now <= e.end_date_utc <= deadline]
+    in_window = [e for e in events if now <= e.close_time_utc <= deadline]
     if not quiet:
         console.print(f"[dim]Within signal window (lead <= {max_lead_days}d): {len(in_window)} events.[/dim]")
 
     signals: list = []
     for e in in_window:
         if not e.station_id:
-            log.warning("event_without_station", slug=e.slug)
+            log.warning("event_without_station", event_ticker=e.event_ticker)
             continue
         try:
-            prices = fetch_event_prices(e, with_book=False)
+            prices = fetch_event_prices(e)
         except Exception:
-            log.exception("price_fetch_failed", slug=e.slug)
+            log.exception("price_fetch_failed", event_ticker=e.event_ticker)
             continue
         if not prices.passes_qc:
-            log.info("qc_failed_prices", slug=e.slug, sum_of_mids=prices.sum_of_mids)
+            log.info("qc_failed_prices", event_ticker=e.event_ticker, sum_of_mids=prices.sum_of_mids)
             continue
         try:
-            ex = fetch_daily_extreme(e.station_id, e.target_date_local, e.kind, unit=e.unit, model=model)
+            ex = fetch_daily_extreme(e.station_id, e.target_date_local, e.kind, model=model)
         except Exception:
-            log.exception("forecast_fetch_failed", slug=e.slug, station=e.station_id)
+            log.exception("forecast_fetch_failed", event_ticker=e.event_ticker, station=e.station_id)
             continue
         dist = PredictiveDistribution.from_ensemble(ex)
         out = evaluate_event(e, dist)
         if not out.passes_qc:
-            log.info("qc_failed_model", slug=e.slug, outside_mass=out.outside_bin_mass)
+            log.info("qc_failed_model", event_ticker=e.event_ticker, outside_mass=out.outside_bin_mass)
             continue
         ev_signals = signals_for_event(out, prices, min_edge=min_edge, now=now)
         signals.extend(ev_signals)
@@ -127,7 +127,7 @@ def snapshot(
         help="Skip the local DuckDB write. Set by the ephemeral GitHub Actions runner.",
     ),
 ) -> None:
-    """One-shot price snapshot: persist current midpoints+book for every active weather market."""
+    """One-shot price snapshot: persist current midpoints+book for every active Kalshi weather market."""
     configure_logging()
     console = Console()
     result = snapshot_once(parquet_dir=parquet_dir, write_duckdb=not no_duckdb)
@@ -163,8 +163,6 @@ def fetch_resolution(
     errors = 0
 
     with connect() as con:
-        # Find (station_id, target_date_local, kind) tuples from the markets table that are
-        # in the lookback window and not already resolved.
         params: list = [earliest]
         sql = """
             SELECT DISTINCT m.station_id, m.target_date_local, m.kind
@@ -185,15 +183,14 @@ def fetch_resolution(
         if not quiet:
             console.print(f"[dim]Looking up {len(rows)} unresolved (station, date, kind) tuples.[/dim]")
 
-        # Cache CLI results per (station, date) so we don't fetch twice for high+low.
-        cache: dict[tuple[str, date], object] = {}
+        cache_: dict[tuple[str, date], object] = {}
         for sid, target_date, kind in rows:
             key = (sid, target_date)
             try:
-                obs = cache.get(key)
+                obs = cache_.get(key)
                 if obs is None:
                     obs = fetch_cli_for_date(sid, target_date)
-                    cache[key] = obs
+                    cache_[key] = obs
                 if obs is None:
                     rows_skipped += 1
                     if not quiet:
@@ -227,73 +224,6 @@ def fetch_resolution(
         console.print(
             f"[dim]fetch-resolution: inserted={rows_inserted} skipped={rows_skipped} errors={errors}[/dim]"
         )
-
-
-@app.command("migrate-snapshots-to-parquet")
-def migrate_snapshots_to_parquet(
-    parquet_dir: Path = typer.Option(
-        Path("data/snapshots"),
-        "--parquet-dir",
-        help="Output root directory.",
-    ),
-    overwrite: bool = typer.Option(False, "--overwrite", help="Overwrite Parquet files that already exist."),
-) -> None:
-    """One-shot: export existing DuckDB price_snapshots into per-bucket Parquet files."""
-    import duckdb
-    import pyarrow.parquet as pq
-
-    configure_logging()
-    console = Console()
-    parquet_dir.mkdir(parents=True, exist_ok=True)
-
-    sql = """
-        SELECT
-            ps.snapshot_bucket_utc,
-            ps.snapshot_ts_utc,
-            m.condition_id AS event_id,
-            m.condition_id,
-            m.slug,
-            m.city,
-            m.kind,
-            'F' AS unit,
-            m.target_date_local,
-            m.end_date_utc,
-            m.station_id,
-            m.resolution_source,
-            mb.outcome_index,
-            mb.token_id AS yes_token_id,
-            CAST(NULL AS VARCHAR) AS no_token_id,
-            mb.outcome_label AS bin_label,
-            mb.lo_f,
-            mb.hi_f,
-            mb.is_open_low,
-            mb.is_open_high,
-            ps.midpoint,
-            ps.best_bid,
-            ps.best_ask,
-            ps.bid_size,
-            ps.ask_size
-        FROM price_snapshots ps
-        JOIN market_bins mb ON mb.token_id = ps.token_id
-        JOIN markets m ON m.condition_id = ps.condition_id
-        WHERE ps.midpoint IS NOT NULL
-    """
-    with connect(read_only=True) as con:
-        buckets = [row[0] for row in con.execute("SELECT DISTINCT snapshot_bucket_utc FROM price_snapshots ORDER BY snapshot_bucket_utc").fetchall()]
-        if not buckets:
-            console.print("[yellow]No snapshots found in cache.duckdb.[/yellow]")
-            return
-        written = skipped = 0
-        for bucket in buckets:
-            out = parquet_dir / bucket.strftime("%Y-%m-%d") / f"{bucket.strftime('%H%M')}.parquet"
-            if out.exists() and not overwrite:
-                skipped += 1
-                continue
-            reader = con.execute(sql + " AND ps.snapshot_bucket_utc = ?", [bucket]).fetch_arrow_table()
-            out.parent.mkdir(parents=True, exist_ok=True)
-            pq.write_table(reader, out, compression="zstd")
-            written += 1
-        console.print(f"[dim]migrate: {written} written, {skipped} skipped (already existed) of {len(buckets)} buckets[/dim]")
 
 
 if __name__ == "__main__":

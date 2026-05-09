@@ -17,8 +17,7 @@ class Settings(BaseSettings):
         case_sensitive=False,
     )
 
-    polymarket_gamma_base_url: str = "https://gamma-api.polymarket.com"
-    polymarket_clob_base_url: str = "https://clob.polymarket.com"
+    kalshi_base_url: str = "https://api.elections.kalshi.com/trade-api/v2"
     open_meteo_base_url: str = "https://ensemble-api.open-meteo.com/v1"
     nws_base_url: str = "https://api.weather.gov"
 

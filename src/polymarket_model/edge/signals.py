@@ -1,4 +1,11 @@
-"""Convert (model_p, market_mid) pairs into trade signals with Kelly sizing."""
+"""Convert (model_p, market_mid) pairs into trade signals with Kelly sizing.
+
+Kalshi has only a YES side per binary (no separate NO token). 'BUY_NO' here
+means buy the YES of the *complementary* (everything-else) outcome — practically,
+on Kalshi you'd cross the spread on the same market by selling YES at the bid
+or by buying NO at (1 - yes_ask). We expose entry_price as the dollar cost of
+the chosen direction so report.py can display it without venue-specific knowledge.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -15,15 +22,15 @@ class Signal:
     emitted_ts_utc: datetime
     event: WeatherEvent
     bin: Bin
-    direction: str            # 'BUY_YES' | 'BUY_NO'
-    entry_token_id: str       # the token to BUY (yes for BUY_YES, no for BUY_NO)
-    entry_price: float        # the price you'd pay to enter (always in [0, 1])
+    direction: str             # 'BUY_YES' | 'BUY_NO'
+    market_ticker: str         # always the bin's market ticker
+    entry_price: float         # dollar cost to enter the chosen direction
     model_p_yes: float
     market_mid_yes: float
-    edge_signed: float        # model_p_yes - market_mid_yes; positive => buy YES
+    edge_signed: float         # model_p_yes - market_mid_yes; positive => buy YES
     abs_edge: float
-    kelly_full: float         # full-Kelly fraction-of-bankroll
-    kelly_sized: float        # kelly_full * settings.kelly_fraction
+    kelly_full: float
+    kelly_sized: float
     lead_hours: int
     outside_bin_mass: float
     sum_of_mids: float
@@ -32,10 +39,6 @@ class Signal:
 
 
 def _kelly_buy(p_true: float, p_entry: float) -> float:
-    """Classic Kelly fraction for a 1:1 payout where you buy at p_entry hoping outcome holds with prob p_true.
-    f* = (p_true - p_entry) / (1 - p_entry).
-    Returns 0 if p_entry >= 1 or edge non-positive (caller should screen first).
-    """
     if p_entry >= 1.0 or p_entry <= 0.0:
         return 0.0
     f = (p_true - p_entry) / (1.0 - p_entry)
@@ -57,7 +60,7 @@ def signals_for_event(
     kelly_multiplier = kelly_multiplier if kelly_multiplier is not None else settings.kelly_fraction
     now = now or datetime.now(UTC)
 
-    lead_hours = max(0, int((model_out.event.end_date_utc - now).total_seconds() // 3600))
+    lead_hours = max(0, int((model_out.event.close_time_utc - now).total_seconds() // 3600))
 
     signals: list[Signal] = []
     for bp, pp in zip(model_out.bin_probs, prices.prices, strict=True):
@@ -70,12 +73,10 @@ def signals_for_event(
             continue
         if edge_signed > 0:
             direction = "BUY_YES"
-            entry_token = bp.bin.yes_token_id
             entry_price = market_yes
             kelly_full = _kelly_buy(p_true=model_yes, p_entry=entry_price)
         else:
             direction = "BUY_NO"
-            entry_token = bp.bin.no_token_id
             entry_price = 1.0 - market_yes
             kelly_full = _kelly_buy(p_true=1.0 - model_yes, p_entry=entry_price)
         signals.append(Signal(
@@ -83,7 +84,7 @@ def signals_for_event(
             event=model_out.event,
             bin=bp.bin,
             direction=direction,
-            entry_token_id=entry_token,
+            market_ticker=bp.bin.market_ticker,
             entry_price=entry_price,
             model_p_yes=model_yes,
             market_mid_yes=market_yes,
