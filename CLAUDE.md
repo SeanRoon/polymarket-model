@@ -21,6 +21,7 @@ uv run polymarket scan --max-lead-days 7     # generate today's edge signals (li
 uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb   # one-shot Parquet write (same as CI)
 uv run polymarket snapshot                                            # legacy: also write to local DuckDB
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
+uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
 ```
 
 Local DuckDB cache is at `data/cache.duckdb` (gitignored). The source-of-truth for price history is Parquet files under `data/snapshots/` written by the GHA cron and committed back to the repo.
@@ -76,12 +77,19 @@ There's no public price history endpoint anywhere in this domain (Kalshi doesn't
 
 Old Polymarket snapshots are archived under `data/snapshots/_archive_polymarket/` for reference. Don't read from them — schema is incompatible.
 
+### Model-validation loop (since 2026-05-09)
+
+The recorder writes `model_p` for every bin alongside the price columns, using the same Laplace-smoothed empirical CDF the live `scan` command uses. `evaluation.score_resolutions()` joins the snapshot Parquets with the `resolutions` table (NWS CLI ground truth) and computes per-bucket Brier, log-loss, and a simulated quarter-Kelly PnL with fee deduction. `polymarket compare-to-resolved` prints overall + per-group aggregates (default grouping: `city,kind,lead_bucket`).
+
+Since model_p only started getting persisted on 2026-05-09, evaluation is forward-looking — markets that resolved before that date have prices in `data/snapshots/` but no model probabilities, so they're excluded by the `model_p IS NOT NULL` filter in `score_resolutions`.
+
 ### Phase status
 
 - **Phase 1 (done):** discovery → prices → ensemble → empirical-CDF baseline → edge → CLI report.
 - **Phase 2 (done):** snapshot recorder + GHA cron + NWS CLI scraper + `fetch-resolution`.
-- **Phase 3 (not started):** KDE+climatology, EMOS / NGR, isotonic calibration. The `model.PredictiveDistribution` interface is intentionally narrow (`prob_in_bin(lo, hi)`) so a parametric distribution can replace the empirical one without changing callers.
-- **Phase 4 (not started):** walk-forward backtest in `evaluation.py` over the accumulating Parquet snapshots; CLI `backtest` subcommand.
+- **Phase 2.5 (done):** model_p persisted alongside prices; `compare-to-resolved` scoring loop.
+- **Phase 3 (not started):** KDE+climatology, EMOS / NGR, isotonic calibration. Wait for ≥30 days of paired (model_p, resolution) data before fitting EMOS. The `model.PredictiveDistribution` interface is intentionally narrow (`prob_in_bin(lo, hi)`) so a parametric distribution can replace the empirical one without changing callers.
+- **Phase 4 (not started):** walk-forward backtest over the accumulating snapshots; will reuse `evaluation.score_resolutions` rather than reimplement.
 
 ## Conventions
 

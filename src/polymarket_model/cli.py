@@ -11,6 +11,7 @@ from polymarket_model.cache import connect
 from polymarket_model.config import settings
 from polymarket_model.edge.report import render_table, write_csv, write_markdown
 from polymarket_model.edge.signals import signals_for_event
+from polymarket_model.evaluation import EvaluationConfig, aggregate, score_resolutions
 from polymarket_model.logging_setup import configure_logging, get_logger
 from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
@@ -224,6 +225,80 @@ def fetch_resolution(
         console.print(
             f"[dim]fetch-resolution: inserted={rows_inserted} skipped={rows_skipped} errors={errors}[/dim]"
         )
+
+
+@app.command("compare-to-resolved")
+def compare_to_resolved(
+    days_back: int = typer.Option(
+        30,
+        "--days-back",
+        help="Filter to predictions whose target_date_local is within the last N days.",
+    ),
+    by: str = typer.Option(
+        "city,kind,lead_bucket",
+        "--by",
+        help="Comma-separated grouping dimensions. Empty string => overall only.",
+    ),
+    min_edge: float = typer.Option(settings.min_edge, "--min-edge"),
+    kelly_multiplier: float = typer.Option(settings.kelly_fraction, "--kelly"),
+    fee: float = typer.Option(settings.fee_assumption, "--fee"),
+    csv_path: Path | None = typer.Option(None, "--csv", help="Write per-row scoring to this CSV."),
+    markdown_path: Path | None = typer.Option(None, "--markdown", help="Write the aggregate table to this markdown file."),
+) -> None:
+    """Score model predictions against NWS resolutions: Brier, log loss, simulated PnL."""
+    configure_logging()
+    console = Console()
+
+    cfg = EvaluationConfig(min_edge=min_edge, kelly_multiplier=kelly_multiplier, fee=fee)
+    df = score_resolutions(cfg=cfg)
+
+    if df.empty:
+        console.print("[yellow]No resolved predictions yet. Run `polymarket fetch-resolution` after a market settles, then retry.[/yellow]")
+        return
+
+    import pandas as pd
+    cutoff = pd.Timestamp(datetime.now(UTC).date() - timedelta(days=days_back))
+    df = df[pd.to_datetime(df["target_date_local"]) >= cutoff]
+    if df.empty:
+        console.print(f"[yellow]No resolved predictions within the last {days_back} days.[/yellow]")
+        return
+
+    overall = aggregate(df, by=None)
+    console.print("[bold]Overall[/bold]")
+    console.print(_df_to_rich_table(overall))
+
+    by_dims = [d.strip() for d in by.split(",") if d.strip()]
+    if by_dims:
+        grouped = aggregate(df, by=by_dims)
+        console.print(f"[bold]By {', '.join(by_dims)}[/bold]")
+        console.print(_df_to_rich_table(grouped))
+
+    if csv_path:
+        csv_path.parent.mkdir(parents=True, exist_ok=True)
+        df.to_csv(csv_path, index=False)
+        console.print(f"[dim]Wrote per-row scoring CSV: {csv_path}[/dim]")
+    if markdown_path:
+        markdown_path.parent.mkdir(parents=True, exist_ok=True)
+        markdown_path.write_text(
+            "# Evaluation\n\n## Overall\n\n" + overall.to_markdown(index=False)
+            + (("\n\n## By " + ", ".join(by_dims) + "\n\n" + grouped.to_markdown(index=False)) if by_dims else ""),
+            encoding="utf-8",
+        )
+        console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
+
+
+def _df_to_rich_table(df) -> "Table":  # type: ignore[name-defined]
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    for col in df.columns:
+        table.add_column(str(col), justify="right" if col != df.columns[0] else "left")
+    for _, row in df.iterrows():
+        table.add_row(*[
+            f"{v:.4f}" if isinstance(v, float)
+            else (str(int(v)) if isinstance(v, int) else str(v))
+            for v in row
+        ])
+    return table
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ from __future__ import annotations
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import duckdb
@@ -25,11 +25,14 @@ from polymarket_model.logging_setup import get_logger
 from polymarket_model.markets.client import KalshiClient
 from polymarket_model.markets.discovery import WeatherEvent, discover_weather_events
 from polymarket_model.markets.prices import EventPrices, fetch_event_prices, floor_to_bucket
+from polymarket_model.model import EventModelOutput, PredictiveDistribution, evaluate_event
+from polymarket_model.weather.openmeteo import EnsembleDailyExtreme, fetch_daily_extreme
 
 log = get_logger(__name__)
 
 
 PRICE_FETCH_CONCURRENCY = 8
+FORECAST_FETCH_CONCURRENCY = 6
 
 
 @dataclass
@@ -125,13 +128,19 @@ def _insert_price_snapshot(
     volume: float | None,
     yes_bid_size: float | None,
     yes_ask_size: float | None,
+    model_p: float | None,
+    model_lead_hours: int | None,
+    model_name: str | None,
+    model_n_members: int | None,
+    model_outside_bin_mass: float | None,
 ) -> None:
     con.execute(
         """
         INSERT INTO price_snapshots (
             market_ticker, event_ticker, snapshot_ts_utc, snapshot_bucket_utc,
-            midpoint, yes_bid, yes_ask, last_price, volume, yes_bid_size, yes_ask_size
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            midpoint, yes_bid, yes_ask, last_price, volume, yes_bid_size, yes_ask_size,
+            model_p, model_lead_hours, model_name, model_n_members, model_outside_bin_mass
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (market_ticker, snapshot_bucket_utc) DO NOTHING
         """,
         [
@@ -146,6 +155,11 @@ def _insert_price_snapshot(
             volume,
             yes_bid_size,
             yes_ask_size,
+            model_p,
+            model_lead_hours,
+            model_name,
+            model_n_members,
+            model_outside_bin_mass,
         ],
     )
 
@@ -159,10 +173,18 @@ def _build_snapshot_table(
     bucket: datetime,
     started: datetime,
     priced_events: list[EventPrices],
+    model_outputs: dict[str, EventModelOutput],
+    forecasts: dict[tuple[str, date, str], EnsembleDailyExtreme],
 ) -> pa.Table:
     rows: list[dict] = []
     for ep in priced_events:
         e = ep.event
+        mo = model_outputs.get(e.event_ticker)
+        ex = forecasts.get((e.station_id, e.target_date_local, e.kind)) if e.station_id else None
+        bin_to_p: dict[str, float] = {}
+        if mo is not None:
+            for bp in mo.bin_probs:
+                bin_to_p[bp.bin.market_ticker] = bp.p
         for p in ep.prices:
             if p.midpoint is None:
                 continue
@@ -192,8 +214,76 @@ def _build_snapshot_table(
                 "volume": p.volume,
                 "yes_bid_size": p.yes_bid_size,
                 "yes_ask_size": p.yes_ask_size,
+                "model_p": bin_to_p.get(p.bin.market_ticker),
+                "model_lead_hours": int(ex.lead_hours) if ex else None,
+                "model_name": mo.distribution.model if mo else None,
+                "model_n_members": int(mo.distribution.n) if mo else None,
+                "model_outside_bin_mass": float(mo.outside_bin_mass) if mo else None,
             })
     return pa.Table.from_pylist(rows)
+
+
+def _fetch_distributions(
+    events: list[WeatherEvent],
+    *,
+    max_workers: int = FORECAST_FETCH_CONCURRENCY,
+) -> tuple[dict[tuple[str, date, str], EnsembleDailyExtreme], int]:
+    """Fetch ensemble forecasts in parallel, deduped by (station_id, target_date, kind).
+
+    Returns (cache, error_count). Errors are logged; bins for failed keys get model_p=None.
+    """
+    keys: list[tuple[str, date, str]] = []
+    seen: set[tuple[str, date, str]] = set()
+    for e in events:
+        if not e.station_id:
+            continue
+        key = (e.station_id, e.target_date_local, e.kind)
+        if key in seen:
+            continue
+        seen.add(key)
+        keys.append(key)
+
+    cache_: dict[tuple[str, date, str], EnsembleDailyExtreme] = {}
+    errors = 0
+    if not keys:
+        return cache_, errors
+
+    def fetch(key: tuple[str, date, str]) -> tuple[tuple[str, date, str], EnsembleDailyExtreme | None]:
+        sid, target_date, kind = key
+        try:
+            return key, fetch_daily_extreme(sid, target_date, kind)
+        except Exception:
+            log.exception("forecast_fetch_failed", station=sid, target_date=target_date.isoformat(), kind=kind)
+            return key, None
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = [pool.submit(fetch, k) for k in keys]
+        for fut in as_completed(futures):
+            key, ex = fut.result()
+            if ex is None:
+                errors += 1
+                continue
+            cache_[key] = ex
+    return cache_, errors
+
+
+def _build_model_outputs(
+    events: list[WeatherEvent],
+    forecasts: dict[tuple[str, date, str], EnsembleDailyExtreme],
+) -> dict[str, EventModelOutput]:
+    """Run evaluate_event for each event whose forecast succeeded."""
+    out: dict[str, EventModelOutput] = {}
+    for e in events:
+        key = (e.station_id, e.target_date_local, e.kind) if e.station_id else None
+        ex = forecasts.get(key) if key else None
+        if ex is None:
+            continue
+        try:
+            dist = PredictiveDistribution.from_ensemble(ex)
+            out[e.event_ticker] = evaluate_event(e, dist)
+        except Exception:
+            log.exception("model_evaluation_failed", event_ticker=e.event_ticker)
+    return out
 
 
 def snapshot_once(
@@ -232,13 +322,25 @@ def snapshot_once(
                     errors += 1
                     log.exception("event_price_fetch_failed", event_ticker=e.event_ticker)
 
+    # Fetch ensemble forecasts (deduped per station+date+kind) and run the model. Bins
+    # for events whose forecast failed get model_p=None — we still record price.
+    forecasts, forecast_errors = _fetch_distributions(events)
+    errors += forecast_errors
+    model_outputs = _build_model_outputs(events, forecasts)
+
     rows_written = 0
     bins_with_mid = 0
 
     parquet_path: Path | None = None
     if parquet_dir is not None:
         try:
-            tbl = _build_snapshot_table(bucket=bucket, started=started, priced_events=priced_events)
+            tbl = _build_snapshot_table(
+                bucket=bucket,
+                started=started,
+                priced_events=priced_events,
+                model_outputs=model_outputs,
+                forecasts=forecasts,
+            )
             parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
             parquet_path.parent.mkdir(parents=True, exist_ok=True)
             pq.write_table(tbl, parquet_path, compression="zstd")
@@ -252,16 +354,23 @@ def snapshot_once(
         with connect() as con:
             try:
                 for ep in priced_events:
+                    e_ = ep.event
+                    mo = model_outputs.get(e_.event_ticker)
+                    ex = forecasts.get((e_.station_id, e_.target_date_local, e_.kind)) if e_.station_id else None
+                    bin_to_p: dict[str, float] = {}
+                    if mo is not None:
+                        for bp in mo.bin_probs:
+                            bin_to_p[bp.bin.market_ticker] = bp.p
                     try:
-                        _upsert_event(con, ep.event, started)
-                        _upsert_bins(con, ep.event)
+                        _upsert_event(con, e_, started)
+                        _upsert_bins(con, e_)
                         for p in ep.prices:
                             if p.midpoint is None:
                                 continue
                             _insert_price_snapshot(
                                 con,
                                 market_ticker=p.bin.market_ticker,
-                                event_ticker=ep.event.event_ticker,
+                                event_ticker=e_.event_ticker,
                                 snapshot_ts_utc=started,
                                 bucket_utc=bucket,
                                 midpoint=p.midpoint,
@@ -271,13 +380,18 @@ def snapshot_once(
                                 volume=p.volume,
                                 yes_bid_size=p.yes_bid_size,
                                 yes_ask_size=p.yes_ask_size,
+                                model_p=bin_to_p.get(p.bin.market_ticker),
+                                model_lead_hours=int(ex.lead_hours) if ex else None,
+                                model_name=mo.distribution.model if mo else None,
+                                model_n_members=int(mo.distribution.n) if mo else None,
+                                model_outside_bin_mass=float(mo.outside_bin_mass) if mo else None,
                             )
                             if parquet_dir is None:  # only count once
                                 rows_written += 1
                                 bins_with_mid += 1
                     except Exception:
                         errors += 1
-                        log.exception("event_record_failed", event_ticker=ep.event.event_ticker)
+                        log.exception("event_record_failed", event_ticker=e_.event_ticker)
                 ended = datetime.now(UTC)
                 con.execute(
                     """
