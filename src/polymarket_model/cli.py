@@ -24,6 +24,14 @@ from polymarket_model.logging_setup import configure_logging, get_logger
 from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
 from polymarket_model.model import PredictiveDistribution, evaluate_event
+from polymarket_model.paper import (
+    DEFAULT_PAPER_TRADES_PARQUET,
+    PaperTradingConfig,
+    derive_paper_trades,
+    load_paper_trades,
+    summarize,
+    write_paper_trades,
+)
 from polymarket_model.recorder import snapshot_once
 from polymarket_model.weather.nws import fetch_cli_for_date
 from polymarket_model.weather.openmeteo import DEFAULT_MODEL, fetch_daily_extreme
@@ -330,6 +338,107 @@ def compare_to_resolved(
             encoding="utf-8",
         )
         console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
+
+
+@app.command("paper-trade")
+def paper_trade(
+    min_edge: float = typer.Option(settings.min_edge, "--min-edge"),
+    kelly_multiplier: float = typer.Option(settings.kelly_fraction, "--kelly"),
+    max_lead_days: int = typer.Option(
+        settings.max_lead_days_for_signal,
+        "--max-lead-days",
+        help="Skip signals further out than this many days.",
+    ),
+    paper_trades_parquet: Path = typer.Option(
+        DEFAULT_PAPER_TRADES_PARQUET,
+        "--paper-trades-parquet",
+        help="Canonical Parquet store for paper trades. Idempotent: existing trades aren't reopened.",
+    ),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Resolutions Parquet used to settle trades.",
+    ),
+    markdown_path: Path | None = typer.Option(None, "--markdown", help="Write the summary table to this file."),
+) -> None:
+    """Replay snapshots into one paper trade per market at the first edge-crossing bucket."""
+    configure_logging()
+    console = Console()
+
+    cfg = PaperTradingConfig(
+        min_edge=min_edge,
+        kelly_multiplier=kelly_multiplier,
+        max_lead_hours=max_lead_days * 24,
+    )
+    existing = load_paper_trades(paper_trades_parquet)
+    existing_count = len(existing)
+    trades = derive_paper_trades(
+        snapshots_root=settings.data_dir / "snapshots",
+        resolutions_parquet=resolutions_parquet,
+        cfg=cfg,
+        existing=existing,
+    )
+    write_paper_trades(paper_trades_parquet, trades)
+
+    new_count = len(trades) - existing_count
+    stats = summarize(trades)
+    console.print(
+        f"[bold]paper-trade[/bold] total={stats['n_total']} (new={new_count}) "
+        f"open={stats['n_open']} settled={stats['n_settled']}"
+    )
+    if stats["n_settled"]:
+        wr = stats["win_rate"] or 0.0
+        roi = stats["weighted_roi"] or 0.0
+        console.print(
+            f"  wins={stats['n_wins']}/{stats['n_settled']} win_rate={wr:.1%} "
+            f"weighted_pnl=${stats['weighted_pnl']:.4f} weighted_roi={roi:.2%}"
+        )
+    console.print(f"[dim]Wrote {paper_trades_parquet}[/dim]")
+
+    if markdown_path is not None:
+        markdown_path.parent.mkdir(parents=True, exist_ok=True)
+        markdown_path.write_text(_paper_summary_markdown(trades, stats), encoding="utf-8")
+        console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
+
+
+def _paper_summary_markdown(trades: list, stats: dict) -> str:
+    import pandas as pd
+    overall_rows = [
+        ("total trades", stats["n_total"]),
+        ("open", stats["n_open"]),
+        ("settled", stats["n_settled"]),
+        ("wins", stats["n_wins"]),
+        ("win rate", f"{stats['win_rate']:.1%}" if stats["win_rate"] is not None else "—"),
+        ("Σ pnl_per_dollar (unweighted)", f"{stats['pnl_per_dollar_sum']:.4f}"),
+        ("Σ kelly_sized (settled)", f"{stats['kelly_sized_sum_settled']:.4f}"),
+        ("weighted pnl ($/bankroll)", f"{stats['weighted_pnl']:.4f}"),
+        ("weighted ROI", f"{stats['weighted_roi']:.2%}" if stats["weighted_roi"] is not None else "—"),
+    ]
+    overall_md = pd.DataFrame(overall_rows, columns=["metric", "value"]).to_markdown(index=False)
+
+    if not trades:
+        return f"# Paper trading\n\n## Overall\n\n{overall_md}\n"
+
+    df = pd.DataFrame(trades)
+    settled = df[df["status"] == "SETTLED"].copy()
+
+    by_city_md = ""
+    if not settled.empty:
+        settled["pnl_weighted"] = settled["pnl_per_dollar"] * settled["kelly_sized"]
+        agg = settled.groupby(["city", "kind"], dropna=False).agg(
+            n=("trade_id", "size"),
+            wins=("pnl_per_dollar", lambda s: int((s > 0).sum())),
+            win_rate=("pnl_per_dollar", lambda s: float((s > 0).mean())),
+            kelly_sum=("kelly_sized", "sum"),
+            pnl_weighted_sum=("pnl_weighted", "sum"),
+        ).reset_index()
+        agg["roi"] = agg.apply(
+            lambda r: (r["pnl_weighted_sum"] / r["kelly_sum"]) if r["kelly_sum"] else 0.0,
+            axis=1,
+        )
+        by_city_md = "\n\n## By city, kind (settled only)\n\n" + agg.to_markdown(index=False, floatfmt=".4f")
+
+    return f"# Paper trading\n\n## Overall\n\n{overall_md}{by_city_md}\n"
 
 
 def _df_to_rich_table(df) -> Table:  # type: ignore[name-defined]

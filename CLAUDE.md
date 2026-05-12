@@ -22,6 +22,7 @@ uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb   # one-shot
 uv run polymarket snapshot                                            # legacy: also write to local DuckDB
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
+uv run polymarket paper-trade                # replay snapshots → one hypothetical fill per market
 ```
 
 Local DuckDB cache is at `data/cache.duckdb` (gitignored). The source-of-truth for price history is Parquet files under `data/snapshots/` written by the GHA cron and committed back to the repo. The source-of-truth for NWS CLI resolutions is `data/resolutions.parquet`, written daily by `.github/workflows/resolve.yml` and also committed back to the repo.
@@ -83,7 +84,17 @@ The recorder writes `model_p` for every bin alongside the price columns, using t
 
 Since model_p only started getting persisted on 2026-05-09, evaluation is forward-looking — markets that resolved before that date have prices in `data/snapshots/` but no model probabilities, so they're excluded by the `model_p IS NOT NULL` filter in `score_resolutions`.
 
-`.github/workflows/resolve.yml` runs `fetch-resolution` then `compare-to-resolved` once a day at 13:00 UTC. It sources candidate (station, date, kind) tuples from the committed snapshot Parquets — no DuckDB state required — and commits `data/resolutions.parquet` plus `data/reports/evaluation.md` back to `main`. Local runs of `fetch-resolution` also mirror writes into the DuckDB cache so the local user can query the `resolutions` table directly.
+`.github/workflows/resolve.yml` runs `fetch-resolution` then `compare-to-resolved` then `paper-trade` once a day at 13:00 UTC. It sources candidate (station, date, kind) tuples from the committed snapshot Parquets — no DuckDB state required — and commits `data/resolutions.parquet`, `data/paper_trades.parquet`, `data/reports/evaluation.md`, and `data/reports/paper-trades.md` back to `main`. Local runs of `fetch-resolution` also mirror writes into the DuckDB cache so the local user can query the `resolutions` table directly.
+
+### Paper trading (`paper.py`)
+
+`compare-to-resolved` opens a counterfactual trade at *every* snapshot bucket where the model emits an edge — useful for calibration metrics but not what a real trader does. `paper-trade` complements it by recording **one** hypothetical fill per (market_ticker, direction) at the *first* bucket where:
+
+- `|model_p - midpoint| >= min_edge`, AND
+- the take-side of the book exists (`yes_ask` for BUY_YES, `yes_bid` for BUY_NO), AND
+- `model_lead_hours <= max_lead_days_for_signal * 24`.
+
+Entry price is the take-side (`yes_ask` or `1 - yes_bid`), not the midpoint. Fees use Kalshi's actual formula `0.07 × P × (1 - P)` per dollar per side. Settlement joins `data/resolutions.parquet` once a CLI lands. The output schema is what we'd eventually feed a live order-placement layer — same sizing rules, same direction conventions, same fees — so the realized PnL we accumulate here is the closest thing to a "would-have-traded" track record before any real money is on the table. **No order placement yet.**
 
 ### Phase status
 

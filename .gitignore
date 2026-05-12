@@ -53,5 +53,6 @@ data/cache.duckdb.wal
 data/logs/
 data/reports/*
 !data/reports/evaluation.md
+!data/reports/paper-trades.md
 data/raw/
 data/interim/
