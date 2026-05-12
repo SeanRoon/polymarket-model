@@ -1,0 +1,78 @@
+name: Fetch NWS resolutions + score model
+
+# Runs once a day, scrapes NWS CLI for any resolved-but-unscored (station, date, kind)
+# tuple discovered in the snapshot Parquets, persists them to data/resolutions.parquet,
+# then runs compare-to-resolved and writes the aggregate evaluation report.
+#
+# Cron: 13:00 UTC daily. By then, the previous-local-day CLI is finalized in all six
+# cities (NWS issues morning-local for the prior day). The fetcher also re-walks any
+# tuples still missing from earlier days, so a delayed CLI just gets picked up the
+# next morning.
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: resolve-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Fetch resolutions
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket fetch-resolution --no-duckdb --days-back 14 --quiet
+
+      - name: Score model vs resolutions
+        env:
+          LOG_LEVEL: WARNING
+        run: |
+          mkdir -p data/reports
+          uv run polymarket compare-to-resolved \
+            --days-back 60 \
+            --markdown data/reports/evaluation.md
+
+      - name: Commit + push if changed
+        run: |
+          set -euxo pipefail
+          git config user.name "polymarket-snapshot-bot"
+          git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
+          git add data/resolutions.parquet data/reports/evaluation.md
+          if git diff --cached --quiet; then
+            echo "No new resolutions or report changes to commit."
+            exit 0
+          fi
+          ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          git commit -m "Resolutions + eval: ${ts}"
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1

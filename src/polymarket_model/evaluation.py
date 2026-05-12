@@ -12,13 +12,20 @@ has resolved yet.
 from __future__ import annotations
 
 import math
+import os
+import tempfile
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 import duckdb
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from polymarket_model.config import settings
+
+DEFAULT_RESOLUTIONS_PARQUET = settings.data_dir / "resolutions.parquet"
 
 
 # Lead-time buckets in hours for "by lead" aggregations.
@@ -108,17 +115,98 @@ def lead_bucket(hours: float | int | None) -> str:
     return "unknown"
 
 
+RESOLUTIONS_SCHEMA = pa.schema([
+    pa.field("station_id", pa.string(), nullable=False),
+    pa.field("valid_date_local", pa.date32(), nullable=False),
+    pa.field("kind", pa.string(), nullable=False),
+    pa.field("value_f", pa.float64(), nullable=False),
+    pa.field("source", pa.string(), nullable=False),
+    pa.field("fetched_at_utc", pa.timestamp("us", tz="UTC"), nullable=False),
+    pa.field("raw_text", pa.string(), nullable=True),
+])
+
+
+def load_resolutions_parquet(path: Path) -> list[dict]:
+    """Read the canonical resolutions Parquet into a list of row dicts. Empty if absent."""
+    if not path.exists():
+        return []
+    tbl = pq.read_table(path)
+    return tbl.to_pylist()
+
+
+def write_resolutions_parquet(path: Path, rows: list[dict]) -> None:
+    """Atomically write resolutions to Parquet (temp file + rename). Dedupes on the primary key."""
+    deduped: dict[tuple[str, date, str], dict] = {}
+    for r in rows:
+        key = (r["station_id"], r["valid_date_local"], r["kind"])
+        deduped[key] = r
+    ordered = sorted(
+        deduped.values(),
+        key=lambda r: (r["station_id"], r["valid_date_local"], r["kind"]),
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tbl = pa.Table.from_pylist(ordered, schema=RESOLUTIONS_SCHEMA)
+    fd, tmp = tempfile.mkstemp(prefix=".resolutions-", suffix=".parquet", dir=str(path.parent))
+    os.close(fd)
+    try:
+        pq.write_table(tbl, tmp, compression="zstd")
+        os.replace(tmp, path)
+    except Exception:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
+
+
+def discover_unresolved_from_snapshots(
+    *,
+    snapshots_root: Path,
+    earliest_date: date,
+    latest_date: date,
+    stations: set[str] | None = None,
+    already_resolved: set[tuple[str, date, str]] | None = None,
+) -> list[tuple[str, date, str]]:
+    """Distinct (station_id, target_date_local, kind) tuples from snapshot Parquets in the window."""
+    glob = str((snapshots_root / "**/*.parquet").as_posix())
+    sql = f"""
+        SELECT DISTINCT station_id, target_date_local, kind
+        FROM read_parquet('{glob}', union_by_name=True, filename=True)
+        WHERE station_id IS NOT NULL
+          AND target_date_local BETWEEN ? AND ?
+          AND NOT contains(filename, '_archive_polymarket')
+        ORDER BY station_id, target_date_local, kind
+    """
+    con = duckdb.connect(":memory:")
+    try:
+        try:
+            rows = con.execute(sql, [earliest_date, latest_date]).fetchall()
+        except duckdb.IOException:
+            return []
+    finally:
+        con.close()
+    already = already_resolved or set()
+    out: list[tuple[str, date, str]] = []
+    for sid, target_date, kind in rows:
+        if stations and sid.upper() not in stations:
+            continue
+        if (sid, target_date, kind) in already:
+            continue
+        out.append((sid, target_date, kind))
+    return out
+
+
 def score_resolutions(
     *,
     snapshots_root: Path | str | None = None,
+    resolutions_parquet: Path | str | None = None,
     cfg: EvaluationConfig | None = None,
 ) -> pd.DataFrame:
-    """Join all snapshot Parquets with the resolutions table and compute per-row metrics.
+    """Join all snapshot Parquets with the resolutions Parquet and compute per-row metrics.
 
     Returns one row per (market_ticker, snapshot_bucket_utc) for which model_p and a
     matching resolution both exist. Empty DataFrame if either side is missing.
     """
     snapshots_root = Path(snapshots_root) if snapshots_root else (settings.data_dir / "snapshots")
+    resolutions_path = Path(resolutions_parquet) if resolutions_parquet else DEFAULT_RESOLUTIONS_PARQUET
     cfg = cfg or EvaluationConfig(
         min_edge=settings.min_edge,
         kelly_multiplier=settings.kelly_fraction,
@@ -129,7 +217,7 @@ def score_resolutions(
     sql = f"""
         WITH s AS (
             SELECT *
-            FROM read_parquet('{glob}', union_by_name=True)
+            FROM read_parquet('{glob}', union_by_name=True, filename=True)
             WHERE model_p IS NOT NULL
               AND midpoint IS NOT NULL
               AND target_date_local <= CURRENT_DATE
@@ -168,11 +256,17 @@ def score_resolutions(
     """
     con = duckdb.connect(":memory:")
     try:
-        try:
-            con.execute(f"ATTACH '{settings.cache_db_path.as_posix()}' AS cache_db (READ_ONLY);")
-            con.execute("CREATE TEMP VIEW resolutions AS SELECT * FROM cache_db.resolutions;")
-        except duckdb.Error:
-            con.execute("CREATE TEMP VIEW resolutions AS SELECT NULL AS station_id, NULL::DATE AS valid_date_local, NULL AS kind, NULL::DOUBLE AS value_f WHERE FALSE;")
+        if resolutions_path.exists():
+            con.execute(
+                "CREATE TEMP VIEW resolutions AS "
+                f"SELECT * FROM read_parquet('{resolutions_path.as_posix()}')"
+            )
+        else:
+            con.execute(
+                "CREATE TEMP VIEW resolutions AS "
+                "SELECT NULL AS station_id, NULL::DATE AS valid_date_local, "
+                "NULL AS kind, NULL::DOUBLE AS value_f WHERE FALSE"
+            )
         df = con.execute(sql).df()
     finally:
         con.close()

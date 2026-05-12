@@ -46,10 +46,12 @@ build/
 *.duckdb.wal
 *.csv.gz
 
-# Local-only contents under data/. Snapshots are tracked (committed by the GHA cron).
+# Local-only contents under data/. Snapshots and resolutions are tracked
+# (committed by the GHA crons); the published eval report is tracked too.
 data/cache.duckdb
 data/cache.duckdb.wal
 data/logs/
-data/reports/
+data/reports/*
+!data/reports/evaluation.md
 data/raw/
 data/interim/

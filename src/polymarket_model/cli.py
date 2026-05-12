@@ -11,7 +11,15 @@ from polymarket_model.cache import connect
 from polymarket_model.config import settings
 from polymarket_model.edge.report import render_table, write_csv, write_markdown
 from polymarket_model.edge.signals import signals_for_event
-from polymarket_model.evaluation import EvaluationConfig, aggregate, score_resolutions
+from polymarket_model.evaluation import (
+    DEFAULT_RESOLUTIONS_PARQUET,
+    EvaluationConfig,
+    aggregate,
+    discover_unresolved_from_snapshots,
+    load_resolutions_parquet,
+    score_resolutions,
+    write_resolutions_parquet,
+)
 from polymarket_model.logging_setup import configure_logging, get_logger
 from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
@@ -151,9 +159,24 @@ def fetch_resolution(
         help="Look up CLI resolutions for any unresolved (station, date, kind) within the last N days.",
     ),
     station: list[str] | None = typer.Option(None, "--station", help="Limit to specific stations."),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Canonical Parquet store for resolutions. Read to skip already-resolved tuples; written atomically.",
+    ),
+    no_duckdb: bool = typer.Option(
+        False,
+        "--no-duckdb",
+        help="Skip the local DuckDB mirror write. Set by the ephemeral GitHub Actions runner.",
+    ),
     quiet: bool = typer.Option(False, "--quiet", "-q"),
 ) -> None:
-    """Pull NWS CLI daily-extreme observations for past markets and persist as ground truth."""
+    """Pull NWS CLI daily-extreme observations for past markets and persist as ground truth.
+
+    Candidate (station, date, kind) tuples are discovered from the snapshot Parquets
+    under `data/snapshots/`, so this runs on a stateless GHA runner without any
+    pre-existing DuckDB state.
+    """
     configure_logging()
     console = Console()
     log_ = get_logger(__name__)
@@ -163,63 +186,80 @@ def fetch_resolution(
     rows_skipped = 0
     errors = 0
 
-    with connect() as con:
-        params: list = [earliest]
-        sql = """
-            SELECT DISTINCT m.station_id, m.target_date_local, m.kind
-            FROM markets m
-            LEFT JOIN resolutions r
-              ON r.station_id = m.station_id
-             AND r.valid_date_local = m.target_date_local
-             AND r.kind = m.kind
-            WHERE m.station_id IS NOT NULL
-              AND m.target_date_local >= ?
-              AND m.target_date_local <= CURRENT_DATE
-              AND r.station_id IS NULL
-        """
-        if station:
-            sql += " AND m.station_id IN (" + ",".join(["?"] * len(station)) + ")"
-            params.extend([s.upper() for s in station])
-        rows = con.execute(sql, params).fetchall()
-        if not quiet:
-            console.print(f"[dim]Looking up {len(rows)} unresolved (station, date, kind) tuples.[/dim]")
+    existing = load_resolutions_parquet(resolutions_parquet)
+    resolved_keys = {
+        (r["station_id"], r["valid_date_local"], r["kind"])
+        for r in existing
+    }
+    stations_filter = {s.upper() for s in station} if station else None
 
-        cache_: dict[tuple[str, date], object] = {}
-        for sid, target_date, kind in rows:
-            key = (sid, target_date)
-            try:
-                obs = cache_.get(key)
-                if obs is None:
-                    obs = fetch_cli_for_date(sid, target_date)
-                    cache_[key] = obs
-                if obs is None:
-                    rows_skipped += 1
-                    if not quiet:
-                        console.print(f"[dim]  {sid} {target_date} {kind:>4}: not in CLI archive[/dim]")
-                    continue
-                value = obs.max_f if kind == "high" else obs.min_f
-                if value is None:
-                    rows_skipped += 1
-                    log_.warning("cli_value_missing", station_id=sid, date=target_date.isoformat(), kind=kind)
-                    continue
-                con.execute(
-                    """
-                    INSERT INTO resolutions (
-                        station_id, valid_date_local, kind, value_f, source, fetched_at_utc, raw_text
-                    ) VALUES (?, ?, ?, ?, 'nws_cli', ?, ?)
-                    ON CONFLICT (station_id, valid_date_local, kind) DO UPDATE SET
-                        value_f = EXCLUDED.value_f,
-                        fetched_at_utc = EXCLUDED.fetched_at_utc,
-                        raw_text = EXCLUDED.raw_text
-                    """,
-                    [sid, target_date, kind, value, obs.fetched_at_utc, obs.raw_text],
-                )
-                rows_inserted += 1
+    candidates = discover_unresolved_from_snapshots(
+        snapshots_root=settings.data_dir / "snapshots",
+        earliest_date=earliest,
+        latest_date=today_local,
+        stations=stations_filter,
+        already_resolved=resolved_keys,
+    )
+    if not quiet:
+        console.print(f"[dim]Looking up {len(candidates)} unresolved (station, date, kind) tuples.[/dim]")
+
+    new_rows: list[dict] = []
+    cache_: dict[tuple[str, date], object] = {}
+    for sid, target_date, kind in candidates:
+        key = (sid, target_date)
+        try:
+            obs = cache_.get(key)
+            if obs is None:
+                obs = fetch_cli_for_date(sid, target_date)
+                cache_[key] = obs
+            if obs is None:
+                rows_skipped += 1
                 if not quiet:
-                    console.print(f"  [green]{sid} {target_date} {kind:>4}[/green] = {value:.0f}°F")
-            except Exception:
-                errors += 1
-                log_.exception("resolution_fetch_failed", station_id=sid, date=target_date.isoformat())
+                    console.print(f"[dim]  {sid} {target_date} {kind:>4}: not in CLI archive[/dim]")
+                continue
+            value = obs.max_f if kind == "high" else obs.min_f
+            if value is None:
+                rows_skipped += 1
+                log_.warning("cli_value_missing", station_id=sid, date=target_date.isoformat(), kind=kind)
+                continue
+            new_rows.append({
+                "station_id": sid,
+                "valid_date_local": target_date,
+                "kind": kind,
+                "value_f": float(value),
+                "source": "nws_cli",
+                "fetched_at_utc": obs.fetched_at_utc,
+                "raw_text": obs.raw_text,
+            })
+            rows_inserted += 1
+            if not quiet:
+                console.print(f"  [green]{sid} {target_date} {kind:>4}[/green] = {value:.0f}°F")
+        except Exception:
+            errors += 1
+            log_.exception("resolution_fetch_failed", station_id=sid, date=target_date.isoformat())
+
+    if new_rows:
+        merged = existing + new_rows
+        write_resolutions_parquet(resolutions_parquet, merged)
+        if not quiet:
+            console.print(f"[dim]Wrote {len(merged)} total rows to {resolutions_parquet}[/dim]")
+
+        if not no_duckdb:
+            with connect() as con:
+                for r in new_rows:
+                    con.execute(
+                        """
+                        INSERT INTO resolutions (
+                            station_id, valid_date_local, kind, value_f, source, fetched_at_utc, raw_text
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT (station_id, valid_date_local, kind) DO UPDATE SET
+                            value_f = EXCLUDED.value_f,
+                            fetched_at_utc = EXCLUDED.fetched_at_utc,
+                            raw_text = EXCLUDED.raw_text
+                        """,
+                        [r["station_id"], r["valid_date_local"], r["kind"], r["value_f"],
+                         r["source"], r["fetched_at_utc"], r["raw_text"]],
+                    )
 
     if not quiet:
         console.print(
@@ -242,6 +282,11 @@ def compare_to_resolved(
     min_edge: float = typer.Option(settings.min_edge, "--min-edge"),
     kelly_multiplier: float = typer.Option(settings.kelly_fraction, "--kelly"),
     fee: float = typer.Option(settings.fee_assumption, "--fee"),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Path to the canonical resolutions Parquet.",
+    ),
     csv_path: Path | None = typer.Option(None, "--csv", help="Write per-row scoring to this CSV."),
     markdown_path: Path | None = typer.Option(None, "--markdown", help="Write the aggregate table to this markdown file."),
 ) -> None:
@@ -250,7 +295,7 @@ def compare_to_resolved(
     console = Console()
 
     cfg = EvaluationConfig(min_edge=min_edge, kelly_multiplier=kelly_multiplier, fee=fee)
-    df = score_resolutions(cfg=cfg)
+    df = score_resolutions(cfg=cfg, resolutions_parquet=resolutions_parquet)
 
     if df.empty:
         console.print("[yellow]No resolved predictions yet. Run `polymarket fetch-resolution` after a market settles, then retry.[/yellow]")
@@ -287,7 +332,7 @@ def compare_to_resolved(
         console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
 
 
-def _df_to_rich_table(df) -> "Table":  # type: ignore[name-defined]
+def _df_to_rich_table(df) -> Table:  # type: ignore[name-defined]
     from rich.table import Table
     table = Table(show_header=True, header_style="bold", padding=(0, 1))
     for col in df.columns:

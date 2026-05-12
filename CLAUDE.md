@@ -24,7 +24,7 @@ uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
 ```
 
-Local DuckDB cache is at `data/cache.duckdb` (gitignored). The source-of-truth for price history is Parquet files under `data/snapshots/` written by the GHA cron and committed back to the repo.
+Local DuckDB cache is at `data/cache.duckdb` (gitignored). The source-of-truth for price history is Parquet files under `data/snapshots/` written by the GHA cron and committed back to the repo. The source-of-truth for NWS CLI resolutions is `data/resolutions.parquet`, written daily by `.github/workflows/resolve.yml` and also committed back to the repo.
 
 ## Architecture
 
@@ -79,9 +79,11 @@ Old Polymarket snapshots are archived under `data/snapshots/_archive_polymarket/
 
 ### Model-validation loop (since 2026-05-09)
 
-The recorder writes `model_p` for every bin alongside the price columns, using the same Laplace-smoothed empirical CDF the live `scan` command uses. `evaluation.score_resolutions()` joins the snapshot Parquets with the `resolutions` table (NWS CLI ground truth) and computes per-bucket Brier, log-loss, and a simulated quarter-Kelly PnL with fee deduction. `polymarket compare-to-resolved` prints overall + per-group aggregates (default grouping: `city,kind,lead_bucket`).
+The recorder writes `model_p` for every bin alongside the price columns, using the same Laplace-smoothed empirical CDF the live `scan` command uses. `evaluation.score_resolutions()` joins the snapshot Parquets with `data/resolutions.parquet` (NWS CLI ground truth) and computes per-bucket Brier, log-loss, and a simulated quarter-Kelly PnL with fee deduction. `polymarket compare-to-resolved` prints overall + per-group aggregates (default grouping: `city,kind,lead_bucket`).
 
 Since model_p only started getting persisted on 2026-05-09, evaluation is forward-looking — markets that resolved before that date have prices in `data/snapshots/` but no model probabilities, so they're excluded by the `model_p IS NOT NULL` filter in `score_resolutions`.
+
+`.github/workflows/resolve.yml` runs `fetch-resolution` then `compare-to-resolved` once a day at 13:00 UTC. It sources candidate (station, date, kind) tuples from the committed snapshot Parquets — no DuckDB state required — and commits `data/resolutions.parquet` plus `data/reports/evaluation.md` back to `main`. Local runs of `fetch-resolution` also mirror writes into the DuckDB cache so the local user can query the `resolutions` table directly.
 
 ### Phase status
 
