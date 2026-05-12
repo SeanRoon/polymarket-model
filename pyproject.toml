@@ -25,6 +25,7 @@ dependencies = [
     "tenacity>=8.5",
     "beautifulsoup4>=4.12",
     "lxml>=5.2",
+    "tabulate>=0.10.0",
 ]
 
 [project.scripts]
