@@ -13,6 +13,7 @@ import numpy as np
 
 from polymarket_model.config import settings
 from polymarket_model.markets.discovery import Bin, WeatherEvent
+from polymarket_model.weather.nbm import NBMQuantileForecast
 from polymarket_model.weather.openmeteo import EnsembleDailyExtreme
 
 
@@ -116,6 +117,91 @@ def evaluate_event(
         bin_probs=bin_probs,
         outside_bin_mass=outside,
         sum_of_bin_probs=float(smoothed.sum()),
+    )
+
+
+def _quantile_cdf_anchors(quantiles: dict[int, float]) -> tuple[np.ndarray, np.ndarray]:
+    """Return (x, y) arrays for a piecewise-linear CDF anchored to F=0 and F=1.
+
+    Tail anchors extend the *local edge slope* outward until F hits 0 (below) and 1 (above).
+    This preserves the density implied by the outermost quantile pair, which is more honest
+    than truncating mass at q_min / q_max but less prescriptive than fitting a parametric tail.
+    """
+    pcts = sorted(quantiles.keys())
+    if len(pcts) < 2:
+        raise ValueError("Need at least 2 quantiles to build a CDF")
+    qx = np.array([quantiles[p] for p in pcts], dtype=float)
+    qy = np.array([p / 100.0 for p in pcts], dtype=float)
+    # Edge slopes; guard against degenerate (qx[0] == qx[1]) which can happen if NBM emits
+    # tied percentile values for an extremely narrow-spread forecast.
+    span_lo = qx[1] - qx[0]
+    span_hi = qx[-1] - qx[-2]
+    eps = 1e-6
+    slope_lo = (qy[1] - qy[0]) / span_lo if span_lo > eps else (qy[1] - qy[0]) / eps
+    slope_hi = (qy[-1] - qy[-2]) / span_hi if span_hi > eps else (qy[-1] - qy[-2]) / eps
+    x_low = qx[0] - qy[0] / slope_lo if slope_lo > 0 else qx[0] - 1.0
+    x_high = qx[-1] + (1.0 - qy[-1]) / slope_hi if slope_hi > 0 else qx[-1] + 1.0
+    full_x = np.concatenate(([x_low], qx, [x_high]))
+    full_y = np.concatenate(([0.0], qy, [1.0]))
+    return full_x, full_y
+
+
+def _cdf_eval(full_x: np.ndarray, full_y: np.ndarray, x: float) -> float:
+    if math.isinf(x):
+        return 0.0 if x < 0 else 1.0
+    if x <= full_x[0]:
+        return 0.0
+    if x >= full_x[-1]:
+        return 1.0
+    return float(np.interp(x, full_x, full_y))
+
+
+def evaluate_event_nbm(
+    event: WeatherEvent,
+    forecast: NBMQuantileForecast,
+    *,
+    floor: float = 0.005,
+    ceiling: float = 0.995,
+    n_synth_samples: int = 200,
+) -> EventModelOutput:
+    """Compute P(bin) for every bin under the NBM quantile-derived CDF.
+
+    NBM QMD only exposes instantaneous TMP percentiles, so the underlying forecast is a
+    peak-hour proxy for daily Tmax/Tmin (see `weather/nbm` module docstring). Bin probs
+    come from F(hi) - F(lo) on the piecewise-linear CDF; we clip to [floor, ceiling] so
+    a single near-zero-density bin doesn't blow up downstream Kelly sizing.
+
+    The `distribution` field of the returned EventModelOutput holds a samples-backed
+    `PredictiveDistribution` synthesized via inverse-CDF interpolation. The samples are
+    cosmetic — they satisfy the type so the same recorder/evaluator code paths work, but
+    bin_probs is the authoritative output and is computed analytically from the CDF.
+    """
+    full_x, full_y = _quantile_cdf_anchors(forecast.quantiles)
+
+    raw_probs: list[float] = []
+    for b in event.bins:
+        lo = -math.inf if b.is_open_low else b.lo_f
+        hi = math.inf if b.is_open_high else b.hi_f
+        raw = _cdf_eval(full_x, full_y, hi) - _cdf_eval(full_x, full_y, lo)
+        raw_probs.append(max(0.0, raw))
+
+    union = float(sum(raw_probs))
+    outside = max(0.0, 1.0 - union)
+
+    clipped = [min(max(p, floor), ceiling) for p in raw_probs]
+    bin_probs = [BinProb(b, p) for b, p in zip(event.bins, clipped, strict=True)]
+
+    # Synthesize representative samples by inverting the CDF on a uniform grid.
+    u = np.linspace(0.005, 0.995, n_synth_samples)
+    samples = np.interp(u, full_y, full_x)
+    dist = PredictiveDistribution(samples=samples, model=forecast.model)
+
+    return EventModelOutput(
+        event=event,
+        distribution=dist,
+        bin_probs=bin_probs,
+        outside_bin_mass=outside,
+        sum_of_bin_probs=float(sum(clipped)),
     )
 
 

@@ -25,7 +25,13 @@ from polymarket_model.logging_setup import get_logger
 from polymarket_model.markets.client import KalshiClient
 from polymarket_model.markets.discovery import WeatherEvent, discover_weather_events
 from polymarket_model.markets.prices import EventPrices, fetch_event_prices, floor_to_bucket
-from polymarket_model.model import EventModelOutput, PredictiveDistribution, evaluate_event
+from polymarket_model.model import (
+    EventModelOutput,
+    PredictiveDistribution,
+    evaluate_event,
+    evaluate_event_nbm,
+)
+from polymarket_model.weather.nbm import NBMQuantileForecast, fetch_nbm_quantiles_many
 from polymarket_model.weather.openmeteo import EnsembleDailyExtreme, fetch_daily_extreme
 
 log = get_logger(__name__)
@@ -133,14 +139,26 @@ def _insert_price_snapshot(
     model_name: str | None,
     model_n_members: int | None,
     model_outside_bin_mass: float | None,
+    nbm_p: float | None = None,
+    nbm_q10: float | None = None,
+    nbm_q25: float | None = None,
+    nbm_q50: float | None = None,
+    nbm_q75: float | None = None,
+    nbm_q90: float | None = None,
+    nbm_cycle_utc: datetime | None = None,
+    nbm_lead_hours: int | None = None,
+    nbm_model_name: str | None = None,
+    nbm_outside_bin_mass: float | None = None,
 ) -> None:
     con.execute(
         """
         INSERT INTO price_snapshots (
             market_ticker, event_ticker, snapshot_ts_utc, snapshot_bucket_utc,
             midpoint, yes_bid, yes_ask, last_price, volume, yes_bid_size, yes_ask_size,
-            model_p, model_lead_hours, model_name, model_n_members, model_outside_bin_mass
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            model_p, model_lead_hours, model_name, model_n_members, model_outside_bin_mass,
+            nbm_p, nbm_q10, nbm_q25, nbm_q50, nbm_q75, nbm_q90,
+            nbm_cycle_utc, nbm_lead_hours, nbm_model_name, nbm_outside_bin_mass
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (market_ticker, snapshot_bucket_utc) DO NOTHING
         """,
         [
@@ -160,6 +178,16 @@ def _insert_price_snapshot(
             model_name,
             model_n_members,
             model_outside_bin_mass,
+            nbm_p,
+            nbm_q10,
+            nbm_q25,
+            nbm_q50,
+            nbm_q75,
+            nbm_q90,
+            nbm_cycle_utc,
+            nbm_lead_hours,
+            nbm_model_name,
+            nbm_outside_bin_mass,
         ],
     )
 
@@ -175,6 +203,8 @@ def _build_snapshot_table(
     priced_events: list[EventPrices],
     model_outputs: dict[str, EventModelOutput],
     forecasts: dict[tuple[str, date, str], EnsembleDailyExtreme],
+    nbm_outputs: dict[str, EventModelOutput],
+    nbm_forecasts: dict[tuple[str, date, str], NBMQuantileForecast],
 ) -> pa.Table:
     rows: list[dict] = []
     for ep in priced_events:
@@ -185,6 +215,16 @@ def _build_snapshot_table(
         if mo is not None:
             for bp in mo.bin_probs:
                 bin_to_p[bp.bin.market_ticker] = bp.p
+
+        nmo = nbm_outputs.get(e.event_ticker)
+        nfc = nbm_forecasts.get((e.station_id, e.target_date_local, e.kind)) if e.station_id else None
+        nbm_bin_to_p: dict[str, float] = {}
+        if nmo is not None:
+            for bp in nmo.bin_probs:
+                nbm_bin_to_p[bp.bin.market_ticker] = bp.p
+        nbm_q = nfc.quantiles if nfc is not None else {}
+        nbm_cycle_naive = nfc.cycle_time_utc.replace(tzinfo=None) if nfc is not None else None
+
         for p in ep.prices:
             if p.midpoint is None:
                 continue
@@ -219,6 +259,16 @@ def _build_snapshot_table(
                 "model_name": mo.distribution.model if mo else None,
                 "model_n_members": int(mo.distribution.n) if mo else None,
                 "model_outside_bin_mass": float(mo.outside_bin_mass) if mo else None,
+                "nbm_p": nbm_bin_to_p.get(p.bin.market_ticker),
+                "nbm_q10": nbm_q.get(10),
+                "nbm_q25": nbm_q.get(25),
+                "nbm_q50": nbm_q.get(50),
+                "nbm_q75": nbm_q.get(75),
+                "nbm_q90": nbm_q.get(90),
+                "nbm_cycle_utc": nbm_cycle_naive,
+                "nbm_lead_hours": int(nfc.lead_hours) if nfc else None,
+                "nbm_model_name": nfc.model if nfc else None,
+                "nbm_outside_bin_mass": float(nmo.outside_bin_mass) if nmo else None,
             })
     return pa.Table.from_pylist(rows)
 
@@ -286,6 +336,67 @@ def _build_model_outputs(
     return out
 
 
+def _fetch_nbm_distributions(
+    events: list[WeatherEvent],
+) -> tuple[dict[tuple[str, date, str], NBMQuantileForecast], int]:
+    """Fetch NBM quantile forecasts via the batched downloader.
+
+    Dedupes by (station_id, target_date_local, kind) and shares GRIB2 downloads across
+    requests that hit the same NBM cycle/lead-hour. Failures are logged and skipped — the
+    corresponding events get nbm_* columns of NULL.
+    """
+    keys: list[tuple[str, date, str]] = []
+    seen: set[tuple[str, date, str]] = set()
+    for e in events:
+        if not e.station_id:
+            continue
+        key = (e.station_id, e.target_date_local, e.kind)
+        if key in seen:
+            continue
+        seen.add(key)
+        keys.append(key)
+
+    cache_: dict[tuple[str, date, str], NBMQuantileForecast] = {}
+    errors = 0
+    if not keys:
+        return cache_, errors
+
+    results = fetch_nbm_quantiles_many(keys)
+    for key, val in results.items():
+        if isinstance(val, Exception):
+            errors += 1
+            log.warning(
+                "nbm_fetch_failed",
+                station=key[0],
+                target_date=key[1].isoformat(),
+                kind=key[2],
+                error=repr(val),
+            )
+        else:
+            cache_[key] = val
+    return cache_, errors
+
+
+def _build_nbm_outputs(
+    events: list[WeatherEvent],
+    nbm_forecasts: dict[tuple[str, date, str], NBMQuantileForecast],
+) -> dict[str, EventModelOutput]:
+    """Run evaluate_event_nbm for each event whose NBM forecast succeeded."""
+    out: dict[str, EventModelOutput] = {}
+    for e in events:
+        if not e.station_id:
+            continue
+        key = (e.station_id, e.target_date_local, e.kind)
+        forecast = nbm_forecasts.get(key)
+        if forecast is None:
+            continue
+        try:
+            out[e.event_ticker] = evaluate_event_nbm(e, forecast)
+        except Exception:
+            log.exception("nbm_evaluation_failed", event_ticker=e.event_ticker)
+    return out
+
+
 def snapshot_once(
     *,
     now: datetime | None = None,
@@ -328,6 +439,12 @@ def snapshot_once(
     errors += forecast_errors
     model_outputs = _build_model_outputs(events, forecasts)
 
+    # Fetch NBM probabilistic quantiles in parallel; same deduplication + isolation rules.
+    # NBM failures do not block ECMWF columns or price recording — they just leave nbm_* null.
+    nbm_forecasts, nbm_errors = _fetch_nbm_distributions(events)
+    errors += nbm_errors
+    nbm_outputs = _build_nbm_outputs(events, nbm_forecasts)
+
     rows_written = 0
     bins_with_mid = 0
 
@@ -340,6 +457,8 @@ def snapshot_once(
                 priced_events=priced_events,
                 model_outputs=model_outputs,
                 forecasts=forecasts,
+                nbm_outputs=nbm_outputs,
+                nbm_forecasts=nbm_forecasts,
             )
             parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
             parquet_path.parent.mkdir(parents=True, exist_ok=True)
@@ -361,6 +480,15 @@ def snapshot_once(
                     if mo is not None:
                         for bp in mo.bin_probs:
                             bin_to_p[bp.bin.market_ticker] = bp.p
+
+                    nmo = nbm_outputs.get(e_.event_ticker)
+                    nfc = nbm_forecasts.get((e_.station_id, e_.target_date_local, e_.kind)) if e_.station_id else None
+                    nbm_bin_to_p: dict[str, float] = {}
+                    if nmo is not None:
+                        for bp in nmo.bin_probs:
+                            nbm_bin_to_p[bp.bin.market_ticker] = bp.p
+                    nbm_q = nfc.quantiles if nfc is not None else {}
+
                     try:
                         _upsert_event(con, e_, started)
                         _upsert_bins(con, e_)
@@ -385,6 +513,16 @@ def snapshot_once(
                                 model_name=mo.distribution.model if mo else None,
                                 model_n_members=int(mo.distribution.n) if mo else None,
                                 model_outside_bin_mass=float(mo.outside_bin_mass) if mo else None,
+                                nbm_p=nbm_bin_to_p.get(p.bin.market_ticker),
+                                nbm_q10=nbm_q.get(10),
+                                nbm_q25=nbm_q.get(25),
+                                nbm_q50=nbm_q.get(50),
+                                nbm_q75=nbm_q.get(75),
+                                nbm_q90=nbm_q.get(90),
+                                nbm_cycle_utc=nfc.cycle_time_utc.replace(tzinfo=None) if nfc else None,
+                                nbm_lead_hours=int(nfc.lead_hours) if nfc else None,
+                                nbm_model_name=nfc.model if nfc else None,
+                                nbm_outside_bin_mass=float(nmo.outside_bin_mass) if nmo else None,
                             )
                             if parquet_dir is None:  # only count once
                                 rows_written += 1

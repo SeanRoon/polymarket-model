@@ -124,9 +124,29 @@ def ensure_data_dir() -> Path:
     return settings.data_dir
 
 
+# Idempotent ALTER TABLE migrations for columns added after the initial schema.
+# DuckDB supports ADD COLUMN IF NOT EXISTS natively, so this is safe to re-run
+# every connect() — same idempotency contract as the CREATE TABLE IF NOT EXISTS
+# block above. Append-only: never rename or drop columns here.
+_PRICE_SNAPSHOTS_NBM_COLUMNS = [
+    ("nbm_p", "DOUBLE"),
+    ("nbm_q10", "DOUBLE"),
+    ("nbm_q25", "DOUBLE"),
+    ("nbm_q50", "DOUBLE"),
+    ("nbm_q75", "DOUBLE"),
+    ("nbm_q90", "DOUBLE"),
+    ("nbm_cycle_utc", "TIMESTAMP"),
+    ("nbm_lead_hours", "INTEGER"),
+    ("nbm_model_name", "TEXT"),
+    ("nbm_outside_bin_mass", "DOUBLE"),
+]
+
+
 def bootstrap(con: duckdb.DuckDBPyConnection) -> None:
     for stmt in SCHEMA_SQL:
         con.execute(stmt)
+    for col, sql_type in _PRICE_SNAPSHOTS_NBM_COLUMNS:
+        con.execute(f"ALTER TABLE price_snapshots ADD COLUMN IF NOT EXISTS {col} {sql_type}")
 
 
 @contextmanager
