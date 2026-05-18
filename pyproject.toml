@@ -30,6 +30,9 @@ dependencies = [
     "cfgrib>=0.9.15",
     "xarray>=2025.1",
     "eccodes>=2.45",
+    # eccodes Python wheel bundles libeccodes on Windows but not Linux/macOS.
+    # eccodeslib supplies the C binary on those platforms.
+    "eccodeslib>=2.44; platform_system != 'Windows'",
 ]
 
 [project.scripts]
