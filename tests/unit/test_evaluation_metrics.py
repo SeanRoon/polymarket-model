@@ -3,9 +3,10 @@ from __future__ import annotations
 
 import math
 
+import pandas as pd
 import pytest
 
-from polymarket_model.evaluation import brier, lead_bucket, log_loss
+from polymarket_model.evaluation import aggregate, brier, lead_bucket, log_loss
 
 
 def test_brier_constant_50_50_baseline():
@@ -57,3 +58,70 @@ def test_log_loss_perfect_is_near_zero():
 )
 def test_lead_bucket(hours, label):
     assert lead_bucket(hours) == label
+
+
+def _synthetic_score_df(n_total: int, n_with_nbm: int) -> pd.DataFrame:
+    """Build a minimal score_resolutions-shaped DataFrame for aggregate() tests."""
+    nan = float("nan")
+    rows = []
+    for i in range(n_total):
+        has_nbm = i < n_with_nbm
+        rows.append({
+            "city": "Miami",
+            "kind": "high",
+            "lead_bucket": "0-6h",
+            "brier_model": 0.20,
+            "brier_market": 0.05,
+            "log_loss_model": 0.50,
+            "log_loss_market": 0.15,
+            "pnl": 0.10,
+            "kelly_sized": 1.0,
+            "direction": "BUY_YES",
+            "nbm_p": 0.60 if has_nbm else nan,
+            "brier_nbm": 0.08 if has_nbm else nan,
+            "log_loss_nbm": 0.25 if has_nbm else nan,
+            "pnl_nbm": 0.20 if has_nbm else nan,
+            "direction_nbm": "BUY_YES" if has_nbm else None,
+            "kelly_nbm_sized": 1.0 if has_nbm else nan,
+        })
+    return pd.DataFrame(rows)
+
+
+def test_aggregate_overall_separates_nbm_denominator():
+    df = _synthetic_score_df(n_total=10, n_with_nbm=3)
+    out = aggregate(df, by=None)
+    row = out.iloc[0]
+    assert row["n"] == 10
+    assert row["n_nbm"] == 3
+    # ECMWF mean over all 10, NBM mean over the 3 with nbm_p; both should equal their constant inputs.
+    assert row["brier_model_mean"] == pytest.approx(0.20)
+    assert row["brier_nbm_mean"] == pytest.approx(0.08)
+    assert row["brier_market_mean"] == pytest.approx(0.05)
+    # PnL sums independently per source.
+    assert row["pnl_sum"] == pytest.approx(0.10 * 10)
+    assert row["pnl_nbm_sum"] == pytest.approx(0.20 * 3)
+    assert row["trades_emitted"] == 10
+    assert row["trades_nbm_emitted"] == 3
+
+
+def test_aggregate_grouped_column_order_puts_nbm_next_to_ecmwf():
+    df = _synthetic_score_df(n_total=10, n_with_nbm=4)
+    out = aggregate(df, by=["city", "kind", "lead_bucket"])
+    cols = list(out.columns)
+    # NBM columns should immediately follow their ECMWF counterparts in the rendered table.
+    assert cols.index("brier_nbm_mean") == cols.index("brier_model_mean") + 1
+    assert cols.index("log_loss_nbm_mean") == cols.index("log_loss_model_mean") + 1
+    assert cols.index("pnl_nbm_sum") == cols.index("pnl_sum") + 1
+    assert cols.index("n_nbm") == cols.index("n") + 1
+
+
+def test_aggregate_handles_zero_nbm_rows_gracefully():
+    """When no rows have NBM, NBM means are NaN, sums are 0 — matches the pre-cron state."""
+    df = _synthetic_score_df(n_total=10, n_with_nbm=0)
+    out = aggregate(df, by=None)
+    row = out.iloc[0]
+    assert row["n"] == 10
+    assert row["n_nbm"] == 0
+    assert math.isnan(row["brier_nbm_mean"])
+    assert row["pnl_nbm_sum"] == 0.0
+    assert row["trades_nbm_emitted"] == 0

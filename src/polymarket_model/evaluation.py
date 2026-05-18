@@ -194,6 +194,26 @@ def discover_unresolved_from_snapshots(
     return out
 
 
+def _any_snapshot_has_nbm(snapshots_root: Path) -> bool:
+    """Return True if at least one Parquet under `snapshots_root` carries the nbm_p column.
+
+    Walks newest-first and stops on the first hit — typically O(1) once NBM is in regular
+    rotation. Used to decide whether to bind nbm_* in the SQL or substitute NULL literals.
+    """
+    if not snapshots_root.exists():
+        return False
+    # Sort by name (YYYY-MM-DD/HHMM.parquet) — newest last; reverse to check freshest first.
+    candidates = sorted(snapshots_root.rglob("*.parquet"), reverse=True)
+    for path in candidates[:50]:  # cap the scan in case the dir has thousands of files
+        try:
+            schema = pq.read_schema(path)
+        except Exception:
+            continue
+        if "nbm_p" in schema.names:
+            return True
+    return False
+
+
 def score_resolutions(
     *,
     snapshots_root: Path | str | None = None,
@@ -214,6 +234,23 @@ def score_resolutions(
     )
 
     glob = str((snapshots_root / "**/*.parquet").as_posix())
+    # NBM columns only exist on snapshots written after 2026-05-18 (b902735). DuckDB's
+    # union_by_name=True only adds a column when at least one input has it; if zero files
+    # carry nbm_p the column reference would be unbound. Check the most recent Parquet
+    # and substitute NULL literals if NBM hasn't landed yet.
+    has_nbm_in_snapshots = _any_snapshot_has_nbm(snapshots_root)
+    if has_nbm_in_snapshots:
+        nbm_select = (
+            "TRY_CAST(s.nbm_p AS DOUBLE) AS nbm_p, "
+            "TRY_CAST(s.nbm_lead_hours AS INTEGER) AS nbm_lead_hours, "
+            "CAST(s.nbm_model_name AS VARCHAR) AS nbm_model_name,"
+        )
+    else:
+        nbm_select = (
+            "CAST(NULL AS DOUBLE) AS nbm_p, "
+            "CAST(NULL AS INTEGER) AS nbm_lead_hours, "
+            "CAST(NULL AS VARCHAR) AS nbm_model_name,"
+        )
     sql = f"""
         WITH s AS (
             SELECT *
@@ -247,6 +284,7 @@ def score_resolutions(
             s.model_lead_hours,
             s.model_name,
             s.model_outside_bin_mass,
+            {nbm_select}
             r.value_f AS realized_value_f
         FROM s
         JOIN r
@@ -287,6 +325,19 @@ def score_resolutions(
     df["log_loss_model"] = df.apply(lambda r: log_loss(r["model_p"], r["realized_yes"], clip=cfg.log_clip), axis=1)
     df["log_loss_market"] = df.apply(lambda r: log_loss(r["market_mid"], r["realized_yes"], clip=cfg.log_clip), axis=1)
 
+    # NBM-side metrics: NaN whenever nbm_p is null (older snapshots, NBM fetch failures).
+    # pandas mean/sum default to skipna=True, so aggregate() handles the partial coverage naturally.
+    has_nbm = df["nbm_p"].notna()
+    df["brier_nbm"] = float("nan")
+    df["log_loss_nbm"] = float("nan")
+    if has_nbm.any():
+        df.loc[has_nbm, "brier_nbm"] = df.loc[has_nbm].apply(
+            lambda r: brier(r["nbm_p"], r["realized_yes"]), axis=1
+        )
+        df.loc[has_nbm, "log_loss_nbm"] = df.loc[has_nbm].apply(
+            lambda r: log_loss(r["nbm_p"], r["realized_yes"], clip=cfg.log_clip), axis=1
+        )
+
     pnl_records = df.apply(
         lambda r: simulate_pnl(
             model_p=float(r["model_p"]),
@@ -300,6 +351,32 @@ def score_resolutions(
     pnl_records.columns = ["pnl", "direction", "kelly_sized"]
     df = pd.concat([df, pnl_records], axis=1)
 
+    # NBM simulated PnL — same Kelly-sizing rules, same fee, but using nbm_p as the
+    # signal. Rows without an NBM forecast get NaN/None and are excluded from aggregate
+    # sums automatically.
+    nbm_pnl = df["nbm_p"].notna()
+    pnl_nbm_col = pd.Series(float("nan"), index=df.index)
+    direction_nbm_col = pd.Series([None] * len(df), index=df.index, dtype=object)
+    kelly_nbm_col = pd.Series(float("nan"), index=df.index)
+    if nbm_pnl.any():
+        nbm_records = df.loc[nbm_pnl].apply(
+            lambda r: simulate_pnl(
+                model_p=float(r["nbm_p"]),
+                market_mid=float(r["market_mid"]),
+                realized=int(r["realized_yes"]),
+                cfg=cfg,
+            ),
+            axis=1,
+            result_type="expand",
+        )
+        nbm_records.columns = ["pnl_nbm", "direction_nbm", "kelly_nbm_sized"]
+        pnl_nbm_col.loc[nbm_pnl] = nbm_records["pnl_nbm"]
+        direction_nbm_col.loc[nbm_pnl] = nbm_records["direction_nbm"]
+        kelly_nbm_col.loc[nbm_pnl] = nbm_records["kelly_nbm_sized"]
+    df["pnl_nbm"] = pnl_nbm_col
+    df["direction_nbm"] = direction_nbm_col
+    df["kelly_nbm_sized"] = kelly_nbm_col
+
     df["lead_bucket"] = df["model_lead_hours"].apply(lead_bucket)
     return df
 
@@ -308,28 +385,63 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
     """Group by the given dimensions and compute mean / sum metrics.
 
     by=None or [] returns a single-row 'overall' summary.
+
+    NBM columns are populated only on the subset of rows where nbm_p exists; pandas
+    mean/sum skip NaN by default, so the NBM averages reflect that smaller denominator
+    automatically. `n_nbm` reports how many rows backed the NBM aggregates.
     """
     if df.empty:
         return df
+    has_nbm = "nbm_p" in df.columns
     if not by:
-        out = {
+        out: dict = {
             "n": len(df),
+            "n_nbm": int(df["nbm_p"].notna().sum()) if has_nbm else 0,
             "brier_model_mean": df["brier_model"].mean(),
+            "brier_nbm_mean": df["brier_nbm"].mean() if has_nbm else float("nan"),
             "brier_market_mean": df["brier_market"].mean(),
             "log_loss_model_mean": df["log_loss_model"].mean(),
+            "log_loss_nbm_mean": df["log_loss_nbm"].mean() if has_nbm else float("nan"),
             "log_loss_market_mean": df["log_loss_market"].mean(),
             "pnl_sum": df["pnl"].sum(),
+            "pnl_nbm_sum": df["pnl_nbm"].sum() if has_nbm else 0.0,
             "kelly_sum": df["kelly_sized"].sum(),
+            "kelly_nbm_sum": df["kelly_nbm_sized"].sum() if has_nbm else 0.0,
             "trades_emitted": int(df["direction"].notna().sum()),
+            "trades_nbm_emitted": int(df["direction_nbm"].notna().sum()) if has_nbm else 0,
         }
         return pd.DataFrame([out])
-    return df.groupby(by, dropna=False).agg(
-        n=("brier_model", "size"),
-        brier_model_mean=("brier_model", "mean"),
-        brier_market_mean=("brier_market", "mean"),
-        log_loss_model_mean=("log_loss_model", "mean"),
-        log_loss_market_mean=("log_loss_market", "mean"),
-        pnl_sum=("pnl", "sum"),
-        kelly_sum=("kelly_sized", "sum"),
-        trades_emitted=("direction", lambda s: int(s.notna().sum())),
-    ).reset_index()
+
+    agg_kwargs = {
+        "n": ("brier_model", "size"),
+        "brier_model_mean": ("brier_model", "mean"),
+        "brier_market_mean": ("brier_market", "mean"),
+        "log_loss_model_mean": ("log_loss_model", "mean"),
+        "log_loss_market_mean": ("log_loss_market", "mean"),
+        "pnl_sum": ("pnl", "sum"),
+        "kelly_sum": ("kelly_sized", "sum"),
+        "trades_emitted": ("direction", lambda s: int(s.notna().sum())),
+    }
+    if has_nbm:
+        agg_kwargs.update({
+            "n_nbm": ("nbm_p", lambda s: int(s.notna().sum())),
+            "brier_nbm_mean": ("brier_nbm", "mean"),
+            "log_loss_nbm_mean": ("log_loss_nbm", "mean"),
+            "pnl_nbm_sum": ("pnl_nbm", "sum"),
+            "kelly_nbm_sum": ("kelly_nbm_sized", "sum"),
+            "trades_nbm_emitted": ("direction_nbm", lambda s: int(s.notna().sum())),
+        })
+    grouped = df.groupby(by, dropna=False).agg(**agg_kwargs).reset_index()
+    # Reorder so NBM columns sit next to their ECMWF counterparts in the rendered table.
+    if has_nbm:
+        col_order = [
+            *by,
+            "n", "n_nbm",
+            "brier_model_mean", "brier_nbm_mean", "brier_market_mean",
+            "log_loss_model_mean", "log_loss_nbm_mean", "log_loss_market_mean",
+            "pnl_sum", "pnl_nbm_sum",
+            "kelly_sum", "kelly_nbm_sum",
+            "trades_emitted", "trades_nbm_emitted",
+        ]
+        grouped = grouped[col_order]
+    return grouped
