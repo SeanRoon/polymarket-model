@@ -4,8 +4,8 @@
 
 | metric                        | value   |
 |:------------------------------|:--------|
-| total trades                  | 628     |
-| open                          | 87      |
+| total trades                  | 629     |
+| open                          | 88      |
 | settled                       | 541     |
 | wins                          | 314     |
 | win rate                      | 58.0%   |
