@@ -8,6 +8,11 @@ import typer
 from rich.console import Console
 
 from polymarket_model.cache import connect
+from polymarket_model.calibration.bias import (
+    DEFAULT_BIAS_PARQUET,
+    compute_station_biases,
+    write_biases,
+)
 from polymarket_model.config import settings
 from polymarket_model.edge.report import render_table, write_csv, write_markdown
 from polymarket_model.edge.signals import signals_for_event
@@ -338,6 +343,58 @@ def compare_to_resolved(
             encoding="utf-8",
         )
         console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
+
+
+@app.command("compute-bias")
+def compute_bias(
+    window_days: int = typer.Option(
+        7,
+        "--window-days",
+        help="Rolling window length for the per-(station,kind) mean error.",
+    ),
+    min_days: int = typer.Option(
+        3,
+        "--min-days",
+        help="Minimum paired records per station to emit a bias estimate.",
+    ),
+    snapshots_root: Path = typer.Option(
+        settings.data_dir / "snapshots",
+        "--snapshots-root",
+        help="Root directory holding YYYY-MM-DD/HHMM.parquet snapshots.",
+    ),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Canonical NWS-CLI resolutions Parquet.",
+    ),
+    biases_parquet: Path = typer.Option(
+        DEFAULT_BIAS_PARQUET,
+        "--biases-parquet",
+        help="Output Parquet for per-station bias estimates. Read by the recorder on next snapshot.",
+    ),
+) -> None:
+    """Recompute per-(station,kind) ensemble bias from recent snapshot vs resolution pairs."""
+    configure_logging()
+    console = Console()
+    biases = compute_station_biases(
+        snapshots_root=snapshots_root,
+        resolutions_parquet=resolutions_parquet,
+        window_days=window_days,
+        min_days=min_days,
+    )
+    write_biases(biases_parquet, biases)
+    if not biases:
+        console.print(f"[yellow]No biases computed (need >= {min_days} paired days per station).[/yellow]")
+        console.print(f"[dim]Wrote empty: {biases_parquet}[/dim]")
+        return
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    for c in ("station_id", "kind", "bias_f", "n_days_used"):
+        table.add_column(c, justify="right" if c != "station_id" else "left")
+    for b in biases:
+        table.add_row(b.station_id, b.kind, f"{b.bias_f:+.2f}", str(b.n_days_used))
+    console.print(table)
+    console.print(f"[dim]Wrote {biases_parquet}[/dim]")
 
 
 @app.command("paper-trade")

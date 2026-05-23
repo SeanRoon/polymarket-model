@@ -21,6 +21,11 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from polymarket_model.cache import connect
+from polymarket_model.calibration.bias import (
+    DEFAULT_BIAS_PARQUET,
+    apply_bias_to_samples,
+    load_biases,
+)
 from polymarket_model.logging_setup import get_logger
 from polymarket_model.markets.client import KalshiClient
 from polymarket_model.markets.discovery import WeatherEvent, discover_weather_events
@@ -205,6 +210,7 @@ def _build_snapshot_table(
     forecasts: dict[tuple[str, date, str], EnsembleDailyExtreme],
     nbm_outputs: dict[str, EventModelOutput],
     nbm_forecasts: dict[tuple[str, date, str], NBMQuantileForecast],
+    bias_applied: dict[str, float | None] | None = None,
 ) -> pa.Table:
     rows: list[dict] = []
     for ep in priced_events:
@@ -259,6 +265,7 @@ def _build_snapshot_table(
                 "model_name": mo.distribution.model if mo else None,
                 "model_n_members": int(mo.distribution.n) if mo else None,
                 "model_outside_bin_mass": float(mo.outside_bin_mass) if mo else None,
+                "model_bias_applied_f": (bias_applied or {}).get(e.event_ticker) if mo else None,
                 "nbm_p": nbm_bin_to_p.get(p.bin.market_ticker),
                 "nbm_q10": nbm_q.get(10),
                 "nbm_q25": nbm_q.get(25),
@@ -320,20 +327,40 @@ def _fetch_distributions(
 def _build_model_outputs(
     events: list[WeatherEvent],
     forecasts: dict[tuple[str, date, str], EnsembleDailyExtreme],
-) -> dict[str, EventModelOutput]:
-    """Run evaluate_event for each event whose forecast succeeded."""
+    biases: dict[tuple[str, str], float] | None = None,
+) -> tuple[dict[str, EventModelOutput], dict[str, float | None]]:
+    """Run evaluate_event for each event whose forecast succeeded.
+
+    If `biases` contains a `(station_id, kind)` entry, the ensemble samples are
+    shifted by `-bias` before the predictive distribution is built and the model
+    name is suffixed with `+biascorr` so downstream eval can distinguish corrected
+    rows. Returns `(outputs, bias_applied_per_event)` where the second dict maps
+    event_ticker to the bias value that was subtracted (or None if no correction).
+    """
+    biases = biases or {}
     out: dict[str, EventModelOutput] = {}
+    bias_applied: dict[str, float | None] = {}
     for e in events:
         key = (e.station_id, e.target_date_local, e.kind) if e.station_id else None
         ex = forecasts.get(key) if key else None
         if ex is None:
             continue
         try:
-            dist = PredictiveDistribution.from_ensemble(ex)
+            bias = biases.get((e.station_id, e.kind)) if e.station_id else None
+            if bias is not None:
+                samples = apply_bias_to_samples(ex.values, bias)
+                dist = PredictiveDistribution(
+                    samples=samples,
+                    model=f"empirical_{ex.model}+biascorr",
+                )
+                bias_applied[e.event_ticker] = float(bias)
+            else:
+                dist = PredictiveDistribution.from_ensemble(ex)
+                bias_applied[e.event_ticker] = None
             out[e.event_ticker] = evaluate_event(e, dist)
         except Exception:
             log.exception("model_evaluation_failed", event_ticker=e.event_ticker)
-    return out
+    return out, bias_applied
 
 
 def _fetch_nbm_distributions(
@@ -403,6 +430,7 @@ def snapshot_once(
     max_workers: int = PRICE_FETCH_CONCURRENCY,
     parquet_dir: Path | None = None,
     write_duckdb: bool = True,
+    biases_path: Path | None = None,
 ) -> SnapshotResult:
     """Single shot: discover, fetch prices in parallel, persist to Parquet and/or DuckDB.
 
@@ -410,12 +438,19 @@ def snapshot_once(
         {parquet_dir}/YYYY-MM-DD/HHMM.parquet. Each row is fully denormalized.
     write_duckdb: if True (default), also write to data/cache.duckdb. The GHA runner
         sets this False because the runner is ephemeral.
+    biases_path: optional path to the station-bias Parquet. If present, the ensemble
+        samples are shifted by `-bias` per (station_id, kind) before bin probabilities
+        are computed. Defaults to DEFAULT_BIAS_PARQUET; missing file = no correction.
     """
     started = now or datetime.now(UTC)
     bucket = floor_to_bucket(started, minutes=5)
     run_id = uuid.uuid4().hex
     client = KalshiClient()
     events = discover_weather_events(client)
+
+    biases = load_biases(biases_path or DEFAULT_BIAS_PARQUET)
+    if biases:
+        log.info("biases_loaded", n_stations=len(biases))
 
     errors = 0
 
@@ -437,7 +472,7 @@ def snapshot_once(
     # for events whose forecast failed get model_p=None — we still record price.
     forecasts, forecast_errors = _fetch_distributions(events)
     errors += forecast_errors
-    model_outputs = _build_model_outputs(events, forecasts)
+    model_outputs, bias_applied = _build_model_outputs(events, forecasts, biases=biases)
 
     # Fetch NBM probabilistic quantiles in parallel; same deduplication + isolation rules.
     # NBM failures do not block ECMWF columns or price recording — they just leave nbm_* null.
@@ -459,6 +494,7 @@ def snapshot_once(
                 forecasts=forecasts,
                 nbm_outputs=nbm_outputs,
                 nbm_forecasts=nbm_forecasts,
+                bias_applied=bias_applied,
             )
             parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
             parquet_path.parent.mkdir(parents=True, exist_ok=True)

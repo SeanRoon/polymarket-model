@@ -22,6 +22,7 @@ uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb   # one-shot
 uv run polymarket snapshot                                            # legacy: also write to local DuckDB
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
+uv run polymarket compute-bias               # recompute rolling per-(station,kind) ensemble bias correction
 uv run polymarket paper-trade                # replay snapshots → one hypothetical fill per market
 uv run polymarket exec balance               # read-only authed: print account balance (requires KALSHI_* env vars)
 uv run polymarket exec positions             # read-only authed: list open positions
@@ -102,6 +103,15 @@ There's no public price history endpoint anywhere in this domain (Kalshi doesn't
 **Repo is public** to get unlimited GitHub Actions minutes; on a private repo the 15-min cadence would exceed the 2,000-min/month free tier.
 
 Old Polymarket snapshots are archived under `data/snapshots/_archive_polymarket/` for reference. Don't read from them — schema is incompatible.
+
+### Per-station bias correction (since 2026-05-23)
+
+The Open-Meteo ECMWF 0.25° ensemble has stable systematic errors at some stations: ~−7°F on Miami highs, ~+11°F on Denver highs, etc. — see the diagnosis in `calibration/bias.py`. The fix is a per-(station, kind) rolling-7-day mean error subtracted from each ensemble sample before bin probabilities are computed.
+
+- **`polymarket compute-bias`** joins `data/snapshots/*` with `data/resolutions.parquet`, computes mean(model_expected_temp − actual) over the trailing window, writes `data/station_biases.parquet`.
+- **`recorder.snapshot_once`** loads that file at startup and shifts samples per event. Corrected rows get `model_name` suffixed with `+biascorr` and a populated `model_bias_applied_f` column so downstream eval can distinguish corrected vs uncorrected predictions.
+- Stations with fewer than 3 paired records get no correction (bias=0). A station that's just been re-enabled won't get clobbered by a near-empty average.
+- The bias file is regenerated daily (or whenever the user runs `compute-bias`) — wire it into `.github/workflows/resolve.yml` once you want it auto-refreshed.
 
 ### Model-validation loop (since 2026-05-09)
 
