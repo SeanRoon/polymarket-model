@@ -77,6 +77,7 @@ class PaperTradingConfig:
     min_edge: float
     kelly_multiplier: float
     max_lead_hours: int  # skip signals further out than this (model unreliable past ~7d)
+    excluded_stations: frozenset[str] = frozenset()
 
 
 def default_config() -> PaperTradingConfig:
@@ -84,6 +85,7 @@ def default_config() -> PaperTradingConfig:
         min_edge=settings.min_edge,
         kelly_multiplier=settings.kelly_fraction,
         max_lead_hours=settings.max_lead_days_for_signal * 24,
+        excluded_stations=settings.signal_excluded_stations,
     )
 
 
@@ -156,6 +158,7 @@ def _first_crossings(
               AND midpoint IS NOT NULL
               AND NOT contains(filename, '_archive_polymarket')
               AND (model_lead_hours IS NULL OR model_lead_hours <= ?)
+              AND station_id NOT IN (SELECT UNNEST(?))
         ),
         tradeable AS (
             SELECT *
@@ -182,7 +185,10 @@ def _first_crossings(
     """
     con = duckdb.connect(":memory:")
     try:
-        rows = con.execute(sql, [cfg.min_edge, cfg.min_edge, cfg.max_lead_hours]).fetchall()
+        rows = con.execute(
+            sql,
+            [cfg.min_edge, cfg.min_edge, cfg.max_lead_hours, sorted(cfg.excluded_stations)],
+        ).fetchall()
         cols = [d[0] for d in con.description]
     finally:
         con.close()

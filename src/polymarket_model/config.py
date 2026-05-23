@@ -2,11 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+# Stations whose model is currently miscalibrated badly enough that emitting
+# signals would lose money in expectation. Revisit when their recent Brier
+# (per `polymarket compare-to-resolved`) is at or below the market's.
+DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA"})
 
 
 class Settings(BaseSettings):
@@ -39,6 +45,21 @@ class Settings(BaseSettings):
     sum_of_mids_high: float = 1.08
     outside_bin_mass_max: float = 0.02
     max_lead_days_for_signal: int = 7
+
+    signal_excluded_stations: frozenset[str] = Field(
+        default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_STATIONS,
+    )
+
+    @field_validator("signal_excluded_stations", mode="before")
+    @classmethod
+    def _parse_excluded_stations(cls, v: object) -> frozenset[str]:
+        if v is None or v == "":
+            return frozenset()
+        if isinstance(v, str):
+            return frozenset(s.strip() for s in v.split(",") if s.strip())
+        if isinstance(v, (list, tuple, set, frozenset)):
+            return frozenset(str(s) for s in v)
+        raise TypeError(f"signal_excluded_stations: unsupported type {type(v)!r}")
 
     @property
     def cache_db_path(self) -> Path:

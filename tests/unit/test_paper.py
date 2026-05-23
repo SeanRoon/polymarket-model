@@ -17,8 +17,18 @@ from polymarket_model.paper import (
 )
 
 
-def _cfg(min_edge: float = 0.05, kelly: float = 0.25, lead_days: int = 7) -> PaperTradingConfig:
-    return PaperTradingConfig(min_edge=min_edge, kelly_multiplier=kelly, max_lead_hours=lead_days * 24)
+def _cfg(
+    min_edge: float = 0.05,
+    kelly: float = 0.25,
+    lead_days: int = 7,
+    excluded_stations: frozenset[str] = frozenset(),
+) -> PaperTradingConfig:
+    return PaperTradingConfig(
+        min_edge=min_edge,
+        kelly_multiplier=kelly,
+        max_lead_hours=lead_days * 24,
+        excluded_stations=excluded_stations,
+    )
 
 
 def _snapshot_schema() -> pa.Schema:
@@ -266,6 +276,27 @@ def test_existing_trade_is_not_reopened(tmp_path):
     # Same trade_id => row not regenerated from the snapshot.
     assert trades[0]["trade_id"] == "preexisting"
     assert trades[0]["entry_price"] == pytest.approx(0.40)
+
+
+def test_excluded_stations_drop_signals_from_those_stations(tmp_path):
+    base = datetime(2026, 5, 10, 12, 0, tzinfo=UTC)
+    rows = [
+        _row(market_ticker="MKT-LAX", bucket=base,
+             midpoint=0.30, model_p=0.60, yes_bid=0.29, yes_ask=0.31,
+             station_id="KLAX", city="Los Angeles"),
+        _row(market_ticker="MKT-AUS", bucket=base,
+             midpoint=0.30, model_p=0.60, yes_bid=0.29, yes_ask=0.31,
+             station_id="KAUS", city="Austin"),
+    ]
+    snapshots_root = _write_snapshots(tmp_path, rows)
+    resolutions = _write_resolutions(tmp_path, [])
+    trades = derive_paper_trades(
+        snapshots_root=snapshots_root,
+        resolutions_parquet=resolutions,
+        cfg=_cfg(min_edge=0.05, excluded_stations=frozenset({"KLAX"})),
+    )
+    tickers = {t["market_ticker"] for t in trades}
+    assert tickers == {"MKT-AUS"}
 
 
 def test_lead_window_excludes_far_signals(tmp_path):

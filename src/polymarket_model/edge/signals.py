@@ -8,6 +8,7 @@ the chosen direction so report.py can display it without venue-specific knowledg
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 
@@ -52,9 +53,22 @@ def signals_for_event(
     min_edge: float | None = None,
     kelly_multiplier: float | None = None,
     now: datetime | None = None,
+    excluded_stations: Iterable[str] | None = None,
 ) -> list[Signal]:
-    """Emit one Signal per bin where |model_p - market_mid| >= min_edge."""
+    """Emit one Signal per bin where |model_p - market_mid| >= min_edge.
+
+    Events whose resolution station is in `excluded_stations` (defaults to
+    `settings.signal_excluded_stations`) are dropped entirely — the recorder
+    still writes model_p for them so calibration data keeps accumulating.
+    """
     if not model_out.passes_qc or not prices.passes_qc:
+        return []
+    excluded = (
+        frozenset(excluded_stations)
+        if excluded_stations is not None
+        else settings.signal_excluded_stations
+    )
+    if model_out.event.station_id in excluded:
         return []
     min_edge = min_edge if min_edge is not None else settings.min_edge
     kelly_multiplier = kelly_multiplier if kelly_multiplier is not None else settings.kelly_fraction
