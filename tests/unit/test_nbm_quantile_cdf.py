@@ -86,16 +86,32 @@ def test_cdf_tails_extrapolate_to_zero_and_one():
     assert _cdf_eval(fx, fy, 100.0) == 1.0
 
 
-def test_bin_probs_sum_to_one_minus_clipping_noise():
-    """Raw bin probs sum to 1 (since bins partition R). Clipping introduces small noise."""
+def test_bin_probs_sum_equals_union_after_clip_renormalize():
+    """Bin probs sum to `union` (=1 - outside_bin_mass) exactly; clip drift is rebalanced
+    onto unpinned bins so the total is invariant. This is the property edge math relies on.
+    """
     event = _make_event([65.0, 70.0, 75.0, 80.0, 85.0])
     forecast = _make_forecast({10: 60.0, 25: 65.0, 50: 70.0, 75: 75.0, 90: 80.0})
     out = evaluate_event_nbm(event, forecast)
     assert len(out.bin_probs) == 6
-    # outside_bin_mass should be ~zero since bins span R
+    # Bins partition R, so union == 1.0 and outside_bin_mass == 0.
     assert out.outside_bin_mass == pytest.approx(0.0, abs=1e-9)
-    # sum_of_bin_probs may differ slightly from 1.0 due to floor/ceiling clipping
-    assert 0.98 < out.sum_of_bin_probs < 1.05
+    assert out.sum_of_bin_probs == pytest.approx(1.0, abs=1e-9)
+
+
+def test_clipping_drift_is_absorbed_by_unpinned_bins():
+    """Narrow forecast where 4/6 bins floor out: previously sum drifted to ~1.02; now the
+    two unpinned bins absorb the excess so the total still equals union exactly."""
+    event = _make_event([65.0, 70.0, 75.0, 80.0, 85.0])
+    forecast = _make_forecast({10: 65.0, 25: 65.5, 50: 66.0, 75: 67.0, 90: 68.0})
+    out = evaluate_event_nbm(event, forecast)
+    probs = [bp.p for bp in out.bin_probs]
+    assert sum(probs) == pytest.approx(1.0 - out.outside_bin_mass, abs=1e-9)
+    # Pinned bins (those whose raw prob was below floor) stay exactly at floor.
+    pinned = [p for p in probs if p <= 0.005 + 1e-9]
+    assert len(pinned) >= 1
+    for p in pinned:
+        assert p == pytest.approx(0.005, abs=1e-9)
 
 
 def test_narrow_forecast_concentrates_mass_on_one_bin():

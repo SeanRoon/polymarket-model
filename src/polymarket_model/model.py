@@ -156,6 +156,45 @@ def _cdf_eval(full_x: np.ndarray, full_y: np.ndarray, x: float) -> float:
     return float(np.interp(x, full_x, full_y))
 
 
+def _clip_and_renormalize(
+    probs: list[float],
+    target: float,
+    *,
+    floor: float,
+    ceiling: float,
+    max_iter: int = 8,
+) -> list[float]:
+    """Clip probs to [floor, ceiling] then rescale UNPINNED bins so the total equals target.
+
+    Pinned values stay exactly at the safety bound — the bound is the whole point of
+    clipping ("we don't trust the model past here for Kelly sizing"). Drift is absorbed
+    by bins that landed in the interior. If rescaling pushes an unpinned bin past a
+    bound, we re-clip and iterate (converges in 1-2 passes for the 6-bin Kalshi case).
+    """
+    p = [min(max(x, floor), ceiling) for x in probs]
+    for _ in range(max_iter):
+        pinned_total = sum(x for x in p if x <= floor or x >= ceiling)
+        unpinned_idx = [i for i, x in enumerate(p) if floor < x < ceiling]
+        if not unpinned_idx:
+            return p
+        unpinned_sum = sum(p[i] for i in unpinned_idx)
+        if unpinned_sum <= 0:
+            return p
+        budget = target - pinned_total
+        if budget <= 0:
+            return p
+        scale = budget / unpinned_sum
+        if abs(scale - 1.0) < 1e-12:
+            return p
+        nxt = list(p)
+        for i in unpinned_idx:
+            nxt[i] = min(max(nxt[i] * scale, floor), ceiling)
+        if nxt == p:
+            return p
+        p = nxt
+    return p
+
+
 def evaluate_event_nbm(
     event: WeatherEvent,
     forecast: NBMQuantileForecast,
@@ -169,7 +208,9 @@ def evaluate_event_nbm(
     NBM QMD only exposes instantaneous TMP percentiles, so the underlying forecast is a
     peak-hour proxy for daily Tmax/Tmin (see `weather/nbm` module docstring). Bin probs
     come from F(hi) - F(lo) on the piecewise-linear CDF; we clip to [floor, ceiling] so
-    a single near-zero-density bin doesn't blow up downstream Kelly sizing.
+    a single near-zero-density bin doesn't blow up downstream Kelly sizing. After
+    clipping we renormalize the unpinned bins so the six probs still sum to `union`
+    (= 1 - outside_bin_mass), matching the ensemble path's invariant.
 
     The `distribution` field of the returned EventModelOutput holds a samples-backed
     `PredictiveDistribution` synthesized via inverse-CDF interpolation. The samples are
@@ -188,7 +229,7 @@ def evaluate_event_nbm(
     union = float(sum(raw_probs))
     outside = max(0.0, 1.0 - union)
 
-    clipped = [min(max(p, floor), ceiling) for p in raw_probs]
+    clipped = _clip_and_renormalize(raw_probs, target=union, floor=floor, ceiling=ceiling)
     bin_probs = [BinProb(b, p) for b, p in zip(event.bins, clipped, strict=True)]
 
     # Synthesize representative samples by inverting the CDF on a uniform grid.
