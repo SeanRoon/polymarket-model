@@ -29,12 +29,27 @@ from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from polymarket_model.config import settings
 
 
-def _load_private_key(path: Path) -> rsa.RSAPrivateKey:
-    pem = path.read_bytes()
+def _normalize_pem(raw: str) -> bytes:
+    """Accept the PEM whether it's a real multiline string, has Windows line endings,
+    or got pasted as a one-liner with literal `\\n` escape sequences (a common copy
+    mishap from JSON snippets or shell quoting). Returns the canonical bytes."""
+    s = raw.strip()
+    if "-----BEGIN" not in s:
+        raise ValueError("kalshi_private_key_pem doesn't look like a PEM (missing BEGIN marker)")
+    if "\\n" in s and "\n" not in s:
+        s = s.replace("\\n", "\n")
+    return s.encode("ascii")
+
+
+def _load_key_from_pem_bytes(pem: bytes, source: str) -> rsa.RSAPrivateKey:
     key = serialization.load_pem_private_key(pem, password=None)
     if not isinstance(key, rsa.RSAPrivateKey):
-        raise TypeError(f"Expected RSA private key in {path}, got {type(key).__name__}")
+        raise TypeError(f"Expected RSA private key from {source}, got {type(key).__name__}")
     return key
+
+
+def _load_private_key(path: Path) -> rsa.RSAPrivateKey:
+    return _load_key_from_pem_bytes(path.read_bytes(), source=str(path))
 
 
 def sign_message(private_key: rsa.RSAPrivateKey, message: bytes) -> str:
@@ -56,15 +71,23 @@ class KalshiAuth:
 
     @classmethod
     def from_settings(cls) -> KalshiAuth:
-        if not settings.kalshi_api_key_id or not settings.kalshi_private_key_path:
+        if not settings.kalshi_api_key_id:
             raise RuntimeError(
-                "Kalshi auth not configured. Set KALSHI_API_KEY_ID and "
-                "KALSHI_PRIVATE_KEY_PATH in .env (see CLAUDE.md).",
+                "Kalshi auth not configured: KALSHI_API_KEY_ID is unset (see CLAUDE.md).",
             )
-        return cls(
-            key_id=settings.kalshi_api_key_id,
-            private_key=_load_private_key(settings.kalshi_private_key_path),
-        )
+        if settings.kalshi_private_key_pem:
+            key = _load_key_from_pem_bytes(
+                _normalize_pem(settings.kalshi_private_key_pem),
+                source="KALSHI_PRIVATE_KEY_PEM",
+            )
+        elif settings.kalshi_private_key_path:
+            key = _load_private_key(settings.kalshi_private_key_path)
+        else:
+            raise RuntimeError(
+                "Kalshi auth not configured: set either KALSHI_PRIVATE_KEY_PEM "
+                "(inline PEM, recommended) or KALSHI_PRIVATE_KEY_PATH (path to PEM file).",
+            )
+        return cls(key_id=settings.kalshi_api_key_id, private_key=key)
 
     def headers(self, *, method: str, path: str, now_ms: int | None = None) -> dict[str, str]:
         """Build the three required auth headers for the given request.

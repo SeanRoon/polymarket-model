@@ -30,15 +30,23 @@ uv run polymarket exec fills                 # read-only authed: list recent fil
 
 ### Authenticated Kalshi access (read-only)
 
-`polymarket exec ...` calls Kalshi's `/portfolio/*` endpoints, which require RSA-PSS-signed requests. To enable:
+`polymarket exec ...` calls Kalshi's `/portfolio/*` endpoints, which require RSA-PSS-signed requests. To enable, create an API key in the Kalshi dashboard (Profile → API Keys) and download the **private key PEM** when prompted (Kalshi only shows it once). Then add to `.env` (gitignored), via either of two equivalent formats:
 
-1. Create an API key in the Kalshi dashboard (Profile → API Keys). Download the **private key PEM** when prompted — Kalshi only shows it once.
-2. Store the PEM outside the repo (e.g. `~/.kalshi/private_key.pem`); `.gitignore` already covers `*.pem` if it ends up local anyway.
-3. Add to `.env` (gitignored):
-   ```
-   KALSHI_API_KEY_ID=<the UUID-style key id from the dashboard>
-   KALSHI_PRIVATE_KEY_PATH=/absolute/path/to/private_key.pem
-   ```
+**Inline PEM (recommended — no extra file to manage):**
+```
+KALSHI_API_KEY_ID=<the UUID-style key id from the dashboard>
+KALSHI_PRIVATE_KEY_PEM="-----BEGIN RSA PRIVATE KEY-----
+MIIEow...   (paste the whole multi-line PEM between the double quotes)
+...-----END RSA PRIVATE KEY-----"
+```
+
+**Path to a file on disk** (if you'd rather keep the PEM separate, e.g. for multi-app reuse):
+```
+KALSHI_API_KEY_ID=<the UUID-style key id from the dashboard>
+KALSHI_PRIVATE_KEY_PATH=C:/Users/you/.kalshi/private_key.pem
+```
+
+If both are set, inline wins. `_PEM` accepts literal `\n` escapes too, in case the value got JSON-flattened somewhere.
 
 The `execution/` module is **read-only by design**: only GET endpoints are exposed, no order-placement code exists in this repo. Live trading, when it ships, will go in a separate private repo (this one is public for unlimited GHA minutes — order-placement code paths don't belong in public CI).
 
