@@ -33,6 +33,9 @@ dependencies = [
     # eccodes Python wheel bundles libeccodes on Windows but not Linux/macOS.
     # eccodeslib supplies the C binary on those platforms.
     "eccodeslib>=2.44; platform_system != 'Windows'",
+    # RSA-PSS signing for Kalshi authenticated endpoints (read-only for now;
+    # see execution/auth.py — no order placement in this repo).
+    "cryptography>=42",
 ]
 
 [project.scripts]

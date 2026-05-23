@@ -455,5 +455,86 @@ def _df_to_rich_table(df) -> Table:  # type: ignore[name-defined]
     return table
 
 
+# ---------------------------------------------------------------------------
+# `polymarket exec ...` — read-only authenticated calls to Kalshi /portfolio/*.
+# Order placement is intentionally not implemented here; see execution/__init__.py.
+# ---------------------------------------------------------------------------
+exec_app = typer.Typer(help="Read-only authenticated Kalshi calls (balance, positions, fills).", no_args_is_help=True)
+app.add_typer(exec_app, name="exec")
+
+
+def _authed_client():
+    from polymarket_model.execution.client import KalshiAuthedClient
+    try:
+        return KalshiAuthedClient()
+    except RuntimeError as exc:
+        raise typer.BadParameter(str(exc)) from exc
+
+
+@exec_app.command("balance")
+def exec_balance() -> None:
+    """Print the current Kalshi account balance."""
+    configure_logging()
+    console = Console()
+    client = _authed_client()
+    data = client.get_balance() or {}
+    if not data:
+        console.print("[yellow]No balance data returned.[/yellow]")
+        return
+    cents = data.get("balance")
+    if isinstance(cents, (int, float)):
+        console.print(f"balance: ${cents / 100:.2f}  ([dim]{cents} cents[/dim])")
+    else:
+        console.print(data)
+
+
+@exec_app.command("positions")
+def exec_positions() -> None:
+    """List current open positions."""
+    configure_logging()
+    console = Console()
+    client = _authed_client()
+    positions = client.get_positions()
+    if not positions:
+        console.print("[dim]No open positions.[/dim]")
+        return
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    cols = ["ticker", "position", "market_exposure", "realized_pnl", "fees_paid"]
+    for c in cols:
+        table.add_column(c, justify="right" if c != "ticker" else "left")
+    for p in positions:
+        table.add_row(
+            str(p.get("ticker", "")),
+            str(p.get("position", "")),
+            str(p.get("market_exposure", "")),
+            str(p.get("realized_pnl", "")),
+            str(p.get("fees_paid", "")),
+        )
+    console.print(table)
+
+
+@exec_app.command("fills")
+def exec_fills(
+    limit: int = typer.Option(50, "--limit", help="Max number of fills to show (most recent first)."),
+) -> None:
+    """List recent fills."""
+    configure_logging()
+    console = Console()
+    client = _authed_client()
+    fills = client.get_fills()[:limit]
+    if not fills:
+        console.print("[dim]No fills.[/dim]")
+        return
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    cols = ["created_time", "ticker", "side", "action", "count", "yes_price", "no_price"]
+    for c in cols:
+        table.add_column(c, justify="right" if c != "ticker" else "left")
+    for f in fills:
+        table.add_row(*[str(f.get(c, "")) for c in cols])
+    console.print(table)
+
+
 if __name__ == "__main__":
     app()

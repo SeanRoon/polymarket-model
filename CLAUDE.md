@@ -23,7 +23,24 @@ uv run polymarket snapshot                                            # legacy: 
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
 uv run polymarket paper-trade                # replay snapshots → one hypothetical fill per market
+uv run polymarket exec balance               # read-only authed: print account balance (requires KALSHI_* env vars)
+uv run polymarket exec positions             # read-only authed: list open positions
+uv run polymarket exec fills                 # read-only authed: list recent fills
 ```
+
+### Authenticated Kalshi access (read-only)
+
+`polymarket exec ...` calls Kalshi's `/portfolio/*` endpoints, which require RSA-PSS-signed requests. To enable:
+
+1. Create an API key in the Kalshi dashboard (Profile → API Keys). Download the **private key PEM** when prompted — Kalshi only shows it once.
+2. Store the PEM outside the repo (e.g. `~/.kalshi/private_key.pem`); `.gitignore` already covers `*.pem` if it ends up local anyway.
+3. Add to `.env` (gitignored):
+   ```
+   KALSHI_API_KEY_ID=<the UUID-style key id from the dashboard>
+   KALSHI_PRIVATE_KEY_PATH=/absolute/path/to/private_key.pem
+   ```
+
+The `execution/` module is **read-only by design**: only GET endpoints are exposed, no order-placement code exists in this repo. Live trading, when it ships, will go in a separate private repo (this one is public for unlimited GHA minutes — order-placement code paths don't belong in public CI).
 
 Local DuckDB cache is at `data/cache.duckdb` (gitignored). The source-of-truth for price history is Parquet files under `data/snapshots/` written by the GHA cron and committed back to the repo. The source-of-truth for NWS CLI resolutions is `data/resolutions.parquet`, written daily by `.github/workflows/resolve.yml` and also committed back to the repo.
 

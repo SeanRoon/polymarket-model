@@ -50,6 +50,12 @@ class Settings(BaseSettings):
         default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_STATIONS,
     )
 
+    # Kalshi authenticated-API creds. Both must be set to use `polymarket exec` commands.
+    # The private key file must be the RSA PEM Kalshi gave you when you created the API
+    # key in the dashboard. Store it outside the repo (.gitignore already covers *.pem).
+    kalshi_api_key_id: str | None = None
+    kalshi_private_key_path: Path | None = None
+
     @field_validator("signal_excluded_stations", mode="before")
     @classmethod
     def _parse_excluded_stations(cls, v: object) -> frozenset[str]:
