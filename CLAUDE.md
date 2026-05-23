@@ -111,7 +111,7 @@ The Open-Meteo ECMWF 0.25° ensemble has stable systematic errors at some statio
 - **`polymarket compute-bias`** joins `data/snapshots/*` with `data/resolutions.parquet`, computes mean(model_expected_temp − actual) over the trailing window, writes `data/station_biases.parquet`.
 - **`recorder.snapshot_once`** loads that file at startup and shifts samples per event. Corrected rows get `model_name` suffixed with `+biascorr` and a populated `model_bias_applied_f` column so downstream eval can distinguish corrected vs uncorrected predictions.
 - Stations with fewer than 3 paired records get no correction (bias=0). A station that's just been re-enabled won't get clobbered by a near-empty average.
-- The bias file is regenerated daily (or whenever the user runs `compute-bias`) — wire it into `.github/workflows/resolve.yml` once you want it auto-refreshed.
+- `.github/workflows/resolve.yml` runs `compute-bias` daily at 13:00 UTC right after `fetch-resolution`, so the bias file is at most one day stale. The next scheduled `snapshot.yml` after the resolve commit picks up the updated file automatically.
 
 ### Model-validation loop (since 2026-05-09)
 

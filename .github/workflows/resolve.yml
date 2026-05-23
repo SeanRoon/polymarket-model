@@ -48,6 +48,13 @@ jobs:
           LOG_LEVEL: WARNING
         run: uv run polymarket fetch-resolution --no-duckdb --days-back 14 --quiet
 
+      - name: Recompute per-station ensemble bias
+        # Reads the freshly-updated resolutions + accumulated snapshots, writes
+        # data/station_biases.parquet. Next snapshot.yml run picks it up automatically.
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket compute-bias
+
       - name: Score model vs resolutions
         env:
           LOG_LEVEL: WARNING
@@ -69,14 +76,15 @@ jobs:
           set -euxo pipefail
           git config user.name "polymarket-snapshot-bot"
           git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
-          git add data/resolutions.parquet data/paper_trades.parquet \
+          git add data/resolutions.parquet data/station_biases.parquet \
+                  data/paper_trades.parquet \
                   data/reports/evaluation.md data/reports/paper-trades.md
           if git diff --cached --quiet; then
-            echo "No new resolutions, trades, or report changes to commit."
+            echo "No new resolutions, biases, trades, or report changes to commit."
             exit 0
           fi
           ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          git commit -m "Resolutions + eval + paper trades: ${ts}"
+          git commit -m "Resolutions + biases + eval + paper trades: ${ts}"
           for attempt in 1 2 3; do
             if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
               exit 0
