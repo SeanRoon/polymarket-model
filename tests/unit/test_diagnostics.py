@@ -1,0 +1,180 @@
+"""Flag families fire (and stay quiet) on synthetic scored DataFrames."""
+from __future__ import annotations
+
+from datetime import date, timedelta
+
+import pandas as pd
+
+from polymarket_model.diagnostics import (
+    DiagnosticsConfig,
+    Flag,
+    render_markdown,
+    run_diagnostics,
+)
+
+REF = date(2026, 5, 27)
+
+
+def _rows(
+    *,
+    n: int,
+    city: str,
+    kind: str,
+    station: str,
+    brier_model: float,
+    brier_market: float,
+    pnl: float,
+    model_p: float = 0.2,
+    realized_yes: int = 0,
+    nbm_p: float | None = None,
+    brier_nbm: float | None = None,
+    lead_bucket: str = "0-6h",
+    target_date: date = REF,
+) -> list[dict]:
+    """n identical scored rows with the columns run_diagnostics reads."""
+    nan = float("nan")
+    return [
+        {
+            "city": city,
+            "kind": kind,
+            "station_id": station,
+            "lead_bucket": lead_bucket,
+            "target_date_local": target_date,
+            "brier_model": brier_model,
+            "brier_market": brier_market,
+            "pnl": pnl / n,  # so the per-cell sum equals `pnl`
+            "model_p": model_p,
+            "realized_yes": realized_yes,
+            "nbm_p": nbm_p if nbm_p is not None else nan,
+            "brier_nbm": brier_nbm if brier_nbm is not None else nan,
+        }
+        for _ in range(n)
+    ]
+
+
+def test_empty_frame_returns_no_flags():
+    assert run_diagnostics(pd.DataFrame(), reference_date=REF) == []
+
+
+def test_excluded_station_ready_to_reenable():
+    # KMIA is excluded by default; here its model Brier beats the market -> "good" flag.
+    df = pd.DataFrame(_rows(
+        n=200, city="Miami", kind="high", station="KMIA",
+        brier_model=0.04, brier_market=0.05, pnl=2.0,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    codes = {f.code for f in flags}
+    assert "reenable_candidate" in codes
+    f = next(f for f in flags if f.code == "reenable_candidate")
+    assert f.severity == "good"
+    assert "KMIA" in f.suggestion
+
+
+def test_excluded_station_still_bad_holds():
+    df = pd.DataFrame(_rows(
+        n=200, city="Miami", kind="high", station="KMIA",
+        brier_model=0.23, brier_market=0.03, pnl=-7.0,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    assert any(f.code == "exclusion_holds" for f in flags)
+    # An excluded station must never be told to exclude again.
+    assert not any(f.code == "exclude_candidate" for f in flags)
+
+
+def test_included_station_worse_than_market_flags_exclude():
+    # KNYC is not excluded; model worse than market AND losing -> critical exclude_candidate.
+    df = pd.DataFrame(_rows(
+        n=200, city="New York City", kind="high", station="KNYC",
+        brier_model=0.20, brier_market=0.04, pnl=-3.0,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    f = next(f for f in flags if f.code == "exclude_candidate")
+    assert f.severity == "critical"
+    assert "KNYC" in f.suggestion
+
+
+def test_worse_than_market_but_profitable_does_not_exclude():
+    # Higher Brier than market but still positive PnL -> not an exclude candidate.
+    df = pd.DataFrame(_rows(
+        n=200, city="Austin", kind="high", station="KAUS",
+        brier_model=0.20, brier_market=0.04, pnl=+5.0,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    assert not any(f.code == "exclude_candidate" for f in flags)
+
+
+def test_below_min_sample_is_ignored():
+    df = pd.DataFrame(_rows(
+        n=10, city="New York City", kind="high", station="KNYC",
+        brier_model=0.20, brier_market=0.04, pnl=-3.0,
+    ))
+    flags = run_diagnostics(df, DiagnosticsConfig(min_sample=100), reference_date=REF)
+    assert not any(f.code == "exclude_candidate" for f in flags)
+
+
+def test_week_over_week_regression():
+    prior = _rows(
+        n=150, city="Chicago", kind="low", station="KMDW",
+        brier_model=0.10, brier_market=0.10, pnl=0.0,
+        target_date=REF - timedelta(days=10),
+    )
+    recent = _rows(
+        n=150, city="Chicago", kind="low", station="KMDW",
+        brier_model=0.16, brier_market=0.10, pnl=0.0,
+        target_date=REF - timedelta(days=2),
+    )
+    df = pd.DataFrame(prior + recent)
+    flags = run_diagnostics(df, reference_date=REF)
+    f = next(f for f in flags if f.code == "regression_wow")
+    assert f.severity == "warn"
+    assert f.dimension == "Chicago / low"
+
+
+def test_nbm_beats_ecmwf():
+    df = pd.DataFrame(_rows(
+        n=200, city="Denver", kind="high", station="KDEN",
+        brier_model=0.14, brier_market=0.14, pnl=0.0,
+        nbm_p=0.5, brier_nbm=0.10,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    f = next(f for f in flags if f.code == "nbm_beats_ecmwf")
+    assert f.dimension == "Denver / high / 0-6h"
+
+
+def test_calibration_bias_overprediction():
+    # mean(model_p)=0.40 but realized rate=0.10 -> over-predicts YES.
+    df = pd.DataFrame(_rows(
+        n=200, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.10, brier_market=0.10, pnl=0.0,
+        model_p=0.40, realized_yes=0,
+    ) + _rows(
+        n=20, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.10, brier_market=0.10, pnl=0.0,
+        model_p=0.40, realized_yes=1,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    assert any(f.code == "calibration_bias" for f in flags)
+
+
+def test_flags_sorted_critical_first():
+    df = pd.DataFrame(
+        _rows(n=200, city="New York City", kind="high", station="KNYC",
+              brier_model=0.20, brier_market=0.04, pnl=-3.0)
+        + _rows(n=200, city="Denver", kind="high", station="KDEN",
+                brier_model=0.14, brier_market=0.14, pnl=0.0,
+                nbm_p=0.5, brier_nbm=0.10)
+    )
+    flags = run_diagnostics(df, reference_date=REF)
+    severities = [f.severity for f in flags]
+    # critical must precede info in the sorted output.
+    assert severities.index("critical") < severities.index("info")
+
+
+def test_render_markdown_empty_and_nonempty():
+    assert "within thresholds" in render_markdown([])
+    md = render_markdown([
+        Flag("exclude_candidate", "critical", "NYC (KNYC)", "detail | with pipe", "do x"),
+    ])
+    assert "| critical | exclude_candidate |" in md
+    # Pipe in the detail must be escaped so the table doesn't break.
+    assert "detail \\| with pipe" in md

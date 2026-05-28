@@ -71,6 +71,17 @@ jobs:
           uv run polymarket paper-trade \
             --markdown data/reports/paper-trades.md
 
+      - name: Diagnose model health
+        # Deterministic flag engine: model-vs-market, week-over-week regressions,
+        # NBM-vs-ECMWF, and aggregate calibration. Writes diagnostics.md, which the
+        # scheduled model-watch agent reads and interprets.
+        env:
+          LOG_LEVEL: WARNING
+        run: |
+          uv run polymarket diagnose \
+            --days-back 60 \
+            --markdown data/reports/diagnostics.md
+
       - name: Commit + push if changed
         run: |
           set -euxo pipefail
@@ -78,7 +89,8 @@ jobs:
           git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
           git add data/resolutions.parquet data/station_biases.parquet \
                   data/paper_trades.parquet \
-                  data/reports/evaluation.md data/reports/paper-trades.md
+                  data/reports/evaluation.md data/reports/paper-trades.md \
+                  data/reports/diagnostics.md
           if git diff --cached --quiet; then
             echo "No new resolutions, biases, trades, or report changes to commit."
             exit 0

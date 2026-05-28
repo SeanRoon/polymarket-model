@@ -14,6 +14,13 @@ from polymarket_model.calibration.bias import (
     write_biases,
 )
 from polymarket_model.config import settings
+from polymarket_model.diagnostics import (
+    DiagnosticsConfig,
+    run_diagnostics,
+)
+from polymarket_model.diagnostics import (
+    render_markdown as render_diagnostics_markdown,
+)
 from polymarket_model.edge.report import render_table, write_csv, write_markdown
 from polymarket_model.edge.signals import signals_for_event
 from polymarket_model.evaluation import (
@@ -342,6 +349,75 @@ def compare_to_resolved(
             + (("\n\n## By " + ", ".join(by_dims) + "\n\n" + grouped.to_markdown(index=False)) if by_dims else ""),
             encoding="utf-8",
         )
+        console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
+
+
+@app.command()
+def diagnose(
+    days_back: int = typer.Option(
+        60,
+        "--days-back",
+        help="Filter to predictions whose target_date_local is within the last N days.",
+    ),
+    min_sample: int = typer.Option(
+        100,
+        "--min-sample",
+        help="Minimum scored rows in a (city,kind)/station cell before it can raise a flag.",
+    ),
+    min_edge: float = typer.Option(settings.min_edge, "--min-edge"),
+    kelly_multiplier: float = typer.Option(settings.kelly_fraction, "--kelly"),
+    fee: float = typer.Option(settings.fee_assumption, "--fee"),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Path to the canonical resolutions Parquet.",
+    ),
+    markdown_path: Path | None = typer.Option(
+        None,
+        "--markdown",
+        help="Write the flag table to this markdown file (read by the model-watch agent).",
+    ),
+) -> None:
+    """Surface where the model is weak: model-vs-market, regressions, NBM, calibration.
+
+    Deterministic layer of the model-watch loop. Reuses `score_resolutions`, then runs
+    the thresholded `diagnostics` flag families and renders them critical-first.
+    """
+    configure_logging()
+    console = Console()
+
+    cfg = EvaluationConfig(min_edge=min_edge, kelly_multiplier=kelly_multiplier, fee=fee)
+    df = score_resolutions(cfg=cfg, resolutions_parquet=resolutions_parquet)
+    if df.empty:
+        console.print("[yellow]No resolved predictions yet. Run `polymarket fetch-resolution` first.[/yellow]")
+        return
+
+    import pandas as pd
+    cutoff = pd.Timestamp(datetime.now(UTC).date() - timedelta(days=days_back))
+    df = df[pd.to_datetime(df["target_date_local"]) >= cutoff]
+    if df.empty:
+        console.print(f"[yellow]No resolved predictions within the last {days_back} days.[/yellow]")
+        return
+
+    flags = run_diagnostics(df, DiagnosticsConfig(min_sample=min_sample))
+    if not flags:
+        console.print("[green]No flags — model health within thresholds across all monitored cells.[/green]")
+    else:
+        from rich.table import Table
+        _sev_color = {"critical": "red", "warn": "yellow", "good": "green", "info": "dim"}
+        table = Table(show_header=True, header_style="bold", padding=(0, 1))
+        for c in ("severity", "code", "dimension", "detail", "suggestion"):
+            table.add_column(c, overflow="fold")
+        for f in flags:
+            color = _sev_color.get(f.severity, "white")
+            table.add_row(
+                f"[{color}]{f.severity}[/{color}]", f.code, f.dimension, f.detail, f.suggestion
+            )
+        console.print(table)
+
+    if markdown_path is not None:
+        markdown_path.parent.mkdir(parents=True, exist_ok=True)
+        markdown_path.write_text(render_diagnostics_markdown(flags), encoding="utf-8")
         console.print(f"[dim]Wrote markdown: {markdown_path}[/dim]")
 
 
