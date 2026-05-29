@@ -82,15 +82,15 @@ def test_excluded_station_still_bad_holds():
 
 
 def test_included_station_worse_than_market_flags_exclude():
-    # KNYC is not excluded; model worse than market AND losing -> critical exclude_candidate.
+    # KAUS is not excluded; model worse than market AND losing -> critical exclude_candidate.
     df = pd.DataFrame(_rows(
-        n=200, city="New York City", kind="high", station="KNYC",
+        n=200, city="Austin", kind="high", station="KAUS",
         brier_model=0.20, brier_market=0.04, pnl=-3.0,
     ))
     flags = run_diagnostics(df, reference_date=REF)
     f = next(f for f in flags if f.code == "exclude_candidate")
     assert f.severity == "critical"
-    assert "KNYC" in f.suggestion
+    assert "KAUS" in f.suggestion
 
 
 def test_worse_than_market_but_profitable_does_not_exclude():
@@ -158,7 +158,7 @@ def test_calibration_bias_overprediction():
 
 def test_flags_sorted_critical_first():
     df = pd.DataFrame(
-        _rows(n=200, city="New York City", kind="high", station="KNYC",
+        _rows(n=200, city="Austin", kind="high", station="KAUS",
               brier_model=0.20, brier_market=0.04, pnl=-3.0)
         + _rows(n=200, city="Denver", kind="high", station="KDEN",
                 brier_model=0.14, brier_market=0.14, pnl=0.0,
