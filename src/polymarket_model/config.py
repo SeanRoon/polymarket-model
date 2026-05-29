@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # Stations whose model is currently miscalibrated badly enough that emitting
 # signals would lose money in expectation. Revisit when their recent Brier
 # (per `polymarket compare-to-resolved`) is at or below the market's.
-DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA"})
+DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA", "KNYC"})
 
 
 class Settings(BaseSettings):
