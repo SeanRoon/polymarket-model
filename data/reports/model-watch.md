@@ -12,6 +12,19 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-05-31
+
+_Diagnostics source: `data/reports/diagnostics.md` generated 2026-05-30 14:41 UTC (`a78c093`). This is the first analysis of those diagnostics — the 05-30 memo used the prior 05-29 16:42 UTC run. Today's resolve.yml (13:00 UTC) had not yet committed new data at time of writing (latest commit is `5051f57`, a snapshot at 13:00:05 UTC). No code changes in 8-day window — only automated snapshot and resolve commits._
+
+- **WARN `regression_wow` — Chicago/high (+0.074)**: Essentially flat vs +0.073 in the 05-30 memo (rolling 7d window shifted by one day, numbers have converged). This is the 3rd consecutive diagnostics cycle flagging Chicago/high. Per the 05-29 escalation condition, the 7-day watch clock started ~2026-05-29; we are at day 2 of 7 — still in watch mode. Chicago/high cumulative PnL is −3.4 across all lead buckets; paper trades ROI −2.5% (n=121 settled). The 0-6h bucket has the sharpest gap vs market (model 0.161 vs market 0.047) and is where NBM also underperforms the market (NBM 0.139 < ECMWF 0.185 but both lose badly to market 0.047) — Phase 3 calibration is the right lever here, not an exclusion.
+- **`regression_wow` — Chicago/low improving to +0.039** (from +0.063 in 05-30 memo): Positive signal that the Midwest hard-weather week is rolling off the 7-day window. Consistent with genuine forecast miss attribution, not a systematic model failure. Likely clears next week barring another difficult forecast period.
+- **No code changes in window**: 8-day `git log` contains only `Snapshot:` and `Resolutions + biases` commits. Chicago regressions remain attributed to late-May frontal variability — no code commit to blame.
+- **`exclusion_holds` — KLAX (+0.160), KMIA (+0.165), KNYC (+0.067)**: All noise-level shifts (≤0.002 vs 05-30). Correctly excluded; KNYC has the smallest gap and remains Phase 3 re-evaluation priority. KLAX/KMIA still structurally miscalibrated.
+- **`nbm_beats_ecmwf` — Chicago/high/0-6h (gap 0.047)**: Gap widened slightly from 0.040 last run; NYC/high/0-6h unchanged at 0.053. Still ×2 persistent cells; input for Phase 3 ECMWF/NBM blend. Note: even NBM (0.139) loses badly to the market (0.047) on Chicago/high/0-6h — this is a calibration problem, not solely a source-model selection problem.
+- **Overall model healthy**: 804 settled paper trades, 61.1% win rate, 2.57% weighted ROI; Austin and Denver driving positive PnL. Chicago/high is the only book-level drag.
+- **No critical flags → no GitHub issues; no exclude_candidate/reenable_candidate → no draft PR.**
+- **Watch condition**: If Chicago/high `regression_wow` persists at next run (≥+0.050, ~2026-06-05), flag as exclude_candidate and open draft PR.
+
 ## 2026-05-30
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-05-29 16:42 UTC (`ba03155`). Today's resolve.yml (13:00 UTC) has not yet committed; no new resolutions or code changes since this file landed. This is the first analysis of the canonical 16:42 UTC output — the 2026-05-29 memo used an earlier pre-resolve diagnostics run and showed different numbers (Chicago +0.048/+0.051, ×5 nbm_beats_ecmwf)._
