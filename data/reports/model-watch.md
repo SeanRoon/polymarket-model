@@ -12,6 +12,18 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-01
+
+_Diagnostics source: `data/reports/diagnostics.md` generated 2026-05-31 14:46 UTC (`676a664`). No code changes in 8-day window — only automated snapshot and resolve commits._
+
+- **WARN `regression_wow` — Chicago/high (+0.034)**: Improved from +0.074 (05-31 memo). Now **below** the +0.050 escalation threshold set on 2026-05-29; escalation condition not met. Day 4 of the 7-day watch window. Trend is positive — no action. Escalation still triggers if any future run shows ≥+0.050 before the watch closes.
+- **WARN `regression_wow` — Chicago/low (+0.049)**: Slightly worsened from +0.039 (05-31). Nudging the +0.050 escalation threshold but not over it. The 7d rolling Brier is 0.128 vs prior week's 0.079 — recent forecast period has been rough for Chicago lows. No code change to blame; attributed to late-May/early-June frontal variability continuing to roll through the 7d window.
+- **`nbm_beats_ecmwf` — Chicago/high/0-6h (gap 0.046)**: Chronic; essentially unchanged (0.047 → 0.046). Still a Phase 3 ECMWF/NBM blend candidate. **NYC/high/0-6h (gap 0.024)**: Gap narrowed significantly from 0.053 (05-31) — approaching noise level; drop this cell from the high-priority Phase 3 NBM-blend list if it continues tightening.
+- **Paper trades improving**: 841 settled, 61.7% win rate, 3.40% weighted ROI (up from 804 / 61.1% / 2.57% on 05-31). Austin/high (18.5% ROI, n=112) and Denver/high (14.6% ROI, n=122) driving gains. Chicago/high book improved to −1.7% ROI (from ~−2.5% on 05-31). Miami/high worst at −7.8% ROI (n=116) — consistent with KMIA exclusion being correct.
+- **Chronic, no change**: KLAX `exclusion_holds` (gap +0.166), KMIA `exclusion_holds` (gap +0.158), KNYC `exclusion_holds` (gap +0.068) — all correctly excluded; await Phase 3 isotonic calibration. KNYC remains the most likely first re-enable candidate.
+- **No critical flags → no GitHub issues; no exclude_candidate/reenable_candidate → no draft PR.**
+- **Watch condition**: Chicago/high at day 4, below +0.050 — continuing to improve. Chicago/low now co-watches at +0.049, just under threshold. If both are below +0.050 at the next two consecutive runs (~2026-06-03, ~2026-06-05), close the watch. Escalation threshold for either: ≥+0.050 → flag as exclude_candidate, open draft PR.
+
 ## 2026-05-31
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-05-30 14:41 UTC (`a78c093`). This is the first analysis of those diagnostics — the 05-30 memo used the prior 05-29 16:42 UTC run. Today's resolve.yml (13:00 UTC) had not yet committed new data at time of writing (latest commit is `5051f57`, a snapshot at 13:00:05 UTC). No code changes in 8-day window — only automated snapshot and resolve commits._
