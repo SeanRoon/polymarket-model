@@ -12,6 +12,17 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-02
+
+_Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-01 18:39 UTC (`999015c`). 8-day git log: only `Snapshot:` and `Resolutions + biases` commits — no model or config code changes._
+
+- **WARN `regression_wow` — Chicago/high (+0.050): escalation threshold met, but station exclusion is too blunt.** The ≥+0.050 trigger set in the 06-01 memo is hit exactly (rolling 7d Brier 0.158 → 0.208). This is now the 5th+ consecutive diagnostic cycle with a Chicago/high regression flag. Aggregate model-vs-market Brier gap for Chicago/high is ~+0.075 across all lead buckets (weighted by n: 1236/1062/300), slightly exceeding KNYC's +0.071 gap at time of exclusion on 2026-05-29. Paper trades: 55.6% win rate, −2.42% ROI (n=133). **However**, excluding KMDW at the station level would also remove Chicago/low signals, which are profitable (69.75% win rate, +1.84% ROI, n=119). Combined KMDW paper ROI is marginal −0.3%, and historically Chicago/low adds ~+9.0 cumulative evaluation PnL vs Chicago/high's −5.0 — net positive. Station exclusion is the wrong lever here. **No draft PR** (leash: only mechanical exclusion-list edits qualify; cell-level exclusion requires new config infrastructure). → Phase 3 engineering task: add `signal_excluded_cells: frozenset[tuple[str,str]]` (station, kind) to `config.py`. If Chicago/high regression holds ≥+0.050 for two more consecutive runs (~06-04, ~06-06), escalate priority.
+- **`nbm_beats_ecmwf` now spans all 3 lead buckets for Chicago/high** — 0-6h gap 0.050 (up from 0.046), 6-24h gap 0.022 (new), 24-72h gap 0.023 (new). Prior cycle had only 0-6h flagged; this is the first time all three buckets appear simultaneously for any single city/kind. Combined with regression_wow, this confirms ECMWF is the wrong primary source for Chicago/high across all lead horizons. → Strengthens the Phase 3 case for an ECMWF/NBM blend weighted heavily toward NBM on this cell. NYC/high/0-6h gap 0.034 — persistent but narrowing; deprioritize unless it rewidens.
+- **WARN `regression_wow` — Chicago/low (+0.036)**: Below escalation threshold. Paper trades healthy (69.75% win rate, +1.84% ROI). No action; likely residual frontal variability still in the 7d rolling window.
+- **Paper trades (873 settled, +32 since 06-01)**: Win rate 61.7% (stable), weighted ROI 3.34% (vs 3.40% on 06-01 — slight dip as more Chicago/high trades settle). Austin/high (19.2% ROI, n=116) and Denver/high (15.6% ROI, n=128) drive gains. Miami/high worst at −7.81% (n=116), consistent with KMIA exclusion. Excluded-station paper trades (KLAX −1.74%, KMIA −7.81%, KNYC −2.61%) all negative, validating those exclusions.
+- **Chronic, no change**: KLAX `exclusion_holds` gap +0.171 (n=2676), KMIA +0.158 (n=2220), KNYC +0.071 (n=2562) — stable within ±0.002 of prior run. KNYC remains smallest gap and first Phase 3 re-evaluation candidate.
+- **No critical flags → no GitHub issues. No mechanical exclusion-list change applicable → no draft PR.** Phase 3 action items: (1) add per-(station,kind) exclusion config support, (2) NBM/ECMWF blend weighted toward NBM for Chicago/high across all lead buckets.
+
 ## 2026-06-01
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-05-31 14:46 UTC (`676a664`). No code changes in 8-day window — only automated snapshot and resolve commits._
