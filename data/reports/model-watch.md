@@ -12,6 +12,19 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-03
+
+_Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-02 17:24 UTC (`61963b6`). 8-day git log: only `Snapshot:`, `Resolutions + biases`, and `model-watch` commits — no model or config code changes._
+
+- **WARN `regression_wow` — Chicago/high (+0.034)**: DOWN from +0.050 (06-02), now below the escalation threshold. Rolling 7d Brier 0.165 → 0.200. Watch condition progressing: today is run 1 of 2 required consecutive sub-+0.050 readings to close the watch (per 06-01 memo). Close watch if Chicago/high stays below +0.050 at next run (~06-05).
+- **WARN `regression_wow` — Chicago/low (+0.025)**: DOWN from +0.036 (06-02). Healthy improvement; frontal variability rolling off the 7d window.
+- **NEW WARN `regression_wow` — Los Angeles/high (+0.048)**: First appearance for KLAX. Brier worsened 0.190 → 0.238. **No impact on live signals** — KLAX is excluded. Consistent with the pre-existing `exclusion_holds` gap +0.173 (n=2766). No action; does not change the exclusion recommendation.
+- **`nbm_beats_ecmwf` — Chicago/high (all 3 buckets)**: Essentially stable — 0-6h 0.051 (±0.001 vs 06-02), 6-24h 0.027, 24-72h 0.033. Persistent; Phase 3 ECMWF/NBM blend recommendation unchanged.
+- **`nbm_beats_ecmwf` — NYC/high/0-6h (gap 0.029)**: Narrowed from 0.034 (06-02) — continuing downward. NYC/high/24-72h (gap 0.027, n=108) is NEW this cycle. Both are Phase 3 calibration context for KNYC re-evaluation; KNYC remains correctly excluded.
+- **Chronic, no change**: KLAX `exclusion_holds` +0.173 (was +0.171), KMIA +0.158 (stable), KNYC +0.072 (was +0.071) — all within noise. Exclusion list correct; await Phase 3.
+- **Paper trades (906 settled, +33 since 06-02)**: Win rate 62.0% (stable), weighted ROI 3.57% (up from 3.34%). Austin/high 19.6% ROI (n=121), Denver/high 15.8% ROI (n=133) driving gains. Chicago/high −2.7% ROI (n=139, 55.4% win rate) — marginal change from 06-02. Excluded-station shadow trades: KLAX −2.0%, KMIA −7.8%, KNYC −3.2% — all negative, validating exclusions.
+- **No critical flags → no GitHub issues. No exclude_candidate or reenable_candidate → no draft PR.** Watch: Chicago/high (+0.034) and Chicago/low (+0.025) both below +0.050 today (run 1 of 2 to close). Close watch at ~06-05 if both remain below threshold.
+
 ## 2026-06-02
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-01 18:39 UTC (`999015c`). 8-day git log: only `Snapshot:` and `Resolutions + biases` commits — no model or config code changes._
