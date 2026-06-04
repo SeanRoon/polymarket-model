@@ -12,6 +12,19 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-04
+
+_Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-03 18:00 UTC (`99f370a`). 8-day git log: only `Snapshot:`, `Resolutions + biases`, and `model-watch` commits — no model or config code changes._
+
+- **Chicago/high watch CLOSED**: Chicago/high absent from today's warn list — 2nd consecutive sub-+0.050 reading (run 2 of 2, per 06-03 memo). Watch opened 2026-05-29, closed today after 6 days. Paper trades still slightly negative (145 settled, 54.5% win rate, −3.28% ROI) and `nbm_beats_ecmwf` persists on all 3 lead buckets (gaps 0.032–0.056, all widening), but the acute regression is resolved. Phase 3 NBM/ECMWF blend for Chicago/high is now the top engineering priority: once calibration infrastructure lands, weight heavily toward NBM on this cell across all lead horizons.
+- **WARN `regression_wow` — Chicago/low (+0.032)**: Slight uptick from +0.025 (06-03), still well below escalation threshold (+0.050). Paper trades healthy: 71.0% win rate, +3.25% ROI (n=131). No action — residual frontal variability continuing to roll through the 7d window.
+- **WARN `regression_wow` — LA/high (+0.064)**: Slightly worsened from +0.048 (06-03). KLAX excluded; zero live signal impact. Consistent with chronic `exclusion_holds` gap +0.175 (n=2838, was +0.173). No action.
+- **`nbm_beats_ecmwf` — all 5 flagged cells widening simultaneously**: Chicago/high: 0-6h 0.056 (was 0.051), 6-24h 0.032 (was 0.027), 24-72h 0.036 (was 0.033). NYC/high: 0-6h 0.033 (was 0.029), 24-72h 0.032 (was 0.027, n=114 → new enough to take seriously). Consistent week-over-week widening across both cities and all lead horizons — Phase 3 ECMWF/NBM blend for Chicago/high and NYC/high is now well-evidenced.
+- **Regressions**: Chicago/low Brier +0.032 WoW — no code change in window; genuine weather variability. LA/high Brier +0.064 WoW — same; KLAX is a known miscalibrated exclusion.
+- **Paper trades (940 settled, +34 since 06-03)**: Win rate 62.2% (was 62.0%), weighted ROI 3.85% (was 3.57%). Austin/high 20.3% ROI (n=127), Denver/high 16.5% ROI (n=138) driving gains. Chicago/high −3.28% ROI (n=145, 54.5% win rate) — the one book-level drag; consistent with the closed watch interpretation. Shadow trades: KLAX −2.01% (62.1% win rate, ROI still negative), KMIA −7.81% (44.8%), KNYC −3.69% (44.2%) — all negative, validating exclusions.
+- **Chronic, no change**: KLAX `exclusion_holds` gap +0.175 (n=2838), KMIA +0.158 (n=2220), KNYC +0.074 (n=2712, +0.002 vs 06-03 — within noise). Exclusion list correct; await Phase 3.
+- **No critical flags → no GitHub issues. No exclude_candidate or reenable_candidate → no draft PR.**
+
 ## 2026-06-03
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-02 17:24 UTC (`61963b6`). 8-day git log: only `Snapshot:`, `Resolutions + biases`, and `model-watch` commits — no model or config code changes._
