@@ -12,6 +12,16 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-05
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` generated 2026-06-03 18:00 UTC (`99f370a`) as used in the 06-04 memo. The resolve.yml pipeline has been broken since 2026-06-04T13:00Z (see below); no new resolutions, evaluation, or diagnostics have been committed in ~44 hours. 8-day git log: only `Snapshot:` commits since `99f370a` and `ed53b7b` (model-watch 06-04) — no model or config code changes._
+
+- **BLOCKING PIPELINE FAILURE — corrupted Parquet `data/snapshots/2026-06-03/2250.parquet`**: File is 176 bytes (zero-column), committed by snapshot bot at 2026-06-03T22:54:56Z — presumably a failed empty write. `polymarket diagnose` (and `compare-to-resolved`) both throw `InvalidInputException: Need at least one non-root column in the file`. In resolve.yml, the "Diagnose model health" step is the last one before "Commit + push if changed" — a failure there means nothing is committed. Result: two consecutive resolve runs (2026-06-04T13:00Z and 2026-06-05T13:00Z) have failed silently with no committed output. → **Human action required**: delete `data/snapshots/2026-06-03/2250.parquet` from the repo, commit, and push to unblock. Engineering fix: add a guard in `evaluation.py`'s Parquet glob (and the diagnose query) to skip files smaller than ~1 KB or with zero columns, so a bad snapshot write degrades gracefully rather than killing the pipeline.
+- **No new diagnostic signal today**: Stale diagnostics flags are identical to those analyzed in the 06-04 memo. Regressions, exclusion gaps, and NBM cells are all unchanged from that reading.
+- **Regressions (per stale data, same as 06-04)**: Chicago/low +0.032 WoW — no code change in window, genuine weather variability continuing to roll through 7d window. LA/high +0.064 WoW — KLAX excluded, zero live signal impact.
+- **No change since last run (chronic)**: KLAX `exclusion_holds` gap +0.175 (n=2838), KMIA +0.158 (n=2220), KNYC +0.074 (n=2712). `nbm_beats_ecmwf` ×5 cells (Chicago/high all 3 lead buckets gaps 0.056/0.032/0.036; NYC/high 0-6h 0.033 and 24-72h 0.032) — all same as 06-04 reading.
+- **No critical flags in diagnostics table → no GitHub issues. No exclude_candidate or reenable_candidate → no draft PR.** Issue #3 (Phase 3: cell exclusion + NBM/ECMWF blend) remains open. Pipeline must be repaired before the next metrics-driven action is possible.
+
 ## 2026-06-04
 
 _Diagnostics source: `data/reports/diagnostics.md` generated 2026-06-03 18:00 UTC (`99f370a`). 8-day git log: only `Snapshot:`, `Resolutions + biases`, and `model-watch` commits — no model or config code changes._
