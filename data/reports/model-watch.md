@@ -12,6 +12,17 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-06
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` generated 2026-06-03 18:00 UTC (`99f370a`), 3rd consecutive run against the same file. Pipeline has now been broken for ~72 hours. Three consecutive `resolve.yml` runs (2026-06-04T13:00Z, 2026-06-05T13:00Z, 2026-06-06T13:00Z) have failed silently — confirmed by zero "Resolutions + biases" commits since `99f370a`. Corrupted `data/snapshots/2026-06-03/2250.parquet` (176 bytes, zero-column) still present in repo. 8-day git log: only `Snapshot:` commits and the model-watch 06-05 entry since `99f370a` — no model or config code changes._
+
+- **BLOCKING PIPELINE FAILURE — now 72 h old**: `data/snapshots/2026-06-03/2250.parquet` (176 bytes, zero-column, committed 2026-06-03T22:54:56Z) remains in the repo and continues to crash `polymarket diagnose` / `compare-to-resolved` with `InvalidInputException: Need at least one non-root column in the file`. The 06-05 memo was the first flag; two more daily resolve runs have failed since. **Human action still required**: `git rm data/snapshots/2026-06-03/2250.parquet`, commit, push to unblock. Defensive fix recommendation unchanged: add a ≥1 KB / non-zero-column guard in the Parquet glob inside `evaluation.py` and the diagnose query so a bad write degrades gracefully.
+- **No new diagnostic signal**: All 10 flags (2 warn, 8 info) are identical to the 06-05 and 06-04 readings — same stale source file, no delta possible.
+- **Regressions (stale data)**: Chicago/low +0.032 WoW — no code change in window; genuine weather variability continuing to roll through the 7d window. LA/high +0.064 WoW — KLAX excluded, zero live signal impact.
+- **Issue #3 escalation note resolved**: The 06-02 memo set an escalation condition ("if Chicago/high regression holds ≥+0.050 for two more consecutive runs ~06-04, ~06-06, bump Issue #3 priority"). Chicago/high is **absent from today's warn list** (watch was closed on 06-04 after two consecutive sub-+0.050 readings); escalation condition not met. Issue #3 remains open for the Phase 3 engineering items (per-cell exclusion config, NBM/ECMWF blend) but priority bump does not apply.
+- **No change since last run (chronic)**: KLAX `exclusion_holds` gap +0.175 (n=2838), KMIA +0.158 (n=2220), KNYC +0.074 (n=2712). `nbm_beats_ecmwf` ×5 cells (Chicago/high all 3 lead buckets gaps 0.056/0.032/0.036; NYC/high 0-6h 0.033 and 24-72h 0.032) — all same as 06-05/06-04 readings.
+- **No critical flags → no GitHub issues. No exclude_candidate or reenable_candidate → no draft PR.** Pipeline repair is the sole blocking action.
+
 ## 2026-06-05
 
 _Diagnostics source: STALE — same `data/reports/diagnostics.md` generated 2026-06-03 18:00 UTC (`99f370a`) as used in the 06-04 memo. The resolve.yml pipeline has been broken since 2026-06-04T13:00Z (see below); no new resolutions, evaluation, or diagnostics have been committed in ~44 hours. 8-day git log: only `Snapshot:` commits since `99f370a` and `ed53b7b` (model-watch 06-04) — no model or config code changes._
