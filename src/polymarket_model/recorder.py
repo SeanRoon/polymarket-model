@@ -496,11 +496,19 @@ def snapshot_once(
                 nbm_forecasts=nbm_forecasts,
                 bias_applied=bias_applied,
             )
-            parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
-            parquet_path.parent.mkdir(parents=True, exist_ok=True)
-            pq.write_table(tbl, parquet_path, compression="zstd")
-            rows_written = tbl.num_rows
-            bins_with_mid = tbl.num_rows
+            if tbl.num_rows == 0:
+                # No priced bins this bucket (empty books or a failed fetch). Writing an
+                # empty table yields a zero-column Parquet that DuckDB's globbed
+                # read_parquet rejects ("Need at least one non-root column"), which would
+                # break every downstream read path. Skip the write entirely instead.
+                log.warning("parquet_write_skipped_empty", bucket=str(bucket))
+                parquet_path = None
+            else:
+                parquet_path = _parquet_path_for_bucket(parquet_dir, bucket)
+                parquet_path.parent.mkdir(parents=True, exist_ok=True)
+                pq.write_table(tbl, parquet_path, compression="zstd")
+                rows_written = tbl.num_rows
+                bins_with_mid = tbl.num_rows
         except Exception:
             errors += 1
             log.exception("parquet_write_failed", path=str(parquet_path))
