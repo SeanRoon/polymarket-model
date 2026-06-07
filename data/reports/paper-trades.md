@@ -4,24 +4,24 @@
 
 | metric                        | value    |
 |:------------------------------|:---------|
-| total trades                  | 1161     |
-| open                          | 112      |
-| settled                       | 1049     |
-| wins                          | 643      |
-| win rate                      | 61.3%    |
-| Σ pnl_per_dollar (unweighted) | 16.3972  |
-| Σ kelly_sized (settled)       | 153.6305 |
-| weighted pnl ($/bankroll)     | 5.4429   |
-| weighted ROI                  | 3.54%    |
+| total trades                  | 1203     |
+| open                          | 113      |
+| settled                       | 1090     |
+| wins                          | 670      |
+| win rate                      | 61.5%    |
+| Σ pnl_per_dollar (unweighted) | 21.0273  |
+| Σ kelly_sized (settled)       | 160.6094 |
+| weighted pnl ($/bankroll)     | 6.5278   |
+| weighted ROI                  | 4.06%    |
 
 ## By city, kind (settled only)
 
 | city          | kind   |   n |   wins |   win_rate |   kelly_sum |   pnl_weighted_sum |     roi |
 |:--------------|:-------|----:|-------:|-----------:|------------:|-------------------:|--------:|
-| Austin        | high   | 143 |    110 |     0.7692 |     22.7158 |             4.1591 |  0.1831 |
-| Chicago       | high   | 161 |     84 |     0.5217 |     19.3824 |            -0.8253 | -0.0426 |
-| Chicago       | low    | 147 |     99 |     0.6735 |     19.0619 |             0.5904 |  0.0310 |
-| Denver        | high   | 147 |    119 |     0.8095 |     25.1054 |             3.9993 |  0.1593 |
-| Los Angeles   | high   | 163 |    102 |     0.6258 |     32.2762 |            -0.6538 | -0.0203 |
-| Miami         | high   | 132 |     63 |     0.4773 |     19.2124 |            -1.1474 | -0.0597 |
-| New York City | high   | 156 |     66 |     0.4231 |     15.8766 |            -0.6795 | -0.0428 |
+| Austin        | high   | 149 |    116 |     0.7785 |     24.0287 |             4.5921 |  0.1911 |
+| Chicago       | high   | 167 |     87 |     0.5210 |     19.5897 |            -0.7939 | -0.0405 |
+| Chicago       | low    | 152 |    101 |     0.6645 |     19.8559 |             0.4637 |  0.0234 |
+| Denver        | high   | 155 |    125 |     0.8065 |     27.0232 |             4.3570 |  0.1612 |
+| Los Angeles   | high   | 167 |    106 |     0.6347 |     33.1759 |            -0.2221 | -0.0067 |
+| Miami         | high   | 138 |     66 |     0.4783 |     19.7095 |            -1.1525 | -0.0585 |
+| New York City | high   | 162 |     69 |     0.4259 |     17.2265 |            -0.7166 | -0.0416 |
