@@ -12,6 +12,18 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-09 (AM — pre-resolve, stale 06-08 16:50 UTC diagnostics)
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` generated 2026-06-08 16:50 UTC (`8fac006`) as analyzed in the 06-08 PM memo. The 06-09 13:00 UTC `resolve.yml` has not yet committed (latest snapshot is `4cbca42`, 2026-06-09T11:32Z). No new resolutions, evaluation, or bias data since the PM run. 8-day git log: only `Snapshot:` commits after `8df4a82` — zero model, calibration, or config code changes. Running `polymarket diagnose` now would use the same `data/resolutions.parquet` and produce identical flags; not regenerating._
+
+- **`issues` arg active — no new critical flags since PM memo; no issues opened**: The sole critical flag (`exclude_candidate`, Chicago/KMDW) was first logged in the **2026-06-08 PM memo** and is not new to this run. Per step 6, issues are opened for flags *new since the last memo* — this one is not. Issue #3 already tracks the correct engineering fix (per-(station,kind) cell exclusion + NBM/ECMWF blend); opening a new issue would misframe the action as station exclusion, which the PM memo argued is wrong (it would kill profitable Chicago/low).
+
+- **Chicago/low `regression_wow` (+0.071) — protection watch entering second run**: First logged in PM memo as the first crossing of the +0.050 escalation threshold for this cell. Paper trades: +1.68% ROI, 64.6% win, n=158 — still positive but the 7d Brier trend (0.121 → 0.192) is the worst seen for this cell. Combined KMDW paper ROI is now −3.72% (high) + 1.68% (low) = **−2.04% station-level** — the net positive that justified keeping KMDW live is shrinking. **Escalation condition (set now, same as PM):** if Chicago/low `regression_wow` shows ≥+0.050 on *two consecutive future runs* after fresh diagnostics land, the protection argument weakens materially and KMDW station exclusion must be re-examined against the cell-level data.
+
+- **No draft PR**: No `reenable_candidate` flags present. KMDW critical `exclude_candidate` remains the wrong lever for a station-level edit; Issue #3 covers the correct path (per-cell exclusion config).
+
+- **Chronic, one line (all same as PM memo, no change)**: KLAX/KMIA/KNYC `exclusion_holds` confirmed (gaps +0.169/+0.143/+0.087, all deeply negative in shadow paper trades); `nbm_beats_ecmwf` ×6 cells (Chicago/high + NYC/high, all 3 lead buckets) strengthening — NBM/ECMWF blend remains top Phase 3 priority (Issue #3); Austin/high `regression_wow` (+0.076) chronic genuine weather (+19.70% ROI, watch closed); Denver/high +0.050 reverting; NYC/high +0.110 noise (excluded). Next meaningful memo after 06-09 13:00 UTC resolve commits.
+
 ## 2026-06-08 (PM — fresh 16:50 UTC diagnostics)
 
 _Diagnostics source: FRESH — `data/reports/diagnostics.md` generated 2026-06-08 16:50 UTC (`8fac006`). Second run today: the earlier 06-08 memo (`a62bdd1`) analyzed the 06-07 14:54 UTC diagnostics; this is the first analysis of the 06-08 resolve output. 8-day git log: only `Snapshot:`, three `Resolutions + biases` commits, two model-watch memos, and one `src/` change — `4570635` (resolve-workflow zero-column Parquet guard, pipeline plumbing only, no model/calibration/bias logic). All regressions remain weather, not code._
