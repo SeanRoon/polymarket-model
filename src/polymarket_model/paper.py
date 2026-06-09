@@ -78,6 +78,7 @@ class PaperTradingConfig:
     kelly_multiplier: float
     max_lead_hours: int  # skip signals further out than this (model unreliable past ~7d)
     excluded_stations: frozenset[str] = frozenset()
+    excluded_cells: frozenset[tuple[str, str]] = frozenset()
 
 
 def default_config() -> PaperTradingConfig:
@@ -86,6 +87,7 @@ def default_config() -> PaperTradingConfig:
         kelly_multiplier=settings.kelly_fraction,
         max_lead_hours=settings.max_lead_days_for_signal * 24,
         excluded_stations=settings.signal_excluded_stations,
+        excluded_cells=settings.signal_excluded_cells,
     )
 
 
@@ -159,6 +161,7 @@ def _first_crossings(
               AND NOT contains(filename, '_archive_polymarket')
               AND (model_lead_hours IS NULL OR model_lead_hours <= ?)
               AND station_id NOT IN (SELECT UNNEST(?))
+              AND (station_id || '|' || kind) NOT IN (SELECT UNNEST(?))
         ),
         tradeable AS (
             SELECT *
@@ -187,7 +190,13 @@ def _first_crossings(
     try:
         rows = con.execute(
             sql,
-            [cfg.min_edge, cfg.min_edge, cfg.max_lead_hours, sorted(cfg.excluded_stations)],
+            [
+                cfg.min_edge,
+                cfg.min_edge,
+                cfg.max_lead_hours,
+                sorted(cfg.excluded_stations),
+                sorted(f"{s}|{k}" for s, k in cfg.excluded_cells),
+            ],
         ).fetchall()
         cols = [d[0] for d in con.description]
     finally:

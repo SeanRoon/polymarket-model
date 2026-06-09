@@ -135,3 +135,32 @@ def test_excluded_station_emits_no_signals_even_with_strong_edge():
         excluded_stations=set(),
     )
     assert len(sigs_enabled) >= 1
+
+
+def test_excluded_cell_drops_only_matching_kind():
+    """A (station, kind) cell exclusion drops just that book; the station's other kind stays live."""
+    bin_specs = [
+        ("<50", -math.inf, 50.0, True, False),
+        ("50-59", 50.0, 60.0, False, False),
+        (">=60", 60.0, math.inf, False, True),
+    ]
+    market_mids = [0.10, 0.30, 0.60]
+    event, prices = _make_event_with_prices(bin_specs, market_mids)
+    # event is station "KTEST", kind "high".
+    samples = np.concatenate([np.full(10, 40.0), np.full(50, 55.0), np.full(40, 70.0)]).astype(float)
+    dist = PredictiveDistribution(samples=samples, model="test")
+    out = evaluate_event(event, dist, laplace_alpha=0.0)
+    now = datetime(2026, 5, 9, 0, tzinfo=UTC)
+
+    # Excluding the matching cell drops every signal for this event.
+    assert signals_for_event(
+        out, prices, min_edge=0.10, kelly_multiplier=0.25, now=now,
+        excluded_stations=set(), excluded_cells={("KTEST", "high")},
+    ) == []
+
+    # Excluding the *other* kind for the same station leaves this book live.
+    sigs = signals_for_event(
+        out, prices, min_edge=0.10, kelly_multiplier=0.25, now=now,
+        excluded_stations=set(), excluded_cells={("KTEST", "low")},
+    )
+    assert len(sigs) >= 1

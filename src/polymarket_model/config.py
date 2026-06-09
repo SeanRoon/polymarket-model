@@ -14,6 +14,32 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA", "KNYC"})
 
 
+# Finer-grained exclusion than `DEFAULT_SIGNAL_EXCLUDED_STATIONS`: drop signals for a
+# single (station_id, kind) cell while keeping the station's other book live. Needed
+# because a whole-station exclude is too blunt where high and low diverge — e.g. Chicago
+# (KMDW) /high is a persistent loser (cum eval PnL ~-9, negative paper ROI) but /low is
+# profitable, so excluding KMDW would discard the good book. See data/reports/model-watch.md.
+# `kind` is lowercase 'high' | 'low'. A station listed here AND in the station set above is
+# redundant (the station exclude already covers both kinds).
+DEFAULT_SIGNAL_EXCLUDED_CELLS: frozenset[tuple[str, str]] = frozenset({("KMDW", "high")})
+
+
+def _coerce_cell(item: object) -> tuple[str, str]:
+    """Normalize one excluded-cell entry to (station_id, kind_lower).
+
+    Accepts either a (station, kind) pair (list/tuple) or a 'STATION:kind' string.
+    """
+    if isinstance(item, str):
+        station, sep, kind = item.partition(":")
+        if not sep:
+            raise ValueError(f"excluded cell {item!r} must be 'STATION:kind'")
+        return station.strip(), kind.strip().lower()
+    if isinstance(item, (list, tuple)) and len(item) == 2:
+        station, kind = item
+        return str(station).strip(), str(kind).strip().lower()
+    raise ValueError(f"excluded cell {item!r} must be 'STATION:kind' or a (station, kind) pair")
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -49,6 +75,12 @@ class Settings(BaseSettings):
         default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_STATIONS,
     )
 
+    # Per-(station, kind) exclusions. Env override format is comma-separated
+    # 'STATION:kind' pairs, e.g. SIGNAL_EXCLUDED_CELLS="KMDW:high,KORD:low".
+    signal_excluded_cells: frozenset[tuple[str, str]] = Field(
+        default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_CELLS,
+    )
+
     # Kalshi authenticated-API creds. `kalshi_api_key_id` is always required; for the
     # private key supply EITHER the PEM contents directly (recommended — paste into .env
     # between double quotes, multiline OK) OR a path to a PEM file on disk. Inline wins
@@ -67,6 +99,17 @@ class Settings(BaseSettings):
         if isinstance(v, (list, tuple, set, frozenset)):
             return frozenset(str(s) for s in v)
         raise TypeError(f"signal_excluded_stations: unsupported type {type(v)!r}")
+
+    @field_validator("signal_excluded_cells", mode="before")
+    @classmethod
+    def _parse_excluded_cells(cls, v: object) -> frozenset[tuple[str, str]]:
+        if v is None or v == "":
+            return frozenset()
+        if isinstance(v, str):
+            return frozenset(_coerce_cell(s) for s in v.split(",") if s.strip())
+        if isinstance(v, (list, tuple, set, frozenset)):
+            return frozenset(_coerce_cell(s) for s in v)
+        raise TypeError(f"signal_excluded_cells: unsupported type {type(v)!r}")
 
     @property
     def cache_db_path(self) -> Path:

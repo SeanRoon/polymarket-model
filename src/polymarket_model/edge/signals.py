@@ -54,12 +54,16 @@ def signals_for_event(
     kelly_multiplier: float | None = None,
     now: datetime | None = None,
     excluded_stations: Iterable[str] | None = None,
+    excluded_cells: Iterable[tuple[str, str]] | None = None,
 ) -> list[Signal]:
     """Emit one Signal per bin where |model_p - market_mid| >= min_edge.
 
     Events whose resolution station is in `excluded_stations` (defaults to
-    `settings.signal_excluded_stations`) are dropped entirely — the recorder
-    still writes model_p for them so calibration data keeps accumulating.
+    `settings.signal_excluded_stations`), or whose (station, kind) cell is in
+    `excluded_cells` (defaults to `settings.signal_excluded_cells`), are dropped
+    entirely — the recorder still writes model_p for them so calibration data
+    keeps accumulating. Cell exclusion is the finer lever: it drops one book
+    (e.g. Chicago/high) while leaving the station's other book (Chicago/low) live.
     """
     if not model_out.passes_qc or not prices.passes_qc:
         return []
@@ -69,6 +73,13 @@ def signals_for_event(
         else settings.signal_excluded_stations
     )
     if model_out.event.station_id in excluded:
+        return []
+    excluded_cell_set = (
+        frozenset(excluded_cells)
+        if excluded_cells is not None
+        else settings.signal_excluded_cells
+    )
+    if (model_out.event.station_id, model_out.event.kind) in excluded_cell_set:
         return []
     min_edge = min_edge if min_edge is not None else settings.min_edge
     kelly_multiplier = kelly_multiplier if kelly_multiplier is not None else settings.kelly_fraction
