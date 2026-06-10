@@ -246,6 +246,37 @@ def evaluate_event_nbm(
     )
 
 
+def blend_bin_probs(
+    ecmwf: EventModelOutput | None,
+    nbm: EventModelOutput | None,
+    weight_nbm: float,
+) -> dict[str, float]:
+    """Per-bin convex blend of ECMWF and NBM bin probabilities, keyed by market_ticker.
+
+    ``blended_p = (1 - w) * ecmwf_p + w * nbm_p`` for bins present in both sources. If only
+    one source produced a probability for a bin (the other forecast failed for this event),
+    that source's value is used as-is, so the blend degrades gracefully to whichever model is
+    available rather than dropping the bin. ``w`` is clamped to [0, 1]. With ``w == 0`` the
+    result is exactly the ECMWF probabilities (the unchanged default for unlisted cells), so
+    blending is a no-op everywhere except the configured cells. Returns ``{}`` if neither
+    source produced bin probs.
+    """
+    w = min(1.0, max(0.0, float(weight_nbm)))
+    ecmwf_map = {bp.bin.market_ticker: bp.p for bp in ecmwf.bin_probs} if ecmwf else {}
+    nbm_map = {bp.bin.market_ticker: bp.p for bp in nbm.bin_probs} if nbm else {}
+    out: dict[str, float] = {}
+    for ticker in ecmwf_map.keys() | nbm_map.keys():
+        e = ecmwf_map.get(ticker)
+        n = nbm_map.get(ticker)
+        if e is not None and n is not None:
+            out[ticker] = (1.0 - w) * e + w * n
+        elif e is not None:
+            out[ticker] = e
+        elif n is not None:
+            out[ticker] = n
+    return out
+
+
 def assert_bins_cover_support(bins: Iterable[Bin]) -> tuple[bool, str]:
     """Sanity-check that bins partition (-inf, +inf) with no gaps and no overlaps.
     Returns (ok, reason)."""

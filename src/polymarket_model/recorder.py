@@ -26,6 +26,7 @@ from polymarket_model.calibration.bias import (
     apply_bias_to_samples,
     load_biases,
 )
+from polymarket_model.config import settings
 from polymarket_model.logging_setup import get_logger
 from polymarket_model.markets.client import KalshiClient
 from polymarket_model.markets.discovery import WeatherEvent, discover_weather_events
@@ -33,6 +34,7 @@ from polymarket_model.markets.prices import EventPrices, fetch_event_prices, flo
 from polymarket_model.model import (
     EventModelOutput,
     PredictiveDistribution,
+    blend_bin_probs,
     evaluate_event,
     evaluate_event_nbm,
 )
@@ -231,6 +233,13 @@ def _build_snapshot_table(
         nbm_q = nfc.quantiles if nfc is not None else {}
         nbm_cycle_naive = nfc.cycle_time_utc.replace(tzinfo=None) if nfc is not None else None
 
+        # ECMWF/NBM blend: per-bin convex combination weighted by the configured per-cell NBM
+        # weight (0.0 = pure ECMWF for unlisted cells, so blended_p == model_p there). Parquet
+        # is the source of truth for evaluation, so blended_p lives here alongside model_p and
+        # nbm_p — mirroring the Parquet-only model_bias_applied_f column below.
+        blend_w = settings.nbm_blend_weight_for(e.station_id, e.kind)
+        blended_bin_to_p = blend_bin_probs(mo, nmo, blend_w)
+
         for p in ep.prices:
             if p.midpoint is None:
                 continue
@@ -276,6 +285,8 @@ def _build_snapshot_table(
                 "nbm_lead_hours": int(nfc.lead_hours) if nfc else None,
                 "nbm_model_name": nfc.model if nfc else None,
                 "nbm_outside_bin_mass": float(nmo.outside_bin_mass) if nmo else None,
+                "blended_p": blended_bin_to_p.get(p.bin.market_ticker),
+                "blend_weight_nbm": blend_w,
             })
     return pa.Table.from_pylist(rows)
 

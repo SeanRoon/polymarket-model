@@ -194,11 +194,12 @@ def discover_unresolved_from_snapshots(
     return out
 
 
-def _any_snapshot_has_nbm(snapshots_root: Path) -> bool:
-    """Return True if at least one Parquet under `snapshots_root` carries the nbm_p column.
+def _any_snapshot_has_column(snapshots_root: Path, column: str) -> bool:
+    """Return True if at least one recent Parquet under `snapshots_root` carries `column`.
 
-    Walks newest-first and stops on the first hit — typically O(1) once NBM is in regular
-    rotation. Used to decide whether to bind nbm_* in the SQL or substitute NULL literals.
+    Walks newest-first and stops on the first hit — typically O(1) once the column is in
+    regular rotation. Used to decide whether to bind a column in the SQL or substitute a NULL
+    literal, since DuckDB's union_by_name only adds a column when some input file has it.
     """
     if not snapshots_root.exists():
         return False
@@ -209,7 +210,7 @@ def _any_snapshot_has_nbm(snapshots_root: Path) -> bool:
             schema = pq.read_schema(path)
         except Exception:
             continue
-        if "nbm_p" in schema.names:
+        if column in schema.names:
             return True
     return False
 
@@ -238,7 +239,7 @@ def score_resolutions(
     # union_by_name=True only adds a column when at least one input has it; if zero files
     # carry nbm_p the column reference would be unbound. Check the most recent Parquet
     # and substitute NULL literals if NBM hasn't landed yet.
-    has_nbm_in_snapshots = _any_snapshot_has_nbm(snapshots_root)
+    has_nbm_in_snapshots = _any_snapshot_has_column(snapshots_root, "nbm_p")
     if has_nbm_in_snapshots:
         nbm_select = (
             "TRY_CAST(s.nbm_p AS DOUBLE) AS nbm_p, "
@@ -250,6 +251,17 @@ def score_resolutions(
             "CAST(NULL AS DOUBLE) AS nbm_p, "
             "CAST(NULL AS INTEGER) AS nbm_lead_hours, "
             "CAST(NULL AS VARCHAR) AS nbm_model_name,"
+        )
+    # blended_p lands later than nbm_p (Phase 3 ECMWF/NBM blend). Same union_by_name guard.
+    if _any_snapshot_has_column(snapshots_root, "blended_p"):
+        blend_select = (
+            "TRY_CAST(s.blended_p AS DOUBLE) AS blended_p, "
+            "TRY_CAST(s.blend_weight_nbm AS DOUBLE) AS blend_weight_nbm,"
+        )
+    else:
+        blend_select = (
+            "CAST(NULL AS DOUBLE) AS blended_p, "
+            "CAST(NULL AS DOUBLE) AS blend_weight_nbm,"
         )
     sql = f"""
         WITH s AS (
@@ -285,6 +297,7 @@ def score_resolutions(
             s.model_name,
             s.model_outside_bin_mass,
             {nbm_select}
+            {blend_select}
             r.value_f AS realized_value_f
         FROM s
         JOIN r
@@ -377,6 +390,42 @@ def score_resolutions(
     df["direction_nbm"] = direction_nbm_col
     df["kelly_nbm_sized"] = kelly_nbm_col
 
+    # Blend-side metrics (ECMWF/NBM convex blend). blended_p is NaN on snapshots written
+    # before the blend landed; for cells with weight 0 it equals model_p exactly, so the
+    # blend column reproduces the ECMWF metrics there and diverges only on weighted cells.
+    has_blend = df["blended_p"].notna()
+    df["brier_blend"] = float("nan")
+    df["log_loss_blend"] = float("nan")
+    if has_blend.any():
+        df.loc[has_blend, "brier_blend"] = df.loc[has_blend].apply(
+            lambda r: brier(r["blended_p"], r["realized_yes"]), axis=1
+        )
+        df.loc[has_blend, "log_loss_blend"] = df.loc[has_blend].apply(
+            lambda r: log_loss(r["blended_p"], r["realized_yes"], clip=cfg.log_clip), axis=1
+        )
+
+    pnl_blend_col = pd.Series(float("nan"), index=df.index)
+    direction_blend_col = pd.Series([None] * len(df), index=df.index, dtype=object)
+    kelly_blend_col = pd.Series(float("nan"), index=df.index)
+    if has_blend.any():
+        blend_records = df.loc[has_blend].apply(
+            lambda r: simulate_pnl(
+                model_p=float(r["blended_p"]),
+                market_mid=float(r["market_mid"]),
+                realized=int(r["realized_yes"]),
+                cfg=cfg,
+            ),
+            axis=1,
+            result_type="expand",
+        )
+        blend_records.columns = ["pnl_blend", "direction_blend", "kelly_blend_sized"]
+        pnl_blend_col.loc[has_blend] = blend_records["pnl_blend"]
+        direction_blend_col.loc[has_blend] = blend_records["direction_blend"]
+        kelly_blend_col.loc[has_blend] = blend_records["kelly_blend_sized"]
+    df["pnl_blend"] = pnl_blend_col
+    df["direction_blend"] = direction_blend_col
+    df["kelly_blend_sized"] = kelly_blend_col
+
     df["lead_bucket"] = df["model_lead_hours"].apply(lead_bucket)
     return df
 
@@ -393,22 +442,29 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
     if df.empty:
         return df
     has_nbm = "nbm_p" in df.columns
+    has_blend = "blended_p" in df.columns
     if not by:
         out: dict = {
             "n": len(df),
             "n_nbm": int(df["nbm_p"].notna().sum()) if has_nbm else 0,
+            "n_blend": int(df["blended_p"].notna().sum()) if has_blend else 0,
             "brier_model_mean": df["brier_model"].mean(),
             "brier_nbm_mean": df["brier_nbm"].mean() if has_nbm else float("nan"),
+            "brier_blend_mean": df["brier_blend"].mean() if has_blend else float("nan"),
             "brier_market_mean": df["brier_market"].mean(),
             "log_loss_model_mean": df["log_loss_model"].mean(),
             "log_loss_nbm_mean": df["log_loss_nbm"].mean() if has_nbm else float("nan"),
+            "log_loss_blend_mean": df["log_loss_blend"].mean() if has_blend else float("nan"),
             "log_loss_market_mean": df["log_loss_market"].mean(),
             "pnl_sum": df["pnl"].sum(),
             "pnl_nbm_sum": df["pnl_nbm"].sum() if has_nbm else 0.0,
+            "pnl_blend_sum": df["pnl_blend"].sum() if has_blend else 0.0,
             "kelly_sum": df["kelly_sized"].sum(),
             "kelly_nbm_sum": df["kelly_nbm_sized"].sum() if has_nbm else 0.0,
+            "kelly_blend_sum": df["kelly_blend_sized"].sum() if has_blend else 0.0,
             "trades_emitted": int(df["direction"].notna().sum()),
             "trades_nbm_emitted": int(df["direction_nbm"].notna().sum()) if has_nbm else 0,
+            "trades_blend_emitted": int(df["direction_blend"].notna().sum()) if has_blend else 0,
         }
         return pd.DataFrame([out])
 
@@ -431,17 +487,38 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
             "kelly_nbm_sum": ("kelly_nbm_sized", "sum"),
             "trades_nbm_emitted": ("direction_nbm", lambda s: int(s.notna().sum())),
         })
+    if has_blend:
+        agg_kwargs.update({
+            "n_blend": ("blended_p", lambda s: int(s.notna().sum())),
+            "brier_blend_mean": ("brier_blend", "mean"),
+            "log_loss_blend_mean": ("log_loss_blend", "mean"),
+            "pnl_blend_sum": ("pnl_blend", "sum"),
+            "kelly_blend_sum": ("kelly_blend_sized", "sum"),
+            "trades_blend_emitted": ("direction_blend", lambda s: int(s.notna().sum())),
+        })
     grouped = df.groupby(by, dropna=False).agg(**agg_kwargs).reset_index()
-    # Reorder so NBM columns sit next to their ECMWF counterparts in the rendered table.
-    if has_nbm:
+    # Reorder so NBM and blend columns sit next to their ECMWF counterparts in the table.
+    if has_nbm or has_blend:
+        def _triplet(model_col: str, nbm_col: str, blend_col: str, market_col: str | None = None) -> list[str]:
+            cols = [model_col]
+            if has_nbm:
+                cols.append(nbm_col)
+            if has_blend:
+                cols.append(blend_col)
+            if market_col is not None:
+                cols.append(market_col)
+            return cols
+
         col_order = [
             *by,
-            "n", "n_nbm",
-            "brier_model_mean", "brier_nbm_mean", "brier_market_mean",
-            "log_loss_model_mean", "log_loss_nbm_mean", "log_loss_market_mean",
-            "pnl_sum", "pnl_nbm_sum",
-            "kelly_sum", "kelly_nbm_sum",
-            "trades_emitted", "trades_nbm_emitted",
+            "n",
+            *(["n_nbm"] if has_nbm else []),
+            *(["n_blend"] if has_blend else []),
+            *_triplet("brier_model_mean", "brier_nbm_mean", "brier_blend_mean", "brier_market_mean"),
+            *_triplet("log_loss_model_mean", "log_loss_nbm_mean", "log_loss_blend_mean", "log_loss_market_mean"),
+            *_triplet("pnl_sum", "pnl_nbm_sum", "pnl_blend_sum"),
+            *_triplet("kelly_sum", "kelly_nbm_sum", "kelly_blend_sum"),
+            *_triplet("trades_emitted", "trades_nbm_emitted", "trades_blend_emitted"),
         ]
         grouped = grouped[col_order]
     return grouped

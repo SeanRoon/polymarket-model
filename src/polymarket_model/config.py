@@ -40,6 +40,46 @@ def _coerce_cell(item: object) -> tuple[str, str]:
     raise ValueError(f"excluded cell {item!r} must be 'STATION:kind' or a (station, kind) pair")
 
 
+# Per-(station, kind) weight on the NBM probabilistic forecast when blended with the ECMWF
+# ensemble empirical CDF:  blended_p = (1 - w) * ecmwf_p + w * nbm_p.  Cells absent here use
+# `nbm_blend_default_weight` (0.0 = pure ECMWF, i.e. unchanged behavior). NBM has beaten
+# ECMWF across all three lead buckets on Chicago/high (KMDW) and NYC/high (KNYC) for weeks
+# (see data/reports/model-watch.md — "the single highest-leverage Phase 3 deliverable"); a
+# 50/50 blend captures that edge while halving reliance on either source alone. Data-fit
+# optimal weights are deferred to the isotonic-calibration workstream. `kind` is lowercase.
+DEFAULT_NBM_BLEND_WEIGHTS: dict[tuple[str, str], float] = {
+    ("KMDW", "high"): 0.5,
+    ("KNYC", "high"): 0.5,
+}
+
+
+def _coerce_blend_weights(v: object) -> dict[tuple[str, str], float]:
+    """Normalize blend-weight config to {(station, kind_lower): weight}.
+
+    Accepts a dict (keys = (station, kind) pairs or 'STATION:kind' strings), or an env-style
+    string of comma-separated 'STATION:kind:weight' entries, e.g. "KMDW:high:0.5,KNYC:high:0.6".
+    """
+    if v is None or v == "":
+        return {}
+    out: dict[tuple[str, str], float] = {}
+    if isinstance(v, str):
+        for entry in v.split(","):
+            entry = entry.strip()
+            if not entry:
+                continue
+            station, _, rest = entry.partition(":")
+            kind, sep, weight = rest.partition(":")
+            if not sep:
+                raise ValueError(f"blend weight {entry!r} must be 'STATION:kind:weight'")
+            out[(station.strip(), kind.strip().lower())] = float(weight)
+        return out
+    if isinstance(v, dict):
+        for k, weight in v.items():
+            out[_coerce_cell(k)] = float(weight)
+        return out
+    raise TypeError(f"nbm_blend_weights: unsupported type {type(v)!r}")
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -81,6 +121,14 @@ class Settings(BaseSettings):
         default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_CELLS,
     )
 
+    # ECMWF/NBM blend. `nbm_blend_weights` overrides the per-cell NBM weight; cells absent
+    # fall back to `nbm_blend_default_weight`. Env override for the map is comma-separated
+    # 'STATION:kind:weight', e.g. NBM_BLEND_WEIGHTS="KMDW:high:0.5,KNYC:high:0.6".
+    nbm_blend_default_weight: float = 0.0
+    nbm_blend_weights: dict[tuple[str, str], float] = Field(
+        default_factory=lambda: dict(DEFAULT_NBM_BLEND_WEIGHTS),
+    )
+
     # Kalshi authenticated-API creds. `kalshi_api_key_id` is always required; for the
     # private key supply EITHER the PEM contents directly (recommended — paste into .env
     # between double quotes, multiline OK) OR a path to a PEM file on disk. Inline wins
@@ -110,6 +158,22 @@ class Settings(BaseSettings):
         if isinstance(v, (list, tuple, set, frozenset)):
             return frozenset(_coerce_cell(s) for s in v)
         raise TypeError(f"signal_excluded_cells: unsupported type {type(v)!r}")
+
+    @field_validator("nbm_blend_weights", mode="before")
+    @classmethod
+    def _parse_blend_weights(cls, v: object) -> dict[tuple[str, str], float]:
+        return _coerce_blend_weights(v)
+
+    def nbm_blend_weight_for(self, station_id: str | None, kind: str | None) -> float:
+        """NBM blend weight for a cell, falling back to the global default.
+
+        Returns 0.0 (pure ECMWF) for any cell not listed when the default is unchanged.
+        """
+        if not station_id or not kind:
+            return self.nbm_blend_default_weight
+        return self.nbm_blend_weights.get(
+            (station_id, kind.lower()), self.nbm_blend_default_weight
+        )
 
     @property
     def cache_db_path(self) -> Path:
