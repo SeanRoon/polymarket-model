@@ -55,6 +55,14 @@ jobs:
           LOG_LEVEL: WARNING
         run: uv run polymarket compute-bias
 
+      - name: Recompute isotonic calibration (KLAX/KMIA pilot)
+        # Phase 3 pilot: fits per-(station,kind) isotonic maps for the marine stations
+        # and writes data/station_calibration.parquet. The recorder applies it as a
+        # recorded-only `calibrated_p` column; live signals are unchanged.
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket compute-calibration
+
       - name: Score model vs resolutions
         env:
           LOG_LEVEL: WARNING
@@ -88,6 +96,7 @@ jobs:
           git config user.name "polymarket-snapshot-bot"
           git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
           git add data/resolutions.parquet data/station_biases.parquet \
+                  data/station_calibration.parquet \
                   data/paper_trades.parquet \
                   data/reports/evaluation.md data/reports/paper-trades.md \
                   data/reports/diagnostics.md

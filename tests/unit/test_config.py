@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import pytest
 
-from polymarket_model.config import DEFAULT_SIGNAL_EXCLUDED_CELLS, Settings
+from polymarket_model.config import (
+    DEFAULT_CALIBRATION_STATIONS,
+    DEFAULT_SIGNAL_EXCLUDED_CELLS,
+    Settings,
+)
 
 
 def test_default_excludes_chicago_high():
@@ -62,3 +66,18 @@ def test_blend_weight_none_inputs_use_default():
 def test_blend_weights_malformed_raises():
     with pytest.raises(ValueError):
         Settings(nbm_blend_weights="KMDW:high")  # missing ':weight'
+
+
+def test_calibration_stations_default_is_marine_pilot():
+    s = Settings()
+    assert s.calibration_stations == DEFAULT_CALIBRATION_STATIONS
+    assert s.calibration_stations == frozenset({"KLAX", "KMIA"})
+
+
+def test_calibration_stations_parses_env_string():
+    s = Settings(calibration_stations="KLAX, KMIA, KNYC")
+    assert s.calibration_stations == frozenset({"KLAX", "KMIA", "KNYC"})
+
+
+def test_calibration_stations_empty_string_disables():
+    assert Settings(calibration_stations="").calibration_stations == frozenset()

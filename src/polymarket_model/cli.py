@@ -13,6 +13,11 @@ from polymarket_model.calibration.bias import (
     compute_station_biases,
     write_biases,
 )
+from polymarket_model.calibration.isotonic import (
+    DEFAULT_CALIBRATION_PARQUET,
+    fit_station_calibrations,
+    write_calibrations,
+)
 from polymarket_model.config import settings
 from polymarket_model.diagnostics import (
     DiagnosticsConfig,
@@ -471,6 +476,83 @@ def compute_bias(
         table.add_row(b.station_id, b.kind, f"{b.bias_f:+.2f}", str(b.n_days_used))
     console.print(table)
     console.print(f"[dim]Wrote {biases_parquet}[/dim]")
+
+
+@app.command("compute-calibration")
+def compute_calibration(
+    days_back: int = typer.Option(
+        60,
+        "--days-back",
+        help="Use paired (model_p, outcome) records whose target_date_local is within N days.",
+    ),
+    min_samples: int = typer.Option(
+        100,
+        "--min-samples",
+        help="Minimum paired records per (station,kind) before a calibration map is emitted.",
+    ),
+    stations: str = typer.Option(
+        "",
+        "--stations",
+        help="Comma-separated station ids to calibrate. Empty = settings.calibration_stations.",
+    ),
+    snapshots_root: Path = typer.Option(
+        settings.data_dir / "snapshots",
+        "--snapshots-root",
+        help="Root directory holding YYYY-MM-DD/HHMM.parquet snapshots.",
+    ),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Canonical NWS-CLI resolutions Parquet.",
+    ),
+    calibration_parquet: Path = typer.Option(
+        DEFAULT_CALIBRATION_PARQUET,
+        "--calibration-parquet",
+        help="Output Parquet for isotonic maps. Read by the recorder on next snapshot.",
+    ),
+) -> None:
+    """Fit per-(station,kind) isotonic recalibration from snapshot vs resolution pairs.
+
+    Phase 3 pilot: marine stations KLAX/KMIA. Writes `data/station_calibration.parquet`;
+    the recorder applies it as a recorded `calibrated_p` column (signals are unchanged).
+    The before/after Brier shown is IN-SAMPLE — a sanity check, not the real evaluation,
+    which comes from the forward-recorded calibrated_p resolving over the next weeks.
+    """
+    configure_logging()
+    console = Console()
+    target = (
+        frozenset(s.strip() for s in stations.split(",") if s.strip())
+        if stations
+        else settings.calibration_stations
+    )
+    fits = fit_station_calibrations(
+        snapshots_root=snapshots_root,
+        resolutions_parquet=resolutions_parquet,
+        stations=target,
+        days_back=days_back,
+        min_samples=min_samples,
+    )
+    write_calibrations(calibration_parquet, fits)
+    if not fits:
+        console.print(
+            f"[yellow]No calibration maps (need >= {min_samples} paired records per "
+            f"(station,kind) in {sorted(target)}).[/yellow]"
+        )
+        console.print(f"[dim]Wrote empty: {calibration_parquet}[/dim]")
+        return
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    for c in ("station_id", "kind", "n_samples", "brier_before", "brier_after", "delta"):
+        table.add_column(c, justify="right" if c not in ("station_id", "kind") else "left")
+    for f in fits:
+        delta = f.brier_after - f.brier_before
+        table.add_row(
+            f.station_id, f.kind, str(f.n_samples),
+            f"{f.brier_before:.4f}", f"{f.brier_after:.4f}", f"{delta:+.4f}",
+        )
+    console.print(table)
+    console.print("[dim]Brier before/after are in-sample; real signal is forward calibrated_p.[/dim]")
+    console.print(f"[dim]Wrote {calibration_parquet}[/dim]")
 
 
 @app.command("paper-trade")
