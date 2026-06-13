@@ -438,11 +438,25 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
     NBM columns are populated only on the subset of rows where nbm_p exists; pandas
     mean/sum skip NaN by default, so the NBM averages reflect that smaller denominator
     automatically. `n_nbm` reports how many rows backed the NBM aggregates.
+
+    `brier_blend_mean` is averaged over only the `n_blend` rows where blended_p exists,
+    so comparing it against `brier_model_mean` / `brier_nbm_mean` (full-sample denominators)
+    is apples-to-oranges. The `brier_*_on_blend` columns give the like-for-like comparison:
+    the ECMWF and NBM Brier restricted to exactly those blend rows.
     """
     if df.empty:
         return df
     has_nbm = "nbm_p" in df.columns
     has_blend = "blended_p" in df.columns
+    if has_blend:
+        # Non-mutating: add per-row ECMWF/NBM Brier masked to the blend rows, so the
+        # grouped/overall means below land on the same denominator as brier_blend_mean.
+        df = df.copy()
+        blend_rows = df["blended_p"].notna()
+        df["brier_model_on_blend"] = df["brier_model"].where(blend_rows)
+        df["brier_nbm_on_blend"] = (
+            df["brier_nbm"].where(blend_rows) if has_nbm else float("nan")
+        )
     if not by:
         out: dict = {
             "n": len(df),
@@ -451,6 +465,8 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
             "brier_model_mean": df["brier_model"].mean(),
             "brier_nbm_mean": df["brier_nbm"].mean() if has_nbm else float("nan"),
             "brier_blend_mean": df["brier_blend"].mean() if has_blend else float("nan"),
+            "brier_model_on_blend": df["brier_model_on_blend"].mean() if has_blend else float("nan"),
+            "brier_nbm_on_blend": df["brier_nbm_on_blend"].mean() if has_blend else float("nan"),
             "brier_market_mean": df["brier_market"].mean(),
             "log_loss_model_mean": df["log_loss_model"].mean(),
             "log_loss_nbm_mean": df["log_loss_nbm"].mean() if has_nbm else float("nan"),
@@ -491,6 +507,8 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
         agg_kwargs.update({
             "n_blend": ("blended_p", lambda s: int(s.notna().sum())),
             "brier_blend_mean": ("brier_blend", "mean"),
+            "brier_model_on_blend": ("brier_model_on_blend", "mean"),
+            "brier_nbm_on_blend": ("brier_nbm_on_blend", "mean"),
             "log_loss_blend_mean": ("log_loss_blend", "mean"),
             "pnl_blend_sum": ("pnl_blend", "sum"),
             "kelly_blend_sum": ("kelly_blend_sized", "sum"),
@@ -509,12 +527,21 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
                 cols.append(market_col)
             return cols
 
+        # Brier group: model / nbm / blend (full-sample), then the like-for-like
+        # blend-row-restricted ECMWF & NBM Brier, then market.
+        brier_group = _triplet("brier_model_mean", "brier_nbm_mean", "brier_blend_mean")
+        if has_blend:
+            brier_group.append("brier_model_on_blend")
+            if has_nbm:
+                brier_group.append("brier_nbm_on_blend")
+        brier_group.append("brier_market_mean")
+
         col_order = [
             *by,
             "n",
             *(["n_nbm"] if has_nbm else []),
             *(["n_blend"] if has_blend else []),
-            *_triplet("brier_model_mean", "brier_nbm_mean", "brier_blend_mean", "brier_market_mean"),
+            *brier_group,
             *_triplet("log_loss_model_mean", "log_loss_nbm_mean", "log_loss_blend_mean", "log_loss_market_mean"),
             *_triplet("pnl_sum", "pnl_nbm_sum", "pnl_blend_sum"),
             *_triplet("kelly_sum", "kelly_nbm_sum", "kelly_blend_sum"),

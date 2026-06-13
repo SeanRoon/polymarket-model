@@ -60,17 +60,24 @@ def test_lead_bucket(hours, label):
     assert lead_bucket(hours) == label
 
 
-def _synthetic_score_df(n_total: int, n_with_nbm: int) -> pd.DataFrame:
-    """Build a minimal score_resolutions-shaped DataFrame for aggregate() tests."""
+def _synthetic_score_df(n_total: int, n_with_nbm: int, n_with_blend: int = 0) -> pd.DataFrame:
+    """Build a minimal score_resolutions-shaped DataFrame for aggregate() tests.
+
+    Blend rows (the first `n_with_blend`, a subset of the NBM rows) get a deliberately
+    *worse* ECMWF Brier (0.32) than the non-blend rows (0.20) so that the full-sample
+    `brier_model_mean` and the blend-row-restricted `brier_model_on_blend` differ — that
+    gap is exactly the reporting artifact the on_blend columns exist to expose.
+    """
     nan = float("nan")
     rows = []
     for i in range(n_total):
         has_nbm = i < n_with_nbm
+        has_blend = i < n_with_blend
         rows.append({
             "city": "Miami",
             "kind": "high",
             "lead_bucket": "0-6h",
-            "brier_model": 0.20,
+            "brier_model": 0.32 if has_blend else 0.20,
             "brier_market": 0.05,
             "log_loss_model": 0.50,
             "log_loss_market": 0.15,
@@ -84,6 +91,15 @@ def _synthetic_score_df(n_total: int, n_with_nbm: int) -> pd.DataFrame:
             "direction_nbm": "BUY_YES" if has_nbm else None,
             "kelly_nbm_sized": 1.0 if has_nbm else nan,
         })
+        if n_with_blend:
+            rows[-1].update({
+                "blended_p": 0.55 if has_blend else nan,
+                "brier_blend": 0.18 if has_blend else nan,
+                "log_loss_blend": 0.40 if has_blend else nan,
+                "pnl_blend": 0.15 if has_blend else nan,
+                "direction_blend": "BUY_YES" if has_blend else None,
+                "kelly_blend_sized": 1.0 if has_blend else nan,
+            })
     return pd.DataFrame(rows)
 
 
@@ -113,6 +129,35 @@ def test_aggregate_grouped_column_order_puts_nbm_next_to_ecmwf():
     assert cols.index("log_loss_nbm_mean") == cols.index("log_loss_model_mean") + 1
     assert cols.index("pnl_nbm_sum") == cols.index("pnl_sum") + 1
     assert cols.index("n_nbm") == cols.index("n") + 1
+
+
+def test_aggregate_blend_on_blend_columns_use_blend_denominator():
+    # 10 rows, 6 with NBM, 4 of those with a blend. Blend rows have brier_model=0.32,
+    # the other 6 have 0.20 -> full-sample model mean is a mix, on_blend mean is 0.32.
+    df = _synthetic_score_df(n_total=10, n_with_nbm=6, n_with_blend=4)
+    out = aggregate(df, by=None)
+    row = out.iloc[0]
+    assert row["n"] == 10
+    assert row["n_blend"] == 4
+    # Full-sample ECMWF Brier mixes blend (0.32) and non-blend (0.20) rows.
+    assert row["brier_model_mean"] == pytest.approx((0.32 * 4 + 0.20 * 6) / 10)
+    # Like-for-like: ECMWF/NBM Brier restricted to exactly the 4 blend rows.
+    assert row["brier_model_on_blend"] == pytest.approx(0.32)
+    assert row["brier_nbm_on_blend"] == pytest.approx(0.08)
+    assert row["brier_blend_mean"] == pytest.approx(0.18)
+
+
+def test_aggregate_grouped_on_blend_columns_sit_after_blend():
+    df = _synthetic_score_df(n_total=10, n_with_nbm=6, n_with_blend=4)
+    out = aggregate(df, by=["city", "kind", "lead_bucket"])
+    cols = list(out.columns)
+    # on_blend Brier columns immediately follow brier_blend_mean, before market.
+    assert cols.index("brier_model_on_blend") == cols.index("brier_blend_mean") + 1
+    assert cols.index("brier_nbm_on_blend") == cols.index("brier_model_on_blend") + 1
+    assert cols.index("brier_market_mean") == cols.index("brier_nbm_on_blend") + 1
+    row = out.iloc[0]
+    assert row["brier_model_on_blend"] == pytest.approx(0.32)
+    assert row["brier_blend_mean"] == pytest.approx(0.18)
 
 
 def test_aggregate_handles_zero_nbm_rows_gracefully():
