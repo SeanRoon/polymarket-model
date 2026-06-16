@@ -12,6 +12,15 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-16
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` from 2026-06-15 17:58 UTC (`c24f1da`), already fully analyzed in the 06-15 PM entry below. No `Resolutions + biases` commit has landed yet today; resolve.yml's `0 13 * * *` cron hadn't fired as of 13:35 UTC when this run checked. Recent history shows the job landing anywhere from 14:53 to 17:58 UTC on different days (jitter, not a stall) — confirmed `list_workflow_runs` shows no failed runs, just irregular timing, so not flagging. Local container's `main` had drifted 50 commits behind `origin/main` (stale checkout); hard-synced after content-diffing to confirm no unique work was lost. 8-day git window since the last memo: two `Snapshot:` commits only — zero new model/calibration/config code._
+
+- **No new flags** — table unchanged from 06-15 PM (1 critical, 1 warn, 9 info). KMDW `exclude_candidate` still open as Issue #5 (diagnostic artifact, station-exclude remains the wrong lever; no new action). LA/high `regression_wow` (+0.048, KLAX excluded) unchanged — chronic, zero live impact.
+- **No GitHub issue opened** — no critical flag is new since the last memo (Issue #5 already covers KMDW). **No draft PR** — no new `exclude_candidate`/`reenable_candidate`.
+- **Open items, unchanged**: draft PR #4 (isotonic pilot, KLAX/KMIA) awaiting human review; stale `model-watch/exclude-knyc` branch (leftover from merged PR #1, no action).
+- **Watch carried forward**: Chicago/low (KMDW/low) paper ROI was 1.92% (n=191, 64.40% win) as of 06-15 PM — above the 1.0%/60% escalation thresholds from Issue #5. Re-check on the next fresh diagnostics read.
+
 ## 2026-06-15 (PM — fresh 06-15 17:58 UTC diagnostics)
 
 _Diagnostics source: FRESH — `data/reports/diagnostics.md` generated 2026-06-15 17:58 UTC (`c24f1da`). Second run today: the 06-15 AM memo (below) analyzed the 06-14 15:07 UTC diagnostics; this is the first analysis of today's 17:58 UTC resolve output. Pulled local clone (24 commits behind at session start, HEAD `bb7ae77`) to current `7b145ea`. 8-day git window: only `Snapshot:`/`Resolutions`/`model-watch` commits plus the three Phase-3 code commits already covered in prior windows (`bb7ae77` 06-13 eval columns; `b62e046`/`85b19d7` 06-10 blend/cell-exclude) — **zero new model/calibration/config code**. Open: Issue #5 (KMDW exclude_candidate, opened by AM run), draft PR #4 (isotonic pilot, out of scope). Args empty → **no GitHub issues this run**._
