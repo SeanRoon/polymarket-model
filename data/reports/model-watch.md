@@ -12,6 +12,17 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-17
+
+_Diagnostics source: FRESH — `data/reports/diagnostics.md` generated 2026-06-16 18:05 UTC (`d4a0bfc`), first analysis of this file (the 06-16 memo used stale 06-15 17:58 UTC diagnostics). 8-day git window since the 06-16 memo (`7a9bc53`): only `Snapshot:` commits plus the one `Resolutions + biases + eval + paper trades` commit (`d4a0bfc`) — zero model/calibration/config code changes. Issue #5 (KMDW exclude_candidate) still open; draft PR #4 (isotonic pilot, KLAX/KMIA) still awaiting human review — both out of scope to act on further._
+
+- **CRITICAL `exclude_candidate` — KMDW persists, PnL deficit narrowing (NOT new)**: gap +0.066 (was +0.067), PnL −0.93 (was −2.83 on 06-15 PM), n=7,722. Same diagnostic artifact tracked all week — `diagnose` nets KMDW/high's cell-excluded losses (paper ROI −2.45%, n=214) against KMDW/low's gains (paper ROI +1.89%, n=197) into a station total; KMDW/high is already cell-excluded (`85b19d7`) so live-signal impact is zero. Already tracked by Issue #5 — no new issue. The narrowing deficit is a positive trend but doesn't change the diagnosis. → No draft PR (station exclusion remains the wrong lever).
+- **Chicago/low ROI watch condition (Issue #5) NOT triggered**: today 1.89% ROI (n=197), 64.47% win — both comfortably clear the 1.0%/60% escalation thresholds, essentially flat vs 06-15 PM (1.92%/64.40%). No escalation.
+- **WARN `regression_wow` — LA/high (+0.042)**: Brier 0.246→0.288, essentially flat vs the chronic reading (+0.048 on 06-15/06-16). KLAX excluded — zero live impact; `exclusion_holds` gap +0.181 unchanged. Chronic — one line.
+- **`exclusion_holds` unchanged**: KLAX +0.181, KMIA +0.121, KNYC +0.098 — all noise-level vs 06-15 PM (+0.181/+0.122/+0.099). Far from re-enable territory.
+- **Paper trades**: 1,426 settled (up from 1,386), weighted ROI **5.47%** (new high, up from 5.31%). Austin/high +22.10% (n=196, 83.2% win) and Denver/high +20.54% (n=207, 85.5% win) lead. Shadow/excluded books all still negative: KLAX −2.04% (n=209), KMIA −5.53% (n=188), KNYC −4.73% (n=215) — exclusions validated.
+- **No new GitHub issue** (KMDW already tracked by Issue #5; not new since last memo). **No draft PR** (no new `exclude_candidate`/`reenable_candidate`; KMDW remains a diagnostic artifact, not a mechanical fix).
+
 ## 2026-06-16
 
 _Diagnostics source: STALE — same `data/reports/diagnostics.md` from 2026-06-15 17:58 UTC (`c24f1da`), already fully analyzed in the 06-15 PM entry below. No `Resolutions + biases` commit has landed yet today; resolve.yml's `0 13 * * *` cron hadn't fired as of 13:35 UTC when this run checked. Recent history shows the job landing anywhere from 14:53 to 17:58 UTC on different days (jitter, not a stall) — confirmed `list_workflow_runs` shows no failed runs, just irregular timing, so not flagging. Local container's `main` had drifted 50 commits behind `origin/main` (stale checkout); hard-synced after content-diffing to confirm no unique work was lost. 8-day git window since the last memo: two `Snapshot:` commits only — zero new model/calibration/config code._
