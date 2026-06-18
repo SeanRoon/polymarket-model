@@ -31,15 +31,49 @@ log = get_logger(__name__)
 # the lat/lon/timezone for each.
 WEATHER_SERIES: dict[str, tuple[str, str, str]] = {
     # series_ticker: (city, kind, station_id)
-    "KXHIGHNY":  ("New York City", "high", "KNYC"),
-    "KXLOWNY":   ("New York City", "low",  "KNYC"),
-    "KXHIGHCHI": ("Chicago",       "high", "KMDW"),
-    "KXLOWTCHI": ("Chicago",       "low",  "KMDW"),
-    "KXHIGHMIA": ("Miami",         "high", "KMIA"),
-    "KXLOWMIA":  ("Miami",         "low",  "KMIA"),
-    "KXHIGHLAX": ("Los Angeles",   "high", "KLAX"),
-    "KXHIGHAUS": ("Austin",        "high", "KAUS"),
-    "KXHIGHDEN": ("Denver",        "high", "KDEN"),
+    # station_id is the airport whose NWS CLI Kalshi settles against — verified
+    # against each series' settlement_sources (issuedby office == station minus 'K').
+    # Note the non-obvious picks: Dallas settles at DFW (not Love Field), Houston at
+    # Hobby (not Intercontinental).
+    "KXHIGHNY":   ("New York City", "high", "KNYC"),
+    "KXLOWNY":    ("New York City", "low",  "KNYC"),
+    "KXHIGHCHI":  ("Chicago",       "high", "KMDW"),
+    "KXLOWTCHI":  ("Chicago",       "low",  "KMDW"),
+    "KXHIGHMIA":  ("Miami",         "high", "KMIA"),
+    "KXLOWMIA":   ("Miami",         "low",  "KMIA"),
+    "KXHIGHLAX":  ("Los Angeles",   "high", "KLAX"),
+    "KXLOWTLAX":  ("Los Angeles",   "low",  "KLAX"),
+    "KXHIGHAUS":  ("Austin",        "high", "KAUS"),
+    "KXLOWTAUS":  ("Austin",        "low",  "KAUS"),
+    "KXHIGHDEN":  ("Denver",        "high", "KDEN"),
+    "KXLOWTDEN":  ("Denver",        "low",  "KDEN"),
+    # Cities added 2026-06-18 (data collection only; models pending ~30d of pairs).
+    "KXHIGHTATL": ("Atlanta",       "high", "KATL"),
+    "KXLOWTATL":  ("Atlanta",       "low",  "KATL"),
+    "KXHIGHTBOS": ("Boston",        "high", "KBOS"),
+    "KXLOWTBOS":  ("Boston",        "low",  "KBOS"),
+    "KXHIGHTDAL": ("Dallas",        "high", "KDFW"),
+    "KXLOWTDAL":  ("Dallas",        "low",  "KDFW"),
+    "KXHIGHTDC":  ("Washington DC", "high", "KDCA"),
+    "KXLOWTDC":   ("Washington DC", "low",  "KDCA"),
+    "KXHIGHTHOU": ("Houston",       "high", "KHOU"),
+    "KXLOWTHOU":  ("Houston",       "low",  "KHOU"),
+    "KXHIGHTLV":  ("Las Vegas",     "high", "KLAS"),
+    "KXLOWTLV":   ("Las Vegas",     "low",  "KLAS"),
+    "KXHIGHTMIN": ("Minneapolis",   "high", "KMSP"),
+    "KXLOWTMIN":  ("Minneapolis",   "low",  "KMSP"),
+    "KXHIGHTNOLA":("New Orleans",   "high", "KMSY"),
+    "KXLOWTNOLA": ("New Orleans",   "low",  "KMSY"),
+    "KXHIGHTOKC": ("Oklahoma City", "high", "KOKC"),
+    "KXLOWTOKC":  ("Oklahoma City", "low",  "KOKC"),
+    "KXHIGHTPHX": ("Phoenix",       "high", "KPHX"),
+    "KXLOWTPHX":  ("Phoenix",       "low",  "KPHX"),
+    "KXHIGHTSATX":("San Antonio",   "high", "KSAT"),
+    "KXLOWTSATX": ("San Antonio",   "low",  "KSAT"),
+    "KXHIGHTSEA": ("Seattle",       "high", "KSEA"),
+    "KXLOWTSEA":  ("Seattle",       "low",  "KSEA"),
+    "KXHIGHTSFO": ("San Francisco", "high", "KSFO"),
+    "KXLOWTSFO":  ("San Francisco", "low",  "KSFO"),
 }
 
 

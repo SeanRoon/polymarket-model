@@ -50,6 +50,9 @@ _FALLBACK: dict[str, StationInfo] = {
     "KLAS": StationInfo("KLAS", "Las Vegas",          36.0840, -115.1537, "America/Los_Angeles", 665),
     "KDCA": StationInfo("KDCA", "Washington Reagan",  38.8521, -77.0377, "America/New_York", 5),
     "KIAD": StationInfo("KIAD", "Washington Dulles",  38.9445, -77.4558, "America/New_York", 95),
+    "KMSY": StationInfo("KMSY", "New Orleans Louis Armstrong", 29.9934, -90.2581, "America/Chicago", 1),
+    "KOKC": StationInfo("KOKC", "Oklahoma City Will Rogers",   35.3889, -97.6008, "America/Chicago", 392),
+    "KSAT": StationInfo("KSAT", "San Antonio Intl",            29.5337, -98.4698, "America/Chicago", 247),
 }
 
 

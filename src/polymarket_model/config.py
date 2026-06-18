@@ -11,7 +11,15 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # Stations whose model is currently miscalibrated badly enough that emitting
 # signals would lose money in expectation. Revisit when their recent Brier
 # (per `polymarket compare-to-resolved`) is at or below the market's.
-DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA", "KNYC"})
+DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({
+    "KLAX", "KMIA", "KNYC",
+    # Cities added 2026-06-18 for DATA COLLECTION ONLY. Excluded from live signals
+    # until they have ~30d of paired (model_p, resolution) data, a bias estimate, and
+    # a validated model. Exclusion blocks live trading but NOT snapshot recording, so
+    # model_p + prices still accrue. Re-enable per-cell as each proves out.
+    "KATL", "KBOS", "KDFW", "KDCA", "KHOU", "KLAS", "KMSP", "KMSY",
+    "KOKC", "KPHX", "KSAT", "KSEA", "KSFO",
+})
 
 
 # Finer-grained exclusion than `DEFAULT_SIGNAL_EXCLUDED_STATIONS`: drop signals for a
@@ -21,7 +29,12 @@ DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA", "K
 # profitable, so excluding KMDW would discard the good book. See data/reports/model-watch.md.
 # `kind` is lowercase 'high' | 'low'. A station listed here AND in the station set above is
 # redundant (the station exclude already covers both kinds).
-DEFAULT_SIGNAL_EXCLUDED_CELLS: frozenset[tuple[str, str]] = frozenset({("KMDW", "high")})
+DEFAULT_SIGNAL_EXCLUDED_CELLS: frozenset[tuple[str, str]] = frozenset({
+    ("KMDW", "high"),
+    # New low books on existing live-traded high cities (Austin, Denver) — collect
+    # data without trading them until validated; the station's high book stays live.
+    ("KAUS", "low"), ("KDEN", "low"),
+})
 
 
 def _coerce_cell(item: object) -> tuple[str, str]:
