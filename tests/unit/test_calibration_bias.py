@@ -16,6 +16,7 @@ from polymarket_model.calibration.bias import (
     BiasEstimate,
     apply_bias_to_samples,
     compute_station_biases,
+    distribution_for,
     load_biases,
     write_biases,
 )
@@ -225,6 +226,47 @@ def test_apply_bias_accepts_lists_and_returns_float64():
     out = apply_bias_to_samples([70, 75, 80], 5)
     assert out.dtype == np.float64
     np.testing.assert_array_almost_equal(out, [65.0, 70.0, 75.0])
+
+
+# ---- distribution_for (shared paper/scan/live path) -------------------------
+
+def _ensemble(values: np.ndarray):
+    from polymarket_model.weather.openmeteo import EnsembleDailyExtreme
+
+    return EnsembleDailyExtreme(
+        station_id="KDEN", target_date_local=date(2026, 6, 18), kind="high",
+        unit="F", model="ecmwf_ifs025",
+        fetched_at_utc=datetime(2026, 6, 18, 6, tzinfo=UTC), lead_hours=12,
+        values=values, member_ids=np.arange(len(values)),
+    )
+
+
+def test_distribution_for_applies_and_tags_bias():
+    ex = _ensemble(np.full(20, 95.0))
+    dist, applied = distribution_for(
+        ex, station_id="KDEN", kind="high", biases={("KDEN", "high"): 14.0}
+    )
+    assert applied == pytest.approx(14.0)
+    assert "+biascorr" in dist.model
+    # +14 bias means the model runs hot, so corrected samples shift DOWN by 14.
+    np.testing.assert_array_almost_equal(dist.samples, np.full(20, 81.0))
+
+
+def test_distribution_for_no_bias_is_raw_ensemble():
+    ex = _ensemble(np.full(20, 95.0))
+    dist, applied = distribution_for(ex, station_id="KDEN", kind="high", biases={})
+    assert applied is None
+    assert "+biascorr" not in dist.model
+    np.testing.assert_array_almost_equal(dist.samples, np.full(20, 95.0))
+
+
+def test_distribution_for_no_station_is_raw():
+    ex = _ensemble(np.full(5, 70.0))
+    dist, applied = distribution_for(
+        ex, station_id=None, kind="high", biases={("KDEN", "high"): 14.0}
+    )
+    assert applied is None
+    assert "+biascorr" not in dist.model
 
 
 # ---- write/load round trip --------------------------------------------------

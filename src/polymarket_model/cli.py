@@ -11,6 +11,8 @@ from polymarket_model.cache import connect
 from polymarket_model.calibration.bias import (
     DEFAULT_BIAS_PARQUET,
     compute_station_biases,
+    distribution_for,
+    load_biases,
     write_biases,
 )
 from polymarket_model.config import settings
@@ -35,7 +37,7 @@ from polymarket_model.evaluation import (
 from polymarket_model.logging_setup import configure_logging, get_logger
 from polymarket_model.markets.discovery import discover_weather_events
 from polymarket_model.markets.prices import fetch_event_prices
-from polymarket_model.model import PredictiveDistribution, evaluate_event
+from polymarket_model.model import evaluate_event
 from polymarket_model.paper import (
     DEFAULT_PAPER_TRADES_PARQUET,
     PaperTradingConfig,
@@ -99,6 +101,10 @@ def scan(
     if not quiet:
         console.print(f"[dim]Within signal window (lead <= {max_lead_days}d): {len(in_window)} events.[/dim]")
 
+    # Same per-station bias correction the snapshot/paper path applies, so scan,
+    # paper, and live all forecast identically.
+    biases = load_biases(DEFAULT_BIAS_PARQUET)
+
     signals: list = []
     for e in in_window:
         if not e.station_id:
@@ -117,7 +123,7 @@ def scan(
         except Exception:
             log.exception("forecast_fetch_failed", event_ticker=e.event_ticker, station=e.station_id)
             continue
-        dist = PredictiveDistribution.from_ensemble(ex)
+        dist, _ = distribution_for(ex, station_id=e.station_id, kind=e.kind, biases=biases)
         out = evaluate_event(e, dist)
         if not out.passes_qc:
             log.info("qc_failed_model", event_ticker=e.event_ticker, outside_mass=out.outside_bin_mass)

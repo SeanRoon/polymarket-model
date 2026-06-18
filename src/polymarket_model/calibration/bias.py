@@ -172,3 +172,29 @@ def apply_bias_to_samples(samples: np.ndarray, bias_f: float) -> np.ndarray:
     """Return samples - bias_f. Positive bias means model runs too hot, so we
     shift samples down so the corrected forecast lines up with reality."""
     return np.asarray(samples, dtype=float) - float(bias_f)
+
+
+def distribution_for(ex, *, station_id, kind, biases):
+    """Build the predictive distribution for an event's ensemble forecast, applying
+    the per-(station, kind) bias correction when one exists.
+
+    Single source of truth shared by the recorder (snapshot/paper), the `scan`
+    report, and the live trader (kalshi-live) so they can't drift: every consumer
+    that turns an ensemble forecast into bin probabilities goes through here. The
+    bias file (`station_biases.parquet`) is recomputed daily and read via
+    `DEFAULT_BIAS_PARQUET`, so refreshing the repo refreshes both code and data.
+
+    Returns `(PredictiveDistribution, bias_applied_f)` where `bias_applied_f` is the
+    bias subtracted (or None when no correction applied). Corrected distributions
+    have their model name suffixed with `+biascorr` for downstream attribution.
+    """
+    from polymarket_model.model import PredictiveDistribution
+
+    bias = biases.get((station_id, kind)) if station_id else None
+    if bias is not None:
+        dist = PredictiveDistribution(
+            samples=apply_bias_to_samples(ex.values, bias),
+            model=f"empirical_{ex.model}+biascorr",
+        )
+        return dist, float(bias)
+    return PredictiveDistribution.from_ensemble(ex), None

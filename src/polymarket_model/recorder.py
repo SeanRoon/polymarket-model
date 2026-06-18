@@ -23,7 +23,7 @@ import pyarrow.parquet as pq
 from polymarket_model.cache import connect
 from polymarket_model.calibration.bias import (
     DEFAULT_BIAS_PARQUET,
-    apply_bias_to_samples,
+    distribution_for,
     load_biases,
 )
 from polymarket_model.config import settings
@@ -33,7 +33,6 @@ from polymarket_model.markets.discovery import WeatherEvent, discover_weather_ev
 from polymarket_model.markets.prices import EventPrices, fetch_event_prices, floor_to_bucket
 from polymarket_model.model import (
     EventModelOutput,
-    PredictiveDistribution,
     blend_bin_probs,
     evaluate_event,
     evaluate_event_nbm,
@@ -357,17 +356,10 @@ def _build_model_outputs(
         if ex is None:
             continue
         try:
-            bias = biases.get((e.station_id, e.kind)) if e.station_id else None
-            if bias is not None:
-                samples = apply_bias_to_samples(ex.values, bias)
-                dist = PredictiveDistribution(
-                    samples=samples,
-                    model=f"empirical_{ex.model}+biascorr",
-                )
-                bias_applied[e.event_ticker] = float(bias)
-            else:
-                dist = PredictiveDistribution.from_ensemble(ex)
-                bias_applied[e.event_ticker] = None
+            dist, applied = distribution_for(
+                ex, station_id=e.station_id, kind=e.kind, biases=biases
+            )
+            bias_applied[e.event_ticker] = applied
             out[e.event_ticker] = evaluate_event(e, dist)
         except Exception:
             log.exception("model_evaluation_failed", event_ticker=e.event_ticker)
