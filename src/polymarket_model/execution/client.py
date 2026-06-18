@@ -104,3 +104,19 @@ class KalshiAuthedClient:
             if not cursor or not page:
                 break
         return out
+
+    def get_settlements(self, *, limit: int = 200) -> list[dict[str, Any]]:
+        """Settled markets (realized PnL). Read-only GET, paginated like fills."""
+        out: list[dict[str, Any]] = []
+        cursor: str | None = None
+        while True:
+            params: dict[str, Any] = {"limit": limit}
+            if cursor:
+                params["cursor"] = cursor
+            data = self._get("/portfolio/settlements", params=params) or {}
+            page = data.get("settlements") or []
+            out.extend(page)
+            cursor = data.get("cursor")
+            if not cursor or not page:
+                break
+        return out
