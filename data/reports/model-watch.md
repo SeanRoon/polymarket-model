@@ -12,6 +12,14 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-18
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` from 2026-06-17 16:39 UTC (`5c25969`), already fully analyzed in the 06-17 PM memo below. Checked at 13:33 UTC: today's `resolve.yml` `0 13 * * *` cron has not yet produced a run (latest workflow run is still 06-17T16:38:48Z, `list_workflow_runs` shows no in-progress/failed run for today) — consistent with the jitter (13:00–17:58 UTC) noted on prior days, not a stall. Git window since the last memo (`9eb3582`): only `Snapshot:` commits — zero model/calibration/config code. Issue #5 (KMDW exclude_candidate, Chicago/low ROI watch) still open; draft PR #4 (isotonic pilot, KLAX/KMIA) still awaiting human review — both unchanged, out of scope._
+
+- **No new flags** — table identical to 06-17 PM (1 critical, 2 warn, 8 info): KMDW `exclude_candidate` (artifact, tracked by Issue #5), Miami/high and LA/high `regression_wow` (both excluded stations, zero live impact). No action.
+- **No GitHub issue** — no critical flag is new since the last memo. **No draft PR** — no new `exclude_candidate`/`reenable_candidate`, and stale data gives nothing to re-check on the Chicago/low (KMDW/low) ROI watch (last fresh read: 1.35% ROI, n=203 — above the 1.0%/60% escalation thresholds).
+- **Open items, unchanged**: Issue #5 (KMDW, monitoring Chicago/low ROI); draft PR #4 (isotonic pilot, KLAX/KMIA) awaiting human review; stale `model-watch/exclude-knyc` branch (leftover from merged PR #1, no action).
+
 ## 2026-06-17 (PM — fresh 16:39 UTC diagnostics)
 
 _Diagnostics source: FRESH — `data/reports/diagnostics.md` generated 2026-06-17 16:39 UTC (`5c25969`). Second run today: the 06-17 AM memo (below) analyzed the 06-16 18:05 UTC diagnostics; this is the first analysis of today's 16:39 UTC resolve output. Pulled local clone (15 commits behind at session start) to current `434df7b`. Git window since the AM memo (`6e5dd7c`): only `Snapshot:` commits plus the one `Resolutions + biases + eval + paper trades` commit (`5c25969`) — **zero new model/calibration/config code** (last `src/` code was `bb7ae77` 06-13, `b62e046`/`85b19d7` 06-10, all covered in prior windows). Config unchanged: stations `KLAX/KMIA/KNYC` excluded, cell `KMDW/high` excluded. Issue #5 (KMDW exclude_candidate) open; draft PR #4 (isotonic pilot, KLAX/KMIA) awaiting human review — both out of scope. Args empty → **no GitHub issues this run**._
