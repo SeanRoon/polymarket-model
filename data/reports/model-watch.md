@@ -12,6 +12,14 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-06-21
+
+_Diagnostics source: STALE — same `data/reports/diagnostics.md` from 2026-06-20 15:04 UTC (`b40b93c`), already fully analyzed in the 06-20 PM memo below. Checked `actions_list` at ~13:32 UTC: the latest `resolve.yml` run completed 2026-06-20T15:03:34Z (success); no run yet today — consistent with the known cron jitter (past runs have landed 13:00–17:58 UTC), not a stall. Git window since the last memo (`fb138ce`): only `Snapshot:` commits — zero model/calibration/config code changes. `list_issues` confirms 0 open issues; `list_pull_requests` shows draft PR #4 (isotonic pilot, KLAX/KMIA) still open, unchanged since 06-11. Args empty → no GitHub issues regardless._
+
+- **No new flags** — table identical to 06-20 PM (0 critical, 2 warn, 20 info): Chicago/low and Miami/high `regression_wow` both already covered (Chicago/low's underlying paper ROI recovered to 1.11% last read, watch not triggered; Miami/high chronic, KMIA station-excluded, zero live impact). No action.
+- **No GitHub issue, no draft PR this run** — no new critical flag, no new `exclude_candidate`/`reenable_candidate` to act on.
+- **Open items, unchanged**: draft PR #4 (isotonic pilot, KLAX/KMIA) awaiting human review; stale `model-watch/exclude-knyc` branch (leftover from merged PR #1) — no action.
+
 ## 2026-06-20 (PM — fresh 06-20 15:04 UTC diagnostics)
 
 _Diagnostics source: FRESH — `data/reports/diagnostics.md` generated 2026-06-20 15:04 UTC (`b40b93c`). Second run today: the earlier 06-20 memo (below) analyzed the 06-19 16:01 UTC diagnostics; this is the first analysis of today's 15:04 resolve output. Git window since that memo (`9139381`): only the one resolve commit `b40b93c` — **zero model/calibration/config code changes**. Config unchanged: stations KLAX/KMIA/KNYC + the 13 data-collection cities excluded; cells KMDW/high, KAUS/low, KDEN/low excluded → live cells remain Austin/high, Denver/high, Chicago/low. No open GitHub issues (Issue #5 stays closed); draft PR #4 (isotonic pilot, KLAX/KMIA) still open awaiting human review. Args empty → no GitHub issues regardless._
