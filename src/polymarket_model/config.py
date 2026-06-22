@@ -22,6 +22,15 @@ DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({
 })
 
 
+# Stations whose bin probabilities get an isotonic recalibration pass (fit by
+# `polymarket compute-calibration`, applied by the recorder as a recorded `calibrated_p`
+# column). Phase 3 pilot scope: the marine stations KLAX/KMIA, which are over-confident
+# despite small temperature bias (see `calibration/isotonic.py`). Calibration is recorded
+# but does NOT drive live signals yet — the column accrues out-of-sample evidence to
+# justify re-enabling those stations. `kind` granularity lives in the fit, not here.
+DEFAULT_CALIBRATION_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA"})
+
+
 # Finer-grained exclusion than `DEFAULT_SIGNAL_EXCLUDED_STATIONS`: drop signals for a
 # single (station_id, kind) cell while keeping the station's other book live. Needed
 # because a whole-station exclude is too blunt where high and low diverge — e.g. Chicago
@@ -128,6 +137,12 @@ class Settings(BaseSettings):
         default_factory=lambda: DEFAULT_SIGNAL_EXCLUDED_STATIONS,
     )
 
+    # Stations to isotonic-recalibrate. Env override is comma-separated station ids,
+    # e.g. CALIBRATION_STATIONS="KLAX,KMIA". Empty string disables calibration entirely.
+    calibration_stations: frozenset[str] = Field(
+        default_factory=lambda: DEFAULT_CALIBRATION_STATIONS,
+    )
+
     # Per-(station, kind) exclusions. Env override format is comma-separated
     # 'STATION:kind' pairs, e.g. SIGNAL_EXCLUDED_CELLS="KMDW:high,KORD:low".
     signal_excluded_cells: frozenset[tuple[str, str]] = Field(
@@ -160,6 +175,17 @@ class Settings(BaseSettings):
         if isinstance(v, (list, tuple, set, frozenset)):
             return frozenset(str(s) for s in v)
         raise TypeError(f"signal_excluded_stations: unsupported type {type(v)!r}")
+
+    @field_validator("calibration_stations", mode="before")
+    @classmethod
+    def _parse_calibration_stations(cls, v: object) -> frozenset[str]:
+        if v is None or v == "":
+            return frozenset()
+        if isinstance(v, str):
+            return frozenset(s.strip() for s in v.split(",") if s.strip())
+        if isinstance(v, (list, tuple, set, frozenset)):
+            return frozenset(str(s) for s in v)
+        raise TypeError(f"calibration_stations: unsupported type {type(v)!r}")
 
     @field_validator("signal_excluded_cells", mode="before")
     @classmethod
