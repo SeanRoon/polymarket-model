@@ -48,6 +48,7 @@ from polymarket_model.paper import (
     PaperTradingConfig,
     derive_paper_trades,
     load_paper_trades,
+    select_per_event,
     summarize,
     write_paper_trades,
 )
@@ -643,10 +644,12 @@ def _paper_summary_markdown(trades: list, stats: dict) -> str:
     df = pd.DataFrame(trades)
     settled = df[df["status"] == "SETTLED"].copy()
 
-    by_city_md = ""
-    if not settled.empty:
-        settled["pnl_weighted"] = settled["pnl_per_dollar"] * settled["kelly_sized"]
-        agg = settled.groupby(["city", "kind"], dropna=False).agg(
+    def _by_cell_table(sub) -> str:
+        if sub.empty:
+            return "No settled trades."
+        sub = sub.copy()
+        sub["pnl_weighted"] = sub["pnl_per_dollar"] * sub["kelly_sized"]
+        agg = sub.groupby(["city", "kind"], dropna=False).agg(
             n=("trade_id", "size"),
             wins=("pnl_per_dollar", lambda s: int((s > 0).sum())),
             win_rate=("pnl_per_dollar", lambda s: float((s > 0).mean())),
@@ -657,9 +660,22 @@ def _paper_summary_markdown(trades: list, stats: dict) -> str:
             lambda r: (r["pnl_weighted_sum"] / r["kelly_sum"]) if r["kelly_sum"] else 0.0,
             axis=1,
         )
-        by_city_md = "\n\n## By city, kind (settled only)\n\n" + agg.to_markdown(index=False, floatfmt=".4f")
+        return agg.to_markdown(index=False, floatfmt=".4f")
 
-    return f"# Paper trading\n\n## Overall\n\n{overall_md}{by_city_md}\n"
+    sections = ""
+    if not settled.empty:
+        # Per-bin: every signaled bin (the original paper strategy). Per-event: the
+        # one max-EV bin per event the live trader actually holds (like-for-like with
+        # kalshi-live). Both kept so the live-vs-paper comparison has both baselines.
+        per_event = pd.DataFrame(select_per_event(settled.to_dict("records")))
+        sections = (
+            "\n\n## By city, kind — per-bin (every signaled bin)\n\n"
+            + _by_cell_table(settled)
+            + "\n\n## By city, kind — per-event (one max-EV bin/event, mirrors live)\n\n"
+            + _by_cell_table(per_event)
+        )
+
+    return f"# Paper trading\n\n## Overall\n\n{overall_md}{sections}\n"
 
 
 def _df_to_rich_table(df) -> Table:  # type: ignore[name-defined]

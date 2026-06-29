@@ -334,6 +334,74 @@ def derive_paper_trades(
     return list(by_key.values())
 
 
+# --- per-event view: a like-for-like shadow of the live trader -------------------
+# The per-bin book above opens a trade for every signaled bin. The live trader
+# (kalshi-live) instead holds ONE bin per event — the highest EV-per-dollar-at-risk
+# candidate that survives a realized-edge sanity cap. To compare live vs paper without
+# the per-bin-vs-per-event structural mismatch, these helpers reduce the per-bin book
+# to that same one-per-event selection. Mirrors kalshi_live.orders.{realized_edge,
+# ev_per_dollar_at_risk} and the max_per_event=1 / max_edge gates.
+
+# Keep in sync with kalshi_live.config.LiveTradeConfig.max_edge.
+PER_EVENT_MAX_EDGE = 0.75
+
+
+def _p_side(trade: dict) -> float:
+    """Model fair value of the side this trade took."""
+    mp = float(trade["model_p_at_open"])
+    return mp if trade["direction"] == "BUY_YES" else 1.0 - mp
+
+
+def realized_edge_of(trade: dict) -> float:
+    """Edge captured at entry: model fair value of our side minus the price paid."""
+    return _p_side(trade) - float(trade["entry_price"])
+
+
+def ev_per_dollar_at_risk_of(trade: dict) -> float:
+    """(fair value - price) / price -- the live trader's per-event ranking key."""
+    price = float(trade["entry_price"])
+    return (_p_side(trade) - price) / price if price > 0.0 else 0.0
+
+
+def select_per_event(trades: list[dict], *, max_edge: float = PER_EVENT_MAX_EDGE) -> list[dict]:
+    """Reduce a per-bin paper book to the one bin per event the live trader would hold.
+
+    Drops bins whose realized edge exceeds the sanity cap, then keeps the single
+    highest EV-per-dollar-at-risk bin in each event — mirroring kalshi-live's
+    selection (max_per_event=1, ranked by ev_per_dollar_at_risk, with the max_edge
+    cap). Trades with no event_ticker pass through unchanged (each its own event)."""
+    best: dict[str, dict] = {}
+    passthrough: list[dict] = []
+    for t in trades:
+        if realized_edge_of(t) > max_edge:
+            continue
+        ev = t.get("event_ticker")
+        if not ev:
+            passthrough.append(t)
+            continue
+        cur = best.get(ev)
+        if cur is None or ev_per_dollar_at_risk_of(t) > ev_per_dollar_at_risk_of(cur):
+            best[ev] = t
+    return list(best.values()) + passthrough
+
+
+def roi_by_cell(trades: list[dict]) -> dict[tuple[str, str], float]:
+    """Kelly-weighted realized ROI per (city, kind) over settled trades.
+
+    ROI = Σ(pnl_per_dollar·kelly_sized)/Σ kelly_sized. Unsettled trades (no
+    pnl_per_dollar) are skipped. Shared by the paper report and the kalshi-live
+    health check so both compute the baseline identically."""
+    acc: dict[tuple[str, str], list[float]] = {}
+    for t in trades:
+        if t.get("pnl_per_dollar") is None:
+            continue
+        kel = float(t.get("kelly_sized") or 0.0)
+        a = acc.setdefault((t["city"], t["kind"]), [0.0, 0.0])
+        a[0] += float(t["pnl_per_dollar"]) * kel
+        a[1] += kel
+    return {k: p / s for k, (p, s) in acc.items() if s > 0}
+
+
 def summarize(trades: list[dict]) -> dict:
     """Aggregate stats over a list of paper trades. PnL is per-dollar-deployed."""
     settled = [t for t in trades if t.get("status") == "SETTLED"]
