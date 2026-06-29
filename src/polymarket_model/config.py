@@ -39,7 +39,11 @@ DEFAULT_CALIBRATION_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA"})
 # `kind` is lowercase 'high' | 'low'. A station listed here AND in the station set above is
 # redundant (the station exclude already covers both kinds).
 DEFAULT_SIGNAL_EXCLUDED_CELLS: frozenset[tuple[str, str]] = frozenset({
-    ("KMDW", "high"),
+    # Chicago: /high is a persistent loser (above); /low was profitable for weeks but its
+    # paper ROI decayed to negative on three consecutive reads (2026-06-27 -0.33% ->
+    # 06-28 -0.73% -> 06-29 -0.95%), so the model edge itself is gone — excluded 2026-06-29.
+    # Both kinds now excluded => Chicago is fully dark; live cells are Austin/high + Denver/high.
+    ("KMDW", "high"), ("KMDW", "low"),
     # New low books on existing live-traded high cities (Austin, Denver) — collect
     # data without trading them until validated; the station's high book stays live.
     ("KAUS", "low"), ("KDEN", "low"),
