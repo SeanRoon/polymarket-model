@@ -17,8 +17,10 @@ DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({
     # until they have ~30d of paired (model_p, resolution) data, a bias estimate, and
     # a validated model. Exclusion blocks live trading but NOT snapshot recording, so
     # model_p + prices still accrue. Re-enable per-cell as each proves out.
+    # KSAT graduated 2026-07-06: /high re-enabled after 11+ weeks at 94%+ win rate and
+    # +31-43% ROI in paper; /low stays dark via DEFAULT_SIGNAL_EXCLUDED_CELLS below.
     "KATL", "KBOS", "KDFW", "KDCA", "KHOU", "KLAS", "KMSP", "KMSY",
-    "KOKC", "KPHX", "KSAT", "KSEA", "KSFO",
+    "KOKC", "KPHX", "KSEA", "KSFO",
 })
 
 
@@ -47,6 +49,10 @@ DEFAULT_SIGNAL_EXCLUDED_CELLS: frozenset[tuple[str, str]] = frozenset({
     # New low books on existing live-traded high cities (Austin, Denver) — collect
     # data without trading them until validated; the station's high book stays live.
     ("KAUS", "low"), ("KDEN", "low"),
+    # San Antonio: /high graduated to live 2026-07-06 (see station set above), but /low
+    # has been a consistent paper loser the whole time (~45% win, ~-18% ROI per-bin) —
+    # keep it excluded so only the proven high book trades.
+    ("KSAT", "low"),
 })
 
 
