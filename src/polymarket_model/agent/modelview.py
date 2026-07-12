@@ -116,7 +116,7 @@ def render_model_view(
         "|:-------|:----------|:----|--------:|------:|----:|----:|----:|-----:|-------:|:------------|",
     ]
 
-    def _f(v: object, spec: str = ".2f") -> str:
+    def _f(v: float | int | str | None, spec: str = ".2f") -> str:
         return format(float(v), spec) if v is not None else "-"
 
     edged = []
