@@ -1,5 +1,6 @@
 @echo off
-REM Runner for the Windows Scheduled Task "SelfTrader" (2x daily).
+REM Runner for the Windows Scheduled Task "SelfTrader" (hourly, same cadence as the
+REM kalshi-live production trader; quiet hours exit fast per the prompt's fast path).
 REM Runs the /self-trader agent headless: settles its paper book, grades its own
 REM strategy against outcomes, revises data/agent/strategy.md, scans ALL Kalshi
 REM markets, opens new paper trades via the guarded agent-trade CLI, journals, and

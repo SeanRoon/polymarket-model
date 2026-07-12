@@ -148,7 +148,7 @@ The `/self-trader` agent (`.claude/commands/self-trader.md`) paper-trades **all*
 - `polymarket agent-trade TICKER --side yes|no --count N --thesis ... --strategy-version vX` — records a paper fill at the live take-side price with Kalshi's real fee. Hard guards in `agent/ledger.py` (not agent-tunable): $1,000 paper bankroll, ≤$50/trade, ≤25 open, no duplicate positions.
 - `polymarket agent-settle` / `agent-report` — settle open trades against the live market result; regenerate `data/agent/performance.md` (by strategy version + by category — the learning signal).
 
-Ledger is `data/agent/agent_trades.parquet` (committed; written only via the CLI). The Windows Scheduled Task `SelfTrader` (`scripts/SelfTrader.xml`, 2× daily 14:30Z/23:30Z) runs `scripts/self-trader.cmd` = `claude -p "/self-trader"`. **PAPER ONLY** — same no-order-code rule as the rest of this repo.
+Ledger is `data/agent/agent_trades.parquet` (committed; written only via the CLI). The Windows Scheduled Task `SelfTrader` (`scripts/SelfTrader.xml`, **hourly** at :15 — same cadence as the kalshi-live production trader; the prompt's fast path keeps quiet hours short) runs `scripts/self-trader.cmd` = `claude -p "/self-trader"`. **PAPER ONLY** — same no-order-code rule as the rest of this repo.
 
 ## Conventions
 

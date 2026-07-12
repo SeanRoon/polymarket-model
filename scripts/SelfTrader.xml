@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task version="1.3" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Twice-daily /self-trader agent: settles its paper book, updates its own strategy from outcomes, scans all Kalshi markets, opens guarded paper trades, journals, and commits data/agent/ to main. PAPER ONLY. NOTE: Z times drift +1h in UTC when DST ends (local wall-clock scheduling); harmless here.</Description>
+    <Description>Hourly /self-trader agent (same cadence as the kalshi-live trader): settles its paper book, updates its own strategy from outcomes, scans all Kalshi markets, opens guarded paper trades, journals, and commits data/agent/ to main. PAPER ONLY. NOTE: Z times drift +1h in UTC when DST ends (local wall-clock scheduling); harmless here.</Description>
     <URI>\SelfTrader</URI>
   </RegistrationInfo>
   <Principals>
@@ -20,18 +20,16 @@
   </Settings>
   <Triggers>
     <CalendarTrigger>
-      <StartBoundary>2026-07-13T14:30:00Z</StartBoundary>
+      <StartBoundary>2026-07-13T00:15:00Z</StartBoundary>
       <Enabled>true</Enabled>
       <ScheduleByDay>
         <DaysInterval>1</DaysInterval>
       </ScheduleByDay>
-    </CalendarTrigger>
-    <CalendarTrigger>
-      <StartBoundary>2026-07-13T23:30:00Z</StartBoundary>
-      <Enabled>true</Enabled>
-      <ScheduleByDay>
-        <DaysInterval>1</DaysInterval>
-      </ScheduleByDay>
+      <Repetition>
+        <Interval>PT1H</Interval>
+        <Duration>P1D</Duration>
+        <StopAtDurationEnd>false</StopAtDurationEnd>
+      </Repetition>
     </CalendarTrigger>
   </Triggers>
   <Actions Context="Author">

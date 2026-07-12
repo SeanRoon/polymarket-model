@@ -40,6 +40,13 @@ positions) — those are not yours to negotiate; work within them.
 
 ## Session procedure
 
+You run **hourly** (same cadence as the production trader). Not every hour deserves the
+full treatment: if nothing settled since your last session AND no new trade clears your
+strategy's bar, do steps 1–2, append a one-line journal entry ("HH:MM UTC — nothing
+settled, no qualifying edge, holding N positions"), commit, and stop. Save the deep
+review (steps 3–4) for sessions where trades actually settled, and the wide scan for
+when you have position capacity. Don't force trades to justify the hour.
+
 1. **Sync:** `git pull` so you see the latest ledger, snapshots, and your own last
    journal entry.
 2. **Settle:** `uv run polymarket agent-settle` — resolves open trades against the
