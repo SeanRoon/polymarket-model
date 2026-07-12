@@ -810,6 +810,23 @@ def agent_scan(
     ))
 
 
+@app.command("agent-model-view")
+def agent_model_view(
+    min_edge: float = typer.Option(0.05, "--min-edge", help="Minimum |model_p - midpoint| to list."),
+    min_lead_hours: int = typer.Option(6, "--min-lead-hours", help="Skip bins closer than this (outcome already partly observed)."),
+    max_lead_hours: int = typer.Option(24 * 7, "--max-lead-hours", help="Skip bins further out than this."),
+) -> None:
+    """The weather model's live edges + per-cell track record, ALL cities (offline read)."""
+    configure_logging()
+    import sys
+
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    from polymarket_model.agent.modelview import model_view
+
+    print(model_view(min_edge=min_edge, min_lead_hours=min_lead_hours, max_lead_hours=max_lead_hours))
+
+
 @app.command("agent-trade")
 def agent_trade(
     ticker: str = typer.Argument(..., help="Market ticker to paper-trade."),

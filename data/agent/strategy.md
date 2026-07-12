@@ -19,21 +19,31 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Active rules
 
-- **R1 (seed):** Trade only markets closing within 7 days, with 24h volume ≥ 1,000
-  and spread ≤ $0.10 — liquid books with fast feedback, so the learning loop turns
-  over quickly. *Kill if: fills at these filters systematically lose to fees.*
-- **R2 (seed):** Prefer positions where your own world-knowledge estimate of the
-  probability differs from the midpoint by ≥ 0.10. State the estimate in the thesis.
-  *Kill if: realized win rate on these is below the entry price implies.*
-- **R3 (seed, exploration budget):** At most 1 trade per session may test a brand-new
+- **R1 (seed, model piggyback):** Trade weather bins where `agent-model-view` shows
+  |model edge| ≥ 0.08 at lead ≤ 72h AND the cell's per-bin track record is ≥ 70% win
+  rate with positive ROI on n ≥ 50 (today: Austin/high, Denver/high, San Antonio/high).
+  Take the model's side. *Kill if: these trades run below the entry price's implied
+  win rate over ≥10 settlements.*
+- **R2 (seed, model with caution):** Cells where the model shows an edge but has a
+  weak, thin, or negative record (most data-collection cities; anything Chicago) get
+  at most 1 small trade per session, and only when the edge is ≥ 0.15 and I can
+  articulate why the model might be right THIS time. *Kill if: 0-for-5 or worse.*
+- **R3 (seed, own judgment):** Outside weather, trade only markets closing within
+  7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own world-knowledge estimate
+  differs from the midpoint by ≥ 0.10. State the estimate in the thesis. *Kill if:
+  realized win rate on these is below what entry prices imply.*
+- **R4 (seed, exploration budget):** At most 1 trade per session may test a brand-new
   hypothesis outside the active rules; tag its thesis `[explore]`. *Permanent.*
 
 ## Open hypotheses (not yet rules)
 
-- None yet — seeded fresh. Candidates to investigate once data accrues: longshot
-  bias by category (do <10¢ YES books lose?), category-level edge (sports vs econ vs
-  politics), time-to-close effects (is the last-day book sharper?).
+- Is the model's edge on production-excluded cities real money the production trader
+  is leaving on the table, or is the exclusion wisdom? R2's results will say.
+- Longshot bias by category (do <10¢ YES books lose?); category-level edge (sports vs
+  econ vs politics); time-to-close effects (is the last-day book sharper?).
 
 ## Changelog
 
-- **v1** (2026-07-12): Seeded by the build. Three starter rules, no trade history.
+- **v1** (2026-07-12): Seeded by the build. Model-piggyback rules R1/R2 (leverage the
+  weather model's live edges + per-cell track record, all cities allowed including
+  production-excluded ones), own-judgment rule R3, exploration budget R4.

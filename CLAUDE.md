@@ -141,9 +141,10 @@ Entry price is the take-side (`yes_ask` or `1 - yes_bid`), not the midpoint. Fee
 
 ### Self-directed paper agent (since 2026-07-12)
 
-Separate experiment from the weather model: the `/self-trader` agent (`.claude/commands/self-trader.md`) paper-trades **all** Kalshi markets on its own reasoning, learns only from its own settled track record, and owns its playbook at `data/agent/strategy.md` (versioned; every trade cites the version that motivated it). It must NOT use the weather model's signals. Plumbing lives in `src/polymarket_model/agent/`:
+The `/self-trader` agent (`.claude/commands/self-trader.md`) paper-trades **all** Kalshi markets, owns its playbook at `data/agent/strategy.md` (versioned; every trade cites the version that motivated it), and learns from its own settled track record. It **piggybacks on the weather model** — `agent-model-view` gives it the model's live edges and per-cell track record for every city, with production exclusions shown as context only (the agent may trade excluded cities when it judges the edge real) — but it owns its strategy and adjusts it whenever its outcomes say so. Plumbing lives in `src/polymarket_model/agent/`:
 
 - `polymarket agent-scan` — whole-venue digest (all open events + nested markets, filtered to liquid two-sided books closing soon, capped per category).
+- `polymarket agent-model-view` — offline read of the latest snapshot Parquet + `data/paper_trades.parquet`: model_p/nbm_p vs midpoint edges across ALL cities and the settled per-cell record, labeled with production LIVE/excluded status.
 - `polymarket agent-trade TICKER --side yes|no --count N --thesis ... --strategy-version vX` — records a paper fill at the live take-side price with Kalshi's real fee. Hard guards in `agent/ledger.py` (not agent-tunable): $1,000 paper bankroll, ≤$50/trade, ≤25 open, no duplicate positions.
 - `polymarket agent-settle` / `agent-report` — settle open trades against the live market result; regenerate `data/agent/performance.md` (by strategy version + by category — the learning signal).
 
