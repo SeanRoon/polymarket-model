@@ -139,6 +139,16 @@ Entry price is the take-side (`yes_ask` or `1 - yes_bid`), not the midpoint. Fee
 - **Phase 3 (not started):** KDE+climatology, EMOS / NGR, isotonic calibration. Wait for ≥30 days of paired (model_p, resolution) data before fitting EMOS. The `model.PredictiveDistribution` interface is intentionally narrow (`prob_in_bin(lo, hi)`) so a parametric distribution can replace the empirical one without changing callers.
 - **Phase 4 (not started):** walk-forward backtest over the accumulating snapshots; will reuse `evaluation.score_resolutions` rather than reimplement.
 
+### Self-directed paper agent (since 2026-07-12)
+
+Separate experiment from the weather model: the `/self-trader` agent (`.claude/commands/self-trader.md`) paper-trades **all** Kalshi markets on its own reasoning, learns only from its own settled track record, and owns its playbook at `data/agent/strategy.md` (versioned; every trade cites the version that motivated it). It must NOT use the weather model's signals. Plumbing lives in `src/polymarket_model/agent/`:
+
+- `polymarket agent-scan` — whole-venue digest (all open events + nested markets, filtered to liquid two-sided books closing soon, capped per category).
+- `polymarket agent-trade TICKER --side yes|no --count N --thesis ... --strategy-version vX` — records a paper fill at the live take-side price with Kalshi's real fee. Hard guards in `agent/ledger.py` (not agent-tunable): $1,000 paper bankroll, ≤$50/trade, ≤25 open, no duplicate positions.
+- `polymarket agent-settle` / `agent-report` — settle open trades against the live market result; regenerate `data/agent/performance.md` (by strategy version + by category — the learning signal).
+
+Ledger is `data/agent/agent_trades.parquet` (committed; written only via the CLI). The Windows Scheduled Task `SelfTrader` (`scripts/SelfTrader.xml`, 2× daily 14:30Z/23:30Z) runs `scripts/self-trader.cmd` = `claude -p "/self-trader"`. **PAPER ONLY** — same no-order-code rule as the rest of this repo.
+
 ## Conventions
 
 - **Git workflow:** every meaningful change is committed locally with a short message focused on the *why* and pushed to `origin/main`. One coherent commit per logical unit of work.

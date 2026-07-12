@@ -91,3 +91,41 @@ class KalshiClient:
         if not data:
             return None
         return data.get("orderbook_fp", data)
+
+    def get_market(self, market_ticker: str) -> dict[str, Any] | None:
+        """Single market record — includes status and, once settled, result."""
+        data = self._get(f"/markets/{market_ticker}")
+        if not data:
+            return None
+        return data.get("market", data)
+
+    def get_event(self, event_ticker: str) -> dict[str, Any] | None:
+        """Single event record — carries the category the market record lacks."""
+        data = self._get(f"/events/{event_ticker}")
+        if not data:
+            return None
+        return data.get("event", data)
+
+    def list_all_open_events(
+        self, *, limit: int = 200, with_nested_markets: bool = True, max_pages: int = 50
+    ) -> list[dict[str, Any]]:
+        """Every open event on Kalshi (all series), optionally with markets nested.
+
+        Used by the self-directed paper agent's whole-venue scan; the weather
+        pipeline keeps using the per-series `list_open_events`.
+        """
+        out: list[dict[str, Any]] = []
+        cursor: str | None = None
+        for _ in range(max_pages):
+            params: dict[str, Any] = {"status": "open", "limit": limit}
+            if with_nested_markets:
+                params["with_nested_markets"] = "true"
+            if cursor:
+                params["cursor"] = cursor
+            data = self._get("/events", params=params) or {}
+            page = data.get("events") or []
+            out.extend(page)
+            cursor = data.get("cursor")
+            if not cursor or not page:
+                break
+        return out

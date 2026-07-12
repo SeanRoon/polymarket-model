@@ -773,5 +773,146 @@ def exec_fills(
     console.print(table)
 
 
+# --- self-directed paper agent ------------------------------------------------
+# PAPER ONLY. These commands give the `/self-trader` agent its eyes (agent-scan),
+# hands (agent-trade, hard-guarded), and scorecard (agent-settle / agent-report).
+# The agent's strategy lives in data/agent/strategy.md, owned by the agent itself.
+
+
+@app.command("agent-scan")
+def agent_scan(
+    top: int = typer.Option(120, "--top", help="Max rows in the digest."),
+    per_category: int = typer.Option(15, "--per-category", help="Max rows per category."),
+    max_close_days: float = typer.Option(10.0, "--max-close-days", help="Only markets closing within this many days."),
+    min_volume_24h: float = typer.Option(500.0, "--min-volume-24h", help="Drop markets below this 24h volume."),
+    category: str | None = typer.Option(None, "--category", help="Substring filter on the event category."),
+    event: str | None = typer.Option(None, "--event", help="Drill down: list every market in one event instead."),
+) -> None:
+    """Scan ALL open Kalshi markets and print a digest (live network)."""
+    configure_logging()
+    import logging
+    import sys
+
+    logging.getLogger("httpx").setLevel(logging.WARNING)  # digest goes to stdout; keep it clean
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    from polymarket_model.agent.scout import event_detail, scan_digest
+
+    if event:
+        print(event_detail(event))
+        return
+    print(scan_digest(
+        top=top,
+        per_category=per_category,
+        max_close_days=max_close_days,
+        min_volume_24h=min_volume_24h,
+        category=category,
+    ))
+
+
+@app.command("agent-trade")
+def agent_trade(
+    ticker: str = typer.Argument(..., help="Market ticker to paper-trade."),
+    side: str = typer.Option(..., "--side", help="'yes' or 'no'."),
+    count: int = typer.Option(1, "--count", help="Contracts (guarded)."),
+    thesis: str = typer.Option(..., "--thesis", help="Why this trade — required, recorded verbatim."),
+    strategy_version: str = typer.Option(..., "--strategy-version", help="strategy.md version that motivated it."),
+    trades_parquet: Path | None = typer.Option(None, "--trades-parquet", help="Override ledger path (tests)."),
+) -> None:
+    """Record ONE paper trade at the live take-side price. PAPER ONLY — no order is placed."""
+    configure_logging()
+    from polymarket_model.agent.ledger import (
+        DEFAULT_AGENT_TRADES_PARQUET,
+        TradeRejectedError,
+        build_trade,
+        load_trades,
+        write_trades,
+    )
+    from polymarket_model.markets.client import KalshiClient
+
+    console = Console()
+    path = trades_parquet or DEFAULT_AGENT_TRADES_PARQUET
+    client = KalshiClient()
+    market = client.get_market(ticker)
+    if market is None:
+        console.print(f"[red]market {ticker} not found[/red]")
+        raise typer.Exit(1)
+    if not market.get("category") and market.get("event_ticker"):
+        # /markets/{ticker} omits category; the parent event carries it.
+        event = client.get_event(str(market["event_ticker"])) or {}
+        market["category"] = event.get("category")
+    existing = load_trades(path)
+    try:
+        trade = build_trade(
+            market=market,
+            side=side,
+            count=count,
+            thesis=thesis,
+            strategy_version=strategy_version,
+            existing=existing,
+        )
+    except TradeRejectedError as exc:
+        console.print(f"[red]REJECTED:[/red] {exc}")
+        raise typer.Exit(1) from exc
+    existing.append(trade)
+    write_trades(existing, path)
+    console.print(
+        f"[bold]PAPER fill[/bold] {trade['side'].upper()} x{trade['count']} {ticker} "
+        f"@ ${trade['entry_price']:.2f} (fee ${trade['fee']:.2f}, cost ${trade['cost']:.2f})"
+    )
+
+
+@app.command("agent-settle")
+def agent_settle(
+    trades_parquet: Path | None = typer.Option(None, "--trades-parquet", help="Override ledger path (tests)."),
+    report_markdown: Path | None = typer.Option(None, "--markdown", help="Override performance.md path."),
+) -> None:
+    """Settle open agent trades against the live API and refresh performance.md."""
+    configure_logging()
+    from polymarket_model.agent.ledger import (
+        DEFAULT_AGENT_TRADES_PARQUET,
+        DEFAULT_PERFORMANCE_MD,
+        load_trades,
+        render_performance,
+        settle_open_trades,
+        write_trades,
+    )
+
+    console = Console()
+    path = trades_parquet or DEFAULT_AGENT_TRADES_PARQUET
+    report_path = report_markdown or DEFAULT_PERFORMANCE_MD
+    trades = load_trades(path)
+    changed = settle_open_trades(trades)
+    if changed:
+        write_trades(trades, path)
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(render_performance(trades), encoding="utf-8")
+    n_open = sum(1 for t in trades if t["status"] == "OPEN")
+    console.print(f"[bold]agent-settle[/bold] settled={changed} still_open={n_open}")
+    console.print(f"[dim]Wrote {report_path}[/dim]")
+
+
+@app.command("agent-report")
+def agent_report(
+    trades_parquet: Path | None = typer.Option(None, "--trades-parquet", help="Override ledger path (tests)."),
+    report_markdown: Path | None = typer.Option(None, "--markdown", help="Override performance.md path."),
+) -> None:
+    """Regenerate performance.md from the agent ledger (offline) and print it."""
+    configure_logging()
+    from polymarket_model.agent.ledger import (
+        DEFAULT_AGENT_TRADES_PARQUET,
+        DEFAULT_PERFORMANCE_MD,
+        load_trades,
+        render_performance,
+    )
+
+    path = trades_parquet or DEFAULT_AGENT_TRADES_PARQUET
+    report_path = report_markdown or DEFAULT_PERFORMANCE_MD
+    md = render_performance(load_trades(path))
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(md, encoding="utf-8")
+    print(md)
+
+
 if __name__ == "__main__":
     app()
