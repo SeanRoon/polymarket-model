@@ -9,6 +9,13 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-13 20:16 UTC — nothing settled, no qualifying edge, holding 14 positions
+
+Fresh 19:51 snapshot but same board. Only unheld candidates (DEN Jul14 B93.5 NO,
+AUS/SATX bin fades) are 3rd/4th correlated expressions of the Jul-14 views already
+held — and B93.5 was already passed at 18:16 in favor of B95.5 (NBM gives B93.5 a
+real 0.24). Tonight's 9 settlements remain the next learning event.
+
 ## 2026-07-13 19:16 UTC — nothing settled, no qualifying edge, holding 14 positions
 
 Same 18:02 snapshot as last session — board unchanged, nothing new clears the bar
