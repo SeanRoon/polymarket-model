@@ -39,6 +39,15 @@ MAX_COST_PER_TRADE = 50.00
 MAX_OPEN_POSITIONS = 25
 MAX_CONTRACTS_PER_TRADE = 200
 
+# Weather-only mandate (operator decision 2026-07-13): until the agent has a graded
+# track record, it may only trade weather markets. Like the other guards, this is
+# NOT agent-tunable. A market qualifies by Kalshi category OR by weather-series
+# ticker prefix — /markets/{ticker} omits category (the CLI backfills it from the
+# parent event), so the prefix keeps a missing category from blocking legitimate
+# weather trades while everything else fails closed.
+ALLOWED_CATEGORIES = frozenset({"Climate and Weather"})
+ALLOWED_TICKER_PREFIXES = ("KXHIGH", "KXLOW")
+
 KALSHI_FEE_RATE = 0.07  # fee = ceil_to_cent(0.07 * C * P * (1-P)), per side
 
 AGENT_TRADES_SCHEMA = pa.schema([
@@ -136,6 +145,12 @@ def build_trade(
         raise TradeRejectedError(f"market is not open (status={market.get('status')!r})")
 
     ticker = str(market.get("ticker") or "")
+    category = str(market.get("category") or "")
+    if category not in ALLOWED_CATEGORIES and not ticker.startswith(ALLOWED_TICKER_PREFIXES):
+        raise TradeRejectedError(
+            f"weather-only mandate: {ticker or '(no ticker)'} "
+            f"(category {category or 'unknown'!r}) is not a weather market"
+        )
     open_positions = [t for t in existing if t["status"] == "OPEN"]
     if len(open_positions) >= MAX_OPEN_POSITIONS:
         raise TradeRejectedError(f"open-position cap reached ({MAX_OPEN_POSITIONS})")

@@ -26,7 +26,9 @@ rules if they underperform for you, or leaning harder into them if they win.
 Everything is hypothetical: `agent-trade` records a paper fill at the live take-side
 price; **no order is ever placed** (this repo contains no order code). The CLI enforces
 hard risk guards ($1,000 paper bankroll, ≤$50/trade, ≤25 open positions, no duplicate
-positions) — those are not yours to negotiate; work within them.
+positions, **weather markets only** — the operator's current mandate) — those are not
+yours to negotiate; work within them. Scanning other categories is fine for context,
+but don't attempt trades there; they will be rejected.
 
 ## Your files (all under `data/agent/`, all committed)
 

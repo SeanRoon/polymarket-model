@@ -26,7 +26,7 @@ def market(**overrides) -> dict:
     m = {
         "ticker": "KXTEST-26JUL13-B50",
         "event_ticker": "KXTEST-26JUL13",
-        "category": "Economics",
+        "category": "Climate and Weather",
         "title": "Test market",
         "status": "open",
         "yes_bid_dollars": "0.40",
@@ -123,6 +123,24 @@ class TestBuildTrade:
         with pytest.raises(TradeRejectedError, match="free cash"):
             build_trade(market=market(), side="yes", count=100, thesis="t",
                         strategy_version="v1", existing=existing, now_utc=NOW)
+
+    def test_rejects_non_weather_market(self):
+        with pytest.raises(TradeRejectedError, match="weather-only"):
+            build_trade(market=market(category="Economics"), side="yes", count=1,
+                        thesis="t", strategy_version="v1", existing=[], now_utc=NOW)
+
+    def test_missing_category_allowed_only_with_weather_ticker_prefix(self):
+        # /markets/{ticker} omits category; a weather-series prefix still qualifies.
+        build_trade(market=market(category=None, ticker="KXHIGHDEN-26JUL13-T93"),
+                    side="yes", count=1, thesis="t", strategy_version="v1",
+                    existing=[], now_utc=NOW)
+        build_trade(market=market(category=None, ticker="KXLOWTCHI-26JUL13-B56.5"),
+                    side="yes", count=1, thesis="t", strategy_version="v1",
+                    existing=[], now_utc=NOW)
+        # No category and no weather prefix fails closed.
+        with pytest.raises(TradeRejectedError, match="weather-only"):
+            build_trade(market=market(category=None), side="yes", count=1, thesis="t",
+                        strategy_version="v1", existing=[], now_utc=NOW)
 
     def test_rejects_missing_thesis_or_version_or_closed_market(self):
         with pytest.raises(TradeRejectedError, match="thesis"):
