@@ -9,6 +9,12 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-13 15:20 UTC — nothing settled, no qualifying edge, holding 9 positions
+
+Nothing settled; no qualifying edge (only candidates: a third correlated Seattle leg
+— skipped for concentration — and an SFO fade where NBM's edge 0.11 < R2's 0.15 bar).
+Holding 9 positions (~$206 at risk); everything settles tonight.
+
 ## 2026-07-13 14:20 UTC — nothing settled; added 1 small R2 (Seattle B80.5 NO)
 
 **Settled:** nothing — all 8 positions are today's markets, ~15-18h to close. Strategy
