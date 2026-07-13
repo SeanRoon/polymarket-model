@@ -82,6 +82,21 @@ def _coerce_cell(item: object) -> tuple[str, str]:
 DEFAULT_NBM_BLEND_WEIGHTS: dict[tuple[str, str], float] = {
     ("KMDW", "high"): 0.5,
     ("KNYC", "high"): 0.5,
+    # Low books where NBM dominates the ECMWF ensemble (added 2026-07-13, from
+    # data/reports/evaluation.md): overnight minima are a persistent ECMWF weakness —
+    # NBM Brier at 6-24h is ~half ECMWF's or better on all four cells, and on
+    # Houston/Boston lows NBM alone beats the MARKET at 24-72h leads. All four are
+    # signal-excluded (station or cell), so this only upgrades the recorded
+    # model_p/paper track toward the model we'd actually promote. 0.7 not 0.5: the
+    # NYC/high experience showed 50/50 underweights NBM where it clearly dominates
+    # (blend 0.13 vs pure NBM 0.11 at 6-24h).
+    ("KHOU", "low"): 0.7,
+    ("KBOS", "low"): 0.7,
+    ("KSAT", "low"): 0.7,
+    ("KPHX", "low"): 0.7,
+    # OKC/high: NBM ≈ market Brier (0.105 vs 0.107 at 6-24h) with the best simulated
+    # NBM PnL of the new highs; gap to ECMWF is smaller than the lows', so 50/50.
+    ("KOKC", "high"): 0.5,
 }
 
 
