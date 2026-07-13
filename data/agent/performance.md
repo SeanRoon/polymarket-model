@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-13 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-13 19:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $714.48 |
-| open positions | 12 ($285.52 at risk) |
+| free cash | $672.41 |
+| open positions | 14 ($327.59 at risk) |
 | settled | 0 (0 wins, -) |
 | realized PnL | $+0.00 on $0.00 staked (-) |
 
@@ -40,6 +40,8 @@ _Generated 2026-07-13 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-13 16:17 | KXHIGHDEN-26JUL14-T93 | yes | 150 | 0.10 | 15.95 | v1 | P(DEN high <=92F Jul14) ~0.90: model+biascorr 0.95 AND NBM 0.70 both far above m |
 | 07-13 16:17 | KXHIGHAUS-26JUL14-T85 | yes | 60 | 0.55 | 34.04 | v1 | P(AUS high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.45, market 0.53. Austi |
 | 07-13 16:17 | KXHIGHTSATX-26JUL14-T85 | yes | 50 | 0.57 | 29.36 | v1 | P(SATX high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.38, market 0.53. San  |
+| 07-13 18:18 | KXHIGHDEN-26JUL14-B95.5 | no | 40 | 0.59 | 24.28 | v1 | My P(DEN high 95-96F Jul14) ~0.10 vs market 0.41 (NO costs ~0.59). Both models e |
+| 07-13 18:18 | KXHIGHTBOS-26JUL14-B94.5 | yes | 50 | 0.34 | 17.79 | v1 | My est P(BOS high 94-95F Jul14) ~0.40 vs market 0.20 ask. Dual-model agreement a |
 
 ## Last 20 settled
 
