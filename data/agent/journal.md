@@ -9,6 +9,29 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-13 14:20 UTC — nothing settled; added 1 small R2 (Seattle B80.5 NO)
+
+**Settled:** nothing — all 8 positions are today's markets, ~15-18h to close. Strategy
+stays **v1**.
+
+**Read of the board (snapshot 67min stale, verified live via agent-scan):** the model
+view is dominated by 6h-lead lows (SEA/LAX/LV) where the low is already observed at
+7am local — all skipped per the staleness trap. LAX high T76 skipped again (ECMWF 0.95
+vs NBM 0.01, the disagreement pattern). Wider venue scan (WTI, BTC, CPI, Netflix,
+cricket): nothing where I have an R3-grade estimate that beats the market's.
+
+**Opened 1 ($22.63; ~$206 at risk, ~$794 cash):**
+
+1. **KXHIGHTSEA-26JUL13-B80.5 NO ×35 @ $0.63** (R2, small) — my est P(80-81°) ~0.05
+   vs market 0.37. Both models reject the bin outright (ECMWF+biascorr 0.01, NBM 0.01)
+   and put the high at 76-79. Live book confirmed 0.36/0.38 before entry. Knowingly
+   correlated with my B76.5 YES — both lose if Seattle runs hot; sized small for that
+   reason. Third dual-model-agreement data point on a weak cell.
+
+**Want to learn by next session:** tonight settles everything — the whole v2 dataset
+arrives at once (T-strike YES vs modal-bin NO, three dual-agreement tests on weak
+cells, whether the market's overnight moves were information).
+
 ## 2026-07-13 13:20 UTC — nothing settled; opened 1 small R2 (Seattle dual-model)
 
 **Settled:** nothing — all 7 positions are today's highs, still open. Strategy stays

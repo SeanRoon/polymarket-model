@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-13 13:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-13 14:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $827.50 |
-| open positions | 7 ($172.50 at risk) |
+| free cash | $816.46 |
+| open positions | 8 ($183.54 at risk) |
 | settled | 0 (0 wins, -) |
 | realized PnL | $+0.00 on $0.00 staked (-) |
 
@@ -35,6 +35,7 @@ _Generated 2026-07-13 13:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-13 13:05 | KXHIGHDEN-26JUL13-B97.5 | no | 60 | 0.50 | 31.05 | v1 | Fade market's modal bin. Market implies P(97-98)=0.50; ensemble+biascorr says 0. |
 | 07-13 13:05 | KXHIGHAUS-26JUL13-B93.5 | no | 50 | 0.66 | 33.79 | v1 | Fade market's modal-adjacent bin. Market implies P(93-94)=0.345; ensemble+biasco |
 | 07-13 13:06 | KXHIGHTSATX-26JUL13-B92.5 | no | 55 | 0.58 | 32.84 | v1 | Fade market's modal bin. Market implies P(92-93)=0.44; ensemble+biascorr 0.01, N |
+| 07-13 13:16 | KXHIGHTSEA-26JUL13-B76.5 | yes | 80 | 0.13 | 11.04 | v1 | My est ~0.50 vs market 0.13 ask. Corrected ECMWF 0.77 AND NBM 0.49 both put Seat |
 
 ## Last 20 settled
 
