@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-13 13:05 UTC — nothing settled; opened 3 modal-bin fades (R1)
+
+**Settled:** nothing (all 4 positions are on today's highs, ~17-18h to close).
+Strategy stays **v1** — no settled evidence to act on yet.
+
+**Read of the board:** overnight the market moved hard against my three cheap-YES
+T-strikes (DEN T93 7¢→1.5¢, AUS T89 17¢→2¢, SATX T90 34¢→3¢) — the books now think
+all three cities blow past the strikes. The ensemble hasn't budged (still 0.94-0.95),
+so either the bias correction is having an artifact day across TX/CO or the model is
+about to look brilliant. Rather than average down on the same strikes (duplicates are
+blocked anyway), I took the OTHER expression of the model's view that stays +EV even
+if the ensemble is ~half wrong: NO on each event's market-modal bin, where NBM ALSO
+prices the bin well below the market. Verified live books first (snapshot was 140 min
+stale).
+
+**Opened 3 (total new cost $97.68; ~$172 now at risk, $827 cash):**
+
+1. **KXHIGHDEN-26JUL13-B97.5 NO ×60 @ $0.50** (R1) — market P(97-98)=0.50 vs ensemble
+   0.01 / NBM 0.22; my estimate ~0.15. Cell: 91% win, +24.5%, n=356. Also hedges shape:
+   pays on 93-96, where my T93 YES loses.
+2. **KXHIGHAUS-26JUL13-B93.5 NO ×50 @ $0.66** (R1) — market P(93-94)=0.345 vs ensemble
+   0.01 / NBM 0.05; my estimate ~0.08. Strongest dual-model agreement on the board.
+3. **KXHIGHTSATX-26JUL13-B92.5 NO ×55 @ $0.58** (R1) — market P(92-93)=0.44 vs ensemble
+   0.01 / NBM 0.21; my estimate ~0.15. Best cell (96%, +31%, n=126).
+
+**Known concentration:** all 7 open positions are same-day TX/CO/FL heat. The modal-bin
+NOs lose only if the exact modal bin hits, so they're anti-correlated with each other
+across most outcomes, but a "market was exactly right" day hits all three at once.
+Tomorrow's settlements are one big lesson on ensemble-vs-market day-of trust.
+
+**Want to learn by next session:** today everything settles — (a) T-strike YES vs
+modal-bin NO: which expression of the same model view actually paid; (b) whether the
+overnight market move was information or noise; (c) v2 likely needs a rule about how
+to size when ensemble and NBM disagree by >0.5.
+
 ## 2026-07-13 00:16 UTC — nothing settled, no qualifying edge (same 23:10 snapshot; remaining R1 rows are complements of held positions), holding 4 positions.
 
 ## 2026-07-12 23:45 UTC — first session
