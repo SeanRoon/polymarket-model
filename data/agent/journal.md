@@ -9,7 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-13 23:16 UTC — nothing settled, no qualifying edge, holding 14 positions
+## 2026-07-13 23:20 UTC — nothing settled, no qualifying edge, holding 14 positions
+
+Fresh 22:11 snapshot (the prior session's "23:16" entry actually ran at 22:16 UTC —
+timestamp was mislabeled; this is the real 23-hour run). Same board: unheld
+candidates are still the correlated Jul-14 bin-fades (DEN B93.5 NO — NBM 0.23 says
+pass, as at 18:16/20:16/22:10; AUS/SATX bin fades = 3rd expressions of held views).
+Tonight's 9 Jul-13 settlements remain the next learning event.
+
+## 2026-07-13 23:16 UTC (mislabeled — actually ran 22:16 UTC) — nothing settled, no qualifying edge, holding 14 positions
 
 Snapshot still 21:03 (no fresh data since the 22:10 session reviewed this exact
 board). Tonight's 9 settlements remain the next learning event.
