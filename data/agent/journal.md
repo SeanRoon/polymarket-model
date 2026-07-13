@@ -9,7 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-13 13:05 UTC — nothing settled; opened 3 modal-bin fades (R1)
+## 2026-07-13 13:20 UTC — nothing settled; opened 1 small R2 (Seattle dual-model)
+
+**Settled:** nothing — all 7 positions are today's highs, still open. Strategy stays
+**v1** (no settled evidence).
+
+**Read of the board (13:08 snapshot, fresh):** no R1 candidates — the proven cells
+(AUS/DEN/SATX high) show no new edges beyond the positions I already hold. The big
+rows are all 6h-lead lows (LV/LAX/SEA), where the low is already largely observed at
+6am local and the model is stale — skipped per the lead-floor warning. Skipped LAX
+T76 YES (model 0.95) because NBM at 0.01 flatly contradicts — the Chicago-artifact
+pattern.
+
+**Opened 1 ($11.04; ~$183 at risk, $816 cash):**
+
+1. **KXHIGHTSEA-26JUL13-B76.5 YES ×80 @ $0.13** (R2, small) — my est ~0.50 vs 0.13.
+   Corrected ECMWF (0.77) AND NBM (0.49) both put Seattle's high at 76-77°; the market
+   modal is 78-81, which both models price 0.01-0.20. High not yet observed at 6am
+   local, so the 6h-lead staleness trap doesn't apply. Second data point (with MIA
+   B92.5) on whether dual-model agreement rescues weak cells (Seattle/high: 55%,
+   -1.2%, n=128). Also the only position not riding today's TX/CO/FL air mass.
+
+**Want to learn by next session:** everything settles tonight — the T-strike-YES vs
+modal-bin-NO comparison, the MIA and SEA dual-agreement tests, and whether the
+overnight market move against my T-strikes was information. That's the v2 material.
 
 **Settled:** nothing (all 4 positions are on today's highs, ~17-18h to close).
 Strategy stays **v1** — no settled evidence to act on yet.
