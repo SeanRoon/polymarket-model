@@ -9,6 +9,52 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-13 18:16 UTC — nothing settled; reconciled the 16:17 orphan session; opened 2 (DEN R1, BOS R2)
+
+**Housekeeping first:** the 16:17 session opened 3 trades but was interrupted before
+journaling/committing — the ledger changes were sitting uncommitted in the working
+tree. Reconciled here; those trades are recorded retroactively below. Strategy stays
+**v1** (nothing settled since 15:20; all 14 positions still open — 9 on today's
+markets settling tonight, 5 on Jul 14).
+
+**Retroactive record of 16:17 UTC (3 opened, $79.35):** the model's Jul-14 board
+lit up with the same cool-TX/CO regime as Jul 13, and this time NBM agrees:
+
+1. **KXHIGHDEN-26JUL14-T93 YES ×150 @ $0.10** (R1) — model 0.95, NBM 0.70, market
+   0.10. Denver/high 91%/+24.5%/n=362. Same setup as the Jul-13 DEN T93 but with NBM
+   on side this time.
+2. **KXHIGHAUS-26JUL14-T85 YES ×60 @ $0.55** (R1) — model 0.95, NBM 0.45, market
+   0.53. Austin/high 89%/+27.1%/n=331.
+3. **KXHIGHTSATX-26JUL14-T85 YES ×50 @ $0.57** (R1) — model 0.95, NBM 0.38, market
+   0.53. San Antonio/high 96%/+30.8%/n=132. Correlated with the AUS leg (same air
+   mass), sized smaller.
+
+**This session — read of the board (18:02 snapshot, 14 min old):** no R3 candidates
+in the wide scan (WTI/BTC/gold books closing today are efficient; no informational
+edge). The giant single-model edges (LAX T81 +0.90, SFO T81 +0.78, CHI T101 +0.77)
+all have NBM at 0.01 flatly contradicting — the disagreement pattern, skipped again.
+
+**Opened 2 ($42.07; ~$327 at risk, ~$673 cash):**
+
+1. **KXHIGHDEN-26JUL14-B95.5 NO ×40 @ $0.59** (R1) — my est P(95-96°) ~0.10 vs market
+   0.41. Strongest dual-model bin rejection on the board (ECMWF 0.01, NBM 0.05); both
+   models put the high ≤92. Second expression of the DEN T93 view — knowingly
+   correlated, combined DEN Jul-14 risk ~$40.
+2. **KXHIGHTBOS-26JUL14-B94.5 YES ×50 @ $0.34** (R2, small) — **process miss, logged
+   honestly:** snapshot showed 0.19/0.20 with dual-model agreement (ECMWF 0.47, NBM
+   0.36) = edge 0.28. Live fill came at 0.34 — the book had repriced toward the models
+   in the 14 min since the snapshot. At the fill my edge is ~0.06, BELOW R2's 0.15
+   bar; I'd have passed had I checked the live book first. Still marginally +EV under
+   my estimate, but the lesson is the rule the model-view header already states:
+   re-check live prices before pulling the trigger on any bin whose snapshot edge
+   looks like free money. Fourth dual-agreement-on-weak-cell test either way.
+
+**Want to learn by next session:** tonight's settlements (9 positions) — the T-strike
+YES vs modal-bin NO comparison, three dual-agreement tests, and whether the market's
+overnight repricing of my cheap T-strikes was information. If several R2 tests fail
+together, v2 should raise R2's bar or kill it early. Also: adopt "verify live book
+before entry" as an explicit rule candidate for v2.
+
 ## 2026-07-13 15:20 UTC — nothing settled, no qualifying edge, holding 9 positions
 
 Nothing settled; no qualifying edge (only candidates: a third correlated Seattle leg

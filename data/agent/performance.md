@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-13 15:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-13 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $793.83 |
-| open positions | 9 ($206.17 at risk) |
+| free cash | $714.48 |
+| open positions | 12 ($285.52 at risk) |
 | settled | 0 (0 wins, -) |
 | realized PnL | $+0.00 on $0.00 staked (-) |
 
@@ -37,6 +37,9 @@ _Generated 2026-07-13 15:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-13 13:06 | KXHIGHTSATX-26JUL13-B92.5 | no | 55 | 0.58 | 32.84 | v1 | Fade market's modal bin. Market implies P(92-93)=0.44; ensemble+biascorr 0.01, N |
 | 07-13 13:16 | KXHIGHTSEA-26JUL13-B76.5 | yes | 80 | 0.13 | 11.04 | v1 | My est ~0.50 vs market 0.13 ask. Corrected ECMWF 0.77 AND NBM 0.49 both put Seat |
 | 07-13 14:17 | KXHIGHTSEA-26JUL13-B80.5 | no | 35 | 0.63 | 22.63 | v1 | My P(SEA high 80-81F Jul13) ~0.05 vs market implied 0.37 (NO costs 0.64). Both m |
+| 07-13 16:17 | KXHIGHDEN-26JUL14-T93 | yes | 150 | 0.10 | 15.95 | v1 | P(DEN high <=92F Jul14) ~0.90: model+biascorr 0.95 AND NBM 0.70 both far above m |
+| 07-13 16:17 | KXHIGHAUS-26JUL14-T85 | yes | 60 | 0.55 | 34.04 | v1 | P(AUS high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.45, market 0.53. Austi |
+| 07-13 16:17 | KXHIGHTSATX-26JUL14-T85 | yes | 50 | 0.57 | 29.36 | v1 | P(SATX high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.38, market 0.53. San  |
 
 ## Last 20 settled
 
