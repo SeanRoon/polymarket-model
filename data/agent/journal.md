@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 13:20 UTC — nothing settled, no qualifying edge, holding 6 positions
+
+Same 11:56 UTC snapshot as the 12:15 session — no new information; all candidates remain vetoed as logged there. Tonight's Jul-14 settlements are the v2 / NBM-confirmation test.
+
 ## 2026-07-14 12:15 UTC — nothing settled, no qualifying edge, holding 6 positions
 
 Fast session. Vetoes logged for R5/R6 kill-tracking:
