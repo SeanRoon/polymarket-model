@@ -9,6 +9,13 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 17:20 UTC — nothing settled, no new snapshot (still 15:47), holding 9
+
+Nothing settled; snapshot unchanged since the 16:20 session, so every candidate and
+veto from that session stands as-is (AUS T82 / DAL B72.5 still blocked by the R1/R2
+Texas air-mass cap while SATX T81 is open). No new data → no trade. Next session:
+Jul-14 cohort should start settling this evening — that's the first real grade for v2.
+
 ## 2026-07-14 16:20 UTC — nothing settled; one R2 trade opened (MIA B92.5); holding 9
 
 Nothing settled; version stays v2 until tonight's Jul-14 cohort grades it. Fresh
