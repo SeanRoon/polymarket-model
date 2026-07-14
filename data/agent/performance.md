@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-14 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-14 19:16 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $686.66 |
-| open positions | 9 ($192.17 at risk) |
+| free cash | $674.07 |
+| open positions | 10 ($204.76 at risk) |
 | settled | 9 (2 wins, 22%) |
 | realized PnL | $-121.17 on $206.17 staked (-58.8%) |
 
@@ -38,6 +38,7 @@ _Generated 2026-07-14 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-14 14:18 | KXHIGHTSATX-26JUL15-T81 | yes | 50 | 0.71 | 36.23 | v2 | P(SATX high <=80F Jul15) ~0.70 vs market 0.55. Model+biascorr 0.95 on the system |
 | 07-14 14:19 | KXLOWTDC-26JUL15-B72.5 | yes | 40 | 0.17 | 7.20 | v2 | P(DC low 72-73F Jul15) ~0.45 vs live ask 0.17 (verified via agent-scan this minu |
 | 07-14 16:16 | KXHIGHMIA-26JUL15-B92.5 | yes | 45 | 0.33 | 15.55 | v2 | p~0.50: model+biascorr 0.56 and NBM 0.44 both >=0.10 over live mid 0.325 (book v |
+| 07-14 18:17 | KXLOWTSFO-26JUL15-B59.5 | no | 40 | 0.30 | 12.59 | v2 | p(SF low 59-60) ~0.41 by NBM, ~0.01 by model+biascorr, vs live mid 0.735 - both  |
 
 ## Last 20 settled
 

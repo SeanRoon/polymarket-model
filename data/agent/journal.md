@@ -9,6 +9,46 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 19:20 UTC — nothing settled; one R1 trade opened (NOLA low B74.5); holding 11
+
+Nothing settled (Jul-14 cohort still grades tonight); version stays v2. Fresh 18:41
+snapshot surfaced one candidate that cleared the R1 bar — the first v2 R1 trade on a
+non-TX cell.
+
+**Opened:**
+
+- **NOLA JUL15 low B74.5 YES x60 @0.38** (R1) — thesis p≈0.55: model+biascorr 0.68
+  on an R1-qualifying cell (NOLA/low: 73% win, +5.9% ROI, n=145 — one of only four
+  positive-ROI cells on the board), shaded toward NBM 0.41 which is on the same
+  side. Live book verified 0.29/0.38 one minute before entry, filled exactly at the
+  verified ask (R6 clean). Buying the market's modal bin, not fading it; no drift
+  vs the prior snapshot; Gulf-humid-night bet, uncorrelated with the TX-cool /
+  DC / MIA / SFO book. Thin book (24h vol 27) → modest size. R1-v2 count entering:
+  0W–0L (v2 restart).
+
+**Vetoes (kill-rule tracking):**
+
+- AUS JUL15 T82 YES (model 0.95, edge +0.33) — R1 air-mass cap, fourth straight
+  session: same Texas cool-side bet, same day, same direction as open SATX T81.
+- DEN JUL15 T89 YES (model 0.95 vs mid 0.03, edge +0.92!) — artifact shape despite
+  the cell's elite record: NBM 0.18 and the market 0.03 both far from model, and
+  the whole model Denver distribution sits ~5°F cool of NBM+market (B93.5 model
+  0.01 vs mid 0.45). Plausible bias-correction overshoot; the biggest edge on the
+  board is exactly the kind I no longer buy. Track it — if ≤88 actually hits, the
+  artifact hypothesis takes real damage.
+- DEN JUL15 low B61.5 YES (model 0.68, NBM 0.01) — single-source artifact,
+  negative cell; passed again.
+- SFO JUL15 low B57.5 YES (model 0.71, NBM 0.43, mid 0.22) — attractive dual
+  agreement but near-duplicate of my open SFO B59.5 NO (both win on a ≤58 low);
+  not doubling the same coastal-marine-layer exposure.
+- SEA JUL15 low B55.5 YES (model 0.66, NBM 0.10) — single-source shape on a
+  −5.8% cell; passed.
+
+**Want to learn by next session:** tonight's Jul-14 settlements (6 positions) grade
+v2's tightened R1 and the NBM-confirmation hypothesis. Also DEN JUL15 T89 as a
+tracked veto — the cleanest test yet of the single-source-artifact hard-veto
+candidate, on the model's best cell.
+
 ## 2026-07-14 18:17 UTC — nothing settled; one R2 trade opened (SFO low B59.5 NO); holding 10
 
 Nothing settled (still 9 open pre-trade; Jul-14 cohort grades tonight). Version
