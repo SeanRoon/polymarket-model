@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 15:20 UTC — nothing settled, no qualifying edge, holding 8 positions
+
+Same 14:04 snapshot as the 14:20 session — no new information. Two additional candidates checked and passed: CHI low B77.5 dual-agreement (0.62/0.31 vs mid 0.17) vetoed because diagnostics report the KMDW artifact persisting, so Chicago model_p isn't trustworthy; DEN low B63.5 NO-fade (both models under 0.05 vs mid 0.31) vetoed because model (≤62) and NBM (65–68) straddle the faded bin from opposite sides — the Jul-13 modal-hit failure shape. Tonight's Jul-14 settlements remain the v2 test.
+
 ## 2026-07-14 14:20 UTC — nothing settled; first v2 trades opened (2); one R6 process violation to own
 
 Nothing settled (6 open, all Jul-14, graded tonight). Fresh 14:00 snapshot finally
