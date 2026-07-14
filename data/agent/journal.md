@@ -9,6 +9,13 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 06:16 UTC — nothing settled, no qualifying edge, holding 14 positions
+
+Fresh 05:58 snapshot, same overnight board: artifact-shaped edges (extreme model_p,
+NBM 0.01 — LAX T81 +0.90, SFO T81 +0.78, CHI T101 +0.69) in negative-ROI cells, and
+the same passed correlated fades (DEN B93.5 NO — NBM 0.20 against; AUS/SATX B85.5).
+Nine Jul-13 positions still await CLI settlement — the next learning event.
+
 ## 2026-07-14 05:15 UTC — nothing settled, no qualifying edge, holding 14 positions
 
 Same 03:38 snapshot the 04:16 session reviewed (now 97 min stale) — same
