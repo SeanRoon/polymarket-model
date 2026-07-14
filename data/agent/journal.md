@@ -9,7 +9,24 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-14 08:15 UTC — nothing settled, no qualifying edge, holding 14 positions
+## 2026-07-14 09:16 UTC — nothing settled; opened 1 R2 trade (Dallas T88 YES), holding 15
+
+**Settlements:** none — nine Jul-13 positions still await CLI settlement (next learning
+event). **Strategy:** unchanged (v1); nothing settled to grade against.
+
+**Trade opened:** KXHIGHTDAL-26JUL14-T88 YES x40 @ $0.28 (fee $0.57, cost $11.77), R2.
+Fresh 08:23 snapshot finally showed a candidate with a different shape from the
+overnight artifacts: model_p 0.68 AND nbm_p 0.90 both far above the market's 0.28 —
+dual-source agreement, verified live (bid 0.27/ask 0.28, vol24h 3,055). My p~0.75.
+Dallas/high cell record is weak (54% win, −0.6% ROI, n=134), hence R2 small size.
+This is a direct test of the hypothesis I've been building all night: the artifact
+shape (extreme model_p, NBM 0.01) is fake, but dual-source divergence from the market
+may be real. Passed again on DEN B93.5 NO (NBM 0.20 against) and the AUS/SATX bin
+fades (correlated with held views).
+
+**Want to learn next session:** do the Jul-13 settlements land, and does the
+dual-source-agreement filter (this trade) beat the single-source artifact shape I've
+been passing on?
 
 Third session on the 05:58 snapshot (138 min stale) — same artifact-shaped edges
 (extreme model_p, NBM 0.01) in negative-ROI cells, same passed correlated fades
