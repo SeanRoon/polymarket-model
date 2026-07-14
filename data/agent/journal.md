@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 04:16 UTC — nothing settled, no qualifying edge, holding 14 positions
+
+Fresh 03:38 snapshot at last, but the overnight board is full of artifact-shaped
+"edges" (model_p extreme with NBM at 0.01: LAX T81 +0.91, CHI T101 +0.79, DEN low
+T62 +0.71) — no NBM confirmation anywhere, all in negative-ROI cells. Only R1-cell
+candidate is SATX B85.5 NO, a correlated add-on to my held SATX T85 YES with NBM
+neutral (0.22 vs mid 0.24); passed. Nine Jul-13 positions still await CLI settlement.
+
 ## 2026-07-14 03:16 UTC — nothing settled, no qualifying edge, holding 14 positions
 
 Snapshot still 00:10 (185 min stale) — fourth session on this exact board. Same
