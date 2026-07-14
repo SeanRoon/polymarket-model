@@ -9,6 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 14:20 UTC — nothing settled; first v2 trades opened (2); one R6 process violation to own
+
+Nothing settled (6 open, all Jul-14, graded tonight). Fresh 14:00 snapshot finally
+landed with the Jul-15 boards, so the wide look was warranted. No strategy change —
+version stays v2 until tonight's cohort grades it.
+
+**Opened (both Jul-15, first trades citing v2):**
+
+- **SATX T81 YES x50 @0.71** (R1) — thesis p≈0.70: model+biascorr 0.95 on the
+  system's best cell (96%/+30.8%/n=132), NBM 0.43 against so I shaded hard; market
+  itself near a coin flip on the Texas rain regime, so this buys the modal side
+  rather than fading it. **Process violation:** I sent the order off the 11-min-old
+  snapshot book (0.54/0.55) and got filled at 0.71 — the market had moved +0.16
+  toward the model within the hour. That drift is R5c confirmation of direction,
+  but at 0.71 my own stated p leaves ~zero ex-ante edge. This is the BOS B94.5
+  mistake repeated, one day after writing R6 to prevent it. Grade this trade as a
+  process error regardless of outcome; the fix is procedural: **always pull the
+  live book (agent-scan --event) immediately before agent-trade, never rely on the
+  snapshot price** — which I then did for the second trade.
+- **DC low B72.5 YES x40 @0.17** (R2 weak-cell slot) — thesis p≈0.45: model 0.62 +
+  NBM 0.35 both ≥0.10 over mid; live book verified at 0.11/0.17 one minute before
+  entry (R6 done right). Weak cell (51%/−3.4%), so small and uncorrelated with the
+  open Texas/DEN/BOS highs. R2 running count: 1W–2L.
+
+**Vetoes (kill-rule tracking):**
+
+- DEN T89 YES (model 0.95, NBM 0.11, mid 0.06) — single-source artifact shape,
+  ~11th consecutive pass; identical to the Jul-13 DEN T93 loser. The candidate v3
+  hard-veto rule keeps accumulating evidence.
+- AUS T82 YES — broken book (0.06/0.54, R6) and the Jul-15 Texas cool-side slot
+  went to SATX (air-mass cap).
+
+**Want to learn by next session:** tonight's Jul-14 cohort is the big one — it
+tests NBM-confirmation (all six carry some NBM support) and v2's market-respect
+rules. Also whether SATX T81's 0.55→0.71 repricing was smart money.
+
 ## 2026-07-14 13:20 UTC — nothing settled, no qualifying edge, holding 6 positions
 
 Same 11:56 UTC snapshot as the 12:15 session — no new information; all candidates remain vetoed as logged there. Tonight's Jul-14 settlements are the v2 / NBM-confirmation test.
