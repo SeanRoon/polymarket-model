@@ -9,6 +9,57 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 11:15 UTC — the Jul-13 cohort settled: 2W/7L, −$121.17; strategy → v2; no new trades
+
+**Settlements (all nine Jul-13 positions; the first real learning event):**
+
+| trade | result | grading |
+|:------|:-------|:--------|
+| DEN T93 YES @0.07 | −11.19 | Wrong. NBM (0.11, against) was right; the 91%-win cell record didn't save a trade NBM rejected. Denver hit 97–98. |
+| AUS T89 YES @0.17 | −17.99 | Wrong. Dual agreement (NBM 0.64) didn't save it. Austin hit 93–94. |
+| SATX T90 YES @0.34 | −35.58 | Wrong. Same: NBM 0.54 agreed and lost. |
+| MIA B92.5 YES @0.32 | **+19.94** | Right, possibly for the right reason: dual agreement on the modal-adjacent bin, and Miami hit 92–93. The one clean R2 win. |
+| DEN B97.5 NO @0.50 | −31.05 | Wrong for the worst reason: the market's modal bin hit EXACTLY. Ensemble 0.01 on the true outcome. |
+| AUS B93.5 NO @0.66 | −33.79 | Same failure: modal-adjacent bin hit exactly; both models priced it 0.01–0.05. |
+| SATX B92.5 NO @0.58 | **+22.16** | Right, but for a lucky reason: won because SATX overshot the bin — the underlying "high ≤89" view was still wrong (T90 YES lost). |
+| SEA B76.5 YES @0.13 | −11.04 | Wrong. Dual agreement (0.77/0.49) on a weak cell; Seattle hit 80–81. |
+| SEA B80.5 NO @0.63 | −22.63 | Wrong. Market's modal bin hit exactly, third time in one night. |
+
+**What the cohort taught (all three open questions from 07-13 answered):**
+1. *Was the overnight market move information or noise?* **Information.** All three
+   T-strikes the market repudiated overnight lost, and doubling into the same view via
+   modal-bin NOs added −$42.68 more. The settlement-day book holds real-time obs the
+   stale ensemble doesn't.
+2. *T-strike YES vs modal-bin NO — which expression paid?* **Neither**, but modal-bin
+   NO was categorically worse: the market's modal bin hit exactly in DEN, AUS, and SEA
+   (1W/3L, −$65 on fades).
+3. *Does dual-model agreement rescue weak cells?* **Mostly no** — 1W/4L across the
+   dual-agreement tests. MIA's win is the only survivor.
+
+**Strategy → v2:** R5 (market respect: no settlement-day modal-bin fades; adverse
+drift ≥0.10 against the model is a veto, not a discount; drift toward = confirmation),
+R6 (live-book verification, from the BOS fill miss), R1 tightened (subject to R5/R6,
+one city per air mass per direction, cell record demoted to a prior — the production
+model's 91–96% cells delivered me 22%), R2 bar raised (both sources ≥0.10 vs market,
+edge ≥0.15 live, uncorrelated). Full evidence in the changelog.
+
+**Trades opened: none.** Board check against v2: MIA B92.5 YES fails R2 (NBM 0.43 is
+below the 0.52 mid — no dual agreement); NY B96.5 YES is dual-agreed but correlated
+with held BOS B94.5 (same Northeast heat, and NYC/high is the model's worst cell at
+42%/−6.2%); DEN B93.5 NO is exactly the modal-bin fade R5a now bans; LAX/SFO/CHI
+mega-edges are the single-source artifact shape (NBM 0.01). The six open Jul-14
+positions already hold the board's real dual-source edges, and the market has drifted
+TOWARD every one of them since entry (DEN T93 0.10→0.12, AUS T85 0.55→0.71, SATX T85
+0.57→0.70, DAL T88 0.28→0.36) — R5c says that's confirmation, not a missed add. Wide
+venue scan skipped: weather-only mandate makes it context-only and model-view covers
+all weather events.
+
+**Want to learn by next session:** tonight's Jul-14 cohort is a direct test of the
+NBM-confirmation hypothesis — all six open positions carry NBM support, unlike the
+Jul-13 losers. If they win where Jul-13 lost, v3 makes NBM agreement a hard R1
+requirement. Also start tracking R5 vetoes (today: DEN B93.5 NO) to test whether the
+veto rule itself pays.
+
 ## 2026-07-14 10:16 UTC — nothing settled, no qualifying edge, holding 15 positions
 
 Same 08:23 snapshot the 09:16 session traded on (now 112 min stale) — no new
