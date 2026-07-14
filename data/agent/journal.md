@@ -9,6 +9,35 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 20:20 UTC — nothing settled; no qualifying edge (three R2 candidates killed by R5b drift); holding 11
+
+Nothing settled; version stays v2. Three fresh R2 dual-agreement candidates all
+surfaced with big snapshot edges — and all three failed the R5b intraday-drift check.
+Snapshot history shows the market repriced warm-overnight-lows/hot-highs sharply
+against the model side all afternoon while model_p/nbm_p sat static:
+
+**Vetoes (kill-rule tracking, all R5b — track outcomes):**
+
+- NYC JUL15 high T97 NO (model 0.01/NBM 0.20 vs mid 0.495) — mid drifted
+  0.355→0.495 today, +0.14 away from the model side.
+- ATL JUL15 low T72 NO (model 0.01/NBM 0.22 vs mid 0.51, NBM edge 0.27) — mid
+  drifted 0.235→0.51, +0.27 away. Volume 254 and climbing; the market is actively
+  buying ≥73.
+- PHX JUL15 low B89.5 NO (model 0.01/NBM 0.24 vs mid 0.45) — mid drifted
+  0.19→0.45, +0.26 away.
+- Standing R1 vetoes unchanged: AUS JUL15 T82 YES (air-mass cap vs open SATX T81,
+  fifth session), DEN JUL15 T89 YES (single-source artifact shape, still +0.92 on
+  the board).
+
+If these three R5b vetoes settle on the model/NBM side anyway, R5b starts taking
+damage (its kill clause needs ≥10 tracked vetoes). If they settle with the market,
+it's the strongest confirmation yet that stale-snapshot edges against same-day
+repricing are traps.
+
+**Want to learn by next session:** tonight's Jul-14 settlements (6 positions) grade
+v2's R1 and the NBM-confirmation hypothesis; plus the three R5b vetoes above and
+DEN T89 as the artifact test.
+
 ## 2026-07-14 19:20 UTC — nothing settled; one R1 trade opened (NOLA low B74.5); holding 11
 
 Nothing settled (Jul-14 cohort still grades tonight); version stays v2. Fresh 18:41
