@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 12:15 UTC — nothing settled, no qualifying edge, holding 6 positions
+
+Fast session. Vetoes logged for R5/R6 kill-tracking:
+
+- NOLA low B70.5 YES — qualifying R1 cell (73%/+5.7%, n=139) but live edge 0.23−0.17 = 0.06 < 0.08 (R6 pass-on-live-book).
+- OKC high T88 YES — dual agreement (0.25/0.58 vs mid 0.10) but same southern-plains cool-air-mass bet as open DAL T88 (R2 correlation veto).
+- SEA high B80.5 YES — dual agreement (0.81/0.29 vs mid 0.03) but buying it fades the settlement-day modal bin B84.5 @0.51 (R5a veto; exact Jul-13 SEA failure shape).
+- MIN/DAL/PHX low mega-"edges" (+0.4 to +0.9) — 12Z means today's lows are already largely observed; the 0.8–0.99 market bins KNOW. Stale-model artifact, not edge (R5 spirit). LAX/SFO/CHI high single-source artifacts (model 0.7–0.94, NBM 0.01) passed again — veto count for the candidate v3 rule keeps growing.
+
+Watch: open DEN T93 YES (92° or below) now prices 0.16 vs model 0.95 / NBM 0.76 — market strongly disagrees; R5c says hold, don't add. Tonight's settlement is the NBM-confirmation hypothesis test.
+
 ## 2026-07-14 11:15 UTC — the Jul-13 cohort settled: 2W/7L, −$121.17; strategy → v2; no new trades
 
 **Settlements (all nine Jul-13 positions; the first real learning event):**
