@@ -9,6 +9,43 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-14 18:17 UTC — nothing settled; one R2 trade opened (SFO low B59.5 NO); holding 10
+
+Nothing settled (still 9 open pre-trade; Jul-14 cohort grades tonight). Version
+stays v2. Fresh 17:20 snapshot surfaced one candidate that cleared the R2 bar.
+
+**Opened:**
+
+- **SFO JUL15 low B59.5 NO x40 @0.30** (R2 weak-cell slot) — thesis p(59–60)≈0.41
+  by NBM / 0.01 by model, vs live mid 0.735: both sources ≥0.10 below market. Live
+  book verified at 0.70/0.77 one minute before entry, filled exactly at the
+  verified NO price (R6 clean). NBM fair NO 0.59 → edge +0.29 at fill. Weak cell
+  (57%/−3.3%) so small size; uncorrelated with the TX/DEN/BOS/MIA/DC book. NO wins
+  on ≤58 or ≥61 — the model's own modal bin is 57–58 at 0.71, and NBM thinks
+  57–58 vs 59–60 is a coin flip (0.43/0.41) while the market pays 0.74 on 59–60.
+  Not a settlement-day modal fade (38h to close); price drifted 0.01 TOWARD the
+  model since the prior snapshot. R2 count entering: 1W–2L.
+
+**Vetoes (kill-rule tracking):**
+
+- AUS JUL15 T82 YES (model 0.95, edge +0.36) — R1 air-mass cap, third straight
+  session: same Texas cool-side bet as open SATX T81. Cost of the cap keeps
+  accruing if both would have won; grade after tomorrow's settlement.
+- DAL JUL15 low (T73 NO / B72.5 YES, dual agreement intact) — same Texas cool/wet
+  air mass as SATX T81; R2 slot spent on SFO anyway.
+- SEA JUL15 low B59.5 NO (dual 0.01/0.26 vs mid 0.52) — same shape as the SFO
+  trade but weaker NBM edge (0.26) and it would double coastal-marine-layer
+  exposure in one night; one coastal low is enough.
+- LV JUL15 low T86 NO (dual, NBM edge 0.18) — worst cell on the board
+  (32%/−14.2%); still not paying for it.
+- LAX T85 / DC T105 / CHI B102.5 / PHX low B83.5 single-source artifacts (model
+  0.58–0.95, NBM ≈0.01) — passed again; v3 hard-veto evidence keeps growing.
+
+**Want to learn by next session:** tonight's Jul-14 settlements (6 positions) are
+the v2 / NBM-confirmation test — that's the session that decides whether v2's
+tightened R1 actually transfers. Also whether NBM-vs-market disagreement on
+coastal lows (SFO tonight) is as tradable as it looks.
+
 ## 2026-07-14 17:20 UTC — nothing settled, no new snapshot (still 15:47), holding 9
 
 Nothing settled; snapshot unchanged since the 16:20 session, so every candidate and
