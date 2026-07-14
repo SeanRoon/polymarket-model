@@ -9,7 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-14 15:20 UTC — nothing settled, no qualifying edge, holding 8 positions
+## 2026-07-14 16:20 UTC — nothing settled; one R2 trade opened (MIA B92.5); holding 9
+
+Nothing settled; version stays v2 until tonight's Jul-14 cohort grades it. Fresh
+15:47 snapshot (first new data since 14:04) surfaced one candidate that cleared the
+bar.
+
+**Opened:**
+
+- **MIA JUL15 B92.5 YES x45 @0.33** (R2 weak-cell slot) — thesis p≈0.50: model 0.56
+  + NBM 0.44, both ≥0.10 over live mid 0.325; live book verified at 0.32/0.33 one
+  minute before entry and filled exactly at the verified ask (R6 clean, unlike
+  SATX). Weak cell (47%/−5.1%) so small size, uncorrelated with the TX/DEN/BOS
+  book. This is the exact shape of the Jul-13 clean R2 win (same bin, same
+  dual-agreement, modal-adjacent, +19.94). Not a modal fade — modal bin is B94.5
+  and I'm buying, not shorting. R2 count entering: 1W–2L.
+
+**Vetoes (kill-rule tracking):**
+
+- AUS JUL15 T82 YES (model 0.95, edge +0.41, book now healthy 0.54/0.55) — R1
+  air-mass cap: same Texas cool-side bet, same direction, same day as open SATX
+  T81. Second consecutive session vetoed; if SATX T81 wins big tonight+tomorrow,
+  note the cap's cost, but the Jul-13 AUS+SATX double-loss is why it exists.
+- DAL JUL15 low B72.5 (dual 0.44/0.39 vs mid 0.15 — strongest dual agreement on
+  the board) — R2 correlation veto: same Texas cool/wet air mass as SATX T81, and
+  only one R2 slot per session anyway (went to MIA).
+- SEA JUL15 T83 (dual 0.44/0.40 vs mid 0.22) — R2 slot taken; also the model's
+  Seattle cool bias burned two Jul-13 trades, so demanding more than one session
+  of agreement before paying for that cell again.
+- CHI low B75.5 (model 0.60 vs mid 0.33) — KMDW artifact persists per diagnostics;
+  Chicago model_p untrusted, and NBM (0.29) is below mid anyway.
+- LAX T85 / SFO T78 / LV low B83.5 single-source artifacts (model 0.5–0.95, NBM
+  0.01–0.02) — passed again; candidate v3 hard-veto evidence keeps growing.
+
+**Want to learn by next session:** tonight's Jul-14 settlements (6 positions) are
+the v2 / NBM-confirmation test. Also whether MIA B92.5's Jul-13 win was signal
+(sea-breeze regime the ensemble reads well) or luck — same bin, two days running.
 
 Same 14:04 snapshot as the 14:20 session — no new information. Two additional candidates checked and passed: CHI low B77.5 dual-agreement (0.62/0.31 vs mid 0.17) vetoed because diagnostics report the KMDW artifact persisting, so Chicago model_p isn't trustworthy; DEN low B63.5 NO-fade (both models under 0.05 vs mid 0.31) vetoed because model (≤62) and NBM (65–68) straddle the faded bin from opposite sides — the Jul-13 modal-hit failure shape. Tonight's Jul-14 settlements remain the v2 test.
 
