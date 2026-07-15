@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 07:16 UTC — nothing settled, no qualifying edge, holding 13
+
+Fast session. Jul-14 cohort still awaits ~13:00 UTC CLIs; v2 unchanged. Board check
+against the 06:00 snapshot: the only R1-cell edges (SATX T81, NOLA B74.5) are already
+held; no AUS/DEN high edges. R2 candidates all blocked — **R5a vetoes logged for
+kill-clause tracking:** BOS low B77.5 NO (model 0.19 / NBM 0.22 vs mid 0.46), NOLA
+high B90.5 NO (0.38/0.31 vs 0.54), MIA high B94.5 NO (0.42/0.17 vs 0.57) — all
+settlement-day modal-bin fades. SFO low B57.5 YES passed on correlation with open
+SFO B59.5. Next session: Jul-14 settlements should land — full grading pass due.
+
 ## 2026-07-15 06:20 UTC — nothing settled; NBM is back in the snapshot (R2 alive again), one R2 trade opened (NYC high B101.5 YES); holding 13
 
 Nothing settled (Jul-14 cohort still grades after the ~13:00 UTC CLIs); version stays
