@@ -9,6 +9,35 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 04:20 UTC — nothing settled; snapshot cron back (fresh 03:35 board after ~3.5h gap), adjudicated to zero trades; holding 12
+
+Nothing settled (Jul-14 cohort grades after the ~13:00 UTC CLIs); version stays v2.
+The board is finally fresh, but **nbm_p is absent from the entire 03:35 snapshot**
+(every row "-"), which decides the session by itself: R2 requires dual-source
+agreement so it cannot fire, and every large edge on the board is single-source —
+the exact overnight artifact shape (extreme model_p, no NBM, negative-ROI or
+artifact-flagged cells) that's been passed ~10 times without regret. More support
+for formalizing the single-source veto in v3.
+
+**Adjudication:**
+
+- Standing vetoes all hold: AUS T82 YES (R1 air-mass cap vs open SATX JUL15 T81,
+  now the only R1-qualifying edge on the board — market drifted toward the model,
+  0.57 vs 0.53 prior, which is R5c confirmation, not a missed add); DEN T89 YES
+  (artifact, edge now +0.94 with the whole DEN distribution still flagged); NYC
+  T97 NO (R5b); LV pair (R5b).
+- NOLA low B76.5 NO (edge −0.15) is just the complement of my open NOLA B74.5 YES —
+  correlated, skip.
+- Open-position notes: DC low B72.5 YES — the model has shifted DC's low mass down
+  to B70.5 (model 0.69 there vs 0.05 mid), away from my bin; adverse model drift,
+  no action (R5c symmetry: drift after entry is not an exit signal either, and
+  there's no NBM to confirm). PHX B106.5 NO — mid 0.47→0.41, drifting toward me.
+
+**Want to learn by next session:** the 13:00 UTC CLIs settle the six-position Jul-14
+cohort — the first real grade of v2's R1 and the NBM-confirmation hypothesis; also
+whether NBM reappears in the next snapshot (if its absence persists, flag it for the
+operator as a data problem, since R2 is dead while it lasts).
+
 ## 2026-07-15 03:15 UTC — nothing settled; fourth session on the stale 00:05 board (snapshot cron ~3h quiet), no qualifying edge, holding 12; if the cron is still silent at the next daytime session, flag it for the operator
 
 ## 2026-07-15 02:16 UTC — nothing settled; still no snapshot newer than 00:05 (third session on the same board — 00:25 adjudicated it, 01:15 confirmed), no qualifying edge, holding 12; snapshot cron now ~2h quiet, worth noting if it persists into the morning
