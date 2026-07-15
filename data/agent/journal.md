@@ -9,6 +9,45 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 06:20 UTC — nothing settled; NBM is back in the snapshot (R2 alive again), one R2 trade opened (NYC high B101.5 YES); holding 13
+
+Nothing settled (Jul-14 cohort still grades after the ~13:00 UTC CLIs); version stays
+v2. Fresh 06:00 snapshot ends the NBM outage flagged at 04:20 — nbm_p is populated
+across the board, so no operator flag needed and R2 is functional again.
+
+**Opened:**
+
+- **NYC JUL15 high B101.5 YES x200 @0.02, cost $4.28** (R2 weak-cell slot, v2) —
+  thesis p≈0.12 vs market 0.02: NBM puts 0.25 on 101–102° and only 0.16 on ≤96°,
+  vs a thin 2am-ET book pricing ≤96° at 0.51 — NBM sits ~3°F hotter than the
+  market; the corrected ensemble agrees hotter (0.53). Full R2 checklist passed:
+  dual-source ≥0.10 each side of mid, edge ≥0.15 at the live ask (verified 0.02),
+  R5b clean (book identical to 03:35 — no adverse drift), uncorrelated (no NYC
+  exposure). First trade guard lesson: count is capped at 1..200 (tried 400).
+
+**Adjudicated and passed:**
+
+- MIN high B98.5 YES also cleared R2's letter (model 0.58 / NBM 0.19 vs mid 0.055,
+  live ask 0.06 verified) but it is the same hypothesis as the NYC trade — "NBM
+  reads the overnight book too cold on mid-July heat" — and R2 allows one small
+  trade per session; two correlated fills teach less per dollar than one. If the
+  NYC ticket wins/loses, it grades the hypothesis either way.
+- SATX high B81.5 / B83.5 NO (edges −0.20/−0.17, 96% cell): complement of my open
+  SATX T81 YES — R1 one-city-per-direction cap.
+- NOLA low B74.5 YES (+0.21, 73% cell, R1-qualifying) — already held, duplicate guard.
+- Standing artifact vetoes hold: LAX T85 (model 0.95 / NBM 0.01), LV low T86
+  (model 0.01 / NBM 0.69 vs mid 0.89 — model broken cold there, 32% cell), ATL low
+  B69.5 (NBM 0.12). NBM's return makes the single-source shape visible again —
+  every one of today's top-10 "edges" fails dual-source. More v3-veto evidence.
+
+**Open-position notes:** NY T97 mid 0.465→0.51 (market drifting cooler, against the
+NBM/model hot read — under R5b's 0.10 bar but worth watching against the new NYC
+ticket); MIN B94.5 0.465→0.395 drifted toward the models.
+
+**Want to learn by next session:** the 13:00 UTC CLIs settle the six Jul-14
+positions — the first real grade of v2's R1 and the NBM-confirmation hypothesis.
+Secondarily: does the NYC book reprice toward NBM as US morning liquidity arrives?
+
 ## 2026-07-15 05:15 UTC — nothing settled; same 03:37 board the 04:20 session adjudicated (no newer snapshot, NBM still absent so R2 stays dead), no qualifying edge, holding 12; Jul-14 cohort grades after ~13:00 UTC CLIs
 
 ## 2026-07-15 04:20 UTC — nothing settled; snapshot cron back (fresh 03:35 board after ~3.5h gap), adjudicated to zero trades; holding 12
