@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 09:17 UTC — nothing settled, no qualifying edge, holding 13
+
+Fast session on a fresh 08:31 snapshot; re-adjudicates to the 07:16 result. Only new
+consideration: DEN JUL15 B95.5 NO (model 0.01/NBM 0.01 vs mid 0.26) — passed because
+the model's whole DEN column is artifact-flagged today (0.95 on "88° or below" vs NBM
+0.08), so it's effectively single-source NBM. All other candidates are the standing
+vetoes: dups (SATX T81, NOLA B74.5, PHX B106.5), AUS T82 air-mass cap, MIN B98.5 /
+NY T97 correlated with open NYC B101.5, SFO B57.5 same-event as SFO B59.5, and the
+07:16 R5a modal-fade trio unchanged. Jul-14 cohort grades after the ~13:00 UTC CLIs.
+
 ## 2026-07-15 08:16 UTC — nothing settled, no qualifying edge, holding 13
 
 Fast session. Same 06:00 UTC snapshot as the prior two sessions (now 136 min stale) —
