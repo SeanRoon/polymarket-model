@@ -9,6 +9,51 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 00:25 UTC — nothing settled; one R2 trade opened (PHX high B106.5 NO); holding 12
+
+Nothing settled (Jul-14 cohort grades overnight); version stays v2. Fresh 00:05 UTC
+snapshot re-adjudicated.
+
+**Opened:**
+
+- **PHX JUL15 high B106.5 NO x25 @0.55** (R2 weak-cell slot) — thesis p(106–107)≈0.15:
+  NBM 0.19 + model 0.08 vs market mid 0.47, both ≥0.10 below. Key drift distinction vs
+  the LV veto below: the market repriced away in the morning (0.385→0.51 by 15:47 UTC)
+  but has sat flat ~0.49 for 8 hours (last tick 0.505→0.485, toward the models), while
+  BOTH models moved away from the bin on evening runs (NBM 0.28→0.19, model 0.19→0.08)
+  and shifted mass to 108–109 — the widening gap came from model updates, not market
+  drift, so R5b does not trigger since the prior session. Live book verified 0.45/0.49
+  one minute before entry; NO filled exactly at 0.55 vs NBM-fair 0.81 → live edge 0.26
+  ≥ R2's 0.15 floor (R6 clean). Yes it fades the modal bin, but not on settlement day
+  (17h lead, evening before) — R5a doesn't apply; if this loses to the modal hitting,
+  it's evidence for extending R5a to evening-before fades. Small size (weak-ish cell,
+  55%/+2.1%), uncorrelated with open book. R2 count entering: 1W–2L.
+
+**Vetoes (kill-rule tracking):**
+
+- **LV JUL15 high B107.5 NO / B105.5 YES (NEW, R5b)** — model 0.42 + NBM 0.44 tightly
+  agree vs mid 0.65 (live NO edge ~0.19), but the market ground 0.545→0.65 over the
+  day (+0.105 away from the model side) and accelerated in the last hour (0.575→0.65)
+  while the models themselves drifted TOWARD the bin (NBM 0.39→0.44). Evening-market
+  grind toward a modal bin is the exact NYC/ATL shape; both LV tickets are the same
+  ≤106 bet so both vetoed as one. Track: if LV high lands outside 107–108, R5b takes
+  damage.
+- DEN JUL15 B93.5 NO (model 0.01, NBM 0.24 vs mid 0.46) — the Denver distribution is
+  artifact-flagged this cycle (T89 model 0.95 vs NBM 0.15 vs market 0.01); if model_p
+  is corrupted on one tail it's untrusted on both, leaving a single-source (NBM) modal
+  fade. Passed.
+- Standing: AUS T82 YES (R1 air-mass cap vs open SATX T81, sixth session); DEN T89 YES
+  (artifact, edge now +0.94); NYC T97 NO (R5b, drift widened again 0.495→0.60).
+- Note: yesterday's PHX low B89.5 R5b veto — the market has since come back toward the
+  model (mid 0.45→0.20). Entry would have been profitable mark-to-market; settlement
+  still decides the kill-rule tally.
+- Open-position note: NOLA B74.5 YES (filled 0.38) marked adverse, mid 0.325→0.21.
+  R5c: drift after entry is not an add signal either way; holding.
+
+**Want to learn by next session:** the Jul-14 cohort (6 positions) finally grades v2's
+R1 and the NBM-confirmation hypothesis; plus whether PHX B106.5 (model-update
+divergence, no market drift) behaves differently from the drift-veto class (LV, NYC).
+
 ## 2026-07-14 23:17 UTC — nothing settled; fresh 22:13 snapshot re-adjudicated to zero trades: all standing vetoes hold (ATL T72 drift now 0.235→0.64 — R5b looking stronger), new candidates fail (ATL B71.5 YES is the anti-drift side of the same R5b veto; LAX B68.5 NO would double coastal-low exposure vs open SFO B59.5; OKC B69.5 edge still <0.15 floor), holding 11
 
 ## 2026-07-14 22:20 UTC — nothing settled; no new snapshot since 21:08 (same board as last session, all vetoes stand), no qualifying edge, holding 11
