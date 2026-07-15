@@ -9,6 +9,8 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-15 05:15 UTC — nothing settled; same 03:37 board the 04:20 session adjudicated (no newer snapshot, NBM still absent so R2 stays dead), no qualifying edge, holding 12; Jul-14 cohort grades after ~13:00 UTC CLIs
+
 ## 2026-07-15 04:20 UTC — nothing settled; snapshot cron back (fresh 03:35 board after ~3.5h gap), adjudicated to zero trades; holding 12
 
 Nothing settled (Jul-14 cohort grades after the ~13:00 UTC CLIs); version stays v2.
