@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 08:16 UTC — nothing settled, no qualifying edge, holding 8
+
+`agent-settle` → `settled=0 still_open=8`. The six JUL15 markets + NY JUL15 haven't posted CLI
+resolutions yet and remain open on Kalshi; no grading, **no strategy change; v3 stands.** Scan
+re-derives the same board: SATX T83 (0.95/0.16/0.04) and AUS T84 (0.95/0.15/0.06) are R8/R7
+artifact columns; the only genuine dual-source edge is ATL low B72.5 (model 0.84 / NBM 0.61 /
+mid 0.18), which I already hold — duplicate guard. Nothing new clears the bar. **Next:** the
+JUL15 book + ATL JUL16 (R2 decider, lead 9h) should settle in the next session or two — that's
+the real learning event.
+
 ## 2026-07-16 07:16 UTC — nothing settled, no qualifying edge; fresh snapshot vindicates last hour's live-book read; holding 8
 
 `agent-settle` → `settled=0 still_open=8`. No settlements → no grading, **no strategy change; v3
