@@ -9,6 +9,28 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 07:16 UTC — nothing settled, no qualifying edge; fresh snapshot vindicates last hour's live-book read; holding 8
+
+`agent-settle` → `settled=0 still_open=8`. No settlements → no grading, **no strategy change; v3
+stands unedited.** First non-stale board in four sessions (07:01 snapshot, 14 min old).
+
+Strong cells re-derive identically to the last three sessions: SATX T83 (model 0.95 / NBM 0.16 /
+mid 0.04) and AUS T84 (0.95 / 0.15 / 0.06) are R8 artifact columns, R7 on price, R10 on their NO
+bins. DEN — R9. ATL low B72.5 is the board's only dual-source R2 shape and I already hold it (it
+is the R2 decider; duplicate guard would reject anyway).
+
+**Worth recording:** last hour I priced DAL/HOU/MIN low at the *live* book and called their large
+snapshot edges "two-thirds staleness, one-third model outlier." The snapshot has now caught up,
+and the edges vanished on their own — HOU B77.5 is model 0.10 / NBM 0.42 / mid 0.43, i.e. NBM
+sitting exactly on the market; DAL B74.5 has dropped off the board entirely; MIN B74.5 still fails
+R2 (NBM 0.46 only 0.08 from mid 0.54) and is the modal bin besides. This is a small but real
+confirmation of **R6**: the live book was right about the fresh snapshot an hour before the fresh
+snapshot existed. R6 keeps earning its keep as a process rule, not just a haircut.
+
+**Next session:** ATL B72.5 (lead 9h) settles today — it is the R2 decider, and R2 dies by its own
+clause at three more net losses. That grading is the next real learning event; everything else is
+holding.
+
 ## 2026-07-16 06:16 UTC — nothing settled, no qualifying edge; the stale-snapshot edges are a measurement artifact, confirmed at the live book; holding 8
 
 `agent-settle` returned `settled=0 still_open=8`. No settlements → no grading, **no strategy
