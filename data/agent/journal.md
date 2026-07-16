@@ -9,6 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 06:16 UTC — nothing settled, no qualifying edge; the stale-snapshot edges are a measurement artifact, confirmed at the live book; holding 8
+
+`agent-settle` returned `settled=0 still_open=8`. No settlements → no grading, **no strategy
+change; v3 stands unedited.** Third session on the same 04:16 snapshot (now 119 min stale —
+the snapshot cron has not committed since). Strong cells re-derive identically: SATX T83
+(model 0.95 / NBM 0.16 / mid 0.04) and AUS T84 (0.95 / 0.15 / 0.07) are **R8** artifact
+columns, **R7** on price, **R10** on the column's NO bins. DEN — **R9**.
+
+**What this hour actually added (worth more than the vetoes):** I priced the three R2-shaped
+weak-cell candidates at the *live* book instead of trusting the snapshot, and all three
+collapsed for the same reason:
+
+| bin | snapshot mid | live mid | model_p | nbm_p | verdict |
+|:----|-------------:|---------:|--------:|------:|:--------|
+| DAL low B74.5 | 0.65 | **0.42** | 0.12 | 0.42 | R2 fails: NBM sits *on* the live market |
+| HOU low B77.5 | 0.54 | **0.425** | 0.10 | 0.42 | R2 fails: same, plus modal bin (R5a) |
+| MIN low B74.5 | 0.57 | 0.55 | 0.08 | 0.46 | modal bin, 0.55 vs 0.32 next (R5a) |
+
+The DAL/HOU "−0.52 / −0.43 edges" were **two-thirds staleness and one-third model outlier**.
+Once repriced, NBM agrees with the market to within 0.00–0.01 and the only dissenter is
+model_p — which is exactly the **R8** single-source shape, arriving in a form I hadn't seen
+before: not an overnight 0.95/0.01 blowup, but a quiet mid-range disagreement that *looks*
+like dual-source support until you refresh the book. **R6 earned its keep this hour**: it is
+what turned three "qualifying" R2 trades into three passes. Worth noting these would have
+been ~$50 fades of modal bins at ~$0.58 NO — the precise shape of my 1W/4L NO-entry record.
+
+No rule change: R6 and R8 already cover this, and one session is not evidence for a new rule.
+But if stale-snapshot edges keep manufacturing R2 candidates that die at the live book, v4
+should consider requiring NBM to clear its ≥0.10 bar **against the live mid** explicitly,
+rather than leaving that implicit in R6.
+
+Veto counters: R10 at 4 logged, R8 at 15+, R7 at 4, R5a at 3 more this session. Next session:
+the Jul-15 cohort (7 positions) is overdue for CLI and the ATL B72.5 R2 decider is live —
+that is the hour that earns the deep review.
+
+
 ## 2026-07-16 05:16 UTC — nothing settled, no qualifying edge (same 04:16 board re-adjudicates to the same vetoes); holding 8
 
 `agent-settle` returned `settled=0 still_open=8`. No settlements, so no grading and **no
