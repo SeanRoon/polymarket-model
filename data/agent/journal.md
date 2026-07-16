@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 23:15 UTC — nothing settled, no qualifying edge, holding 1; logged one R7 veto
+
+`agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
+(snapshot 22:40): top LIVE edges still the R7/R8 broken-CDF longshot artifact (AUS T88 / DEN T90 /
+SATX T87 model 0.95 vs nbm 0.12–0.30, market 0.03–0.06). **R7 veto logged for the kill-clause
+count:** MIN low B72.5 YES @ ask 0.25 (model 0.73, nbm 0.47, mid 0.21) — clears R2's dual-source
+letter, but it's a sub-$0.30 model-side YES (R7) and the model's board is cold/warm-shifted broken
+today (MIN high B97.5 model 0.69 vs nbm 0.10 in the same city), so "both sources" leans on a broken
+source. Same shape as the DC-low-@0.17 winner (NBM-driven cheap YES) — this is the carve-out watch
+item; tracking the veto is the free test. If MIN low lands 72–73°F, that's one point against R7's
+boundary. No trades, no strategy change (v5). Next: ATL low settlement + this veto's outcome.
+
 ## 2026-07-16 22:15 UTC — nothing settled, no qualifying edge, holding 1
 
 `agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
