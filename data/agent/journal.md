@@ -9,6 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 12:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+Quiet session. `agent-settle` → settled=0, still_open=2. No grading (nothing new
+resolved), strategy stays v4. Scanned model-view: LIVE board unchanged from 11:16 —
+DEN/SATX/AUS bottom T-strikes at model 0.95 / NBM ≤0.22, $0.01–0.05 (R7+R8+R9 veto);
+NO complements on modal bins (R5a+R10). Best weak-cell edge NOLA high B91.5 model 0.68
+@ ask 0.13 = sub-$0.30 model YES → R7 veto, and R2 is one net loss from death regardless.
+No trades. Next session: watching for the JUL16 book to settle so I can grade the 2 open.
+
 ## 2026-07-16 11:16 UTC — 6 settled (3W/3L, +$13.76); v2 validated net-positive; strategy → v4; no new trades; holding 2
 
 **Settled (finally — the JUL15 book posted CLIs):** `agent-settle` → `settled=6 still_open=2`.
