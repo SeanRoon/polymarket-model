@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v2** (2026-07-14 — first settlement cohort graded: 2W/7L, −$121.17)
+**Version: v3** (2026-07-15 — Jul-14 cohort graded: 2W/4L, −$23.19; NBM-confirmation hypothesis rejected)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -33,8 +33,10 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   against the market (model_p and nbm_p on the same side of the midpoint, each by
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
   correlated with anything already open. Dual-model agreement alone is NOT a
-  rescue — it went 1W/4L on Jul-13. *Kill if: cumulative R2 record reaches 5
-  settled losses more than wins (currently 1W–2L).*
+  rescue — it went 1W/4L on Jul-13, and the Jul-14 cohort added two more dual-source
+  losses (BOS B94.5 @0.34, DAL T88 @0.28). *Kill if: cumulative R2 record reaches 5
+  settled losses more than wins (currently 1W–4L — three more net losses and R2
+  dies).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -58,24 +60,101 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   entry; the edge must clear the governing rule's bar at the actual fillable price,
   not the snapshot price (Jul-13 BOS B94.5: snapshot edge 0.28 became 0.06 at the
   live fill — would have been a pass). *Permanent (process rule).*
+- **R7 (longshot price floor — NEW in v3):** No model-side YES entry whose live
+  fillable price is below $0.30. Sub-$0.30 model-edge longshots are 0W/5L, −$67.94
+  (DEN T93 ×2 @0.07/0.10, AUS T89 @0.17, SEA B76.5 @0.13, DAL T88 @0.28). When the
+  market prices the model's outcome under 30%, the market has been right every time
+  so far — the bigger the apparent edge, the more likely it's model error.
+  *Scope note (be honest about the evidence): the confirming half — YES entries
+  ≥$0.50 going 2W/0L, +$46.60 — is n=2 and proves little on its own; the rule rests
+  on the 0W/5L bottom band, not on that. And the floor is NOT a general "expensive
+  is good" claim: NO entries ≥$0.50 are 1W/4L, −$58.54 (those are R5a modal-bin
+  fades, banned separately). Price floor applies to the model's YES side only.*
+  *Kill if: over ≥10 vetoes logged in the journal, the vetoed trades win at a rate
+  exceeding their entry-implied probability. (Open NYC B101.5 @0.02, opened pre-v3,
+  is a free test.)*
+- **R8 (single-source artifact veto — promoted from hypothesis in v3):** Never
+  trade an edge where one source is extreme (model_p ≥ 0.90 or ≤ 0.10 vs the
+  midpoint) and the other is absent or at ≤ 0.05 distance from the midpoint's
+  side — the classic shape is overnight model_p 0.95 / NBM ≈ 0.01 on an
+  artifact-flagged column. Passed 10+ times across Jul-13→15 without a single
+  regret (LAX T85, DEN T89, LV T86, ATL B69.5, …). *Kill if: 10 logged vetoes
+  would have net won.*
+- **R9 (Denver blacklist — NEW in v3):** No Denver trades in either direction.
+  DEN is 0W/4L, −$82.47 (Jul-13: T93 YES, B97.5 NO; Jul-14: T93 YES, B95.5 NO);
+  the corrected ensemble put 0.90–0.95 on outcomes that missed twice, and the
+  market's modal bin hit exactly both days — the +11°F bias correction looks
+  broken/overshooting on DEN highs. *Re-enable only after the production model
+  shows 5 consecutive correct DEN calls in data/reports/evaluation.md; kill the
+  blacklist if 10 logged DEN vetoes would have net won.*
+
+- **R10 (column consistency — NEW in v3):** If I veto a column's YES longshot as model
+  artifact (R7/R8), I may not trade the NO side of another bin in that same column when
+  the model's price for that bin is *derived from* the claim I just rejected. The bins
+  in an event are one mutually-exclusive distribution: a model that says 0.95 the SATX
+  high is ≤82 says 0.01 on the 85–86 bin **because of** that same claim. Rejecting the
+  0.95 and then selling the 0.01 bin is laundering a vetoed view into the other side of
+  the book — and it is worse than the original, because it fades the market's modal bin
+  (SATX B85.5 @0.40, AUS B86.5 @0.36 on the 07-16 board) at $0.60, which is the exact
+  shape of my 1W/4L, −$58.54 NO-entry record. To trade against a bin in an artifact
+  column, the case must stand on a source *independent* of the broken claim (NBM, or my
+  own reasoning), and must clear the governing rule's bar on that source alone.
+  *Kill if: over ≥10 logged vetoes, the vetoed NO side would have net won.*
 
 ## Open hypotheses (not yet rules)
 
-- **NBM-confirmation on strong cells:** Jul-13's DEN T93 loss had NBM against;
-  today's open DEN T93 has NBM 0.70+ agreeing. If tonight's Jul-14 cohort (all six
-  positions carry some NBM support) wins where Jul-13 lost, v3 should make NBM
-  agreement a hard R1 requirement rather than part of R2 only.
+- **~~NBM-confirmation on strong cells~~ — REJECTED (v3, Jul-14 cohort).** The test
+  was pre-registered and it failed, in the most instructive way possible: the cohort's
+  three NBM-*confirmed* trades all LOST (DEN T93 NBM 0.70, DAL T88 NBM 0.90, BOS B94.5
+  NBM 0.36), while the two winners had NBM *against* the model (AUS T85 NBM 0.45 and
+  SATX T85 NBM 0.38, both below the market's 0.53). In this cohort NBM agreement was
+  anti-predictive. n=5 is far too small to invert the rule and start *requiring* NBM
+  disagreement — that would be fitting noise. The defensible conclusion is narrower:
+  NBM agreement earns no promotion to an R1 requirement, and it stays what v2 called
+  it — not a rescue. What actually separated winners from losers was entry price
+  (≥$0.50 vs sub-$0.30) and cell record, which is R7 + R1, not NBM. *Do not resurrect
+  without ≥10 fresh settlements.*
 - Is the model's edge on production-excluded cities real money, or is the exclusion
-  wisdom? R2's results will say. (Early read: MIA dual-agreement won, SEA lost twice
-  — inconclusive.)
-- The single-source artifact shape (extreme model_p with NBM ≈ 0.01, usually
-  overnight, usually negative-ROI cells) has been passed ~10 times and never
-  regretted. Candidate v3 rule: formalize as a hard veto. Tracking via journal.
+  wisdom? R2's results will say. (Early read: MIA dual-agreement won, SEA lost twice,
+  BOS/DAL lost — leaning toward "exclusion is wisdom", but R2's kill clause decides.)
+- ~~Single-source artifact shape~~ — promoted to **R8** in v3.
 - Longshot bias by category; time-to-close effects (is the last-day book sharper? —
   Jul-13 says yes, strongly).
+- **Correlation cap is symmetric (new, watch it):** v2's one-city-per-air-mass cap was
+  written after AUS+SATX lost together on Jul-13. On Jul-14 AUS+SATX T85 *won*
+  together (+$46.60 combined) — the cap would have halved the session's only profit.
+  The cap limits variance, not expected value; don't mistake it for an edge rule, and
+  don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
 
+- **v3** (2026-07-15): Jul-14 cohort settled: 6 trades, 2W/4L, −$23.19 (cumulative
+  15 settled, 4W/11L, −$144.36). Much better than Jul-13's −$121 on 9, and the two
+  wins were the two most expensive entries. Evidence and changes: (1) **The
+  pre-registered NBM-confirmation hypothesis is rejected** — all three NBM-confirmed
+  trades lost while both winners had NBM against the model; NBM agreement is not
+  promoted to an R1 requirement and remains no rescue for weak cells (see hypotheses).
+  (2) Added **R7 (longshot price floor, $0.30 on model-side YES)** — the sub-$0.30
+  band is 0W/5L, −$67.94 across both cohorts and is the single cleanest split in the
+  ledger; the confirming ≥$0.50 band is only n=2 and is documented as such rather
+  than leaned on. (3) Promoted the single-source artifact veto to **R8** — 10+ passes
+  across Jul-13→15, zero regrets. (4) Added **R9 (Denver blacklist)** — DEN 0W/4L,
+  −$82.47, with the corrected ensemble at 0.90–0.95 on outcomes that missed twice and
+  the market's modal bin hitting exactly both days; this looks like a broken +11°F
+  bias correction on DEN highs, not variance. (5) R2 count updated to 1W–4L (BOS
+  B94.5, DAL T88 both lost) — three more net losses and R2 dies by its own clause.
+  (6) Logged that v2's air-mass correlation cap is symmetric: it would have halved
+  Jul-14's only profit. It stays (variance control), but it is not an edge rule.
+  (7) Added **R10 (column consistency)** — this one came from the 07-16 03:19 board,
+  not from the settlements: SATX B85.5 NO @$0.60 and AUS B86.5 NO @$0.61 both screened
+  as R1-grade (97%/90% cells, edge ≥0.08, lead 17h, price well clear of R7), and both
+  were the *same artifact column* I was vetoing on the YES side, aimed at the market's
+  modal bin. Without R10 my rules would have walked me into two $50 modal-fades tonight
+  on a view I had already rejected.
+  Note: v3's rule text was drafted by an 11:15 UTC session that was interrupted before
+  journaling or committing — no trade ever cited v3, so R10 folds into v3 rather than
+  spawning a phantom version. This session re-derived the grading from the ledger,
+  corrected R7's evidence framing, and completed the changelog.
 - **v2** (2026-07-14): First cohort settled: 9 trades, 2W/7L, −$121.17 (−58.8% ROI).
   Evidence and changes: (1) The market's Jul-13 modal bins hit exactly in Denver
   (97–98), Austin (93–94), and Seattle (80–81) — every one a bin the corrected

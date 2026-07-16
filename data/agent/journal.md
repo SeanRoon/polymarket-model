@@ -9,6 +9,74 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 03:19 UTC — Jul-14 cohort graded (2W/4L), v3 finished and shipped, zero trades, holding 7
+
+**Housekeeping first: recovering an interrupted session.** Found the working tree dirty
+on arrival — an 11:15 UTC session had run `agent-settle` (settling the Jul-14 cohort) and
+drafted strategy v3, then died before journaling or committing. ~16h of sessions are
+missing from the log because of it. I re-derived the grading from the ledger rather than
+trusting the draft, and it was worth doing: v3's R7 claimed "entries ≥$0.50 are 2W/0L,"
+which is true only for YES entries (n=2); **NO** entries ≥$0.50 are 1W/4L, −$58.54. The
+draft had quietly picked the flattering half of the split. Fixed the wording and scoped
+R7 to the model's YES side, where the real evidence (0W/5L, −$67.94 under $0.30) lives.
+
+**Settlements reviewed — Jul-14 cohort, 6 trades, 2W/4L, −$23.19** (cumulative: 15
+settled, 4W/11L, −$144.36). Better than Jul-13's −$121 on 9, and the shape is informative:
+
+- **AUS T85 YES @0.55 → WON +$25.96** and **SATX T85 YES @0.57 → WON +$20.64.** Right for
+  the right reason: strong cells (90%/97%), cool regime held, market half-agreed at 0.53.
+- **DEN T93 YES @0.10 → LOST −$15.95.** This was the pre-registered NBM-confirmation test
+  (NBM 0.70 agreeing where Jul-13's loss had NBM against). It failed. Wrong.
+- **DEN B95.5 NO @0.59 → LOST −$24.28.** Second expression of the same DEN view. Wrong,
+  and correlated — one bad column cost me twice.
+- **BOS B94.5 YES @0.34 → LOST −$17.79** and **DAL T88 YES @0.28 → LOST −$11.77.** Both R2
+  dual-source-on-weak-cell. Wrong. R2 is now 1W–4L.
+
+**The hypothesis died the informative way.** All three NBM-*confirmed* trades lost; both
+winners had NBM *against* the model (0.45/0.38 vs a 0.53 market). NBM agreement was
+anti-predictive in this cohort. I am explicitly **not** inverting it into "require NBM
+disagreement" — n=5, that's fitting noise. The rule that actually separated winners from
+losers was price: ≥$0.50 went 2W/0L, sub-$0.30 went 0W/5L. That's R7, not NBM.
+
+**Strategy changes (v2 → v3, now complete and shipped):** R7 longshot price floor ($0.30,
+model-side YES only, with the evidence scoped honestly); R8 artifact veto promoted from
+hypothesis (10+ passes, no regrets); R9 Denver blacklist (0W/4L, −$82.47 — the +11°F bias
+correction on DEN highs looks broken, not unlucky); R2 count updated to 1W–4L (three more
+net losses and it dies by its own clause); NBM hypothesis marked rejected; logged that the
+air-mass correlation cap is symmetric — it would have halved Jul-14's only profit, so it's
+variance control, not an edge rule.
+
+**R10 (new, from tonight's board — the most valuable thing this session produced).** The
+07-16 board is one giant artifact column across the Texas cities: model 0.95 that the SATX
+high is ≤82 and the AUS high is ≤83, against markets at 0.05/0.07 and NBM at 0.23/0.25.
+R7 correctly vetoes the YES longshots. But then **SATX B85.5 NO @$0.60 and AUS B86.5 NO
+@$0.61 screened as clean R1 trades** — 97% and 90% cells, edge ≥0.08, lead 17h, price far
+clear of R7's floor. I nearly took one. They are the *same broken column*: the model prices
+the 85–86 bin at 0.01 **because** it believes the ≤82 claim I just rejected. Selling that
+bin is laundering a vetoed view onto the other side of the book — and it aims at the
+market's modal bin (SATX B85.5 is the column's high mark at 0.40, with mass at 85–88) at
+$0.60, which is precisely my 1W/4L, −$58.54 NO-entry pattern. R10 now forbids it: to trade
+against a bin in an artifact column, the case must stand on a source independent of the
+broken claim. My rule set had a hole that let a rejected view back in through the exit.
+
+**Trades: zero.** Every candidate vetoed, and I'm logging them for the kill-clause counts:
+DEN T89 (R9+R7), LAX T86 (R8+R7), **AUS T84 @0.08 and SATX T83 @0.06 (R7 — strong cells,
+exactly the 0W/5L shape)**, SATX B85.5 NO / AUS B86.5 NO (**R10**, first two vetoes logged),
+NYC T96 (R8+R7), NOLA B91.5 @0.21 (R7), LV low T87 and SFO B56.5 (modal-fades in the
+model's two worst cells — LV/low 32%, and a market at 0.84–0.89 at 19h lead knows more than
+I do), CHI T92 (sources contradict, 51% cell). The one genuine non-artifact candidate was
+**ATL B72.5 YES**: model 0.75 *and* NBM 0.56 vs a 0.32 mid, and it clears R7 at a 0.35 ask.
+Vetoed on R2's live-book bar — the book is 0.28/0.35 on OI of *16*, the market drifted
+~0.06 against me since the snapshot, and in a 46%-win cell the model's 0.75 earns no
+weight; honest p ≈0.45 off NBM → edge ≈0.10 < 0.15. Not worth my one R2 slot when R2 is
+three net losses from death.
+
+**What I want to learn by next session:** whether the Jul-15 cohort (7 open, all v2, incl.
+the NYC B101.5 @0.02 longshot that R7 would now ban) settles in a way that confirms the
+price floor — that trade is a free live test of R7, and I want it to lose. Also whether the
+Texas artifact column verifies: if the SATX/AUS highs land at 85–88 as the market says, R10
+just saved me ~$100 on night one and DEN/R9 gets more support.
+
 ## 2026-07-15 10:16 UTC — nothing settled, no qualifying edge, holding 13
 
 Same 08:30 snapshot the 09:17 session already adjudicated (all vetoes stand); no new
