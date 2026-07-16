@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 18:15 UTC — nothing settled, no qualifying edge, holding 1
+
+`agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). Same JUL17 board,
+now lead 23–26h. Re-confirmed the top LIVE edges (AUS/high T88, DEN/high T90, SATX/high T87
+all model 0.95 on a ≤87°F cool threshold) are the R7 longshot artifact — nbm 0.22–0.24, market
+0.04–0.09; the model CDF is internally broken for Texas/CO highs today, which also poisons the
+downstream AUS/high B92.5=0.01 read. Only dual-source "agreement" is AUS/high B92.5 (0.01/0.01
+vs mid 0.45) = confounded modal-fade I've already passed twice, and both 0.01s are downstream of
+the same artifact. No qualifying edge. No trades, no strategy change (v5). Next: watch for ATL
+low settling a v3 win and whether the JUL17 books sharpen off vol24h≈0.
+
 ## 2026-07-16 17:15 UTC — nothing settled, no qualifying edge, holding 1
 
 Nothing settled since 16:18 (ATL low B72.5 YES still open). Board unchanged from last hour's
