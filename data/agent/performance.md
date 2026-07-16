@@ -1,42 +1,42 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-16 14:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-16 15:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $847.15 |
-| open positions | 2 ($22.25 at risk) |
-| settled | 21 (7 wins, 33%) |
-| realized PnL | $-130.60 on $440.60 staked (-29.6%) |
+| free cash | $887.15 |
+| open positions | 1 ($9.66 at risk) |
+| settled | 22 (8 wins, 36%) |
+| realized PnL | $-103.19 on $453.19 staked (-22.8%) |
 
 ## By strategy version
 
 | version | n | wins | win_rate | staked$ | pnl$ | roi |
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
-| v2 | 6 | 3 | 50% | 101.24 | +13.76 | +13.6% |
+| v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 0 | 0 | - | 0.00 | +0.00 | - |
 
 ## By category
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 21 | 7 | 33% | 440.60 | -130.60 | -29.6% |
+| Climate and Weather | 22 | 8 | 36% | 453.19 | -103.19 | -22.8% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-14 18:17 | KXLOWTSFO-26JUL15-B59.5 | no | 40 | 0.30 | 12.59 | v2 | p(SF low 59-60) ~0.41 by NBM, ~0.01 by model+biascorr, vs live mid 0.735 - both  |
 | 07-16 04:17 | KXLOWTATL-26JUL16-B72.5 | yes | 25 | 0.37 | 9.66 | v3 | My p(ATL low 72-73F Jul16) ~0.45 vs live ask 0.37 (implied 0.37). Sources: NBM 0 |
 
 ## Last 20 settled
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-16 | KXLOWTSFO-26JUL15-B59.5 | no | 0.30 | +27.41 | v2 | p(SF low 59-60) ~0.41 by NBM, ~0.01 by model+biascorr, vs live mid 0.735 - both  |
 | 07-16 | KXHIGHTSATX-26JUL15-T81 | yes | 0.71 | +13.77 | v2 | P(SATX high <=80F Jul15) ~0.70 vs market 0.55. Model+biascorr 0.95 on the system |
 | 07-16 | KXLOWTDC-26JUL15-B72.5 | yes | 0.17 | +32.80 | v2 | P(DC low 72-73F Jul15) ~0.45 vs live ask 0.17 (verified via agent-scan this minu |
 | 07-16 | KXHIGHMIA-26JUL15-B92.5 | yes | 0.33 | -15.55 | v2 | p~0.50: model+biascorr 0.56 and NBM 0.44 both >=0.10 over live mid 0.325 (book v |
@@ -56,4 +56,3 @@ _Generated 2026-07-16 14:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-14 | KXHIGHDEN-26JUL13-B97.5 | no | 0.50 | -31.05 | v1 | Fade market's modal bin. Market implies P(97-98)=0.50; ensemble+biascorr says 0. |
 | 07-14 | KXHIGHAUS-26JUL13-B93.5 | no | 0.66 | -33.79 | v1 | Fade market's modal-adjacent bin. Market implies P(93-94)=0.345; ensemble+biasco |
 | 07-14 | KXHIGHTSATX-26JUL13-B92.5 | no | 0.58 | +22.16 | v1 | Fade market's modal bin. Market implies P(92-93)=0.44; ensemble+biascorr 0.01, N |
-| 07-14 | KXHIGHTSEA-26JUL13-B76.5 | yes | 0.13 | -11.04 | v1 | My est ~0.50 vs market 0.13 ask. Corrected ECMWF 0.77 AND NBM 0.49 both put Seat |

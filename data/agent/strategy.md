@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v4** (2026-07-16 — Jul-15 cohort graded: 3W/3L, +$13.76; v2 framework validated net-positive, R2 one net loss from death)
+**Version: v5** (2026-07-16 — SFO low B59.5 NO settled +$27.41; ledger audit corrected a serious R2 miscount: R2 is **4W–6L, net +$7.90 — net-positive, not dying**; directional split found: NO-fades win, YES-buys mostly lose)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -32,13 +32,23 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   record get at most 1 small trade per session, and only when BOTH sources agree
   against the market (model_p and nbm_p on the same side of the midpoint, each by
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
-  correlated with anything already open. Dual-model agreement alone is NOT a
-  rescue — it went 1W/4L on Jul-13, and the Jul-14 cohort added two more dual-source
-  losses (BOS B94.5 @0.34, DAL T88 @0.28). Jul-15 added a sixth: MIA high B92.5 @0.33
-  (model+biascorr 0.56, NBM 0.44, both ≥0.10 over mid 0.325) LOST — the third
-  production-excluded dual-agreement loss in a row, strengthening the "exclusion is
-  wisdom" read. *Kill if: cumulative R2 record reaches 5 settled losses more than wins
-  (currently 1W–5L, net −4 — **one more net loss and R2 dies**).*
+  correlated with anything already open. **Ledger truth (audited & corrected in v5
+  from a running miscount — prior versions said "1W–5L, one loss from death," which
+  the ledger flatly contradicts): R2 is 4W–6L, net +$7.90 — net-positive.** The signal
+  is *directional*, and this is v5's main finding:
+  - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
+    market): 2W–1L, +$15.59.** SFO low B59.5 @0.30 (+$27.41) and PHX high B106.5 @0.55
+    (+$10.81) both won; the only loss, SEA B80.5 @0.63, was a fade of the market's
+    modal bin — which R5a bans anyway, so a clean R2 NO-fade that also respects R5a is
+    2W–0L so far.
+  - **YES-buy half (buy an UNDERpriced weak-cell bin): 2W–5L, −$7.69.** Winners MIA
+    B92.5 (Jul-13) and DC low B72.5 (Jul-15); losers SEA B76.5, BOS B94.5, DAL T88,
+    MIA B92.5 (Jul-15), NYC B101.5. Dual-model agreement does NOT reliably rescue this
+    half.
+  **Operational lean:** within R2, favor NO-fades of overpriced bins that respect R5a;
+  keep YES-buys of weak-cell longshots cautious-size and rare. *Kill if: cumulative R2
+  record reaches 5 settled losses more than wins (currently losses−wins = 2; **three
+  more net losses to die**, not one).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -51,7 +61,13 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   signal available; it holds real-time observations the model snapshot doesn't.
   Concretely: **(a)** never fade the market's modal bin on settlement day (Jul-13:
   modal-bin NO fades went 1W/3L, −$65, and the market's modal bin hit *exactly* in
-  DEN, AUS, and SEA); **(b)** sharp adverse repricing against the model side since
+  DEN, AUS, and SEA). **Counterexample logged (v5):** SFO low B59.5 NO @0.30 faded a
+  *0.735* modal bin and WON +$27.41 — because both model (0.01) AND NBM (0.41) put it
+  ≥0.10 below the market, not just the biascorr model. With PHX high B106.5 that is two
+  dual-source-confirmed fades beating R5a; see the carve-out hypothesis below. R5a
+  **stands** — the model-only modal-fade record is still net-losing (4L: DEN/AUS/SEA
+  Jul-13 + SEA B80.5) — but the dual-source carve-out is now a live hypothesis, not
+  noise. **(b)** sharp adverse repricing against the model side since
   the prior session is information, not an entry discount — do not open or add to
   the model's side after the market has moved ≥ 0.10 away from it (Jul-13: the
   overnight collapse of DEN T93 / AUS T89 / SATX T90 predicted all three losses);
@@ -121,8 +137,19 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   (≥$0.50 vs sub-$0.30) and cell record, which is R7 + R1, not NBM. *Do not resurrect
   without ≥10 fresh settlements.*
 - Is the model's edge on production-excluded cities real money, or is the exclusion
-  wisdom? R2's results will say. (Early read: MIA dual-agreement won, SEA lost twice,
-  BOS/DAL lost — leaning toward "exclusion is wisdom", but R2's kill clause decides.)
+  wisdom? **Updated read (v5): R2 is net +$7.90 across excluded cells — on balance the
+  edge IS real money, so the earlier "exclusion is wisdom" lean is weakened.** The
+  split turns out to be *directional*, not city-based: NO-fades of overpriced bins win
+  (SFO, PHX), YES-buys of underpriced weak-cell longshots mostly lose. Watch whether
+  the directional split holds as n grows.
+- **Dual-source-confirmed fades beat R5a (NEW in v5, n=2 wins):** SFO low B59.5 NO @0.30
+  and PHX high B106.5 NO @0.55 both faded high-priced bins (mid 0.735, 0.47) where BOTH
+  model AND NBM sat ≥0.10 below the market — both WON (+$27.41, +$10.81). The R5a
+  modal-fade LOSERS (Jul-13 DEN/AUS/SEA, SEA B80.5) were driven by the biascorr model
+  alone, with the market's own price as the counter-signal. Hypothesis: R5a should carve
+  out fades where NBM (an independent source) *also* rejects the bin by ≥0.10. **Do NOT
+  change R5a yet** — n=2 wins vs 4 model-only modal-fade losses. Require ≥3 more
+  dual-source-fade settlements before promoting a carve-out; track them in the journal.
 - ~~Single-source artifact shape~~ — promoted to **R8** in v3.
 - Longshot bias by category; time-to-close effects (is the last-day book sharper? —
   Jul-13 says yes, strongly).
@@ -134,6 +161,27 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v5** (2026-07-16): SFO low B59.5 NO @0.30 settled **+$27.41 WIN** (a v2 R2 trade).
+  This one settlement triggered a full ledger audit of R2, and the audit found a
+  **serious accounting error carried since v3**: R2 was written as "1W–5L, one net loss
+  from death," but the ledger (every thesis citing R2, queried directly) shows R2 is
+  **4W–6L, net +$7.90 — net-positive.** Prior sessions credited only MIA Jul-13 as R2's
+  lone win and filed DC low (+$32.80), PHX (+$10.81), and now SFO (+$27.41) — all R2-
+  cited — under other rules or as "counterexamples," so the death-clock drifted far
+  from reality. v4's clock would have killed a +EV rule on its next loss. **Correction
+  is the headline change.** The audit also surfaced R2's *directional* structure: the
+  **NO-fade half (sell an overpriced bin, both sources ≥0.10 below market) is 2W–1L,
+  +$15.59** and its only loss was a modal-bin fade R5a bans anyway; the **YES-buy half
+  (buy an underpriced weak-cell bin) is 2W–5L, −$7.69.** R2 now carries an operational
+  lean toward the NO-fade side. Also: logged SFO as an R5a counterexample (faded a 0.735
+  modal bin, won on dual-source rejection) and registered the "dual-source-confirmed
+  fades beat R5a" hypothesis (n=2 wins; do not change R5a yet). No rule bars changed;
+  R2's kill-clause status corrected (net −2, three losses from death). No trades opened
+  — the 07-16 board is again entirely settlement-day (all lead 6h): every model edge is
+  a West-Coast artifact column (LAX T86 0.95/0.01, SFO low B52.5 0.79/0.01, LV high
+  B109.5 0.75/0.01 — R8) or a sub-$0.30 model YES (LV low B86.5, SEA high B69.5 — R7);
+  the strong LIVE cells (SATX/AUS/DEN high) show no edge at all (model=market). No
+  qualifying entry; agent-scan shows no farther-out liquid weather books.
 - **v4** (2026-07-16): Jul-15 cohort settled: 6 trades, 3W/3L, +$13.76 (all v2).
   This is the first net-positive cohort and it **validates the v2 market-respect
   framework** — v2 is now 6 settled at 50% win rate, +13.6% ROI, versus v1's 27% /

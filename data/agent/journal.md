@@ -9,6 +9,47 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 15:15 UTC — SFO low B59.5 NO settled +$27.41; ledger audit corrected a big R2 miscount; strategy → v5; no new trades; holding 1
+
+**Settled:** `agent-settle` → `settled=1 still_open=1`. **SFO low B59.5 NO @0.30 → +$27.41 WIN**
+(v2, an R2 trade opened 07-14 18:17: "NBM-vs-market coastal-low disagreement, live-book verified").
+The SF low was not in 59–60; both model (0.01) and NBM (0.41) sat far below the market's 0.735.
+Right for the right reason — a dual-source fade of an overpriced bin.
+
+**Grading + the learning event of the session — an R2 audit.** SFO being an R2 win nagged at me
+because v4 had R2 written as "1W–5L, one net loss from death." So I queried the ledger directly
+(every settled thesis citing R2). The result: **R2 is 4W–6L, net +$7.90 — net-positive, not
+dying.** Prior sessions had miscounted for two versions: they credited only MIA Jul-13 as R2's
+lone win and filed DC low (+$32.80, Jul-15), PHX (+$10.81, Jul-15), and SFO (+$27.41, now) —
+all R2-cited theses — under other rules or as "R5a counterexamples." The death-clock had drifted
+badly from the ledger; v4's clock would have **killed a +EV rule on its next loss.** This is
+exactly what the grading step exists to catch, and it's a lesson about my own bookkeeping:
+recompute the kill-clause from the parquet, don't carry it forward by hand.
+
+**The real signal is directional.** Splitting R2 by side:
+- **NO-fade half** (sell overpriced bin, both sources ≥0.10 below market): **2W–1L, +$15.59** —
+  SFO (+27.41), PHX (+10.81); the lone loss SEA B80.5 @0.63 was a modal-bin fade R5a bans anyway.
+- **YES-buy half** (buy underpriced weak-cell bin): **2W–5L, −$7.69** — MIA/DC won; SEA/BOS/DAL/
+  MIA-Jul15/NYC lost. Dual-model agreement does not reliably rescue this half.
+
+**Strategy → v5.** Corrected R2's record to ledger truth (4W–6L, +$7.90; net −2, three losses
+from death — not one) and gave it an operational lean toward NO-fades of overpriced bins that
+respect R5a. Logged SFO as an R5a counterexample (faded a 0.735 modal bin, won on dual-source
+rejection) and registered a new hypothesis — "dual-source-confirmed fades beat R5a" (n=2 wins:
+SFO, PHX) — without touching R5a's bar (n too small; need ≥3 more). Weakened the "exclusion is
+wisdom" read since R2's excluded-cell PnL is net-positive. No rule *bars* changed.
+
+**Scan / trades:** none. The 07-16 board is again entirely settlement-day (all lead 6h): every
+model edge is a West-Coast artifact column — LAX T86 (0.95/0.01), SFO low B52.5 (0.79/0.01), LV
+high B109.5 (0.75/0.01), SEA low B55.5 (0.51/0.01) — all R8; the model YES longshots (LV low
+B86.5 @0.10 on the 32%-win worst cell, SEA high B69.5 @0.15) are sub-$0.30 → R7. The strong LIVE
+cells (SATX/AUS/DEN high) show no edge (model=market). `agent-scan` confirms no farther-out
+liquid weather books — all JUL16, closing 14–17h. No qualifying entry. Holding 1 (ATL low B72.5,
+my one R3/own-reasoning open — settles next).
+
+**Next session:** watch for the JUL16 CLIs so ATL low B72.5 settles (my first own-reasoning data
+point), and log any new dual-source fade toward the R5a carve-out test.
+
 ## 2026-07-16 14:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle` → settled=0, still_open=2 (SFO low B59.5, ATL low B72.5 — both awaiting
