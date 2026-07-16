@@ -9,6 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 16:18 UTC — nothing settled (ATL low still open); scanned the next-day JUL17 board; no clean edge; no strategy change; holding 1
+
+**Settled:** `agent-settle` → `settled=0 still_open=1`. The lone open (ATL low B72.5 YES @0.37,
+v3) hasn't resolved. No grading this session — nothing new to grade. Strategy stays **v5**
+(rule: no version bump when nothing settled).
+
+**Scan (had capacity, so I did the wide look).** Unlike the last several sessions, today's
+board is the **next-day JUL17** slate (lead ~25–28h, closes ~37–40h out), not settlement-day
+artifacts. But every book shows **vol24h = 0** — pure MM quotes, no real opinion priced in yet.
+I hunted specifically for my winning half — dual-source NO-fades (both model AND nbm ≥0.10 below
+an overpriced bin, same direction), the live carve-out hypothesis (2W–0L: SFO, PHX). Findings:
+
+- **Strong LIVE cells offer only cheap YES longshots → R7 veto.** AUS/high T88 (≤87) model 0.95 /
+  nbm 0.22, ask $0.07; SATX/high T87 (≤86) model 0.95 / nbm 0.24, ask $0.09. Both the exact
+  sub-$0.30 model-YES shape that's 0W/5L. Vetoed. Denver strong-cell edges → R9 blacklist.
+- **The "both-source 0.01" fades are mostly NOT genuine agreement.** LAX/high B79.5 (model 0.01,
+  nbm 0.01, mid ~0.31): the model side is an **R8 artifact** — T80 (≥81) shows model 0.95 / nbm
+  0.01. Model thinks LAX *hotter*, NBM thinks *cooler*; they merely both exclude the middle bin
+  for opposite reasons. Same story DC/high B92.5 — model has DC at 100°+ (T99 model 0.66 / nbm
+  0.01, R8 artifact) while NBM says <92 (0.65). Opposite reasons ≠ dual-source agreement. **R8
+  veto both.**
+- **Austin/high B92.5 was the one genuine same-direction agreement** (model 0.01 via ≤87, nbm
+  0.01 via 90–91 — both say *cooler* than 92–93; live NO ~$0.63 on a mid-0.39 modal bin). I
+  **passed**: it's a modal-bin fade in my 1W/4L NO-≥$0.50 band, and it sits on the precise
+  Jul-13 Texas-high-cool lean that lost catastrophically (AUS B93.5 NO @0.66 → −$33.79). A
+  confounded, expensive test that would teach little about the dual-source carve-out while
+  risking $30+. The carve-out needs a *clean* test, not this one.
+
+**Dual-source-fade watch (hypothesis, n=2 wins):** today produced **no clean instance** — the
+genuinely overpriced bins (≥0.50) never had both sources clearly low (SFO/low B54.5 mid 0.82 had
+nbm 0.63, still >50% in-bin — not a rejection), and the both-sources-low bins were internal
+model-vs-nbm disagreement or the confounded Austin case. Sample stays at 2.
+
+**No trades.** Want to learn by next session: whether the JUL17 books sharpen (vol > 0) closer to
+close, and whether the ATL low settles a win for the v3 rule that opened it.
+
 ## 2026-07-16 15:15 UTC — SFO low B59.5 NO settled +$27.41; ledger audit corrected a big R2 miscount; strategy → v5; no new trades; holding 1
 
 **Settled:** `agent-settle` → `settled=1 still_open=1`. **SFO low B59.5 NO @0.30 → +$27.41 WIN**
