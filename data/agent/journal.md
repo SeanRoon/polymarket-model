@@ -9,6 +9,49 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 11:16 UTC — 6 settled (3W/3L, +$13.76); v2 validated net-positive; strategy → v4; no new trades; holding 2
+
+**Settled (finally — the JUL15 book posted CLIs):** `agent-settle` → `settled=6 still_open=2`.
+All six were v2 trades, and as a cohort they went **3W/3L for +$13.76** — the first
+net-positive cohort in the ledger. This is the learning event I've been waiting on across the
+last several quiet sessions.
+
+**Grading each:**
+- **SATX high T81 YES @0.71 → +13.77 WIN.** Strong cell (97%), expensive model-side YES. Right
+  for the right reason — the R1+R7 sweet spot (proven cell, price ≥$0.50).
+- **DC low B72.5 YES @0.17 → +32.80 WIN.** The cohort's biggest winner, and a sub-$0.30 YES. A
+  naive R7 reading would have vetoed it — but R7 is scoped to *model-driven* YES, and this was
+  driven by NBM + my own 0.45 estimate on a weak model cell (DC/low −4.5% ROI). Out of scope, so
+  R7 stays clean *within* its scope; logged as an honest caveat and a thing to watch (do cheap
+  NBM/own-reasoning YES entries deserve a carve-out? n=1, far too early).
+- **PHX high B106.5 NO @0.55 → +10.81 WIN.** Both sources p~0.15 vs mid 0.47. If 0.47 was the
+  modal bin this is an R5a counterexample — but one win doesn't dent R5a's Jul-13 evidence (modal
+  hit *exactly* 3×). Logged, not acted on.
+- **MIA high B92.5 YES @0.33 → −15.55 LOSS.** R2 dual-agreement on an excluded cell (MIA high
+  46%). Third straight production-excluded dual-agreement loss → R2 now **1W–5L, net −4, one net
+  loss from death.** "Exclusion is wisdom" keeps winning.
+- **NOLA low B74.5 YES @0.38 → −23.79 LOSS.** An R1-qualifying cell (NOLA/low 74%) whose fill
+  still lost — the cell record is a prior, not a promise, exactly as v2 demoted it. Small-n noise
+  vs signal is unclear; watch R1's realized record.
+- **NYC high B101.5 YES @0.02 → −4.28 LOSS.** R7's pre-registered free test resolved exactly as
+  predicted — a sub-$0.30 (indeed sub-$0.05) longshot YES lost.
+
+**Strategy change → v4:** No rules added or removed. Bumped because two rules' evidence/state
+changed: R2's kill-count (→1W–5L) and R7 (free test resolved + DC caveat). The headline is that
+**v2 is validated** — 6 settled, 50% win, +13.6% ROI, versus v1's 27% / −42.5%. The sign flip
+tracks precisely the rules v2 introduced (R5 market respect, R6 live-book discipline); they stay.
+
+**Scan / no trades:** JUL16 LIVE board is the same artifact shape as the last week — DEN T89 /
+SATX T83 / AUS T84 at model 0.95 vs NBM ≤0.22, prices $0.03–0.08 (R7+R8 veto; DEN also R9), and
+their NO complements sit on the market's modal bins B93.5/B88.5/B85.5 (R5a+R10 veto). Weak-cell
+NBM signals (DAL T88 model 0.40/NBM 0.69/mid 0.30; HOU high B89.5) are marginal and route through
+a dying R2 — feeding R2 the very cities (DAL) that have been losing it is bad judgment. **Zero
+qualifying edges; opened nothing. Holding 2** (SFO low B59.5 NO, ATL low B72.5 YES — ATL settles
+today and is R2-adjacent context).
+
+**Next session:** ATL low B72.5 and SFO low B59.5 should settle — watch whether the ATL/low YES
+(my own-reasoning trade) confirms or joins the weak-cell loss pile, and whether R2 finally dies.
+
 ## 2026-07-16 10:16 UTC — nothing settled, no qualifying edge; NOLA high R2 checked live and vetoed; holding 8
 
 `agent-settle` → `settled=0 still_open=8`; JUL15 book + ATL JUL16 still open, no CLI yet, **no

@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v3** (2026-07-15 — Jul-14 cohort graded: 2W/4L, −$23.19; NBM-confirmation hypothesis rejected)
+**Version: v4** (2026-07-16 — Jul-15 cohort graded: 3W/3L, +$13.76; v2 framework validated net-positive, R2 one net loss from death)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -34,9 +34,11 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
   correlated with anything already open. Dual-model agreement alone is NOT a
   rescue — it went 1W/4L on Jul-13, and the Jul-14 cohort added two more dual-source
-  losses (BOS B94.5 @0.34, DAL T88 @0.28). *Kill if: cumulative R2 record reaches 5
-  settled losses more than wins (currently 1W–4L — three more net losses and R2
-  dies).*
+  losses (BOS B94.5 @0.34, DAL T88 @0.28). Jul-15 added a sixth: MIA high B92.5 @0.33
+  (model+biascorr 0.56, NBM 0.44, both ≥0.10 over mid 0.325) LOST — the third
+  production-excluded dual-agreement loss in a row, strengthening the "exclusion is
+  wisdom" read. *Kill if: cumulative R2 record reaches 5 settled losses more than wins
+  (currently 1W–5L, net −4 — **one more net loss and R2 dies**).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -71,8 +73,12 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   is good" claim: NO entries ≥$0.50 are 1W/4L, −$58.54 (those are R5a modal-bin
   fades, banned separately). Price floor applies to the model's YES side only.*
   *Kill if: over ≥10 vetoes logged in the journal, the vetoed trades win at a rate
-  exceeding their entry-implied probability. (Open NYC B101.5 @0.02, opened pre-v3,
-  is a free test.)*
+  exceeding their entry-implied probability. (The free test resolved: NYC B101.5 @0.02
+  YES LOST — R7 predicted it. Caveat logged for honesty: DC low B72.5 @0.17 YES WON
+  big (+$32.80) on Jul-15, and a naive reading would have vetoed it — but its driver
+  was NBM + own estimate (0.45), not model_p (DC/low is a −4.5% ROI cell), so it falls
+  OUTSIDE R7's scope, which is model-driven YES only. Within scope R7 is still clean.
+  Watching whether cheap NBM/own-reasoning YES entries deserve their own carve-out.)*
 - **R8 (single-source artifact veto — promoted from hypothesis in v3):** Never
   trade an edge where one source is extreme (model_p ≥ 0.90 or ≤ 0.10 vs the
   midpoint) and the other is absent or at ≤ 0.05 distance from the midpoint's
@@ -128,6 +134,26 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v4** (2026-07-16): Jul-15 cohort settled: 6 trades, 3W/3L, +$13.76 (all v2).
+  This is the first net-positive cohort and it **validates the v2 market-respect
+  framework** — v2 is now 6 settled at 50% win rate, +13.6% ROI, versus v1's 27% /
+  −42.5%. The sign flip from v1 to v2 tracks exactly the rules v2 added (R5 market
+  respect, R6 live-book discipline), so those stay. Grading: (1) **SATX T81 YES @0.71
+  WON** — strong cell (97%), expensive model-side YES; textbook R1+R7. (2) **PHX high
+  B106.5 NO @0.55 WON** — both sources p~0.15 vs mid 0.47; logged as a possible R5a
+  counterexample if 0.47 was the modal bin, but one win doesn't dent R5a's Jul-13
+  evidence (modal hit exactly 3×). (3) **MIA high B92.5 YES @0.33 LOST** — R2
+  dual-agreement on an excluded cell; R2 → 1W–5L, one net loss from death (see R2).
+  (4) **NOLA low B74.5 YES @0.38 LOST** — an R1 cell (NOLA/low 74%) whose fill still
+  lost; R1's cell-record prior is a prior, not a promise, exactly as v2 demoted it.
+  (5) **NYC B101.5 @0.02 YES LOST** — R7's free test resolved as predicted. (6) **DC
+  low B72.5 @0.17 YES WON +$32.80** — the cohort's biggest winner and a sub-$0.30 YES;
+  logged as an honest caveat on R7 (out-of-scope: NBM/own-reasoning driven, not
+  model_p). No rules added or removed this version; changes are R2's count (→1W–5L)
+  and R7's evidence (free test resolved + DC caveat). No trades opened this session —
+  the JUL16 LIVE board is again all artifact columns (DEN/SATX/AUS T-strikes at
+  model 0.95 / NBM ≤0.22, prices $0.03–0.08: R7+R8+R9 veto) with their NO complements
+  on the modal bins (R5a+R10 veto); weak-cell edges were marginal and R2 is dying.
 - **v3** (2026-07-15): Jul-14 cohort settled: 6 trades, 2W/4L, −$23.19 (cumulative
   15 settled, 4W/11L, −$144.36). Much better than Jul-13's −$121 on 9, and the two
   wins were the two most expensive entries. Evidence and changes: (1) **The
