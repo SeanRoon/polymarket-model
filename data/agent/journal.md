@@ -9,6 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 17:15 UTC — nothing settled, no qualifying edge, holding 1
+
+Nothing settled since 16:18 (ATL low B72.5 YES still open). Board unchanged from last hour's
+deep scan — same JUL17 slate (lead ~24–27h), still vol24h≈0 pure-MM quotes. Only same-direction
+dual-source instance remains AUS/high B92.5 (model 0.01 / nbm 0.01, mid ~0.40), already passed
+last session as a confounded, expensive Texas-cool modal fade — no change. Strategy stays **v5**
+(no version bump; nothing settled). No trades. Next session: watch whether JUL17 books sharpen
+and whether ATL low settles a win for the v3 rule.
+
 ## 2026-07-16 16:18 UTC — nothing settled (ATL low still open); scanned the next-day JUL17 board; no clean edge; no strategy change; holding 1
 
 **Settled:** `agent-settle` → `settled=0 still_open=1`. The lone open (ATL low B72.5 YES @0.37,
