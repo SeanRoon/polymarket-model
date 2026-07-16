@@ -17,6 +17,9 @@ top of the existing scoring pipeline (`resolve.yml` → `evaluation.md` / `paper
 | `regression_wow` | warn | A (city, kind) whose Brier worsened over the last 7d vs the prior 7d. |
 | `nbm_beats_ecmwf` | info | A (city, kind, lead) cell where NBM has materially lower Brier than the ECMWF ensemble — consider a blend. |
 | `calibration_bias` | warn | A (city, kind) where mean(model_p) diverges from the realized YES rate — coarse miscalibration screen. |
+| `emos_beats_market` | good | An EMOS-pilot cell whose recorded emos_p Brier is at/below the market's on the same rows — the graduation bar. |
+| `emos_improves_model` | info | EMOS beats the raw model it replaces but not yet the market — keep accruing. |
+| `emos_underperforms` | warn | EMOS worse than the raw model — check refit stability / consider dropping the cell from the pilot. |
 
 Thresholds live in `DiagnosticsConfig`. It's pure, offline, and unit-tested
 (`tests/unit/test_diagnostics.py`). It runs daily inside `.github/workflows/resolve.yml`
@@ -32,11 +35,16 @@ uv run polymarket diagnose --days-back 60 --markdown data/reports/diagnostics.md
 
 `.claude/commands/model-watch.md` is the standing prompt. Each run the agent:
 
-1. reads `diagnostics.md` (+ the eval tables and its own prior log),
+1. reads `diagnostics.md` (+ the eval tables, current config, and its own prior log),
 2. triages each flag as signal vs. noise,
 3. root-causes `regression_wow` flags against `git log` (the main thing it adds over Layer 1),
 4. ties findings to the Phase 3 roadmap in `CLAUDE.md`,
-5. appends a dated memo to `data/reports/model-watch.md`.
+5. derives **recalibration suggestions** — a prioritized `Recalibration:` block mapping chronic
+   flags to exact config levers (NBM blend weights, `emos_stations`, isotonic scope, cell
+   exclusions) with the evidence attached; suggestion-only, capped at 3 new items per run, and
+   never proposing calibration on a live city without Sean's prior approval (operator mandate
+   2026-07-16),
+6. appends a dated memo to `data/reports/model-watch.md`.
 
 **Read-mostly.** On `main` it edits and commits **only** the memo
 (`data/reports/model-watch.md`, so its findings persist). For one specific, mechanical change —

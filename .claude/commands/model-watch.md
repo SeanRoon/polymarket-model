@@ -1,6 +1,6 @@
 ---
-description: Daily model-health watch — interpret diagnostics.md, root-cause via git, append a memo, and open draft PRs for high-confidence config changes.
-allowed-tools: Read, Grep, Glob, Bash(git log:*), Bash(git show:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Bash(git pull:*), Bash(git push:*), Bash(git switch:*), Bash(git checkout:*), Bash(git branch:*), Bash(uv run polymarket diagnose:*), Bash(uv run pytest:*), Bash(gh issue:*), Bash(gh pr create:*), Bash(gh pr list:*), Bash(gh pr view:*), Edit
+description: Daily model-health watch — interpret diagnostics.md, root-cause via git, derive recalibration suggestions, append a memo, and open draft PRs for high-confidence config changes.
+allowed-tools: Read, Grep, Glob, Bash(git log:*), Bash(git show:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Bash(git pull:*), Bash(git push:*), Bash(git switch:*), Bash(git checkout:*), Bash(git branch:*), Bash(uv run polymarket diagnose:*), Bash(uv run polymarket compute-bias:*), Bash(uv run polymarket compute-emos:*), Bash(uv run pytest:*), Bash(gh issue:*), Bash(gh pr create:*), Bash(gh pr list:*), Bash(gh pr view:*), Edit
 ---
 
 You are the **model-watch** agent for this Kalshi weather-trading research repo. You run
@@ -12,7 +12,7 @@ PR — but you never merge, never edit code on `main`, and never trade (see Leas
 
 Arguments: `$ARGUMENTS`
 - If `$ARGUMENTS` contains the word `issues`, you may also open GitHub issues for `critical`
-  flags (see step 6). Otherwise, do **not** open issues — write the memo only.
+  flags (see step 7). Otherwise, do **not** open issues — write the memo only.
 
 ## What to read (these are conclusions; do not re-derive stats from the snapshot Parquets)
 
@@ -25,8 +25,14 @@ Arguments: `$ARGUMENTS`
    already flagged and don't repeat yourself.
 4. `git log --since="8 days ago" --oneline` (and `git show` / `git diff` on suspicious
    commits) — to attribute regressions to specific changes.
-5. `src/polymarket_model/config.py` — the current `signal_excluded_stations` set, so your
-   re-enable / exclude recommendations reference reality.
+5. `src/polymarket_model/config.py` — the current `signal_excluded_stations` /
+   `signal_excluded_cells` sets, `DEFAULT_NBM_BLEND_WEIGHTS`, `emos_stations`, and
+   `calibration_stations`, so your re-enable / exclude / recalibration recommendations
+   reference reality.
+6. When a recalibration suggestion needs current fitted values, you may run
+   `uv run polymarket compute-bias` / `uv run polymarket compute-emos` locally to print the
+   bias and EMOS coefficient tables (they refresh the same data files resolve.yml regenerates
+   daily — never commit those parquet files yourself; see Leash).
 
 ## Procedure each run
 
@@ -40,17 +46,57 @@ Arguments: `$ARGUMENTS`
 3. **Connect to the roadmap.** Tie findings to the Phase 3 plan in `CLAUDE.md` (KDE+climatology,
    EMOS/NGR, isotonic calibration) where relevant — e.g. marine-station miscalibration
    (KLAX/KMIA) is a calibration-layer problem, not a bias-offset problem.
-4. **Append a dated memo** to `data/reports/model-watch.md` (newest section at the top of the
+4. **Derive recalibration suggestions.** Turn the flag table into a short, prioritized list of
+   concrete recalibration levers — the memo's `Recalibration:` block (write `none this run`
+   when nothing clears the bar). Rules:
+   - **Every suggestion names the exact lever and the evidence**: the config setting
+     (`DEFAULT_NBM_BLEND_WEIGHTS`, `emos_stations`, `calibration_stations`,
+     `DEFAULT_SIGNAL_EXCLUDED_CELLS`), the specific (station, kind) cell(s), the proposed
+     value, and the flag code + numbers that justify it. "Consider calibration" is not a
+     suggestion; "add `(\"KMSP\", \"low\"): 0.7` to `DEFAULT_NBM_BLEND_WEIGHTS` —
+     nbm_beats_ecmwf all 3 lead buckets, gaps 0.03–0.07, n>1100" is.
+   - **Flag → lever mapping:**
+     - `nbm_beats_ecmwf` chronic (3+ consecutive fresh reads) on a cell NOT yet in
+       `DEFAULT_NBM_BLEND_WEIGHTS` → suggest adding it (house convention: weight 0.7 when
+       NBM's Brier is ≤ half of ECMWF's, else 0.5). If a *blended* cell still shows the flag,
+       suggest raising its weight.
+     - `emos_underperforms` → suggest dropping that cell's station from `emos_stations` or
+       flag refit instability (compare the compute-emos coefficient table against the values
+       you recorded in prior memos; record the current a/b/c/d in the memo so the next run
+       can compare).
+     - `emos_beats_market` held ~30 days of settlements → name the cell a promotion candidate
+       (human decision; explicitly note it stays recorded-only until Sean acts).
+     - `calibration_bias` chronic on a cell EMOS doesn't cover → suggest adding the station to
+       `emos_stations` (if it has ≥45 paired days) or to the isotonic `calibration_stations`.
+       On an EMOS-covered cell, don't suggest anything — EMOS should absorb it; note whether
+       the emos_p columns confirm that.
+     - A `|bias_f|` above ~10°F in the compute-bias table → suggest a sanity check of the
+       station mapping / forecast point (e.g. a 17°F "bias" is more likely a wrong grid cell
+       than a real model offset).
+     - A data-collection station crossing ~45 paired days with a stable NBM-blend history →
+       suggest adding it to `emos_stations`.
+   - **HARD CONSTRAINT — live cities.** Never suggest applying EMOS, isotonic, or blend
+     changes to a station with a live trading cell (currently KAUS, KDEN, KSAT — check
+     `signal_excluded_cells` for what's actually live) unless the memo explicitly frames it
+     as requiring Sean's prior approval (operator mandate 2026-07-16).
+   - **Dedup and cap.** Repeat a standing suggestion as one line with "(standing since
+     YYYY-MM-DD, Nth read)" — the KSAT pattern — rather than re-deriving it; retire suggestions
+     that were actioned or invalidated, and say so. At most the top 3 *new* suggestions per
+     run; below-bar observations stay in the findings bullets, not the Recalibration block.
+   - These are memo suggestions only — the draft-PR leash (step 6) does NOT widen to
+     recalibration config. A human applies them.
+5. **Append a dated memo** to `data/reports/model-watch.md` (newest section at the top of the
    entries, under the header). Keep it tight — a few bullets. Use this shape:
 
    ```
    ## YYYY-MM-DD
    - <finding>: <interpretation>. → <recommendation>.
    - Regressions: <city/kind> Brier +X — likely <commit/cause>.
+   - Recalibration: <lever + cell + value + evidence>; <standing items one line each>; or "none this run".
    - No change since last run: <chronic items in one line>.
    ```
 
-5. **Open a draft PR for a high-confidence config change.** When a flag justifies a small,
+6. **Open a draft PR for a high-confidence config change.** When a flag justifies a small,
    mechanical change you're confident in — the canonical case being a `signal_excluded_stations`
    edit driven by a `critical` `exclude_candidate` or a `good` `reenable_candidate` flag — open
    a **draft** PR rather than only recommending it:
@@ -66,7 +112,7 @@ Arguments: `$ARGUMENTS`
      `gh pr list` first to avoid a duplicate PR for the same finding. `git switch main` when done.
    - **Only** the exclusion-list edit qualifies for a PR. Larger or judgment-heavy changes
      (calibration, NBM blending, threshold tuning) stay as memo recommendations.
-6. **(Only if `$ARGUMENTS` contains `issues`)** For each **critical** flag that is *new* since
+7. **(Only if `$ARGUMENTS` contains `issues`)** For each **critical** flag that is *new* since
    your last memo, open one GitHub issue with `gh issue create`, titled
    `[model-watch] <code>: <dimension>`, body = the flag detail + your recommendation. Check
    `gh issue list` first to avoid duplicates. Never open issues for warn/info flags.
@@ -76,9 +122,13 @@ Arguments: `$ARGUMENTS`
 - On `main` you MAY edit and commit **only** `data/reports/model-watch.md` (your memo). Stage
   exactly that one file (`git commit -- data/reports/model-watch.md`); pull --rebase if the push
   is rejected. Never commit any other path to `main`.
-- You MAY open a **draft** PR (step 5) for the `signal_excluded_stations` edit only, on a
+- You MAY open a **draft** PR (step 6) for the `signal_excluded_stations` edit only, on a
   dedicated `model-watch/<slug>` branch, and only after `uv run pytest -q` passes. One finding
-  per PR.
+  per PR. Recalibration suggestions (step 4) never become PRs — memo only.
+- You MAY run `uv run polymarket compute-bias` / `compute-emos` to inspect current fitted
+  values. They rewrite `data/station_biases.parquet` / `data/station_emos.parquet` locally with
+  the same daily refit resolve.yml performs — that's fine, but NEVER commit those files; your
+  only commit on `main` stays the memo.
 - You MUST NOT: merge or approve any PR (`gh pr merge` is off-limits — a human reviews and
   merges); edit code directly on `main`; open PRs touching anything beyond the exclusion list
   and the tests that encode it; touch anything under `src/polymarket_model/execution/`; or take
