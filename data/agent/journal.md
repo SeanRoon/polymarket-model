@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 22:15 UTC — nothing settled, no qualifying edge, holding 1
+
+`agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
+(snapshot 21:37, 38 min old): top LIVE edges still the R7/R8 broken-CDF longshot artifact (AUS/high
+T88 & SATX/high T87 model 0.95 vs nbm 0.12–0.22, market 0.04–0.08), with the downstream AUS/high
+B92.5 modal-fade still confounded (R10). No qualifying edge, no strategy change (v5). Next: ATL low
+settling a v3 win.
+
 ## 2026-07-16 21:15 UTC — nothing settled, no qualifying edge, holding 1
 
 `agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged;
