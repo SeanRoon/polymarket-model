@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 14:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+`agent-settle` → settled=0, still_open=2 (SFO low B59.5, ATL low B72.5 — both awaiting
+CLI). No grading, strategy stays v4. Board is again entirely settlement-day (all lead_h=6,
+JUL16): every big edge is a model-only artifact NBM contradicts — LAX T86 (0.95/0.01),
+SFO low B52.5 (0.79/0.01), LV high B109.5 (0.75/0.01), SEA/SFO 0.51/0.01 — all R8 vetoes.
+LV low B86.5 (0.64/0.36 @ ask 0.10) is a sub-$0.30 model YES (R7) on the ledger's worst
+cell (32% win, −14.3% ROI). Strong LIVE cells (SATX/AUS/DEN high) show no edge, model=market.
+LAX low B68.5 has dual agreement (0.94/0.88) but market already at mid 0.88 — no room. R5
+lead-floor caution covers the whole 6h board anyway. No trades. Next session: still waiting
+on JUL16 CLIs to grade the 2 open — ATL low B72.5 is my first R3/own-reasoning settle.
+
 ## 2026-07-16 13:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle` → settled=0, still_open=2 (SFO low B59.5, ATL low B72.5 — both JUL15/16
