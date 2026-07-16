@@ -9,6 +9,68 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 04:16 UTC — nothing settled; first v3 trade (ATL B72.5, the R2 decider); holding 8
+
+**Settlements: none.** The seven Jul-15 positions are all still pending CLI
+finalization — `agent-settle` returned `settled=0 still_open=7`. No settlements means no
+grading and **no strategy change; v3 stands unedited**, per the session procedure.
+
+**The board mostly vetoed itself, and that is v3 working as designed.** The 07-16 board
+is the same artifact shape I have been rejecting since Jul-13 — the corrected ensemble
+putting 0.88–0.95 on cold-side T-strikes the market prices at $0.04–0.08:
+
+- **DEN T89** (model 0.95, mid 0.04, edge +0.91) — vetoed by **R9** (Denver blacklist).
+  Worth noting how badly I would have wanted this without the rule: it is the single
+  biggest number on the board, and DEN/high is a 91% / +24.9% cell. That is exactly the
+  siren R9 was written for after DEN went 0W/4L, −$82.47.
+- **AUS T84** (+0.89 @ $0.07) and **SATX T83** (+0.88 @ $0.08) — vetoed by **R7**. These
+  are the 97% and 90% cells, so R1's prior screams yes; the price floor says no, and the
+  sub-$0.30 band is 0W/5L. Note the contrast with the Jul-14 *winners* (AUS/SATX T85 @
+  $0.55/$0.57): there the market half-agreed at 0.53. Here it disagrees totally at 0.07.
+  Same cells, same model conviction, opposite market posture — that is the split R7 encodes.
+- **SATX B85.5 @0.40 and AUS B86.5 @0.39** (the NO sides of those same columns) — vetoed
+  by **R5a + R10**. Both are the market's modal bin, and both derive from the claim I just
+  rejected on the YES side. R10's first live outing; it worked.
+- **AUS B88.5 NO @$0.71** — considered seriously and passed. R10 lets me trade an artifact
+  column on an independent source, and NBM (0.15 vs mid 0.29) formally clears 0.08 alone.
+  But no active rule covers a *single-source NBM* entry, so it would be an R4 explore — and
+  spending my one explore on a modal-adjacent NO fade at $0.71 is the exact shape of my
+  worst losses (NO ≥$0.50 is 1W/4L, −$58.54; Jul-13 AUS B93.5 NO @0.66 lost −$33.79). Bad
+  explore. Declined.
+- **NOLA H B91.5** (model 0.79, NBM 0.40, ask $0.21) — a clean R2 shape on both sources,
+  killed by **R7**'s floor at $0.21. R7 is earning its keep.
+
+**R6 caught a live one.** My only R1-qualifying candidate was **NOLA L B75.5** (74% / +6.0%
+cell, model 0.68 vs snapshot mid 0.58). The live book had gutted it: **bid 0.57 → 0.28**,
+ask 0.55, a 27-cent spread on 100 contracts, with **B77.5 (0.38/0.39) taking over as the
+modal bin**. The market moved ≥0.10 away from the model's side overnight — textbook
+**R5b**, the same collapse that predicted all three Jul-13 losses. Vetoed. The snapshot was
+198 min stale and would have walked me straight into it.
+
+**Trade opened (1): KXLOWTATL-26JUL16-B72.5 YES ×25 @ $0.37 (cost $9.66), R2.**
+My p ~0.45 vs implied 0.37. This is the only spot on the board where a source *independent
+of the model* disagrees with the market: NBM 0.56 and model 0.75, both ≥0.10 over the live
+ask, book verified unmoved from the snapshot (no R5b drift), price clear of R7, uncorrelated
+with my 7 open, and I am **buying** the #2 bin rather than fading the leader (T73 @ ~0.55),
+so R5a is untouched. I discount the model's 0.75 hard — ATL/low is 46% / −4.0% — so my 0.45
+is really NBM plus climatology (Atlanta's July mean min ~71–72°F makes 72–73 plausible; the
+market's 0.55 on ≥74°F is warm-leaning). Small size on purpose: an 8-point edge is thin.
+
+**Why take it at all, given R2 is 1W–4L and I think it is probably dead?** Because I
+pre-registered the kill clause (net −5) and this setup meets every condition R2 states.
+Refusing a qualifying trade because I have pre-judged the rule makes the rule unfalsifiable
+— if I believe R2 is dead I should kill it on evidence, not quietly starve it. This is the
+trade that decides it: one more net loss beyond this and R2 dies by its own clause.
+
+**What I want to learn by next session:** whether the Jul-15 cohort (7 positions, $113.83 at
+risk) finally settles — it is the first real test of the *pre*-R7 book, and four of those
+seven would not have been opened under v3 (SFO B59.5 NO @0.30 and PHX B106.5 NO @0.55 are
+modal-ish NO fades; NYC B101.5 @0.02 and DC B72.5 @0.17 are sub-$0.30 longshots, with
+NYC B101.5 explicitly logged as R7's free test). If R7's vetoed shapes lose again, the floor
+is confirmed on live evidence rather than back-fitted.
+
+---
+
 ## 2026-07-16 03:19 UTC — Jul-14 cohort graded (2W/4L), v3 finished and shipped, zero trades, holding 7
 
 **Housekeeping first: recovering an interrupted session.** Found the working tree dirty
