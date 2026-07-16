@@ -26,6 +26,12 @@ from polymarket_model.calibration.bias import (
     distribution_for,
     load_biases,
 )
+from polymarket_model.calibration.emos import (
+    DEFAULT_EMOS_PARQUET,
+    EmosCoefficients,
+    apply_emos_to_event,
+    load_emos,
+)
 from polymarket_model.calibration.isotonic import (
     DEFAULT_CALIBRATION_PARQUET,
     calibrate_bin_probs,
@@ -218,6 +224,7 @@ def _build_snapshot_table(
     nbm_forecasts: dict[tuple[str, date, str], NBMQuantileForecast],
     bias_applied: dict[str, float | None] | None = None,
     calibrations: dict[tuple[str, str], tuple] | None = None,
+    emos: dict[tuple[str, str], EmosCoefficients] | None = None,
 ) -> pa.Table:
     rows: list[dict] = []
     for ep in priced_events:
@@ -256,6 +263,22 @@ def _build_snapshot_table(
             if cal_knots is not None and bin_to_p
             else {}
         )
+
+        # EMOS / NGR recalibration (Phase 3, excluded veteran stations only — the
+        # configured set never contains a live-cell station). Recorded-only, like the
+        # blend and isotonic: emos_p replaces the whole predictive distribution with the
+        # fitted Gaussian's bin masses; emos_mu_f/emos_sigma_f record its parameters so
+        # eval can inspect the distribution, not just the bin probs.
+        emos_coeffs = (emos or {}).get((e.station_id, e.kind)) if e.station_id else None
+        emos_bin_to_p: dict[str, float] = {}
+        emos_mu: float | None = None
+        emos_sigma: float | None = None
+        if emos_coeffs is not None and mo is not None:
+            emos_result = apply_emos_to_event(
+                mo.bin_probs, emos_coeffs, (bias_applied or {}).get(e.event_ticker)
+            )
+            if emos_result is not None:
+                emos_bin_to_p, emos_mu, emos_sigma = emos_result
 
         for p in ep.prices:
             if p.midpoint is None:
@@ -306,6 +329,10 @@ def _build_snapshot_table(
                 "blend_weight_nbm": blend_w,
                 "calibrated_p": calibrated_bin_to_p.get(p.bin.market_ticker),
                 "calibration_applied": cal_knots is not None,
+                "emos_p": emos_bin_to_p.get(p.bin.market_ticker),
+                "emos_mu_f": emos_mu,
+                "emos_sigma_f": emos_sigma,
+                "emos_applied": bool(emos_bin_to_p),
             })
     return pa.Table.from_pylist(rows)
 
@@ -455,6 +482,7 @@ def snapshot_once(
     write_duckdb: bool = True,
     biases_path: Path | None = None,
     calibrations_path: Path | None = None,
+    emos_path: Path | None = None,
 ) -> SnapshotResult:
     """Single shot: discover, fetch prices in parallel, persist to Parquet and/or DuckDB.
 
@@ -486,6 +514,17 @@ def snapshot_once(
     }
     if calibrations:
         log.info("calibrations_loaded", n_cells=len(calibrations))
+
+    # EMOS coefficients (Phase 3). Filtered to the configured stations so a stale Parquet
+    # can't recalibrate a station we've since removed — in particular, nothing with a live
+    # cell can slip in via the data file. Missing file or empty config = emos_p stays NULL.
+    emos_coeffs = {
+        k: v
+        for k, v in load_emos(emos_path or DEFAULT_EMOS_PARQUET).items()
+        if k[0] in settings.emos_stations
+    }
+    if emos_coeffs:
+        log.info("emos_loaded", n_cells=len(emos_coeffs))
 
     errors = 0
 
@@ -531,6 +570,7 @@ def snapshot_once(
                 nbm_forecasts=nbm_forecasts,
                 bias_applied=bias_applied,
                 calibrations=calibrations,
+                emos=emos_coeffs,
             )
             if tbl.num_rows == 0:
                 # No priced bins this bucket (empty books or a failed fetch). Writing an

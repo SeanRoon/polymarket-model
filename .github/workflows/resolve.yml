@@ -63,6 +63,14 @@ jobs:
           LOG_LEVEL: WARNING
         run: uv run polymarket compute-calibration
 
+      - name: Recompute EMOS coefficients (excluded veteran stations)
+        # Phase 3: fits per-(station,kind) NGR Gaussians for KLAX/KMDW/KMIA/KNYC and
+        # writes data/station_emos.parquet. The recorder applies it as a recorded-only
+        # `emos_p` column; live signals (and live cities) are untouched.
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket compute-emos
+
       - name: Score model vs resolutions
         env:
           LOG_LEVEL: WARNING
@@ -96,7 +104,7 @@ jobs:
           git config user.name "polymarket-snapshot-bot"
           git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
           git add data/resolutions.parquet data/station_biases.parquet \
-                  data/station_calibration.parquet \
+                  data/station_calibration.parquet data/station_emos.parquet \
                   data/paper_trades.parquet \
                   data/reports/evaluation.md data/reports/paper-trades.md \
                   data/reports/diagnostics.md

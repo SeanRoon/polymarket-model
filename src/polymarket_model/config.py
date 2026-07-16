@@ -33,6 +33,17 @@ DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({
 DEFAULT_CALIBRATION_STATIONS: frozenset[str] = frozenset({"KLAX", "KMIA"})
 
 
+# Stations whose recorded snapshots get an EMOS / NGR Gaussian recalibration pass
+# (fit by `polymarket compute-emos`, applied by the recorder as a recorded `emos_p`
+# column — see `calibration/emos.py`). Phase 3 scope: the four veteran excluded
+# stations with 60+ days of paired data, where mean AND spread are miscalibrated.
+# Deliberately excludes every station with a live trading cell (KAUS, KDEN, KSAT) —
+# operator mandate 2026-07-16: EMOS must not touch live cities. The 2026-06-18
+# data-collection cohort joins once it has ~45 days of pairs and the 07-13 NBM blend
+# regime has stabilized in its history.
+DEFAULT_EMOS_STATIONS: frozenset[str] = frozenset({"KLAX", "KMDW", "KMIA", "KNYC"})
+
+
 # Finer-grained exclusion than `DEFAULT_SIGNAL_EXCLUDED_STATIONS`: drop signals for a
 # single (station_id, kind) cell while keeping the station's other book live. Needed
 # because a whole-station exclude is too blunt where high and low diverge — e.g. Chicago
@@ -168,6 +179,13 @@ class Settings(BaseSettings):
         default_factory=lambda: DEFAULT_CALIBRATION_STATIONS,
     )
 
+    # Stations to EMOS-recalibrate (recorded-only emos_p column; never a station with a
+    # live cell). Env override is comma-separated station ids, e.g. EMOS_STATIONS="KLAX,KMIA".
+    # Empty string disables EMOS entirely.
+    emos_stations: frozenset[str] = Field(
+        default_factory=lambda: DEFAULT_EMOS_STATIONS,
+    )
+
     # Per-(station, kind) exclusions. Env override format is comma-separated
     # 'STATION:kind' pairs, e.g. SIGNAL_EXCLUDED_CELLS="KMDW:high,KORD:low".
     signal_excluded_cells: frozenset[tuple[str, str]] = Field(
@@ -211,6 +229,17 @@ class Settings(BaseSettings):
         if isinstance(v, (list, tuple, set, frozenset)):
             return frozenset(str(s) for s in v)
         raise TypeError(f"calibration_stations: unsupported type {type(v)!r}")
+
+    @field_validator("emos_stations", mode="before")
+    @classmethod
+    def _parse_emos_stations(cls, v: object) -> frozenset[str]:
+        if v is None or v == "":
+            return frozenset()
+        if isinstance(v, str):
+            return frozenset(s.strip() for s in v.split(",") if s.strip())
+        if isinstance(v, (list, tuple, set, frozenset)):
+            return frozenset(str(s) for s in v)
+        raise TypeError(f"emos_stations: unsupported type {type(v)!r}")
 
     @field_validator("signal_excluded_cells", mode="before")
     @classmethod

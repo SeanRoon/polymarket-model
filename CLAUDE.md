@@ -23,6 +23,7 @@ uv run polymarket snapshot                                            # legacy: 
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
 uv run polymarket compute-bias               # recompute rolling per-(station,kind) ensemble bias correction
+uv run polymarket compute-emos               # fit per-(station,kind) EMOS/NGR Gaussians (excluded stations only)
 uv run polymarket paper-trade                # replay snapshots → one hypothetical fill per market
 uv run polymarket exec balance               # read-only authed: print account balance (requires KALSHI_* env vars)
 uv run polymarket exec positions             # read-only authed: list open positions
@@ -136,7 +137,7 @@ Entry price is the take-side (`yes_ask` or `1 - yes_bid`), not the midpoint. Fee
 - **Phase 1 (done):** discovery → prices → ensemble → empirical-CDF baseline → edge → CLI report.
 - **Phase 2 (done):** snapshot recorder + GHA cron + NWS CLI scraper + `fetch-resolution`.
 - **Phase 2.5 (done):** model_p persisted alongside prices; `compare-to-resolved` scoring loop.
-- **Phase 3 (not started):** KDE+climatology, EMOS / NGR, isotonic calibration. Wait for ≥30 days of paired (model_p, resolution) data before fitting EMOS. The `model.PredictiveDistribution` interface is intentionally narrow (`prob_in_bin(lo, hi)`) so a parametric distribution can replace the empirical one without changing callers.
+- **Phase 3 (in progress since 2026-07-16):** EMOS / NGR is live as a recorded-only pilot (`calibration/emos.py`): per-(station, kind) Gaussians `N(a + b·ens_mean, sqrt(c + d·ens_var))` fit by CRPS minimization over the snapshot+resolution history, written to `data/station_emos.parquet` by `compute-emos` (daily in `resolve.yml`), applied by the recorder as `emos_p`/`emos_mu_f`/`emos_sigma_f` columns. Scope is `settings.emos_stations` — the veteran excluded stations KLAX/KMDW/KMIA/KNYC only; **never a station with a live cell (KAUS/KDEN/KSAT), operator mandate 2026-07-16**. Because `a`/`b` absorb the mean error, EMOS subsumes the rolling bias correction: the fit reconstructs the RAW pre-biascorr ensemble mean (adding `model_bias_applied_f` back) and the apply path does the same, so it never stacks on top of biascorr. Train/apply features are both reconstructed from bin probs via bin centers (`moments_from_bin_probs` mirrors the fit SQL — keep them in lockstep). Graduation bar: forward-recorded `emos_p` Brier beats the market midpoint out-of-sample, same as KSAT/high. Still to come: isotonic layered on EMOS residuals, KDE+climatology, and the June-18 cohort once it has ~45 days of pairs.
 - **Phase 4 (not started):** walk-forward backtest over the accumulating snapshots; will reuse `evaluation.score_resolutions` rather than reimplement.
 
 ### Self-directed paper agent (since 2026-07-12)

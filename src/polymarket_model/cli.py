@@ -15,6 +15,11 @@ from polymarket_model.calibration.bias import (
     load_biases,
     write_biases,
 )
+from polymarket_model.calibration.emos import (
+    DEFAULT_EMOS_PARQUET,
+    fit_station_emos,
+    write_emos,
+)
 from polymarket_model.calibration.isotonic import (
     DEFAULT_CALIBRATION_PARQUET,
     fit_station_calibrations,
@@ -560,6 +565,85 @@ def compute_calibration(
     console.print(table)
     console.print("[dim]Brier before/after are in-sample; real signal is forward calibrated_p.[/dim]")
     console.print(f"[dim]Wrote {calibration_parquet}[/dim]")
+
+
+@app.command("compute-emos")
+def compute_emos(
+    days_back: int = typer.Option(
+        60,
+        "--days-back",
+        help="Use paired (moments, actual) records whose target_date_local is within N days.",
+    ),
+    min_days: int = typer.Option(
+        30,
+        "--min-days",
+        help="Minimum paired events per (station,kind) before an EMOS fit is emitted.",
+    ),
+    stations: str = typer.Option(
+        "",
+        "--stations",
+        help="Comma-separated station ids to fit. Empty = settings.emos_stations.",
+    ),
+    snapshots_root: Path = typer.Option(
+        settings.data_dir / "snapshots",
+        "--snapshots-root",
+        help="Root directory holding YYYY-MM-DD/HHMM.parquet snapshots.",
+    ),
+    resolutions_parquet: Path = typer.Option(
+        DEFAULT_RESOLUTIONS_PARQUET,
+        "--resolutions-parquet",
+        help="Canonical NWS-CLI resolutions Parquet.",
+    ),
+    emos_parquet: Path = typer.Option(
+        DEFAULT_EMOS_PARQUET,
+        "--emos-parquet",
+        help="Output Parquet for EMOS coefficients. Read by the recorder on next snapshot.",
+    ),
+) -> None:
+    """Fit per-(station,kind) EMOS/NGR Gaussians from snapshot vs resolution pairs.
+
+    Phase 3: excluded veteran stations only (KLAX/KMDW/KMIA/KNYC by default — never a
+    station with a live cell). Writes `data/station_emos.parquet`; the recorder applies
+    it as a recorded `emos_p` column (signals are unchanged). The CRPS before/after is
+    IN-SAMPLE — a sanity check, not the real evaluation, which comes from the
+    forward-recorded emos_p resolving over the next weeks.
+    """
+    configure_logging()
+    console = Console()
+    target = (
+        frozenset(s.strip() for s in stations.split(",") if s.strip())
+        if stations
+        else settings.emos_stations
+    )
+    fits = fit_station_emos(
+        snapshots_root=snapshots_root,
+        resolutions_parquet=resolutions_parquet,
+        stations=target,
+        days_back=days_back,
+        min_days=min_days,
+    )
+    write_emos(emos_parquet, fits)
+    if not fits:
+        console.print(
+            f"[yellow]No EMOS fits (need >= {min_days} paired events per "
+            f"(station,kind) in {sorted(target)}).[/yellow]"
+        )
+        console.print(f"[dim]Wrote empty: {emos_parquet}[/dim]")
+        return
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    for c in ("station_id", "kind", "n_days", "a", "b", "c", "d", "crps_raw", "crps_fit"):
+        table.add_column(c, justify="right" if c not in ("station_id", "kind") else "left")
+    for f in fits:
+        co = f.coefficients
+        table.add_row(
+            f.station_id, f.kind, str(f.n_days),
+            f"{co.a:+.2f}", f"{co.b:.3f}", f"{co.c:.2f}", f"{co.d:.3f}",
+            f"{f.crps_raw:.3f}", f"{f.crps_fit:.3f}",
+        )
+    console.print(table)
+    console.print("[dim]CRPS raw/fit are in-sample; real signal is forward emos_p.[/dim]")
+    console.print(f"[dim]Wrote {emos_parquet}[/dim]")
 
 
 @app.command("paper-trade")
