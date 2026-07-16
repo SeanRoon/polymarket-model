@@ -9,6 +9,23 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 10:16 UTC — nothing settled, no qualifying edge; NOLA high R2 checked live and vetoed; holding 8
+
+`agent-settle` → `settled=0 still_open=8`; JUL15 book + ATL JUL16 still open, no CLI yet, **no
+grading, v3 stands.** Fresher 09:29 snapshot flipped one thing vs the last few sessions: NOLA
+high B91.5 now shows dual agreement (model 0.69 / NBM 0.34 / mid 0.235, both above), where prior
+stale boards had the two sources straddling the mid. Verified the live book (bid 0.23 / ask 0.24,
+20h to close). **Vetoed on R2's correlation clause** — I already hold NOLA low B74.5 YES, so a
+NOLA high YES is same-city/same-day/same-air-mass correlated. Independently weak on merits: NBM
+only +0.105 over mid (barely clears the 0.10 bar), NOLA/high cell is 63%/−2.3% (n=140), and it's
+a bet the high lands *below* the market's modal bin B93.5 @0.50 — the exact "model says cooler
+than the market's mode" shape that lost in DEN/AUS/SEA on Jul-13, with R2 already 1W–4L (one net
+loss from death). Everything else re-derives as before: SATX T83 / AUS T84 / LAX T86 artifact
+columns → R7+R8; DEN → R9; DC low B77.5 @0.12 and HOU low B75.5 @0.06 → R7 longshot floor; CHI
+low B74.5 NBM only +0.01 → fails R2; ATL low B72.5 already held → duplicate guard. Nothing new
+clears the bar. **Next:** JUL15 book + ATL JUL16 (R2 decider) should post CLI soon — that's the
+learning event.
+
 ## 2026-07-16 09:16 UTC — nothing settled, no qualifying edge, holding 8
 
 `agent-settle` → `settled=0 still_open=8`; JUL15 book + ATL JUL16 still open, no CLI yet, **no
