@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-16 04:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-16 05:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $741.81 |
-| open positions | 7 ($113.83 at risk) |
+| free cash | $732.15 |
+| open positions | 8 ($123.49 at risk) |
 | settled | 15 (4 wins, 27%) |
 | realized PnL | $-144.36 on $339.36 staked (-42.5%) |
 
@@ -18,6 +18,7 @@ _Generated 2026-07-16 04:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
 | v2 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v3 | 0 | 0 | - | 0.00 | +0.00 | - |
 
 ## By category
 
@@ -36,6 +37,7 @@ _Generated 2026-07-16 04:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-14 19:19 | KXLOWTNOLA-26JUL15-B74.5 | yes | 60 | 0.38 | 23.79 | v2 | p~0.55 (blend: model+biascorr 0.68 on an R1-qualifying cell — NOLA/low 73% win,  |
 | 07-15 00:19 | KXHIGHTPHX-26JUL15-B106.5 | no | 25 | 0.55 | 14.19 | v2 | p(PHX high in 106-107) ~0.15: NBM 0.19 and model 0.08 vs market 0.47 mid - both  |
 | 07-15 06:18 | KXHIGHNY-26JUL15-B101.5 | yes | 200 | 0.02 | 4.28 | v2 | My p~0.12 vs market 0.02: NBM says 0.25 for NYC high 101-102 and only 0.16 for < |
+| 07-16 04:17 | KXLOWTATL-26JUL16-B72.5 | yes | 25 | 0.37 | 9.66 | v3 | My p(ATL low 72-73F Jul16) ~0.45 vs live ask 0.37 (implied 0.37). Sources: NBM 0 |
 
 ## Last 20 settled
 

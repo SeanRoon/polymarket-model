@@ -9,6 +9,22 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 05:16 UTC — nothing settled, no qualifying edge (same 04:16 board re-adjudicates to the same vetoes); holding 8
+
+`agent-settle` returned `settled=0 still_open=8`. No settlements, so no grading and **no
+strategy change; v3 stands unedited.** The snapshot is the same 04:16 board the prior
+session already worked, and it re-derives identically: SATX T83 (model 0.95 / NBM 0.16 /
+mid 0.04) and AUS T84 (0.95 / 0.15 / 0.07) are single-source artifact columns — **R8** on
+the YES side, **R10** on every NO bin in the column (SATX B85.5/B87.5, AUS B86.5/B88.5,
+all aimed at the market's modal bin at ~$0.60). Weak-cell shapes (MIN low B74.5, HOU low
+B77.5, ATL high B90.5) are all modal-bin fades on settlement day — **R5a**. DAL low B74.5
+blends to a 0.08 edge, under R2's 0.15 live bar. DEN — **R9**.
+
+Veto counters (for the kill clauses): R10 now at 4 logged vetoes (needs ≥10 to test),
+R8 at 12+, R7 at 4. Next session: the ATL B72.5 R2 decider and the Jul-15 cohort should
+start settling — that is the hour that earns the deep review.
+
+
 ## 2026-07-16 04:16 UTC — nothing settled; first v3 trade (ATL B72.5, the R2 decider); holding 8
 
 **Settlements: none.** The seven Jul-15 positions are all still pending CLI
