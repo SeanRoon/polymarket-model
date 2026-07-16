@@ -43,6 +43,9 @@ class DiagnosticsConfig:
     worse_than_market_margin: float = 0.02
     # Brier gap (ECMWF minus NBM) above which NBM is flagged as the better base model for a cell.
     nbm_margin: float = 0.02
+    # Brier gap (vs the raw model, same rows) beyond which the EMOS pilot is flagged as
+    # materially better (info) or materially worse (warn) than what it replaces.
+    emos_margin: float = 0.02
     # Brier increase (recent window minus prior window) above which a regression is flagged.
     wow_regression_margin: float = 0.02
     # abs(mean(model_p) minus realized rate) above which aggregate miscalibration is flagged.
@@ -194,6 +197,71 @@ def _nbm_flags(df: pd.DataFrame, cfg: DiagnosticsConfig) -> list[Flag]:
     return flags
 
 
+def _emos_flags(df: pd.DataFrame, cfg: DiagnosticsConfig) -> list[Flag]:
+    """Track the EMOS pilot per (city, kind): its Brier vs the raw model and the market.
+
+    All three means are restricted to exactly the rows where emos_p exists, so the
+    comparison is like-for-like out-of-sample. The market comparison is the pilot's
+    graduation bar (same bar KSAT/high met before re-enabling); the model comparison
+    says whether EMOS at least improves on what it replaces.
+    """
+    if "emos_p" not in df.columns:
+        return []
+    has = df[df["emos_p"].notna()]
+    if has.empty:
+        return []
+    g = (
+        has.groupby(["city", "kind"], dropna=False)
+        .agg(
+            n=("brier_emos", "size"),
+            brier_emos=("brier_emos", "mean"),
+            brier_model=("brier_model", "mean"),
+            brier_market=("brier_market", "mean"),
+        )
+        .reset_index()
+    )
+    flags: list[Flag] = []
+    for _, r in g.iterrows():
+        if r["n"] < cfg.min_sample:
+            continue
+        dim = f"{r['city']} / {r['kind']}"
+        vs = (
+            f"EMOS Brier {r['brier_emos']:.3f} vs model {r['brier_model']:.3f} "
+            f"vs market {r['brier_market']:.3f} over n={int(r['n'])} (same rows)."
+        )
+        if r["brier_emos"] <= r["brier_market"]:
+            flags.append(Flag(
+                code="emos_beats_market",
+                severity="good",
+                dimension=dim,
+                detail=f"EMOS pilot at/above market out-of-sample: {vs}",
+                suggestion=(
+                    "If this holds for ~30 days of settlements, candidate to promote emos_p "
+                    "for this cell (human decision; live cities stay out per operator mandate)."
+                ),
+            ))
+        elif r["brier_emos"] < r["brier_model"] - cfg.emos_margin:
+            flags.append(Flag(
+                code="emos_improves_model",
+                severity="info",
+                dimension=dim,
+                detail=f"EMOS beats the raw model but not yet the market: {vs}",
+                suggestion="Keep accruing; no action until the market gap closes.",
+            ))
+        elif r["brier_emos"] > r["brier_model"] + cfg.emos_margin:
+            flags.append(Flag(
+                code="emos_underperforms",
+                severity="warn",
+                dimension=dim,
+                detail=f"EMOS worse than the raw model it replaces: {vs}",
+                suggestion=(
+                    "Inspect coefficient stability across daily refits (data/station_emos.parquet "
+                    "history) and consider dropping this cell from emos_stations."
+                ),
+            ))
+    return flags
+
+
 def _calibration_flags(df: pd.DataFrame, cfg: DiagnosticsConfig) -> list[Flag]:
     """Coarse aggregate calibration per (city, kind): mean(model_p) vs realized YES rate.
 
@@ -249,6 +317,7 @@ def run_diagnostics(
         *_exclusion_flags(df, cfg),
         *_regression_flags(df, cfg, reference_date),
         *_nbm_flags(df, cfg),
+        *_emos_flags(df, cfg),
         *_calibration_flags(df, cfg),
     ]
     flags.sort(key=lambda f: (SEVERITY_ORDER.get(f.severity, 9), f.code, f.dimension))

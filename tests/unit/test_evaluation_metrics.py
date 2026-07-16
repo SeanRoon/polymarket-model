@@ -60,19 +60,23 @@ def test_lead_bucket(hours, label):
     assert lead_bucket(hours) == label
 
 
-def _synthetic_score_df(n_total: int, n_with_nbm: int, n_with_blend: int = 0) -> pd.DataFrame:
+def _synthetic_score_df(
+    n_total: int, n_with_nbm: int, n_with_blend: int = 0, n_with_emos: int = 0
+) -> pd.DataFrame:
     """Build a minimal score_resolutions-shaped DataFrame for aggregate() tests.
 
     Blend rows (the first `n_with_blend`, a subset of the NBM rows) get a deliberately
     *worse* ECMWF Brier (0.32) than the non-blend rows (0.20) so that the full-sample
     `brier_model_mean` and the blend-row-restricted `brier_model_on_blend` differ — that
-    gap is exactly the reporting artifact the on_blend columns exist to expose.
+    gap is exactly the reporting artifact the on_blend columns exist to expose. EMOS rows
+    (the first `n_with_emos`) exercise the analogous on_emos columns.
     """
     nan = float("nan")
     rows = []
     for i in range(n_total):
         has_nbm = i < n_with_nbm
         has_blend = i < n_with_blend
+        has_emos = i < n_with_emos
         rows.append({
             "city": "Miami",
             "kind": "high",
@@ -99,6 +103,15 @@ def _synthetic_score_df(n_total: int, n_with_nbm: int, n_with_blend: int = 0) ->
                 "pnl_blend": 0.15 if has_blend else nan,
                 "direction_blend": "BUY_YES" if has_blend else None,
                 "kelly_blend_sized": 1.0 if has_blend else nan,
+            })
+        if n_with_emos:
+            rows[-1].update({
+                "emos_p": 0.50 if has_emos else nan,
+                "brier_emos": 0.04 if has_emos else nan,
+                "log_loss_emos": 0.30 if has_emos else nan,
+                "pnl_emos": 0.25 if has_emos else nan,
+                "direction_emos": "BUY_YES" if has_emos else None,
+                "kelly_emos_sized": 1.0 if has_emos else nan,
             })
     return pd.DataFrame(rows)
 
@@ -158,6 +171,47 @@ def test_aggregate_grouped_on_blend_columns_sit_after_blend():
     row = out.iloc[0]
     assert row["brier_model_on_blend"] == pytest.approx(0.32)
     assert row["brier_blend_mean"] == pytest.approx(0.18)
+
+
+def test_aggregate_emos_columns_use_emos_denominator():
+    # 10 rows, 4 with EMOS. brier_emos over the 4; model/market restricted to the same 4.
+    df = _synthetic_score_df(n_total=10, n_with_nbm=0, n_with_emos=4)
+    out = aggregate(df, by=None)
+    row = out.iloc[0]
+    assert row["n"] == 10
+    assert row["n_emos"] == 4
+    assert row["brier_emos_mean"] == pytest.approx(0.04)
+    # Same-row comparisons: raw model and market Brier restricted to the 4 EMOS rows.
+    assert row["brier_model_on_emos"] == pytest.approx(0.20)
+    assert row["brier_market_on_emos"] == pytest.approx(0.05)
+    assert row["pnl_emos_sum"] == pytest.approx(0.25 * 4)
+    assert row["trades_emos_emitted"] == 4
+
+
+def test_aggregate_grouped_emos_columns_ordered_before_market():
+    df = _synthetic_score_df(n_total=10, n_with_nbm=6, n_with_blend=4, n_with_emos=3)
+    out = aggregate(df, by=["city", "kind", "lead_bucket"])
+    cols = list(out.columns)
+    # EMOS mean follows blend mean; on_emos pair sits right before the full-sample market mean.
+    assert cols.index("brier_emos_mean") == cols.index("brier_blend_mean") + 1
+    assert cols.index("brier_model_on_emos") == cols.index("brier_nbm_on_blend") + 1
+    assert cols.index("brier_market_on_emos") == cols.index("brier_model_on_emos") + 1
+    assert cols.index("brier_market_mean") == cols.index("brier_market_on_emos") + 1
+    row = out.iloc[0]
+    assert row["brier_emos_mean"] == pytest.approx(0.04)
+    assert row["brier_market_on_emos"] == pytest.approx(0.05)
+
+
+def test_aggregate_handles_zero_emos_rows_gracefully():
+    """When no rows have EMOS, means are NaN, sums are 0 — matches the pre-pilot state."""
+    df = _synthetic_score_df(n_total=10, n_with_nbm=0, n_with_emos=0)
+    # n_with_emos=0 means the fixture never adds emos columns at all; aggregate must not
+    # emit EMOS aggregates for a frame with no emos_p column.
+    out = aggregate(df, by=None)
+    assert "n_emos" in out.columns  # overall dict always carries the count
+    assert out.iloc[0]["n_emos"] == 0
+    assert math.isnan(out.iloc[0]["brier_emos_mean"])
+    assert out.iloc[0]["pnl_emos_sum"] == 0.0
 
 
 def test_aggregate_handles_zero_nbm_rows_gracefully():

@@ -263,6 +263,11 @@ def score_resolutions(
             "CAST(NULL AS DOUBLE) AS blended_p, "
             "CAST(NULL AS DOUBLE) AS blend_weight_nbm,"
         )
+    # emos_p lands later still (Phase 3 EMOS/NGR pilot, 2026-07-16). Same union_by_name guard.
+    if _any_snapshot_has_column(snapshots_root, "emos_p"):
+        emos_select = "TRY_CAST(s.emos_p AS DOUBLE) AS emos_p,"
+    else:
+        emos_select = "CAST(NULL AS DOUBLE) AS emos_p,"
     sql = f"""
         WITH s AS (
             SELECT *
@@ -298,6 +303,7 @@ def score_resolutions(
             s.model_outside_bin_mass,
             {nbm_select}
             {blend_select}
+            {emos_select}
             r.value_f AS realized_value_f
         FROM s
         JOIN r
@@ -426,6 +432,42 @@ def score_resolutions(
     df["direction_blend"] = direction_blend_col
     df["kelly_blend_sized"] = kelly_blend_col
 
+    # EMOS-side metrics (Phase 3 NGR pilot). emos_p is NaN outside the configured pilot
+    # stations and on snapshots written before 2026-07-16, so — like NBM and the blend —
+    # the EMOS aggregates naturally reflect only the rows where the pilot actually ran.
+    has_emos = df["emos_p"].notna()
+    df["brier_emos"] = float("nan")
+    df["log_loss_emos"] = float("nan")
+    if has_emos.any():
+        df.loc[has_emos, "brier_emos"] = df.loc[has_emos].apply(
+            lambda r: brier(r["emos_p"], r["realized_yes"]), axis=1
+        )
+        df.loc[has_emos, "log_loss_emos"] = df.loc[has_emos].apply(
+            lambda r: log_loss(r["emos_p"], r["realized_yes"], clip=cfg.log_clip), axis=1
+        )
+
+    pnl_emos_col = pd.Series(float("nan"), index=df.index)
+    direction_emos_col = pd.Series([None] * len(df), index=df.index, dtype=object)
+    kelly_emos_col = pd.Series(float("nan"), index=df.index)
+    if has_emos.any():
+        emos_records = df.loc[has_emos].apply(
+            lambda r: simulate_pnl(
+                model_p=float(r["emos_p"]),
+                market_mid=float(r["market_mid"]),
+                realized=int(r["realized_yes"]),
+                cfg=cfg,
+            ),
+            axis=1,
+            result_type="expand",
+        )
+        emos_records.columns = ["pnl_emos", "direction_emos", "kelly_emos_sized"]
+        pnl_emos_col.loc[has_emos] = emos_records["pnl_emos"]
+        direction_emos_col.loc[has_emos] = emos_records["direction_emos"]
+        kelly_emos_col.loc[has_emos] = emos_records["kelly_emos_sized"]
+    df["pnl_emos"] = pnl_emos_col
+    df["direction_emos"] = direction_emos_col
+    df["kelly_emos_sized"] = kelly_emos_col
+
     df["lead_bucket"] = df["model_lead_hours"].apply(lead_bucket)
     return df
 
@@ -443,44 +485,62 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
     so comparing it against `brier_model_mean` / `brier_nbm_mean` (full-sample denominators)
     is apples-to-oranges. The `brier_*_on_blend` columns give the like-for-like comparison:
     the ECMWF and NBM Brier restricted to exactly those blend rows.
+
+    The EMOS columns follow the same pattern: `brier_emos_mean` over the `n_emos` pilot
+    rows, with `brier_model_on_emos` / `brier_market_on_emos` restricted to those rows.
+    `brier_emos_mean <= brier_market_on_emos` is the pilot's graduation bar.
     """
     if df.empty:
         return df
     has_nbm = "nbm_p" in df.columns
     has_blend = "blended_p" in df.columns
-    if has_blend:
-        # Non-mutating: add per-row ECMWF/NBM Brier masked to the blend rows, so the
-        # grouped/overall means below land on the same denominator as brier_blend_mean.
+    has_emos = "emos_p" in df.columns
+    if has_blend or has_emos:
+        # Non-mutating: add per-row Brier columns masked to the blend/EMOS rows, so the
+        # grouped/overall means below land on the same denominators as their _mean columns.
         df = df.copy()
+    if has_blend:
         blend_rows = df["blended_p"].notna()
         df["brier_model_on_blend"] = df["brier_model"].where(blend_rows)
         df["brier_nbm_on_blend"] = (
             df["brier_nbm"].where(blend_rows) if has_nbm else float("nan")
         )
+    if has_emos:
+        emos_rows = df["emos_p"].notna()
+        df["brier_model_on_emos"] = df["brier_model"].where(emos_rows)
+        df["brier_market_on_emos"] = df["brier_market"].where(emos_rows)
     if not by:
         out: dict = {
             "n": len(df),
             "n_nbm": int(df["nbm_p"].notna().sum()) if has_nbm else 0,
             "n_blend": int(df["blended_p"].notna().sum()) if has_blend else 0,
+            "n_emos": int(df["emos_p"].notna().sum()) if has_emos else 0,
             "brier_model_mean": df["brier_model"].mean(),
             "brier_nbm_mean": df["brier_nbm"].mean() if has_nbm else float("nan"),
             "brier_blend_mean": df["brier_blend"].mean() if has_blend else float("nan"),
+            "brier_emos_mean": df["brier_emos"].mean() if has_emos else float("nan"),
             "brier_model_on_blend": df["brier_model_on_blend"].mean() if has_blend else float("nan"),
             "brier_nbm_on_blend": df["brier_nbm_on_blend"].mean() if has_blend else float("nan"),
+            "brier_model_on_emos": df["brier_model_on_emos"].mean() if has_emos else float("nan"),
+            "brier_market_on_emos": df["brier_market_on_emos"].mean() if has_emos else float("nan"),
             "brier_market_mean": df["brier_market"].mean(),
             "log_loss_model_mean": df["log_loss_model"].mean(),
             "log_loss_nbm_mean": df["log_loss_nbm"].mean() if has_nbm else float("nan"),
             "log_loss_blend_mean": df["log_loss_blend"].mean() if has_blend else float("nan"),
+            "log_loss_emos_mean": df["log_loss_emos"].mean() if has_emos else float("nan"),
             "log_loss_market_mean": df["log_loss_market"].mean(),
             "pnl_sum": df["pnl"].sum(),
             "pnl_nbm_sum": df["pnl_nbm"].sum() if has_nbm else 0.0,
             "pnl_blend_sum": df["pnl_blend"].sum() if has_blend else 0.0,
+            "pnl_emos_sum": df["pnl_emos"].sum() if has_emos else 0.0,
             "kelly_sum": df["kelly_sized"].sum(),
             "kelly_nbm_sum": df["kelly_nbm_sized"].sum() if has_nbm else 0.0,
             "kelly_blend_sum": df["kelly_blend_sized"].sum() if has_blend else 0.0,
+            "kelly_emos_sum": df["kelly_emos_sized"].sum() if has_emos else 0.0,
             "trades_emitted": int(df["direction"].notna().sum()),
             "trades_nbm_emitted": int(df["direction_nbm"].notna().sum()) if has_nbm else 0,
             "trades_blend_emitted": int(df["direction_blend"].notna().sum()) if has_blend else 0,
+            "trades_emos_emitted": int(df["direction_emos"].notna().sum()) if has_emos else 0,
         }
         return pd.DataFrame([out])
 
@@ -514,26 +574,43 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
             "kelly_blend_sum": ("kelly_blend_sized", "sum"),
             "trades_blend_emitted": ("direction_blend", lambda s: int(s.notna().sum())),
         })
+    if has_emos:
+        agg_kwargs.update({
+            "n_emos": ("emos_p", lambda s: int(s.notna().sum())),
+            "brier_emos_mean": ("brier_emos", "mean"),
+            "brier_model_on_emos": ("brier_model_on_emos", "mean"),
+            "brier_market_on_emos": ("brier_market_on_emos", "mean"),
+            "log_loss_emos_mean": ("log_loss_emos", "mean"),
+            "pnl_emos_sum": ("pnl_emos", "sum"),
+            "kelly_emos_sum": ("kelly_emos_sized", "sum"),
+            "trades_emos_emitted": ("direction_emos", lambda s: int(s.notna().sum())),
+        })
     grouped = df.groupby(by, dropna=False).agg(**agg_kwargs).reset_index()
-    # Reorder so NBM and blend columns sit next to their ECMWF counterparts in the table.
-    if has_nbm or has_blend:
-        def _triplet(model_col: str, nbm_col: str, blend_col: str, market_col: str | None = None) -> list[str]:
+    # Reorder so NBM / blend / EMOS columns sit next to their ECMWF counterparts in the table.
+    if has_nbm or has_blend or has_emos:
+        def _series(model_col: str, nbm_col: str, blend_col: str, emos_col: str,
+                    market_col: str | None = None) -> list[str]:
             cols = [model_col]
             if has_nbm:
                 cols.append(nbm_col)
             if has_blend:
                 cols.append(blend_col)
+            if has_emos:
+                cols.append(emos_col)
             if market_col is not None:
                 cols.append(market_col)
             return cols
 
-        # Brier group: model / nbm / blend (full-sample), then the like-for-like
-        # blend-row-restricted ECMWF & NBM Brier, then market.
-        brier_group = _triplet("brier_model_mean", "brier_nbm_mean", "brier_blend_mean")
+        # Brier group: model / nbm / blend / emos (full-sample), then the like-for-like
+        # row-restricted comparisons (blend rows, then EMOS rows incl. the market-on-emos
+        # graduation bar), then market.
+        brier_group = _series("brier_model_mean", "brier_nbm_mean", "brier_blend_mean", "brier_emos_mean")
         if has_blend:
             brier_group.append("brier_model_on_blend")
             if has_nbm:
                 brier_group.append("brier_nbm_on_blend")
+        if has_emos:
+            brier_group += ["brier_model_on_emos", "brier_market_on_emos"]
         brier_group.append("brier_market_mean")
 
         col_order = [
@@ -541,11 +618,13 @@ def aggregate(df: pd.DataFrame, by: list[str] | None = None) -> pd.DataFrame:
             "n",
             *(["n_nbm"] if has_nbm else []),
             *(["n_blend"] if has_blend else []),
+            *(["n_emos"] if has_emos else []),
             *brier_group,
-            *_triplet("log_loss_model_mean", "log_loss_nbm_mean", "log_loss_blend_mean", "log_loss_market_mean"),
-            *_triplet("pnl_sum", "pnl_nbm_sum", "pnl_blend_sum"),
-            *_triplet("kelly_sum", "kelly_nbm_sum", "kelly_blend_sum"),
-            *_triplet("trades_emitted", "trades_nbm_emitted", "trades_blend_emitted"),
+            *_series("log_loss_model_mean", "log_loss_nbm_mean", "log_loss_blend_mean",
+                     "log_loss_emos_mean", "log_loss_market_mean"),
+            *_series("pnl_sum", "pnl_nbm_sum", "pnl_blend_sum", "pnl_emos_sum"),
+            *_series("kelly_sum", "kelly_nbm_sum", "kelly_blend_sum", "kelly_emos_sum"),
+            *_series("trades_emitted", "trades_nbm_emitted", "trades_blend_emitted", "trades_emos_emitted"),
         ]
         grouped = grouped[col_order]
     return grouped

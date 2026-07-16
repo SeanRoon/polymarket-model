@@ -28,6 +28,8 @@ def _rows(
     realized_yes: int = 0,
     nbm_p: float | None = None,
     brier_nbm: float | None = None,
+    emos_p: float | None = None,
+    brier_emos: float | None = None,
     lead_bucket: str = "0-6h",
     target_date: date = REF,
 ) -> list[dict]:
@@ -47,6 +49,8 @@ def _rows(
             "realized_yes": realized_yes,
             "nbm_p": nbm_p if nbm_p is not None else nan,
             "brier_nbm": brier_nbm if brier_nbm is not None else nan,
+            "emos_p": emos_p if emos_p is not None else nan,
+            "brier_emos": brier_emos if brier_emos is not None else nan,
         }
         for _ in range(n)
     ]
@@ -178,3 +182,54 @@ def test_render_markdown_empty_and_nonempty():
     assert "| critical | exclude_candidate |" in md
     # Pipe in the detail must be escaped so the table doesn't break.
     assert "detail \\| with pipe" in md
+
+
+def test_emos_beats_market_fires_good_flag():
+    df = pd.DataFrame(_rows(
+        n=200, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.25, brier_market=0.06, pnl=0.0,
+        emos_p=0.5, brier_emos=0.05,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    f = next(f for f in flags if f.code == "emos_beats_market")
+    assert f.severity == "good"
+    assert f.dimension == "Los Angeles / high"
+
+
+def test_emos_improves_model_but_not_market_is_info():
+    df = pd.DataFrame(_rows(
+        n=200, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.25, brier_market=0.06, pnl=0.0,
+        emos_p=0.5, brier_emos=0.12,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    codes = {f.code for f in flags}
+    assert "emos_improves_model" in codes
+    assert "emos_beats_market" not in codes
+
+
+def test_emos_underperforming_model_is_warn():
+    df = pd.DataFrame(_rows(
+        n=200, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.10, brier_market=0.06, pnl=0.0,
+        emos_p=0.5, brier_emos=0.20,
+    ))
+    flags = run_diagnostics(df, reference_date=REF)
+    f = next(f for f in flags if f.code == "emos_underperforms")
+    assert f.severity == "warn"
+
+
+def test_emos_flags_quiet_without_emos_rows_or_below_min_sample():
+    # No emos_p at all -> no EMOS flags.
+    df = pd.DataFrame(_rows(
+        n=200, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.25, brier_market=0.06, pnl=0.0,
+    ))
+    assert not any(f.code.startswith("emos_") for f in run_diagnostics(df, reference_date=REF))
+    # EMOS rows present but under min_sample -> still quiet.
+    df_small = pd.DataFrame(_rows(
+        n=50, city="Los Angeles", kind="high", station="KLAX",
+        brier_model=0.25, brier_market=0.06, pnl=0.0,
+        emos_p=0.5, brier_emos=0.05,
+    ))
+    assert not any(f.code.startswith("emos_") for f in run_diagnostics(df_small, reference_date=REF))
