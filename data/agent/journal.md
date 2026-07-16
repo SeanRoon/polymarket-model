@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-16 09:16 UTC — nothing settled, no qualifying edge, holding 8
+
+`agent-settle` → `settled=0 still_open=8`; JUL15 book + ATL JUL16 still open, no CLI yet, **no
+grading, v3 stands.** Same board as 08:16 (snapshot 134 min stale): SATX T83 (0.95/0.16/0.04)
+and AUS T84 (0.95/0.15/0.08) remain the R7/R8 artifact columns; weak-cell edges (CHI low B74.5,
+NOLA high B91.5, DC low B77.5, OKC low B66.5) all have model_p and nbm_p on opposite sides of
+the mid → fail R2's dual-agreement bar; Denver edges → R9. The one real dual-source edge, ATL
+low B72.5, is already held → duplicate guard. Nothing new clears the bar. **Next:** watching for
+the JUL15 book + ATL JUL16 (R2 decider) to post CLI — that settlement is the learning event.
+
 ## 2026-07-16 08:16 UTC — nothing settled, no qualifying edge, holding 8
 
 `agent-settle` → `settled=0 still_open=8`. The six JUL15 markets + NY JUL15 haven't posted CLI
