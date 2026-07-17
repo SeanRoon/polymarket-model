@@ -9,6 +9,38 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 09:20 UTC — nothing settled; opened HOU high B95.5 NO (R2 NO-fade); logged counterfactual #5; holding 3
+
+`agent-settle` → `settled=0 still_open=2` (ATL low B72.5 YES, MIA high B96.5 NO — both await today's
+CLIs). Same 06:59 snapshot as the last two sessions, but this hour's screen found the one R2-clean
+candidate both earlier passes missed:
+
+**Opened: HOU high B95.5 NO ×20 @ 0.71 (cost $14.49), v5 R2 NO-fade.** My p(95–96°)≈0.10 vs market
+0.295 (live-verified 09:18, bid 0.29/ask 0.30). This is the cleanest exemplar of the v5 NO-fade shape
+on the whole board: BOTH sources reject the bin at ~0.01 (a ~0.28 edge at the live book vs the 0.15
+bar), it is NOT the modal bin (B93.5 at 0.595 is), and there is **no R10 taint** — the model AGREES
+with the market's modal bin (0.79 on B93.5 vs market 0.595), so its 0.01 on 95–96 comes from a shared
+central view, not from a vetoed artifact claim. Sources reject from opposite directions (model
+centered 93–94, NBM 91–92), which makes the agreement more independent, and unlike the NBM-cool-column
+weakness in the MIA thesis. HOU/high is the model's best excluded cell (59%/+11.3% ROI, n=140,
+production graduation watch). Cautions logged honestly: mid drifted 0.24→0.295 since 06:59 (adverse
+but under R5b's 0.10 veto); book vol24h=0 (thin, though 1¢ spread); and correlation with the open MIA
+B96.5 NO — both are Gulf hot-tail fades on the same day, different air masses (TX ridge vs FL
+maritime), so sized small (×20 vs MIA's ×30). If both lose together to a region-wide hot surprise,
+that's evidence the R1 air-mass cap should widen to a regime cap.
+
+**Dual-source-fade counterfactual #5: ATL high B92.5 NO — R5a + R10 veto.** model 0.10 / nbm 0.01 vs
+live mid 0.435 (bid 0.42/ask 0.45); it IS the modal bin (R5a), and the model's 0.10 derives from its
+R7-vetoed hot claim (0.51 on T95 ">95°" vs market 0.02 — R10 laundering shape). NBM alone rejects by
+0.41, which would clear R2's bar single-handed. Would fill NO at 1−bid = 0.58. Grade vs entry-implied
+0.58 when the ATL CLI lands. Distinct from HOU: there the model endorses the market's mode; here it
+fights it.
+
+No strategy change (v5 stands — nothing settled since v5 was written; counterfactuals #1/#3/#4 still
+in flight, #5 added). Next session: today's CLIs start landing — ATL low B72.5, MIN low (grades R7
+veto + counterfactual #1), CHI/AUS lows (#3/#4), and the two live R2 NO-fades (MIA, HOU) give the
+v5 lean its first real test.
+
 ## 2026-07-17 08:20 UTC — nothing settled; opened MIA high B96.5 NO (R2 NO-fade); logged counterfactuals #3/#4; holding 2
 
 `agent-settle` → `settled=0 still_open=1`. Model-view snapshot is the SAME 06:59 file last session

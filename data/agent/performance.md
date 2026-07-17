@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-17 08:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-17 09:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $887.15 |
-| open positions | 1 ($9.66 at risk) |
+| free cash | $865.12 |
+| open positions | 2 ($31.69 at risk) |
 | settled | 22 (8 wins, 36%) |
 | realized PnL | $-103.19 on $453.19 staked (-22.8%) |
 
@@ -19,6 +19,7 @@ _Generated 2026-07-17 08:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v5 | 0 | 0 | - | 0.00 | +0.00 | - |
 
 ## By category
 
@@ -31,6 +32,7 @@ _Generated 2026-07-17 08:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
 | 07-16 04:17 | KXLOWTATL-26JUL16-B72.5 | yes | 25 | 0.37 | 9.66 | v3 | My p(ATL low 72-73F Jul16) ~0.45 vs live ask 0.37 (implied 0.37). Sources: NBM 0 |
+| 07-17 08:19 | KXHIGHMIA-26JUL17-B96.5 | no | 30 | 0.72 | 22.03 | v5 | R2 NO-fade (v5 lean): fade MIA high 96-97 bin. My p(yes)~0.08 vs market implied  |
 
 ## Last 20 settled
 
