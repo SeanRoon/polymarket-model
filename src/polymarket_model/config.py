@@ -21,6 +21,9 @@ DEFAULT_SIGNAL_EXCLUDED_STATIONS: frozenset[str] = frozenset({
     # +31-43% ROI in paper; /low stays dark via DEFAULT_SIGNAL_EXCLUDED_CELLS below.
     "KATL", "KBOS", "KDFW", "KDCA", "KHOU", "KLAS", "KMSP", "KMSY",
     "KOKC", "KPHX", "KSEA", "KSFO",
+    # Philadelphia added 2026-07-17 for data collection only — excluded from live
+    # signals until it has ~30d of paired data and a validated model.
+    "KPHL",
 })
 
 

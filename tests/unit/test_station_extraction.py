@@ -17,7 +17,7 @@ def test_known_series_have_station_mapping():
 def test_nyc_uses_central_park_not_laguardia():
     # Polymarket used KLGA (LaGuardia). Kalshi uses Central Park (KNYC).
     assert WEATHER_SERIES["KXHIGHNY"][2] == "KNYC"
-    assert WEATHER_SERIES["KXLOWNY"][2] == "KNYC"
+    assert WEATHER_SERIES["KXLOWTNYC"][2] == "KNYC"
 
 
 def test_chicago_uses_midway_not_ohare():

@@ -36,11 +36,13 @@ WEATHER_SERIES: dict[str, tuple[str, str, str]] = {
     # Note the non-obvious picks: Dallas settles at DFW (not Love Field), Houston at
     # Hobby (not Intercontinental).
     "KXHIGHNY":   ("New York City", "high", "KNYC"),
-    "KXLOWNY":    ("New York City", "low",  "KNYC"),
+    # NYC and Miami low re-tickered by Kalshi to the standard KXLOWT* form (2026-07);
+    # the old KXLOWNY / KXLOWMIA stopped resolving and silently dropped from collection.
+    "KXLOWTNYC":  ("New York City", "low",  "KNYC"),
     "KXHIGHCHI":  ("Chicago",       "high", "KMDW"),
     "KXLOWTCHI":  ("Chicago",       "low",  "KMDW"),
     "KXHIGHMIA":  ("Miami",         "high", "KMIA"),
-    "KXLOWMIA":   ("Miami",         "low",  "KMIA"),
+    "KXLOWTMIA":  ("Miami",         "low",  "KMIA"),
     "KXHIGHLAX":  ("Los Angeles",   "high", "KLAX"),
     "KXLOWTLAX":  ("Los Angeles",   "low",  "KLAX"),
     "KXHIGHAUS":  ("Austin",        "high", "KAUS"),
@@ -74,6 +76,10 @@ WEATHER_SERIES: dict[str, tuple[str, str, str]] = {
     "KXLOWTSEA":  ("Seattle",       "low",  "KSEA"),
     "KXHIGHTSFO": ("San Francisco", "high", "KSFO"),
     "KXLOWTSFO":  ("San Francisco", "low",  "KSFO"),
+    # Philadelphia added 2026-07-17 (data collection only; excluded from live signals
+    # until ~30d of paired model_p/resolution data accrues, same as the 06-18 cohort).
+    "KXHIGHPHIL": ("Philadelphia",  "high", "KPHL"),
+    "KXLOWTPHIL": ("Philadelphia",  "low",  "KPHL"),
 }
 
 
@@ -148,8 +154,6 @@ def _interval_for_market(market: dict[str, Any]) -> tuple[float, float, bool, bo
     """Translate Kalshi (floor_strike, cap_strike) into our half-open [lo, hi) convention."""
     floor = market.get("floor_strike")
     cap = market.get("cap_strike")
-    ticker = market.get("ticker") or ""
-    is_t = ticker.split("-")[-1].startswith("T") if "-" in ticker else False
 
     if floor is None and cap is None:
         return None
