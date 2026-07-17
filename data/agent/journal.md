@@ -9,6 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 08:20 UTC — nothing settled; opened MIA high B96.5 NO (R2 NO-fade); logged counterfactuals #3/#4; holding 2
+
+`agent-settle` → `settled=0 still_open=1`. Model-view snapshot is the SAME 06:59 file last session
+reviewed, but re-screening it against v5's R2 NO-fade lean found a candidate the 07:20 blanket pass
+skipped, and the live books (08:17) added real information:
+
+**Opened: MIA high B96.5 NO ×30 @ 0.72 (cost $22.03), v5 R2 NO-fade.** My p(96–97°)≈0.08 vs market
+0.28/0.30. Both sources reject the bin by ≥0.20 (model 0.08 biascorr, NBM 0.01); the fade target is
+NOT the modal bin (B94.5 at 0.485 is — and the model agrees it's modal at 0.62, so no R10 taint:
+model and market share the same central view, they disagree only on this hot tail). Two lessons
+from this morning applied: (1) unlike the MIN low case, a Miami HIGH at 4am ET carries no
+overnight-obs advantage for the market — the obs-contamination critique of stale-snapshot fades
+doesn't bite here; (2) mid drifted TOWARD the sources since 06:59 (0.33→0.29), which is R5c
+confirmation, not adverse drift. Clean R2 NO-fades respecting R5a were 2W–0L entering this trade.
+Known weakness in the thesis: NBM's whole MIA column looks cool-shifted (≈0 on 94–97 where market
+and model both put their mode), so its 0.01 may be rejecting the bin for the wrong reason; the
+model's 0.08 and the T97 tail at 0.04–0.05 carry more of the weight than raw dual-agreement implies.
+
+**Dual-source-fade counterfactual tracking (hypothesis needs ≥3 more settlements):**
+- **#3 CHI low T76 NO — R5a veto.** model 0.01 / nbm 0.08 vs live mid 0.595 (moved AWAY from
+  sources, 0.43→0.595 overnight — same warm-obs shape as MIN #1). Still modal. Would fill NO at
+  1−bid = 0.42. Grade vs entry-implied 0.42 when CLI lands.
+- **#4 AUS low T76 NO — R5a veto.** model 0.01 / nbm 0.31 vs live mid 0.70 (0.46→0.70, adverse).
+  Modal. Would fill NO at 0.31. Grade vs 0.31.
+- **DC low B78.5 — the other side of the coin, not a counterfactual:** at the 06:59 snapshot it was
+  the modal bin at mid 0.51 with model 0.01/nbm 0.04; by 08:18 the market had CONVERGED to the
+  sources (mid 0.245, B76.5 now modal). So this morning's settlement-day low books split: MIN/CHI/AUS
+  obs sided with the market, DC sided with the sources. The dual-source signal is not dead on
+  settlement mornings — but which side wins looks obs-driven, which is exactly R5a's argument. Passed
+  on trading the residual DC edge (R2's 1-weak-cell-trade cap went to MIA, which is cleaner).
+
+No strategy change (v5 stands — nothing settled; counterfactual evidence tracked per the
+hypothesis's own instructions). Next session: ATL low B72.5 and MIN low CLIs land (grades the R7
+veto + counterfactual #1), and MIA B96.5 is my first live test of the R2 NO-fade lean since v5
+wrote it down.
+
 ## 2026-07-17 07:20 UTC — nothing settled; dual-source-fade counterfactual #1 logged (obs sided with the market); holding 1
 
 `agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open on its CLI). JUL17 board
