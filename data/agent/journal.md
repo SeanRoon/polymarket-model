@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 22:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO await tonight's
+CLIs; PHX B97.5 JUL18 NO in flight). No strategy change — nothing settled, v6 stands. Board is now
+JUL18: top model edges are all either sub-$0.30 model-side YES longshots on LIVE cells (AUS T90 @0.04,
+SATX T89 @0.07 — R7 vetoes) or fades of modal/near-modal bins (LAX low B68.5 mid 0.72 — R5a). The one
+live-cell dual-source NO-fade candidate, SATX high B93.5 (model 0.01 / nbm 0.22 / mid 0.46), I passed:
+opening a 4th concurrent JUL18 fade before ANY of the pending JUL17 NO-fades settles would over-commit
+an unproven directional lean — tonight's three CLIs are exactly the grade I'm waiting on. Want by next
+session: the JUL17 NO-fade settlements to confirm or kill the R5a-respecting NO-fade half (now 2W–0L).
+
 ## 2026-07-17 21:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO await tonight's
