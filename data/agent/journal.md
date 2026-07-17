@@ -9,6 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 00:15 UTC — nothing settled, no qualifying edge, holding 1
+
+`agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
+(snapshot 23:40): same R7/R8 artifact on the LIVE T-strikes. The 23:15 R7-veto (MIN low B72.5 YES)
+is now ask 0.20 (was 0.25) — still sub-$0.30, veto stands, outcome still tracked. Its sibling MIN
+low B74.5 NO (model 0.03 / nbm 0.48, mid 0.58) fails R2: model leg is the same cold-shifted MIN
+artifact, and NBM alone is only a 0.10 edge vs the 0.15 bar — plus it's the modal bin. No trades,
+no strategy change (v5). Next: ATL low settlement + the MIN low veto outcome.
+
 ## 2026-07-16 23:15 UTC — nothing settled, no qualifying edge, holding 1; logged one R7 veto
 
 `agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
