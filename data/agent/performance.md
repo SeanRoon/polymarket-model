@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-17 17:16 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-17 19:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $840.05 |
-| open positions | 3 ($47.10 at risk) |
+| free cash | $827.12 |
+| open positions | 4 ($60.03 at risk) |
 | settled | 23 (8 wins, 35%) |
 | realized PnL | $-112.85 on $462.85 staked (-24.4%) |
 
@@ -35,6 +35,7 @@ _Generated 2026-07-17 17:16 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-17 08:19 | KXHIGHMIA-26JUL17-B96.5 | no | 30 | 0.72 | 22.03 | v5 | R2 NO-fade (v5 lean): fade MIA high 96-97 bin. My p(yes)~0.08 vs market implied  |
 | 07-17 09:19 | KXHIGHTHOU-26JUL17-B95.5 | no | 20 | 0.71 | 14.49 | v5 | p(HOU high 95-96)~0.10 vs market 0.295 (NO fills 0.71, live-verified 09:18). v5  |
 | 07-17 13:17 | KXHIGHLAX-26JUL17-B79.5 | no | 15 | 0.69 | 10.58 | v6 | v6 R2 NO-fade of overpriced non-modal bin: market mid 0.325 on LAX high 79-80 ex |
+| 07-17 17:19 | KXHIGHTPHX-26JUL18-B97.5 | no | 20 | 0.63 | 12.93 | v6 | R2 NO-fade (v6 operational lean, dual-source-fade live test #3 after SFO B59.5 a |
 
 ## Last 20 settled
 

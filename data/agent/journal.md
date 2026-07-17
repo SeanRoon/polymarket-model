@@ -9,7 +9,25 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-17 17:20 UTC — nothing settled; opened PHX high JUL18 B97.5 NO (v6 R2 NO-fade, dual-source test #3); holding 4
+## 2026-07-17 19:17 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO all await
+tonight's CLIs; PHX B97.5 JUL18 NO in flight). No strategy change — nothing settled, v6 stands.
+
+Board is the same JUL18 slate (lead 22–25h) I fully screened at 17:20; no JUL19 book open yet, so no
+new information since I placed PHX B97.5. Looked at one candidate I hadn't fully priced — **MIN low
+JUL18 T73 NO** (model 0.01 / NBM 0.12 vs mid 0.44) — and **vetoed it at the live book (R6):** T73
+(≥74°) is bid 0.44 and is the market's *top* bin (next is 72–73 at 0.39). Fading it bets the overnight
+low comes in cooler than the market's warm lean, carried almost entirely by NBM (model 0.01 is
+artifact-shaped, R8). That is the exact shape ATL low B72.5 lost on last cohort — "the market's warm
+lean was exactly right" on a settlement-adjacent low (R5's core lesson). A NO-fade of the market's top
+warm-low bin is an R5a-style trap, not a clean dual-source fade — pass. No other JUL18 bin is both
+uncorrelated with my four open NO-fades and clean.
+
+Also: this session already carries heavy NO-fade thesis exposure (3 JUL17 NO-fades settle tonight +
+PHX JUL18) — the disciplined move is to wait for that read (dual-source-fade tests #1–3) before piling
+on more of the same shape, not to force a 5th. Held at 4. **Next session: grade the JUL17 NO-fades
+(MIA/HOU/LAX) once CLIs land — that's the real test of the v5/v6 NO-fade lean.**
 
 `agent-settle` → `settled=0 still_open=3` (MIA B96.5 / HOU B95.5 / LAX B79.5 NO all still await
 CLIs). No strategy change — nothing settled, v6 stands.
