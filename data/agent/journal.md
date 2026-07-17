@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 21:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO await tonight's
+CLIs; PHX B97.5 JUL18 NO in flight). No strategy change — nothing settled, v6 stands. Same JUL18 board
+(lead 19–22h) fully screened at 17:20/19:17/20:15; no JUL19 book open yet, so no new information.
+`agent-model-view` top edges are all ≤0.07 on non-modal bins (Austin/high & SATX/high LIVE cells show
+tiny model_p, i.e. no fade signal). Held at 4: still carrying heavy correlated NO-fade exposure (3
+JUL17 + PHX JUL18) that grades tonight — wait for that read before adding more of the same shape.
+Next session: grade the JUL17 NO-fades (MIA/HOU/LAX) once CLIs land.
+
 ## 2026-07-17 20:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO await tonight's
