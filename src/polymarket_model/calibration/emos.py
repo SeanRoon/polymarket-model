@@ -15,6 +15,18 @@ correction rather than stacking on it: the fit reconstructs the RAW (pre-biascor
 ensemble mean by adding ``model_bias_applied_f`` back to the recorded distribution's
 expectation, and the recorder applies the coefficients to the same raw-mean feature.
 
+**Anomaly space (since 2026-07-16):** both sides of the regression are expressed as
+anomalies from the station's day-of-year climatology (`weather/climatology.py`,
+ERA5-derived): ``(actual - climo) ~ N(a + b*(ens_mean - climo), ...)``. Without this,
+the intercept memorizes the current season's mean temperature (the first raw-space fit
+learned ``mu = 35.4 + 0.485*mean`` at KLAX — an anchor of ~70°F that is July, not Los
+Angeles) and every seasonal transition forces the rolling 60-day window to re-learn it
+over weeks. In anomaly space the seasonal cycle drops out of the regression, so the
+coefficients capture regime structure (marine-layer shrinkage, spread inflation) that
+is stable across seasons. Note the CRPS of the *uncorrected* ensemble is identical in
+either space (CRPS is shift-invariant), so ``crps_raw`` remains comparable. Cells with
+no climatology entry get no fit, and events with no climatology get no ``emos_p``.
+
 Train/apply feature symmetry: snapshots don't store ensemble mean/std directly, so the
 fit reconstructs both from the recorded per-bin ``model_p`` using bin centers (open bins
 proxied at ±3°F, the same convention as `bias.py`). The recorder reconstructs the
@@ -37,7 +49,7 @@ import os
 import tempfile
 from collections.abc import Iterable
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import NamedTuple, Protocol
 
@@ -50,8 +62,13 @@ from scipy.special import erf  # type: ignore[import-untyped]
 
 from polymarket_model.config import settings
 from polymarket_model.model import _clip_and_renormalize
+from polymarket_model.weather.climatology import climo_for
 
 DEFAULT_EMOS_PARQUET = settings.data_dir / "station_emos.parquet"
+
+# Tag persisted with every fit; load_emos ignores rows written in a different feature
+# space so a stale raw-space parquet can't be applied to anomaly features (or vice versa).
+FEATURE_SPACE = "anomaly"
 
 # Open bins have no finite center; proxy at threshold ± this many °F. MUST match the
 # bin_center_f CASE in the fit SQL and `bias.py` — train/apply symmetry depends on it.
@@ -77,12 +94,14 @@ EMOS_PARQUET_SCHEMA = pa.schema([
     pa.field("days_back", pa.int32(), nullable=False),
     pa.field("crps_raw", pa.float64(), nullable=False),
     pa.field("crps_fit", pa.float64(), nullable=False),
+    pa.field("feature_space", pa.string(), nullable=False),
     pa.field("computed_at_utc", pa.timestamp("us", tz="UTC"), nullable=False),
 ])
 
 
 class EmosCoefficients(NamedTuple):
-    """Fitted NGR coefficients: mu = a + b*mean, sigma = sqrt(c + d*var)."""
+    """Fitted NGR coefficients in anomaly space:
+    mu = climo + a + b*(mean - climo), sigma = sqrt(c + d*var)."""
     a: float
     b: float
     c: float
@@ -181,12 +200,13 @@ def _paired_moments(
     resolutions_parquet: Path,
     stations: frozenset[str],
     days_back: int,
-) -> dict[tuple[str, str], tuple[np.ndarray, np.ndarray, np.ndarray]]:
-    """{(station, kind): (raw_mean[], var[], actual[])} from the snapshot+resolution join.
+) -> dict[tuple[str, str], tuple[np.ndarray, np.ndarray, np.ndarray, list[date]]]:
+    """{(station, kind): (raw_mean[], var[], actual[], target_dates[])} from the join.
 
     One sample per resolved event: the LATEST snapshot bucket per event (mirroring
     `bias.py`), moments reconstructed from model_p over bin centers, and the recorded
-    bias added back so `raw_mean` is the PRE-biascorr ensemble expectation.
+    bias added back so `raw_mean` is the PRE-biascorr ensemble expectation. The target
+    dates let the fit look up each sample's day-of-year climatology.
     """
     if not resolutions_parquet.exists() or not stations:
         return {}
@@ -232,7 +252,8 @@ def _paired_moments(
         SELECT m.station_id, m.kind,
                m.mean_f + m.bias_f AS raw_mean_f,
                m.m2_f - m.mean_f * m.mean_f AS var_f,
-               r.value_f AS actual_f
+               r.value_f AS actual_f,
+               m.target_date_local
         FROM moments m
         JOIN res r USING (station_id, target_date_local, kind)
     """
@@ -242,14 +263,16 @@ def _paired_moments(
     finally:
         con.close()
 
-    buckets: dict[tuple[str, str], list[tuple[float, float, float]]] = {}
-    for station_id, kind, raw_mean, var, actual in rows:
+    buckets: dict[tuple[str, str], list[tuple[float, float, float, date]]] = {}
+    for station_id, kind, raw_mean, var, actual, target_date in rows:
         var = max(float(var), _SIGMA_FLOOR_F * _SIGMA_FLOOR_F)
-        buckets.setdefault((station_id, kind), []).append((float(raw_mean), var, float(actual)))
-    out: dict[tuple[str, str], tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
-    for key, triples in buckets.items():
-        arr = np.array(triples, dtype=float)
-        out[key] = (arr[:, 0], arr[:, 1], arr[:, 2])
+        buckets.setdefault((station_id, kind), []).append(
+            (float(raw_mean), var, float(actual), target_date)
+        )
+    out: dict[tuple[str, str], tuple[np.ndarray, np.ndarray, np.ndarray, list[date]]] = {}
+    for key, quads in buckets.items():
+        arr = np.array([(m, v, a) for m, v, a, _ in quads], dtype=float)
+        out[key] = (arr[:, 0], arr[:, 1], arr[:, 2], [d for _, _, _, d in quads])
     return out
 
 
@@ -294,14 +317,17 @@ def fit_station_emos(
     snapshots_root: Path,
     resolutions_parquet: Path,
     stations: frozenset[str],
+    climatology: dict[tuple[str, str], np.ndarray],
     days_back: int = 60,
     min_days: int = 30,
 ) -> list[EmosFit]:
-    """Fit an EMOS Gaussian per (station, kind) for the configured stations.
+    """Fit an anomaly-space EMOS Gaussian per (station, kind) for the configured stations.
 
-    A cell is skipped when it has fewer than `min_days` paired events, when its
-    reconstructed means don't vary (degenerate regression), or when the optimizer
-    fails to beat the raw ensemble's in-sample CRPS (fit not trustworthy).
+    Both regression sides are anomalies from the station's day-of-year climatology, so
+    the coefficients are season-independent. A cell is skipped when it has fewer than
+    `min_days` paired events with a climatology entry, when its anomaly means don't
+    vary (degenerate regression), or when the optimizer fails to beat the raw
+    ensemble's in-sample CRPS (fit not trustworthy).
     """
     paired = _paired_moments(
         snapshots_root=snapshots_root,
@@ -310,13 +336,21 @@ def fit_station_emos(
         days_back=days_back,
     )
     fits: list[EmosFit] = []
-    for (station_id, kind), (raw_mean, var, actual) in sorted(paired.items()):
+    for (station_id, kind), (raw_mean, var, actual, dates) in sorted(paired.items()):
+        climos = np.array([
+            c if (c := climo_for(climatology, station_id, kind, d)) is not None else np.nan
+            for d in dates
+        ])
+        keep = ~np.isnan(climos)
+        raw_mean, var, actual, climos = raw_mean[keep], var[keep], actual[keep], climos[keep]
         n = raw_mean.shape[0]
         if n < min_days:
             continue
-        if float(np.std(raw_mean)) < 1e-6:
+        mean_anom = raw_mean - climos
+        actual_anom = actual - climos
+        if float(np.std(mean_anom)) < 1e-6:
             continue
-        coeffs, crps_raw, crps_fit = _fit_one(raw_mean, var, actual)
+        coeffs, crps_raw, crps_fit = _fit_one(mean_anom, var, actual_anom)
         if not math.isfinite(crps_fit) or crps_fit > crps_raw:
             continue
         fits.append(
@@ -348,6 +382,7 @@ def write_emos(path: Path, fits: list[EmosFit]) -> None:
             "days_back": f.days_back,
             "crps_raw": f.crps_raw,
             "crps_fit": f.crps_fit,
+            "feature_space": FEATURE_SPACE,
             "computed_at_utc": now,
         }
         for f in fits
@@ -366,12 +401,18 @@ def write_emos(path: Path, fits: list[EmosFit]) -> None:
 
 
 def load_emos(path: Path) -> dict[tuple[str, str], EmosCoefficients]:
-    """Return {(station_id, kind): coefficients}; empty if file missing."""
+    """Return {(station_id, kind): coefficients}; empty if file missing.
+
+    Rows fitted in a different feature space (e.g. a stale raw-space parquet from
+    before the anomaly change) are ignored rather than misapplied.
+    """
     if not path.exists():
         return {}
     tbl = pq.read_table(path)
     out: dict[tuple[str, str], EmosCoefficients] = {}
     for row in tbl.to_pylist():
+        if row.get("feature_space", "raw") != FEATURE_SPACE:
+            continue
         out[(row["station_id"], row["kind"])] = EmosCoefficients(
             a=float(row["a"]), b=float(row["b"]), c=float(row["c"]), d=float(row["d"])
         )
@@ -382,22 +423,27 @@ def apply_emos_to_event(
     bin_probs: Iterable[_BinProbLike],
     coeffs: EmosCoefficients,
     bias_applied_f: float | None,
+    climo_f: float | None,
 ) -> tuple[dict[str, float], float, float] | None:
     """EMOS-calibrated per-bin probabilities for one event, keyed by market_ticker.
 
     Reconstructs the distribution moments from the recorded bin probs (identical
     formula to the fit SQL), un-does the bias shift to recover the raw ensemble mean,
-    and evaluates the fitted Gaussian's mass over each bin. Clip + renormalize follows
-    the NBM path so no bin is exactly 0 or 1. Returns (bin_to_p, mu, sigma), or None
-    when the moments are degenerate.
+    expresses it as an anomaly from `climo_f` (the target date's day-of-year
+    climatology — the same anchor the coefficients were fitted against), and evaluates
+    the fitted Gaussian's mass over each bin. Clip + renormalize follows the NBM path
+    so no bin is exactly 0 or 1. Returns (bin_to_p, mu, sigma), or None when the
+    moments are degenerate or no climatology is available for the event.
     """
+    if climo_f is None:
+        return None
     bps = list(bin_probs)
     moments = moments_from_bin_probs(bps)
     if moments is None:
         return None
     mean_corrected, std = moments
     raw_mean = mean_corrected + (bias_applied_f or 0.0)
-    mu = coeffs.a + coeffs.b * raw_mean
+    mu = climo_f + coeffs.a + coeffs.b * (raw_mean - climo_f)
     sigma = float(_sigma_from(coeffs.c, coeffs.d, np.array([std * std]))[0])
 
     tickers: list[str] = []

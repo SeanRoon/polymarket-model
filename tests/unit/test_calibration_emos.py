@@ -1,7 +1,7 @@
-"""EMOS/NGR recalibration: fit from synthetic biased+overconfident forecasts (SQL join +
-CRPS minimization), min_days/station guards, moment reconstruction, Gaussian bin-prob
-apply with clip+renormalize, Parquet round-trip, live-city exclusion, and the recorder
-integration path."""
+"""EMOS/NGR recalibration in anomaly space: fit from synthetic biased+overconfident
+forecasts (SQL join + CRPS minimization), seasonal-trend invariance via the climatology
+anchor, min_days/station guards, moment reconstruction, Gaussian bin-prob apply with
+clip+renormalize, Parquet round-trip, live-city exclusion, and the recorder path."""
 from __future__ import annotations
 
 import math
@@ -64,23 +64,39 @@ def _gaussian_bins(m: float, sigma: float = 1.0) -> list[tuple[str, float | None
     return out
 
 
+def _flat_climo(station_id: str = "KLAX", kind: str = "high", value: float = 70.0):
+    return {(station_id, kind): np.full(366, value)}
+
+
 def _write_biased_overconfident(
     root: Path, *, station_id: str = "KLAX", n_days: int = 45,
     mean_bias: float = 5.0, true_spread: float = 4.0, forecast_spread: float = 1.0,
-) -> tuple[Path, Path]:
+    seasonal_trend_per_day: float = 0.0,
+) -> tuple[Path, Path, dict]:
     """n_days of forecasts that run `mean_bias` °F warm with `forecast_spread` °F spread,
     against actuals that deviate ±`true_spread` °F: EMOS must learn to shift the mean
-    down ~mean_bias and widen sigma toward true_spread."""
+    down ~mean_bias and widen sigma toward true_spread.
+
+    With `seasonal_trend_per_day` nonzero, the climate baseline drifts linearly across
+    the window (a compressed seasonal transition) and the returned climatology dict
+    tracks it — the anomaly-space fit must be unaffected by the trend.
+
+    Returns (snapshots_root, resolutions_path, climatology_dict).
+    """
     snaps_root = root / "snapshots"
     snaps_root.mkdir(parents=True, exist_ok=True)
     today = datetime.now(UTC).date()
     bucket = datetime(2026, 6, 1, 12, 0, tzinfo=UTC)
     snap_rows: list[dict] = []
     res_rows: list[dict] = []
+    climo_arr = np.full(366, np.nan)
 
     for i in range(n_days):
         day = today - timedelta(days=i + 1)
-        true_temp = 60.0 + (i % 21)          # day-to-day variation for the regression
+        baseline = 70.0 - seasonal_trend_per_day * (i + 1)   # older days = earlier season
+        weather_anom = float((i % 21) - 10)                  # day-to-day variation for the regression
+        true_temp = baseline + weather_anom
+        climo_arr[day.timetuple().tm_yday - 1] = baseline
         actual = true_temp + (true_spread if i % 2 == 0 else -true_spread)
         forecast_mean = true_temp + mean_bias
         event = f"KX-{station_id}-{day.isoformat()}"
@@ -113,7 +129,7 @@ def _write_biased_overconfident(
     pq.write_table(pa.Table.from_pylist(snap_rows, schema=_snap_schema()), snaps_path)
     res_path = root / "resolutions.parquet"
     pq.write_table(pa.Table.from_pylist(res_rows, schema=RESOLUTIONS_SCHEMA), res_path)
-    return snaps_root, res_path
+    return snaps_root, res_path, {(station_id, "high"): climo_arr}
 
 
 def _fake_bin_probs(m: float, sigma: float = 1.0) -> list[SimpleNamespace]:
@@ -132,10 +148,10 @@ def _fake_bin_probs(m: float, sigma: float = 1.0) -> list[SimpleNamespace]:
 # ---- fit_station_emos ---------------------------------------------------------
 
 def test_fit_recovers_mean_bias_and_widens_spread(tmp_path):
-    snaps, res = _write_biased_overconfident(tmp_path, station_id="KLAX")
+    snaps, res, climo = _write_biased_overconfident(tmp_path, station_id="KLAX")
     fits = fit_station_emos(
         snapshots_root=snaps, resolutions_parquet=res,
-        stations=frozenset({"KLAX"}), days_back=90, min_days=30,
+        stations=frozenset({"KLAX"}), climatology=climo, days_back=90, min_days=30,
     )
     assert len(fits) == 1
     f = fits[0]
@@ -146,9 +162,9 @@ def test_fit_recovers_mean_bias_and_widens_spread(tmp_path):
     assert f.crps_fit < f.crps_raw * 0.8
 
     co = f.coefficients
-    # Mean correction: forecasts run +5°F warm, so the fitted mean at a raw mean of 75
-    # must come out near 70.
-    assert co.a + co.b * 75.0 == pytest.approx(70.0, abs=1.0)
+    # Mean correction, anomaly space: forecasts run +5°F warm, so a raw-mean anomaly of
+    # +5 must map back to ~0 (i.e. mu = climo + a + b*5 ≈ climo).
+    assert co.a + co.b * 5.0 == pytest.approx(0.0, abs=1.0)
     # Spread correction: reconstructed forecast std is ~1.4°F but actuals deviate ±4°F;
     # the fitted sigma must widen to the true error scale.
     recon_std = moments_from_bin_probs(_fake_bin_probs(75.0))[1]
@@ -156,20 +172,47 @@ def test_fit_recovers_mean_bias_and_widens_spread(tmp_path):
     assert 3.0 <= sigma <= 5.5
 
 
-def test_fit_skips_below_min_days(tmp_path):
-    snaps, res = _write_biased_overconfident(tmp_path, station_id="KLAX")
+def test_fit_is_invariant_to_a_seasonal_trend(tmp_path):
+    """A strong linear climate drift across the window (compressed 'seasonal transition')
+    must not contaminate the anomaly-space coefficients: same recovery as the flat case."""
+    snaps, res, climo = _write_biased_overconfident(
+        tmp_path, station_id="KLAX", seasonal_trend_per_day=0.5,   # 22.5°F drift over 45d
+    )
     fits = fit_station_emos(
         snapshots_root=snaps, resolutions_parquet=res,
-        stations=frozenset({"KLAX"}), days_back=90, min_days=100,
+        stations=frozenset({"KLAX"}), climatology=climo, days_back=90, min_days=30,
+    )
+    assert len(fits) == 1
+    co = fits[0].coefficients
+    assert co.a + co.b * 5.0 == pytest.approx(0.0, abs=1.0)
+    recon_std = moments_from_bin_probs(_fake_bin_probs(75.0))[1]
+    sigma = math.sqrt(co.c + co.d * recon_std**2)
+    assert 3.0 <= sigma <= 5.5
+
+
+def test_fit_skips_cells_without_climatology(tmp_path):
+    snaps, res, _ = _write_biased_overconfident(tmp_path, station_id="KLAX")
+    fits = fit_station_emos(
+        snapshots_root=snaps, resolutions_parquet=res,
+        stations=frozenset({"KLAX"}), climatology={}, days_back=90, min_days=30,
+    )
+    assert fits == []
+
+
+def test_fit_skips_below_min_days(tmp_path):
+    snaps, res, climo = _write_biased_overconfident(tmp_path, station_id="KLAX")
+    fits = fit_station_emos(
+        snapshots_root=snaps, resolutions_parquet=res,
+        stations=frozenset({"KLAX"}), climatology=climo, days_back=90, min_days=100,
     )
     assert fits == []
 
 
 def test_fit_only_configured_stations(tmp_path):
-    snaps, res = _write_biased_overconfident(tmp_path, station_id="KLAX")
+    snaps, res, climo = _write_biased_overconfident(tmp_path, station_id="KLAX")
     fits = fit_station_emos(
         snapshots_root=snaps, resolutions_parquet=res,
-        stations=frozenset({"KMIA"}), days_back=90, min_days=30,
+        stations=frozenset({"KMIA"}), climatology=climo, days_back=90, min_days=30,
     )
     assert fits == []
 
@@ -179,7 +222,7 @@ def test_fit_returns_empty_when_resolutions_missing(tmp_path):
     snaps.mkdir()
     assert fit_station_emos(
         snapshots_root=snaps, resolutions_parquet=tmp_path / "nope.parquet",
-        stations=frozenset({"KLAX"}),
+        stations=frozenset({"KLAX"}), climatology=_flat_climo(),
     ) == []
 
 
@@ -210,10 +253,11 @@ def test_moments_degenerate_mass_returns_none():
 def test_apply_identity_coeffs_reproduce_gaussian_masses():
     bps = _fake_bin_probs(75.0, sigma=1.0)
     identity = EmosCoefficients(a=0.0, b=1.0, c=0.0, d=1.0)
-    result = apply_emos_to_event(bps, identity, bias_applied_f=None)
+    result = apply_emos_to_event(bps, identity, bias_applied_f=None, climo_f=70.0)
     assert result is not None
     bin_to_p, mu, sigma = result
     recon_mean, recon_std = moments_from_bin_probs(bps)
+    # Identity coefficients make mu = climo + (raw - climo) = raw, whatever the climo.
     assert mu == pytest.approx(recon_mean)
     assert sigma == pytest.approx(recon_std)
     # Bins partition the real line, so the calibrated probs must keep total mass ~1.
@@ -224,11 +268,28 @@ def test_apply_identity_coeffs_reproduce_gaussian_masses():
         assert 0.005 <= p <= 0.995
 
 
+def test_apply_identity_mu_is_climo_invariant():
+    bps = _fake_bin_probs(75.0)
+    identity = EmosCoefficients(a=0.0, b=1.0, c=0.0, d=1.0)
+    _, mu_a, _ = apply_emos_to_event(bps, identity, bias_applied_f=None, climo_f=60.0)
+    _, mu_b, _ = apply_emos_to_event(bps, identity, bias_applied_f=None, climo_f=80.0)
+    assert mu_a == pytest.approx(mu_b)
+
+
+def test_apply_shrinkage_pulls_toward_climatology():
+    # b=0.5 halves the forecast anomaly: raw mean ~75 with climo 65 -> mu ~70.
+    bps = _fake_bin_probs(75.0)
+    recon_mean, _ = moments_from_bin_probs(bps)
+    coeffs = EmosCoefficients(a=0.0, b=0.5, c=0.0, d=1.0)
+    _, mu, _ = apply_emos_to_event(bps, coeffs, bias_applied_f=None, climo_f=65.0)
+    assert mu == pytest.approx(65.0 + 0.5 * (recon_mean - 65.0))
+
+
 def test_apply_adds_bias_back_to_mean():
     bps = _fake_bin_probs(75.0)
     identity = EmosCoefficients(a=0.0, b=1.0, c=0.0, d=1.0)
-    _, mu_none, _ = apply_emos_to_event(bps, identity, bias_applied_f=None)
-    _, mu_bias, _ = apply_emos_to_event(bps, identity, bias_applied_f=2.0)
+    _, mu_none, _ = apply_emos_to_event(bps, identity, bias_applied_f=None, climo_f=70.0)
+    _, mu_bias, _ = apply_emos_to_event(bps, identity, bias_applied_f=2.0, climo_f=70.0)
     # Recorded distribution was shifted down by the 2°F bias correction; EMOS features
     # are on the raw scale, so mu must move up by exactly that bias.
     assert mu_bias - mu_none == pytest.approx(2.0)
@@ -238,17 +299,22 @@ def test_apply_far_off_mean_respects_floor():
     bps = _fake_bin_probs(75.0)
     # Huge negative shift: nearly all Gaussian mass lands in the open-low bin.
     coeffs = EmosCoefficients(a=-20.0, b=1.0, c=0.0, d=1.0)
-    result = apply_emos_to_event(bps, coeffs, bias_applied_f=None)
+    result = apply_emos_to_event(bps, coeffs, bias_applied_f=None, climo_f=70.0)
     assert result is not None
     bin_to_p, _, _ = result
     for p in bin_to_p.values():
         assert 0.005 <= p <= 0.995
 
 
+def test_apply_without_climatology_returns_none():
+    bps = _fake_bin_probs(75.0)
+    assert apply_emos_to_event(bps, EmosCoefficients(0, 1, 0, 1), None, climo_f=None) is None
+
+
 def test_apply_degenerate_moments_returns_none():
     bps = [SimpleNamespace(bin=SimpleNamespace(market_ticker="LO", lo_f=None, hi_f=70.0,
                                                is_open_low=True, is_open_high=False), p=0.1)]
-    assert apply_emos_to_event(bps, EmosCoefficients(0, 1, 0, 1), None) is None
+    assert apply_emos_to_event(bps, EmosCoefficients(0, 1, 0, 1), None, climo_f=70.0) is None
 
 
 # ---- write / load round trip --------------------------------------------------
@@ -267,6 +333,25 @@ def test_write_load_round_trip(tmp_path):
 
 def test_load_returns_empty_dict_when_missing(tmp_path):
     assert load_emos(tmp_path / "nope.parquet") == {}
+
+
+def test_load_skips_rows_from_a_different_feature_space(tmp_path):
+    """A stale parquet written before the anomaly-space change (no feature_space column)
+    must be ignored rather than misapplied to anomaly features."""
+    path = tmp_path / "old-emos.parquet"
+    old_schema = pa.schema([
+        pa.field("station_id", pa.string()),
+        pa.field("kind", pa.string()),
+        pa.field("a", pa.float64()),
+        pa.field("b", pa.float64()),
+        pa.field("c", pa.float64()),
+        pa.field("d", pa.float64()),
+    ])
+    pq.write_table(pa.Table.from_pylist(
+        [{"station_id": "KLAX", "kind": "high", "a": 35.4, "b": 0.485, "c": 1.26, "d": 0.176}],
+        schema=old_schema,
+    ), path)
+    assert load_emos(path) == {}
 
 
 def test_written_parquet_matches_schema(tmp_path):
@@ -339,6 +424,7 @@ def test_build_snapshot_table_records_emos_p_only_for_configured_cells():
                    ("KAUS", date(2026, 6, 1), "high"): SimpleNamespace(lead_hours=10)},
         nbm_outputs={}, nbm_forecasts={},
         emos=emos,
+        climatology=_flat_climo("KLAX", "high", 70.0),
     )
     df = tbl.to_pandas()
     klax = df[df["station_id"] == "KLAX"]

@@ -17,6 +17,7 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 
 import duckdb
+import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 
@@ -47,6 +48,11 @@ from polymarket_model.model import (
     blend_bin_probs,
     evaluate_event,
     evaluate_event_nbm,
+)
+from polymarket_model.weather.climatology import (
+    DEFAULT_CLIMATOLOGY_PARQUET,
+    climo_for,
+    load_climatology,
 )
 from polymarket_model.weather.nbm import NBMQuantileForecast, fetch_nbm_quantiles_many
 from polymarket_model.weather.openmeteo import EnsembleDailyExtreme, fetch_daily_extreme
@@ -225,6 +231,7 @@ def _build_snapshot_table(
     bias_applied: dict[str, float | None] | None = None,
     calibrations: dict[tuple[str, str], tuple] | None = None,
     emos: dict[tuple[str, str], EmosCoefficients] | None = None,
+    climatology: dict[tuple[str, str], np.ndarray] | None = None,
 ) -> pa.Table:
     rows: list[dict] = []
     for ep in priced_events:
@@ -274,8 +281,13 @@ def _build_snapshot_table(
         emos_mu: float | None = None
         emos_sigma: float | None = None
         if emos_coeffs is not None and mo is not None:
+            # Anomaly-space EMOS needs the target date's day-of-year climatology — the
+            # same anchor the coefficients were fitted against. No climatology, no emos_p.
+            climo_f = climo_for(
+                climatology or {}, e.station_id, e.kind, e.target_date_local
+            )
             emos_result = apply_emos_to_event(
-                mo.bin_probs, emos_coeffs, (bias_applied or {}).get(e.event_ticker)
+                mo.bin_probs, emos_coeffs, (bias_applied or {}).get(e.event_ticker), climo_f
             )
             if emos_result is not None:
                 emos_bin_to_p, emos_mu, emos_sigma = emos_result
@@ -483,6 +495,7 @@ def snapshot_once(
     biases_path: Path | None = None,
     calibrations_path: Path | None = None,
     emos_path: Path | None = None,
+    climatology_path: Path | None = None,
 ) -> SnapshotResult:
     """Single shot: discover, fetch prices in parallel, persist to Parquet and/or DuckDB.
 
@@ -525,6 +538,12 @@ def snapshot_once(
     }
     if emos_coeffs:
         log.info("emos_loaded", n_cells=len(emos_coeffs))
+
+    # Day-of-year climatology, the anomaly anchor for EMOS. Loaded only when there are
+    # EMOS coefficients to apply; missing file = no emos_p (never a crash).
+    climatology = (
+        load_climatology(climatology_path or DEFAULT_CLIMATOLOGY_PARQUET) if emos_coeffs else {}
+    )
 
     errors = 0
 
@@ -571,6 +590,7 @@ def snapshot_once(
                 bias_applied=bias_applied,
                 calibrations=calibrations,
                 emos=emos_coeffs,
+                climatology=climatology,
             )
             if tbl.num_rows == 0:
                 # No priced bins this bucket (empty books or a failed fetch). Writing an

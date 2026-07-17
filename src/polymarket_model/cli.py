@@ -1,6 +1,7 @@
 """Typer CLI: scan, snapshot, fetch-resolution."""
 from __future__ import annotations
 
+import time
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
@@ -567,6 +568,87 @@ def compute_calibration(
     console.print(f"[dim]Wrote {calibration_parquet}[/dim]")
 
 
+@app.command("fetch-climatology")
+def fetch_climatology(
+    stations: str = typer.Option(
+        "",
+        "--stations",
+        help="Comma-separated station ids. Empty = every station in markets.discovery.WEATHER_SERIES.",
+    ),
+    years_back: int = typer.Option(
+        20,
+        "--years-back",
+        help="Years of ERA5 history to average (range ends last Dec 31).",
+    ),
+    window_days: int = typer.Option(
+        7,
+        "--window-days",
+        help="Circular +/- smoothing half-width in days for the day-of-year means.",
+    ),
+    climatology_parquet: Path = typer.Option(
+        None,
+        "--climatology-parquet",
+        help="Output Parquet. Defaults to data/station_climatology.parquet.",
+    ),
+) -> None:
+    """Fetch ERA5 daily history per station and write the day-of-year climatology Parquet.
+
+    Live network (Open-Meteo archive API, one request per station). Run rarely — the
+    climatology anchors the anomaly-space EMOS fit and only drifts on climate timescales;
+    refreshing once a year is plenty. Commit the output.
+    """
+    from polymarket_model.markets.discovery import WEATHER_SERIES
+    from polymarket_model.weather.climatology import (
+        DEFAULT_CLIMATOLOGY_PARQUET,
+        build_station_climatology,
+        write_climatology,
+    )
+
+    configure_logging()
+    console = Console()
+    target = (
+        sorted({s.strip().upper() for s in stations.split(",") if s.strip()})
+        if stations
+        else sorted({sid for (_, _, sid) in WEATHER_SERIES.values()})
+    )
+    out_path = climatology_parquet or DEFAULT_CLIMATOLOGY_PARQUET
+    all_clims = []
+    failed: list[str] = []
+    for i, sid in enumerate(target):
+        if i:
+            time.sleep(5)  # ~20-year pulls trip the archive API's rate limit if fired back-to-back
+        try:
+            clims = build_station_climatology(sid, years_back=years_back, window_days=window_days)
+        except Exception as e:  # noqa: BLE001 — one bad station shouldn't kill the batch
+            console.print(f"[red]{sid}: fetch failed ({e!r})[/red]")
+            failed.append(sid)
+            continue
+        all_clims.extend(clims)
+        console.print(f"[dim]{sid}: {len(clims)} kinds fetched[/dim]")
+    write_climatology(out_path, all_clims)
+
+    from rich.table import Table
+    table = Table(show_header=True, header_style="bold", padding=(0, 1))
+    for c in ("station_id", "kind", "jan15_f", "jul15_f", "n_obs_jul15"):
+        table.add_column(c, justify="right" if c not in ("station_id", "kind") else "left")
+    for sc in all_clims:
+        table.add_row(
+            sc.station_id, sc.kind,
+            f"{sc.climo_f[14]:.1f}", f"{sc.climo_f[195]:.1f}", str(int(sc.n_obs[195])),
+        )
+    console.print(table)
+    console.print(f"[dim]Wrote {out_path}[/dim]")
+    if failed:
+        # A partial file silently starves anomaly-space EMOS of the missing stations —
+        # make the gap impossible to miss and fail the run.
+        console.print(
+            f"[bold red]INCOMPLETE: {len(failed)} station(s) failed ({', '.join(failed)}). "
+            f"Re-run with --stations {','.join(failed)} — the write merges, so other "
+            f"stations are preserved.[/bold red]"
+        )
+        raise typer.Exit(code=1)
+
+
 @app.command("compute-emos")
 def compute_emos(
     days_back: int = typer.Option(
@@ -599,15 +681,27 @@ def compute_emos(
         "--emos-parquet",
         help="Output Parquet for EMOS coefficients. Read by the recorder on next snapshot.",
     ),
+    climatology_parquet: Path = typer.Option(
+        None,
+        "--climatology-parquet",
+        help="Day-of-year climatology Parquet (anomaly anchor). Defaults to data/station_climatology.parquet.",
+    ),
 ) -> None:
     """Fit per-(station,kind) EMOS/NGR Gaussians from snapshot vs resolution pairs.
 
     Phase 3: excluded veteran stations only (KLAX/KMDW/KMIA/KNYC by default — never a
-    station with a live cell). Writes `data/station_emos.parquet`; the recorder applies
-    it as a recorded `emos_p` column (signals are unchanged). The CRPS before/after is
-    IN-SAMPLE — a sanity check, not the real evaluation, which comes from the
-    forward-recorded emos_p resolving over the next weeks.
+    station with a live cell). Fits in ANOMALY space against the day-of-year climatology
+    (`fetch-climatology`), so coefficients are season-independent. Writes
+    `data/station_emos.parquet`; the recorder applies it as a recorded `emos_p` column
+    (signals are unchanged). The CRPS before/after is IN-SAMPLE — a sanity check, not
+    the real evaluation, which comes from the forward-recorded emos_p resolving over
+    the next weeks.
     """
+    from polymarket_model.weather.climatology import (
+        DEFAULT_CLIMATOLOGY_PARQUET,
+        load_climatology,
+    )
+
     configure_logging()
     console = Console()
     target = (
@@ -615,10 +709,17 @@ def compute_emos(
         if stations
         else settings.emos_stations
     )
+    climatology = load_climatology(climatology_parquet or DEFAULT_CLIMATOLOGY_PARQUET)
+    if not climatology:
+        console.print(
+            "[yellow]No climatology loaded — run `polymarket fetch-climatology` first. "
+            "Writing empty EMOS file.[/yellow]"
+        )
     fits = fit_station_emos(
         snapshots_root=snapshots_root,
         resolutions_parquet=resolutions_parquet,
         stations=target,
+        climatology=climatology,
         days_back=days_back,
         min_days=min_days,
     )

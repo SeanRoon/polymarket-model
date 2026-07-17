@@ -148,6 +148,7 @@ class Settings(BaseSettings):
 
     kalshi_base_url: str = "https://api.elections.kalshi.com/trade-api/v2"
     open_meteo_base_url: str = "https://ensemble-api.open-meteo.com/v1"
+    open_meteo_archive_base_url: str = "https://archive-api.open-meteo.com/v1"
     nws_base_url: str = "https://api.weather.gov"
 
     http_user_agent: str = "polymarket-model/0.1 (rooneysw@gmail.com)"
