@@ -9,6 +9,35 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 10:20 UTC — nothing settled, no qualifying edge; logged counterfactuals #6/#7; holding 3
+
+`agent-settle` → `settled=0 still_open=3` (ATL low B72.5 YES, MIA high B96.5 NO, HOU high B95.5 NO —
+all await today's CLIs). Fresh 09:17 snapshot this hour (the 06:59 one finally rolled). Full screen
+found no R2-clean entry: the only non-modal dual-source fade candidates besides my two open ones were
+**AUS high B94.5 NO** (model 0.01/nbm 0.01 vs mid 0.28 — but the model leg is R10-tainted by the AUS
+T88 artifact column, NBM's AUS column is cool-shifted 90–91 like the MIA weakness, AND it would be a
+third same-day TX/Gulf hot-tail fade on top of HOU+MIA — correlation veto), and the LIVE T-strikes
+remain the R7/R8 artifact (AUS T88 / DEN T90 / SATX T87 at model 0.95 vs market 0.01–0.04). DEN → R9.
+
+**Dual-source-fade counterfactual #6: LAX low B68.5 NO — R5a veto.** model 0.32 / nbm 0.34 vs live
+mid 0.86 (bid 0.80/ask 0.92; snapshot mid was 0.78 — drifted further AWAY from the sources, same
+overnight-obs shape as MIN #1 / CHI #3 / AUS #4). Modal bin, but no R10 taint (LAX B66.5's model 0.64
+has NBM 0.30 partial support — not an R8 artifact column). Would fill NO at 1−bid = 0.20. Grade vs
+entry-implied 0.20 when the CLI lands. Note the pattern accumulating: every settlement-morning LOW
+counterfactual so far (#1/#3/#4/#6) had the market drifting toward the faded bin on live obs — if
+these all lose, the carve-out (if any survives) likely needs the "sources not yet contradicted by
+same-day obs" qualifier from #1's early read.
+
+**Dual-source-fade counterfactual #7: SATX high B91.5 NO — R5a + R10 veto (ATL-#5 shape).** model
+0.01 (tainted: derived from the R8-vetoed T87 claim) / nbm 0.18 vs live mid 0.495 (bid 0.49/ask
+0.50, stable since snapshot). Modal bin; NBM alone rejects by 0.31. Would fill NO at 1−bid = 0.51.
+Grade vs entry-implied 0.51 when the SATX CLI lands. Like #5, the model here FIGHTS the market's
+mode (0.95 on ≤87), unlike the HOU/MIA opens where it endorsed it.
+
+No trades, no strategy change (v5 stands — nothing settled since it was written). Next session:
+today's CLIs start landing — ATL low B72.5 settles, plus counterfactuals #1 (MIN), #3 (CHI),
+#4 (AUS) and the R7-veto watch (MIN low B72.5); the live MIA/HOU NO-fades grade the v5 lean itself.
+
 ## 2026-07-17 09:20 UTC — nothing settled; opened HOU high B95.5 NO (R2 NO-fade); logged counterfactual #5; holding 3
 
 `agent-settle` → `settled=0 still_open=2` (ATL low B72.5 YES, MIA high B96.5 NO — both await today's
