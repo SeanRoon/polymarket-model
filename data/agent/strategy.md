@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v5** (2026-07-16 — SFO low B59.5 NO settled +$27.41; ledger audit corrected a serious R2 miscount: R2 is **4W–6L, net +$7.90 — net-positive, not dying**; directional split found: NO-fades win, YES-buys mostly lose)
+**Version: v6** (2026-07-17 — ATL low B72.5 YES settled −$9.66; R2 back underwater at 4W–7L, net −$1.76; YES-buy half now 2W–6L, −$17.35 and two settlements from a pre-registered restriction to NO-fades only)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -32,23 +32,26 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   record get at most 1 small trade per session, and only when BOTH sources agree
   against the market (model_p and nbm_p on the same side of the midpoint, each by
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
-  correlated with anything already open. **Ledger truth (audited & corrected in v5
-  from a running miscount — prior versions said "1W–5L, one loss from death," which
-  the ledger flatly contradicts): R2 is 4W–6L, net +$7.90 — net-positive.** The signal
-  is *directional*, and this is v5's main finding:
+  correlated with anything already open. **Ledger truth (v5 audit, updated v6): R2 is
+  4W–7L, net −$1.76 — back underwater after ATL low B72.5.** The signal is
+  *directional*, and it keeps sharpening in the same direction:
   - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
     market): 2W–1L, +$15.59.** SFO low B59.5 @0.30 (+$27.41) and PHX high B106.5 @0.55
     (+$10.81) both won; the only loss, SEA B80.5 @0.63, was a fade of the market's
     modal bin — which R5a bans anyway, so a clean R2 NO-fade that also respects R5a is
-    2W–0L so far.
-  - **YES-buy half (buy an UNDERpriced weak-cell bin): 2W–5L, −$7.69.** Winners MIA
+    2W–0L so far (MIA B96.5 / HOU B95.5 in flight are its live test).
+  - **YES-buy half (buy an UNDERpriced weak-cell bin): 2W–6L, −$17.35.** Winners MIA
     B92.5 (Jul-13) and DC low B72.5 (Jul-15); losers SEA B76.5, BOS B94.5, DAL T88,
-    MIA B92.5 (Jul-15), NYC B101.5. Dual-model agreement does NOT reliably rescue this
-    half.
+    MIA B92.5 (Jul-15), NYC B101.5, and now ATL low B72.5 (Jul-16, −$9.66 — the
+    market's warm lean on a settlement-day summer low beat NBM+climatology, same
+    obs-driven shape as fade-counterfactuals #1/#3/#4/#6). Dual-model agreement does
+    NOT reliably rescue this half.
   **Operational lean:** within R2, favor NO-fades of overpriced bins that respect R5a;
-  keep YES-buys of weak-cell longshots cautious-size and rare. *Kill if: cumulative R2
-  record reaches 5 settled losses more than wins (currently losses−wins = 2; **three
-  more net losses to die**, not one).*
+  keep YES-buys of weak-cell longshots cautious-size and rare. **Pre-registered (v6,
+  per editing rule 3): the YES-buy half has 8 settled and is net-underwater — if it
+  reaches 10 settled while still net-negative, R2 restricts to NO-fades only.**
+  *Kill if (whole rule): cumulative R2 record reaches 5 settled losses more than wins
+  (currently losses−wins = 3; **two more net losses to die**).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -137,11 +140,11 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   (≥$0.50 vs sub-$0.30) and cell record, which is R7 + R1, not NBM. *Do not resurrect
   without ≥10 fresh settlements.*
 - Is the model's edge on production-excluded cities real money, or is the exclusion
-  wisdom? **Updated read (v5): R2 is net +$7.90 across excluded cells — on balance the
-  edge IS real money, so the earlier "exclusion is wisdom" lean is weakened.** The
-  split turns out to be *directional*, not city-based: NO-fades of overpriced bins win
-  (SFO, PHX), YES-buys of underpriced weak-cell longshots mostly lose. Watch whether
-  the directional split holds as n grows.
+  wisdom? **Updated read (v6): R2 is net −$1.76 across excluded cells — roughly
+  break-even, so neither "real money" nor "exclusion is wisdom" is settled.** The
+  split remains *directional*, not city-based: NO-fades of overpriced bins win
+  (SFO, PHX), YES-buys of underpriced weak-cell longshots mostly lose (2W–6L). Watch
+  whether the directional split holds as n grows.
 - **Dual-source-confirmed fades beat R5a (NEW in v5, n=2 wins):** SFO low B59.5 NO @0.30
   and PHX high B106.5 NO @0.55 both faded high-priced bins (mid 0.735, 0.47) where BOTH
   model AND NBM sat ≥0.10 below the market — both WON (+$27.41, +$10.81). The R5a
@@ -161,6 +164,23 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v6** (2026-07-17): ATL low B72.5 YES @0.37 settled **−$9.66 LOSS** (a v3-cited R2
+  dual-source YES-buy; my p 0.45 via NBM 0.56 + climatology against the market's 0.55
+  warm lean on T73). The CLI landed ≥74°F — **the market's warm lean was exactly
+  right**, the same settlement-day-low, obs-beats-sources shape as dual-source-fade
+  counterfactuals #1/#3/#4/#6 (every one of which also had the market drifting warm on
+  live obs). Grading: wrong, and wrong in the *predictable* direction — the trade was
+  opened mid-morning of settlement day, when the overnight low was largely already
+  observed and the market's price carried that information (R5's core argument, now
+  with a settled YES-buy scalp to go with the counterfactuals). Changes: (1) R2 ledger
+  updated to **4W–7L, net −$1.76** — back underwater; kill clause at losses−wins = 3,
+  two net losses from death. (2) YES-buy half updated to **2W–6L, −$17.35**;
+  **pre-registered restriction** — if the YES-buy half reaches 10 settled while
+  net-negative, R2 becomes NO-fades only (that's 2 more YES-buy settlements; none are
+  open, so any future YES-buy entry knows the stakes). (3) Excluded-cities hypothesis
+  re-marked break-even. No other rule bars moved: the NO-fade half (2W–1L clean, both
+  live tests MIA/HOU still in flight) is untouched, and R5a keeps collecting
+  counterfactual support on settlement-morning lows.
 - **v5** (2026-07-16): SFO low B59.5 NO @0.30 settled **+$27.41 WIN** (a v2 R2 trade).
   This one settlement triggered a full ledger audit of R2, and the audit found a
   **serious accounting error carried since v3**: R2 was written as "1W–5L, one net loss

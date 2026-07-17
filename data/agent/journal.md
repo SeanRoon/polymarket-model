@@ -9,6 +9,43 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 11:20 UTC — ATL low B72.5 settled −$9.66 (wrong, predictably); v5→v6 (R2 back underwater, YES-buy restriction pre-registered); no new trade; holding 2
+
+`agent-settle` → `settled=1 still_open=2`. **ATL low B72.5 YES ×25 @0.37 LOST −$9.66** (v3 R2
+dual-source YES-buy, my p 0.45 via NBM 0.56 + climatology). The CLI: **T73 (">73°") resolved YES —
+Atlanta's low came in ≥74°F**, precisely the market's 0.55 warm lean. Grade: **wrong, in the
+predictable direction.** The trade was opened mid-morning of settlement day, when the overnight low
+was largely observed; the market's warm price WAS the obs, and NBM+climatology were stale — the exact
+shape of fade-counterfactuals #1/#3/#4/#6, now confirmed by a settled YES-buy instead of a
+counterfactual. It undermines R2's YES-buy half (→ **2W–6L, −$17.35**) and supports R5's premise
+(settlement-day summer-low books price real-time obs the sources don't have).
+
+**Strategy v5 → v6.** R2 overall is back underwater: **4W–7L, net −$1.76** (kill clause: losses−wins
+= 3, two net losses from death). Pre-registered per editing rule 3: **if the YES-buy half reaches 10
+settled while net-negative (2 more YES-buy settlements), R2 restricts to NO-fades only.** NO-fade
+half untouched (2W–1L, clean-of-R5a 2W–0L) — MIA B96.5 / HOU B95.5, both still open, are its live
+test. Excluded-cities hypothesis re-marked break-even.
+
+**Scan (11:06 snapshot, all lead 6–8h settlement-day):** no R2-clean entry. DEN bins → R9. SATX
+B91.5 → counterfactual #7 stands (mid still 0.495). The morning-low boards (MIN/CHI/DAL/OKC/LAX…)
+are all the stale-source shape the ATL settle just validated the market on. Two new counterfactuals:
+
+- **#8 DAL high B95.5 NO — correlation veto (NEW bucket: tests the air-mass cap, not R5a).** model
+  0.01 / nbm 0.01 vs mid 0.26 (bid 0.25/ask 0.27). Non-modal (B93.5 @0.46 is modal), no R8/R10 taint
+  (no artifact T-strike in the DAL column; both sources centered 91–92). This would be an R2-clean
+  NO-fade except it's a third same-day TX/Gulf hot-tail fade alongside open HOU B95.5 (same ridge).
+  Would fill NO at 1−bid = **0.75**. Grade vs entry-implied 0.75 when the DAL CLI lands — if it wins
+  while HOU also wins, that's another point that the correlation cap is variance control with a real
+  EV cost (cf. the AUS+SATX Jul-14 note).
+- **#9 OKC low B69.5 NO — R5a veto,** same morning-low shape as #1/#3/#4/#6: model 0.12 / nbm 0.25
+  vs mid 0.84 (modal). Would fill NO at 1−bid = **0.20**. Logged for completeness of the dual-source-
+  fade tally; expectation after ATL is that the market side wins again.
+
+No trades opened. Next session: today's CLIs land in bulk — counterfactuals #1 (MIN), #3 (CHI),
+#4 (AUS), #6 (LAX), #7 (SATX), #8 (DAL), #9 (OKC), the MIN low B72.5 R7-veto watch, and above all
+the two live v5 NO-fades (MIA B96.5, HOU B95.5) — the NO-fade half's first settled test since it
+became the lean.
+
 ## 2026-07-17 10:20 UTC — nothing settled, no qualifying edge; logged counterfactuals #6/#7; holding 3
 
 `agent-settle` → `settled=0 still_open=3` (ATL low B72.5 YES, MIA high B96.5 NO, HOU high B95.5 NO —
