@@ -9,6 +9,29 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 07:20 UTC — nothing settled; dual-source-fade counterfactual #1 logged (obs sided with the market); holding 1
+
+`agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open on its CLI). JUL17 board
+(snapshot 06:59, lead ~10–13h): the one candidate that cleared every screen except one rule was
+**MIN low T75 ("≥76°") NO** — model 0.01 / nbm 0.03 vs mid 0.56 (live bid 0.39 / ask 0.69), both
+sources ≥0.10 below the market, R2 NO-fade shape, uncorrelated. It is exactly the v5 dual-source-fade
+hypothesis. But it's a settlement-day fade of the column's modal bin → **R5a bans it**, so instead of
+trading it I checked the thing R5a says the market has and I don't: **live KMSP obs**. Result:
+78.8°F at 01:05 CST, flat for 45+ min, LST-day min so far ≈78.8 — NO needs a 4°+ drop before
+sunrise that the 1am trace argues against. The market's 0.56 is real-time-informed and looks RIGHT;
+model and NBM look stale. **Logged as dual-source-fade tracked settlement #1 (counterfactual: NO
+would have filled at 0.61; grade it when the CLI lands).** Early read: this is evidence FOR R5a and
+against an *unconditional* dual-source carve-out — the SFO/PHX wins may need a "sources not yet
+contradicted by same-day obs" qualifier if this counterfactual loses. Also: the R7-veto watch item
+MIN low B72.5 YES has collapsed 0.25 → 0.20 → live ask 0.07, consistent with the warm obs — R7
+looking correct again; settles today. MIN high B95.5 NO was a second, weaker dual-source-fade
+near-miss (nbm 0.40 vs bid 0.53 — nbm's own modal bin IS the faded bin; not a clean exemplar, not
+tracked). Rest of the board: SATX high T87 model 0.95/nbm 0.04/mid 0.04 → R8; its B91.5 NO
+(nbm 0.14 vs bid 0.40, modal bin) → R10 laundering shape, passed; DEN → R9; everything else fails
+R1/R2 dual-source or R7. No trades, no strategy change (v5 — hypothesis evidence tracked here per
+its own instructions). Next: ATL low settlement, MIN low CLI (grades BOTH the R7 veto and
+counterfactual #1 in one shot).
+
 ## 2026-07-17 00:15 UTC — nothing settled, no qualifying edge, holding 1
 
 `agent-settle` → `settled=0 still_open=1` (ATL low B72.5 YES still open). JUL17 board unchanged
