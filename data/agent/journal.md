@@ -9,6 +9,42 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 17:20 UTC — nothing settled; opened PHX high JUL18 B97.5 NO (v6 R2 NO-fade, dual-source test #3); holding 4
+
+`agent-settle` → `settled=0 still_open=3` (MIA B96.5 / HOU B95.5 / LAX B79.5 NO all still await
+CLIs). No strategy change — nothing settled, v6 stands.
+
+**Housekeeping note:** `git pull` is blocked this session — the operator has uncommitted EMOS
+anomaly-space work in the main tree and the incoming resolve commit touches the same
+`data/station_emos.parquet`. Not mine to stash. Worked from the local 14:18 snapshot (fresh vs the
+12:35 board last screened), verified everything at the live book, and pushed my `data/agent/`-only
+commit via a temporary worktree on `origin/main` so the operator's tree stays untouched.
+
+**Opened: KXHIGHTPHX-26JUL18-B97.5 NO ×20 @ $0.63** (fee $0.33, cost $12.93) — v6 R2 NO-fade, the
+one weak-cell trade the session allows, and **dual-source-fade live test #3** (after SFO B59.5 and
+PHX B106.5 wins). Market's modal bin on PHX JUL18 high is 97–98 at ~0.40 live (bid 0.37 / ask 0.42,
+verified per R6 since the snapshot was 3h stale); model_p 0.06, nbm_p 0.12 — both ≥0.25 below the
+fill. My p(97–98) ≈ 0.15 → NO ≈ 0.85 vs 0.63 fill. Column is R10-clean (no model-0.95 artifact leg
+in PHX high; NBM clears R2's bar alone at 0.25). Lead ~28h — a JUL18 market, so the extreme is
+unobserved and R5a (settlement-day modal fades) doesn't apply. **Same honest caveat as LAX B79.5,
+pre-noted:** the sources reject the bin by *straddling* it (model's mass at 99–102, NBM's at ≤96 —
+NBM has 0.43 on <95 vs the market's 0.065). If the truth splits the difference it lands exactly in
+my bin; two straddle-rejections are now in flight (LAX, PHX) and will grade the same lesson together.
+
+Rest of the JUL18 board, vetoed on the usual grounds: SATX T89 / DEN T91 / DC T97 / LAX T79 / SEA
+low B51.5 (model 0.6–0.95 vs NBM ≤0.02) → R8 artifact columns; DEN everything → R9; SATX low B74.5,
+MIN low B68.5, SFO low B50.5, MIN high B92.5, PHX low T76 etc. → sub-$0.30 model-side YES, R7.
+Near-miss NO-fades that failed a bar on NBM alone (R10 columns, so NBM must clear ≥0.15 at the live
+fill by itself): SEA low B57.5 (0.13), SFO low B56.5 (0.13), SATX low T77 (0.12), DAL low T77
+(0.07). LAX JUL18 B78.5 NO had clean NBM rejection (0.01 vs mid 0.32) but is the same
+station/kind/direction as my open LAX JUL17 B79.5 NO — correlated, R2 bans it. PHX low B82.5 NO was
+the runner-up (NBM alone 0.26 vs fill) but same city/day as the PHX high trade and R2 allows one.
+
+Next session: the day's CLIs should land — MIA, HOU, LAX B79.5, and counterfactuals #1–#12 all grade
+at once, plus the R2 death-clock moves (losses−wins at 3, dies at 5). What I want to learn: does the
+NO-fade half survive its first multi-trade settlement day, and do straddle-rejections behave like
+same-side rejections or like the ATL/counterfactual market-side wins?
+
 ## 2026-07-17 14:15 UTC — nothing settled, no qualifying edge, holding 3
 
 14:15 UTC — nothing settled (MIA B96.5 NO / HOU B95.5 NO / LAX B79.5 NO all await CLIs); latest
