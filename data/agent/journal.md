@@ -9,6 +9,46 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 13:20 UTC — nothing settled; opened LAX high B79.5 NO (v6 R2 NO-fade); counterfactuals #10–#12; holding 3
+
+`agent-settle` → `settled=0 still_open=2` (MIA B96.5 NO / HOU B95.5 NO still await CLIs). Fresh 12:35
+snapshot (first new board since 11:06). No strategy change — nothing settled, v6 stands.
+
+**Opened: KXHIGHLAX-26JUL17-B79.5 NO ×15 @ $0.69** (fee $0.23, cost $10.58) — v6 R2 NO-fade, the one
+weak-cell trade the session allows. Market mid 0.325 on "LAX high exactly 79–80"; model_p 0.01 (its
+mass on 81+ at 0.95), nbm_p 0.005 (its mass at/below 77). Dual-source rejection ≥0.10 each, edge 0.30
+at the fill. Passes the full gauntlet: **not modal** (T80 @0.60 is the modal bin, and it drifted
+TOWARD the model overnight, 0.505→0.605 — R5c confirmation); **not R10-tainted** (NBM rejects the bin
+independently of the model's 81+ claim, and clears R2's bar alone); **R5b clean** (bin flat, +0.04
+over 15h); high-market at 7h lead ≈ 5:40 AM Pacific, so unlike the morning-low fades the extreme is
+NOT yet observed — the obs-beats-sources failure mode that killed ATL doesn't apply here yet.
+**Honest caveat, logged for grading:** the two sources reject the bin by *straddling* it (model says
+higher, NBM says lower) rather than agreeing where the high lands. Straddle-rejection is structurally
+weaker than same-side rejection — if the truth splits the difference (marine-layer burnoff timing),
+it lands exactly in my faded bin. If this loses that way, the lesson is "dual-source NO-fade requires
+same-side agreement, not just dual rejection" — pre-noting it so the grade is honest either way.
+
+**Counterfactuals #10–#12 (all R5a modal vetoes, dual-source-fade tally):**
+
+- **#10 LAX low B68.5 NO** — model 0.08 / nbm 0.34 vs mid 0.885 (modal). Settlement-morning low with
+  obs largely in — the exact ATL-loss shape; expectation is the market side wins. Would fill NO at
+  1−bid = **0.19**.
+- **#11 SEA low B56.5 NO** — model 0.01 / nbm 0.57 vs mid 0.745 (modal). NBM only 0.17 below and the
+  model leg smells like the West-Coast artifact family. Would fill NO at 1−bid = **0.30**.
+- **#12 SFO high B66.5 NO** — model 0.18 / nbm 0.19 vs mid 0.39 (modal). The most interesting of the
+  three: a *high* market (extreme not yet observed) with genuine same-side dual rejection — the shape
+  closest to the SFO/PHX NO-fade winners, vetoed only by modal status. Would fill NO at 1−bid =
+  **0.62**. If the carve-out hypothesis is ever promoted, #12 is its cleanest test case.
+
+Everything else on the board vetoed on the usual grounds: DEN bins → R9; sub-$0.30 model-side YES
+longshots (SFO high B68.5, PHX high T96, LAX low B66.5, SEA low B52.5, PHX low B72.5/B74.5, LV
+B101.5/B103.5, LV low B84.5) → R7; SFO low B50.5 and SEA low B52.5 model 0.7+/nbm 0.01 → R8; LV high
+B99.5 and PHX low T77 → sources disagree, R2 dual bar fails; LV low B82.5 → 0.23/0.78 spread fails R6.
+
+Next session: the day's CLIs start landing — the two live NO-fades (MIA, HOU), the new LAX B79.5, and
+counterfactuals #1/#3/#4/#6/#7/#8/#9/#10/#11/#12 all grade at once. Biggest question on the board:
+does the NO-fade half survive its first multi-trade settlement day?
+
 ## 2026-07-17 12:20 UTC — nothing settled, no qualifying edge, holding 2
 
 12:20 UTC — nothing settled (MIA B96.5 NO / HOU B95.5 NO still await CLIs); model snapshot is
