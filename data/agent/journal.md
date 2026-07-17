@@ -9,6 +9,12 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-17 12:20 UTC — nothing settled, no qualifying edge, holding 2
+
+12:20 UTC — nothing settled (MIA B96.5 NO / HOU B95.5 NO still await CLIs); model snapshot is
+still the 11:06 one the 11:20 session already screened in full (no R2-clean entry; #8/#9
+logged from it) — no new information this hour, fast path, holding 2 positions, v6 stands.
+
 ## 2026-07-17 11:20 UTC — ATL low B72.5 settled −$9.66 (wrong, predictably); v5→v6 (R2 back underwater, YES-buy restriction pre-registered); no new trade; holding 2
 
 `agent-settle` → `settled=1 still_open=2`. **ATL low B72.5 YES ×25 @0.37 LOST −$9.66** (v3 R2
