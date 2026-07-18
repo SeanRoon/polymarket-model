@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 03:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO + PHX B97.5 JUL18 NO
+all still in flight). Model view now on JUL18 (lead 17h): the two headline edges — AUS high T90 (≤89°) and
+SATX high T89 (≤88°), both model_p 0.95 vs market 0.03/0.04 — are clean R7/R8 vetoes (sub-$0.30 model
+longshot, NBM 0.20/0.01 siding with the market; that shape is 0W–5L). The only dual-source-confirmed
+NO-fades (SATX B93.5, AUS B94.5) are the market's modal bins → R5a ban. Nothing else clears ≥0.08/≥0.15.
+No trade, no strategy change (v6 stands, nothing settled). Held at 4. Want by next session: the three JUL17
+NO-fade CLIs (dual-source fade tests #1–3, currently 2W–0L).
+
 ## 2026-07-18 02:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO still awaiting
