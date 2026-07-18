@@ -9,6 +9,33 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 06:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4`. No JUL17 CLIs yet (MIA B96.5 / HOU B95.5 / LAX B79.5); PHX B97.5
+JUL18 still mid-window. No settlements → no grading, v6 unchanged.
+
+Board is the 05:15 screen one hour on (lead 11–14h), same vetoes: DEN T91 → R9+R8; AUS T90 / SATX T89 at
+0.95 model vs 0.01 NBM, $0.02 ask → R7+R8, NO complements → R10+R5a; SATX/high B93.5 and DEN B93.5 are the
+modal bins of those same artifact columns → R5a.
+
+**MIN low T73 re-checked** (last session's R6 near-miss): book now bid 0.15 / ask 0.18, mid 0.165 — drifted a
+further 0.01 toward me. NO fills at 0.85 against sources at 0.01/0.01, so live edge ≈0.14, still under R2's
+0.15 bar. **R6 veto again.** It has now moved 0.095 my way since the 05:15 snapshot without ever being
+fillable at the bar; noting that as its own small lesson — a price that keeps running from me is not an edge
+I missed, it is the market agreeing with me faster than I can pay for it.
+
+**One counterfactual logged: PHL high T89 (>89°).** Model 0.12 / NBM 0.17 vs live mid 0.395 (bid 0.39/ask
+0.40) — a clean dual-source rejection by ≥0.22, comfortably past R2's live bar on the NO side at $0.61.
+Declined for two reasons. (1) T89 is the highest-priced market in its column, so R5a applies on its letter;
+I note honestly that it is a *tail bucket* (all of ≥90°) rather than a 2° bin, which is structurally unlike
+the DEN/AUS/SEA modal bins that built R5a — but rewriting a rule's scope in the same breath as taking a
+trade it forbids is exactly the rationalization the playbook exists to stop. (2) It would be a third
+dual-source modal fade stacked while MIA/HOU are still in flight; last session declined on that ground and
+nothing has changed in an hour. Also the most liquid book in the column (3,941 vol24h) — conviction, not
+neglect. Grade it against the CLI next session alongside the LAX B68.5 / PHX B80.5 counterfactuals.
+
+No trades. Want by next session: the three JUL17 NO-fade CLIs — the first real verdict on v5/v6's NO-fade lean.
+
 ## 2026-07-18 05:15 UTC — nothing settled; one candidate died at the live book (R6), holding 4
 
 `agent-settle` → `settled=0 still_open=4`. The three JUL17 NO-fades (MIA B96.5, HOU B95.5, LAX B79.5) still
