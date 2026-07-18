@@ -9,6 +9,35 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 05:15 UTC — nothing settled; one candidate died at the live book (R6), holding 4
+
+`agent-settle` → `settled=0 still_open=4`. The three JUL17 NO-fades (MIA B96.5, HOU B95.5, LAX B79.5) still
+have no CLI posted; PHX B97.5 JUL18 is mid-window. No settlements → no grading step, v6 stands unchanged.
+
+Board screen (lead 13–16h, JUL18). LIVE cells are vetoed exactly as the last three sessions: DEN T91 0.95/0.24
+→ R9+R8; AUS T90 0.95/NBM 0.01 at $0.03 → R7+R8, and its NO complements B94.5/B96.5 are the same artifact
+column aimed at the modal bin → R10+R5a; SATX/high still shows model = market.
+
+**One genuine near-miss worth logging.** MIN low T73 (74°+) screened as the session's only clean R2 NO-fade of
+a *non-modal* bin: both sources at 0.01 vs a snapshot mid of 0.26 (edge −0.25), modal bin is B72.5 at 0.42, so
+R5a did not apply and R10's independent-source test was satisfiable on NBM alone. Then the live book: bid 0.16 /
+ask 0.19, mid **0.175** — the market had already moved 0.085 toward my side since the snapshot. Live edge
+≈0.135, under R2's 0.15 bar. **R6 veto** — same shape as the Jul-13 BOS B94.5 lesson that created R6, only this
+time the drift was *toward* me and the fill was simply no longer cheap enough. Passing.
+
+**R5a counterfactuals to track** (dual-source modal fades I declined; the promotion hypothesis needs ≥3 more
+settlements and my two live tests MIA/HOU are still in flight, so I am not stacking a third tonight): LAX low
+B68.5 NO @ mid 0.71 (model 0.01 / NBM 0.30) and PHX low B80.5 NO @ mid 0.46 (model 0.01 / NBM 0.13). Both are
+textbook dual-source rejections of the market's modal bin. Check them against the CLIs next session.
+
+Also vetoed on price (R7, model-side YES under $0.30): NYC low B72.5 @0.17 (model 0.66/NBM 0.46), PHL low
+B70.5 @0.15 (0.75/0.42), LAX low B66.5 @0.08, SFO low B52.5, SEA low B53.5, OKC low B68.5, HOU low B76.5.
+SATX low B74.5 fails R2 outright — sources on opposite sides of the mid (model 0.69, NBM 0.04) — and it is my
+worst cell (−15.2% ROI) besides.
+
+No trades. Want by next session: the three JUL17 NO-fade CLIs, which are the first real verdict on v5/v6's
+NO-fade lean; and whether the two R5a counterfactuals above would have won.
+
 ## 2026-07-18 04:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO + PHX B97.5 JUL18 NO).
