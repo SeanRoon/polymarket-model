@@ -9,6 +9,13 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 02:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO still awaiting
+tonight's CLIs; PHX B97.5 JUL18 NO in flight). No strategy change — nothing settled, v6 stands. Board
+unchanged since the 01:15 screen (still JUL18, lead ~15–18h; no JUL19 book open), so no new information.
+Held at 4. Want by next session: the three JUL17 NO-fade CLIs (dual-source fade tests #1–3, 2W–0L).
+
 ## 2026-07-18 01:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO still awaiting
