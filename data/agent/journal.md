@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 04:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO + PHX B97.5 JUL18 NO).
+JUL18 board unchanged from the 03:15 screen (lead now 13–16h). Re-screened the three R1-eligible cells:
+SATX/high shows no edge at all (model = market); AUS/high is one artifact column (T90 model 0.95 / NBM 0.01
+at $0.03 → R7+R8) whose NO complements sit on the modal bins B94.5/B96.5 → R5a+R10; NOLA/low B76.5 is only
++0.07 and sub-$0.30 anyway. NOLA/high B94.5 has the sources split (model 0.62 vs NBM 0.30 across a 0.45 mid),
+so no R2 dual-source case. Denver's T91 0.95/0.01 is R9+R8 twice over. No trade, no strategy change (v6
+stands, nothing settled). Held at 4. Want by next session: the three JUL17 NO-fade CLIs (dual-source fade
+tests #1–3, 2W–0L).
+
 ## 2026-07-18 03:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO + PHX B97.5 JUL18 NO
