@@ -46,7 +46,11 @@ from polymarket_model.evaluation import (
     write_resolutions_parquet,
 )
 from polymarket_model.logging_setup import configure_logging, get_logger
-from polymarket_model.markets.discovery import discover_weather_events
+from polymarket_model.markets.discovery import WEATHER_SERIES, discover_weather_events
+from polymarket_model.markets.market_recorder import (
+    DEFAULT_CATEGORY,
+    collect_market_snapshot_once,
+)
 from polymarket_model.markets.prices import fetch_event_prices
 from polymarket_model.model import evaluate_event
 from polymarket_model.paper import (
@@ -187,6 +191,55 @@ def snapshot(
         if result.parquet_path:
             msg += f" parquet={result.parquet_path}"
         console.print(f"[dim]{msg}[/dim]")
+
+
+@app.command("collect-markets")
+def collect_markets(
+    parquet_dir: Path = typer.Option(
+        None,
+        "--parquet-dir",
+        help="Write a price-only snapshot Parquet under this directory. "
+             "Defaults to data/market_snapshots. Used by the market-snapshot GHA workflow.",
+    ),
+    category: str = typer.Option(
+        DEFAULT_CATEGORY,
+        "--category",
+        help="Only capture events whose category contains this substring (case-insensitive).",
+    ),
+    all_categories: bool = typer.Option(
+        False,
+        "--all-categories",
+        help="Capture EVERY category, not just weather. Overrides --category.",
+    ),
+    include_modeled: bool = typer.Option(
+        False,
+        "--include-modeled",
+        help="Also capture the daily high/low temperature series that `snapshot` already models. "
+             "Off by default so this feed stays complementary to data/snapshots.",
+    ),
+) -> None:
+    """Price-only snapshot of the weather markets we don't model (rain, hurricanes, AQI, etc.).
+
+    One bulk venue call, one row per price-bearing market, written to
+    data/market_snapshots/YYYY-MM-DD/HHMM.parquet. No model, no order-book depth — raw
+    price history to fit models against later.
+    """
+    configure_logging()
+    console = Console()
+    exclude = frozenset() if include_modeled else frozenset(WEATHER_SERIES)
+    result = collect_market_snapshot_once(
+        parquet_dir=parquet_dir,
+        category=None if all_categories else category,
+        exclude_series=exclude,
+    )
+    msg = (
+        f"collect-markets: events={result.events_seen} markets_in_scope={result.markets_in_scope} "
+        f"rows_written={result.rows_written} "
+        f"duration={(result.ended_utc - result.started_utc).total_seconds():.1f}s"
+    )
+    if result.parquet_path:
+        msg += f" parquet={result.parquet_path}"
+    console.print(f"[dim]{msg}[/dim]")
 
 
 @app.command("fetch-resolution")
@@ -619,7 +672,7 @@ def fetch_climatology(
             time.sleep(5)  # ~20-year pulls trip the archive API's rate limit if fired back-to-back
         try:
             clims = build_station_climatology(sid, years_back=years_back, window_days=window_days)
-        except Exception as e:  # noqa: BLE001 — one bad station shouldn't kill the batch
+        except Exception as e:  # one bad station shouldn't kill the batch
             console.print(f"[red]{sid}: fetch failed ({e!r})[/red]")
             failed.append(sid)
             continue

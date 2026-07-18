@@ -1,0 +1,70 @@
+name: Snapshot other weather markets (price-only)
+
+# Hourly price-only snapshot of the weather markets we don't model — rain, hurricanes,
+# tornadoes, air quality, drought, hourly/monthly temperature, long-range climate. The
+# modeled daily high/low temperature series live in the separate, 15-minute `snapshot.yml`
+# feed (data/snapshots) with a model_p; this one is raw price history (data/market_snapshots)
+# to fit models against later.
+#
+# Cadence: hourly, not 15-min. These markets settle over weeks to months, so intraday
+# resolution buys nothing and 15-min would bloat the committed Parquet history ~4x.
+# One bulk venue call (~18s), ~450 price-bearing rows, one zstd Parquet per run.
+
+on:
+  schedule:
+    - cron: "20 * * * *"   # hourly at :20, offset from snapshot.yml's */15 to avoid overlap
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-snapshot-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  market-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Collect market prices
+        env:
+          LOG_LEVEL: WARNING
+        run: uv run polymarket collect-markets --parquet-dir data/market_snapshots
+
+      - name: Commit + push if new file
+        run: |
+          set -euxo pipefail
+          git config user.name "polymarket-snapshot-bot"
+          git config user.email "polymarket-snapshot-bot@users.noreply.github.com"
+          git add data/market_snapshots
+          if git diff --cached --quiet; then
+            echo "No new market-snapshot file to commit (likely a same-bucket duplicate)."
+            exit 0
+          fi
+          ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          git commit -m "Market snapshot: ${ts}"
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1

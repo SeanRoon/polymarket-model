@@ -19,6 +19,7 @@ uv run ruff check .                          # lint
 uv run mypy src                              # type-check
 uv run polymarket scan --max-lead-days 7     # generate today's edge signals (live network)
 uv run polymarket snapshot --parquet-dir data/snapshots --no-duckdb   # one-shot Parquet write (same as CI)
+uv run polymarket collect-markets --parquet-dir data/market_snapshots # price-only feed for weather markets we don't model
 uv run polymarket snapshot                                            # legacy: also write to local DuckDB
 uv run polymarket fetch-resolution           # backfill NWS CLI ground truth for resolved markets
 uv run polymarket compare-to-resolved        # score model predictions vs resolutions (Brier, log-loss, PnL)
@@ -105,6 +106,10 @@ There's no public price history endpoint anywhere in this domain (Kalshi doesn't
 **Repo is public** to get unlimited GitHub Actions minutes; on a private repo the 15-min cadence would exceed the 2,000-min/month free tier.
 
 Old Polymarket snapshots are archived under `data/snapshots/_archive_polymarket/` for reference. Don't read from them — schema is incompatible.
+
+### Price-only feed for the rest of the weather vertical (since 2026-07-17)
+
+The ECMWF model only speaks daily-extreme temperature, so everything else in Kalshi's "Climate and Weather" category — monthly rain (`KXRAIN*`), hurricanes/named storms, tornadoes, air quality (`KXAQICITY`), drought, hourly (`KXTEMP*H`) and monthly temperature, long-range climate — has no `model_p` and is skipped by `recorder.py`. `markets/market_recorder.py` records those as a **price-only** feed: one bulk `list_all_open_events` call (~18 s), one row per price-bearing market (touch bid/ask/mid/last, sizes, volume, OI, strike metadata — no model, no order-book depth), written to `data/market_snapshots/YYYY-MM-DD/HHMM.parquet` (separate from the modeled `data/snapshots/` tree). `collect-markets` defaults to the weather category and excludes the modeled `WEATHER_SERIES` (so the two feeds are complementary); `--all-categories` and `--include-modeled` widen it. `.github/workflows/market-snapshot.yml` runs it **hourly** (these markets settle over weeks–months, so 15-min would only bloat the committed history). This is raw history to fit models against later — nothing consumes it yet.
 
 ### Per-station bias correction (since 2026-05-23)
 
