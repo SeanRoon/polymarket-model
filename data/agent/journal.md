@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-18 00:15 UTC — nothing settled, no qualifying edge, holding 4
+
+`agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO still awaiting
+tonight's CLIs; PHX B97.5 JUL18 NO in flight). No strategy change — nothing settled, v6 stands. Board
+still JUL18 (lead ~16–19h), no JUL19 book open, so no new info since the four prior screens. Top model
+edges unchanged in shape: absurd model_p=0.95 "89-or-below" YES longshots on LIVE cells (AUS T90 @0.03,
+SATX T89 @0.04 — model error, mid-July Austin highs run 95–100°F; R7 vetoes) and modal-bin fades on
+excluded stations (LAX low B68.5, SATX high B93.5 — R5a, but I won't add a 4th correlated NO-fade before
+tonight's JUL17 grade). Held at 4. Want by next session: the three JUL17 NO-fade CLIs (dual-source fade
+tests #1–3, 2W–0L) to confirm or kill the R5a-respecting NO-fade half.
+
 ## 2026-07-17 23:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4` (MIA B96.5 / HOU B95.5 / LAX B79.5 JUL17 NO await tonight's
