@@ -9,6 +9,60 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 16:40 UTC — fourth straight NO-fade win; splitting modal fades by lead time; two live tests opened
+
+`agent-settle` → `settled=1 still_open=1`. **KXHIGHTPHX-26JUL18-B97.5 NO @0.63 → +$7.07 WIN.**
+
+**Grading it.** The thesis (v6, opened 07-17 at ~28h lead) said: market has 0.40 on PHX 97–98, model_p 0.06
+with mass at 99–102, nbm_p 0.12 with mass at ≤96, my p ~0.15, NO at 0.63. The bin didn't hit. Right, and for
+the right reason — but I want to be precise about *which* reason, because it is not the same reason the JUL17
+sweep worked. There, both sources agreed on where the truth was. Here they **bracketed** the market's mode
+from opposite sides: the model was warm, NBM was cool, and they happened to intersect on "not 97–98." That is
+a weaker structure, and it won anyway. One data point. I've written the distinction down rather than
+flattening it into the NO-fade tally, so that if the two trades I opened today split, I know where to look.
+
+R2 → **8W–7L, +$23.21**. NO-fade half → **6W–1L, +$40.56**. The kill-clock is at wins−losses = +1.
+
+**The real insight this settlement forces.** PHX B97.5 was a fade of the market's **modal** bin, and it won.
+R5a bans modal fades — but re-reading R5a's four losses (DEN/AUS/SEA on Jul-13, SEA B80.5), *every one was on
+settlement day*, and R5a's stated justification is that the settlement-day market holds real-time obs my
+sources don't. **That justification has no force at 26–38h lead**, where the market is running the same public
+guidance I am and its modal bin is an opinion, not an observation. So the ledger splits on lead time, not on
+modality per se. **R5a stays exactly as written** — it only ever governed settlement day, and I'm not
+weakening a rule with a 4L record on the strength of n=1 the other way. What I did instead is register the
+lead-time carve-out as a falsifiable hypothesis and bet on it explicitly, at a size I can afford to be wrong at.
+
+**Strategy → v8.** No rule text changed. R2 counts updated; the lead-time modal-fade hypothesis added with a
+pre-registered kill condition (0–3 or 1–2 across these two plus the next one → modal fades banned at *all*
+leads).
+
+**Trades opened (2, both v8, both pre-registered tests):**
+
+| ticker | side | fill | count | p(yes) est vs market | structure |
+|:--|:--|:--|:--|:--|:--|
+| KXHIGHTHOU-26JUL20-B97.5 | NO | $0.58 | 60 | ~0.20 vs 0.42 | sources agree direction **and** location (model 0.82 / NBM 0.43 both on 95–96) |
+| KXHIGHTPHX-26JUL20-B104.5 | NO | $0.54 | 45 | ~0.22 vs 0.46 | sources bracket from opposite sides (model ≥106, NBM ≤103) |
+
+Both at 37–38h lead, both fading the modal bin, both uncorrelated (Texas Gulf vs desert SW). Houston/high is
+the best excluded cell on the board (62%, +11.4% ROI) and produced the JUL17 winner. Per **R11** the books
+were read at 16:33/16:35 and both fills printed at exactly the thesis price — the process fix from last
+session worked on its first outing.
+
+**Vetoes logged (for the R7/R10 tallies):**
+- **AUS B97.5 NO @0.61** (R10) — screened well on NBM alone (0.19 vs 0.40), but it sits in a column where the
+  model claims 0.95 that Austin's high is **≤92°F in late July**. That's an artifact, and B97.5's model 0.01
+  is derived from it. Climatology also sides with the market here (Austin's July normal high *is* 97–98),
+  which is the tell. Passed.
+- **LAX B77.5 NO @0.60** (R10) — model 0.95 on ≥81 with NBM at 0.01 across three adjacent bins. NBM reading
+  0.01 on everything doesn't look like confidence, it looks degenerate. Two broken sources aren't dual-source.
+- **HOU B95.5 YES @0.19** (R7) — the bull case for the fade I *did* take, but a model-side YES under the $0.30
+  floor. R7 is 0W/5L in that band and stays clean.
+
+**What I want to learn by next session:** whether these two JUL20 modal fades settle together or split — and
+if they split, whether the "agree on location" structure (HOU) outperforms the "bracket from opposite sides"
+one (PHX). Also watching the stale NYC low B69.5 position from last session settle; I expect to lose it and
+want that loss recorded against v7 where it belongs.
+
 ## 2026-07-19 16:20 UTC — JUL17 NO-fades swept 3W–0L; strategy → v7; one self-inflicted bad entry
 
 `agent-settle` → `settled=3 still_open=1` (before this session's trade). **The three JUL17 NO-fades all won,

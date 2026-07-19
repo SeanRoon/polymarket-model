@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v7** (2026-07-19 — the three JUL17 NO-fades ALL WON (+$17.90); R2 is back net-positive at 7W–7L, +$16.14, and the R5a-respecting NO-fade subset is 3W–0L. Also adds **R11 (fill-freshness)** after this session's self-inflicted error: a 5-hour-stale book read produced an entry that violated R5a and R5b)
+**Version: v8** (2026-07-19 16:40 UTC — PHX JUL18 B97.5 NO @0.63 settled **+$7.07**, a fourth straight NO-fade win. R2 → **8W–7L, +$23.21**; the NO-fade half → **6W–1L, +$40.56**. No rule text changed; the new content is a **pre-registered hypothesis split**: modal-bin fades at lead ≥24h are a different animal from the settlement-day modal fades R5a bans, and this session opened two live tests of it)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -36,9 +36,10 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   7W–7L, net +$16.14 — back net-positive after the JUL17 NO-fade sweep.** The signal is
   *directional*, and the split is now the clearest structure in the whole ledger:
   - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
-    market): 5W–1L, +$33.49.** SFO low B59.5 @0.30 (+$27.41), PHX high B106.5 @0.55
-    (+$10.81), and the JUL17 sweep — MIA B96.5 @0.72 (+$7.97), HOU B95.5 @0.71 (+$5.51),
-    LAX B79.5 @0.69 (+$4.42). The only loss, SEA B80.5 @0.63, was a fade of the market's
+    market): 6W–1L, +$40.56.** SFO low B59.5 @0.30 (+$27.41), PHX high B106.5 @0.55
+    (+$10.81), the JUL17 sweep — MIA B96.5 @0.72 (+$7.97), HOU B95.5 @0.71 (+$5.51),
+    LAX B79.5 @0.69 (+$4.42) — and PHX high B97.5 @0.63 (+$7.07, settled 07-19). The only
+    loss, SEA B80.5 @0.63, was a fade of the market's
     modal bin — which R5a bans anyway. **The clean subset (dual-source NO-fade of a
     NON-modal bin, i.e. R2 + R5a both respected) is 3W–0L, +$17.90** — all three JUL17
     entries, all right for the right reason (actual CLI landed ≥2 bins away in every
@@ -55,10 +56,11 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
     NOT reliably rescue this half.
   **Operational lean:** within R2, favor NO-fades of overpriced bins that respect R5a;
   keep YES-buys of weak-cell longshots cautious-size and rare. **Pre-registered (v6,
-  unchanged in v7): the YES-buy half has 8 settled and is net-underwater — if it
+  unchanged in v8): the YES-buy half has 8 settled and is net-underwater — if it
   reaches 10 settled while still net-negative, R2 restricts to NO-fades only.**
   *Kill if (whole rule): cumulative R2 record reaches 5 settled losses more than wins
-  (v7: losses−wins = **0**; the death-clock is fully reset).*
+  (v8: losses−wins = **−1**, i.e. wins lead; the death-clock is further from firing than
+  it has ever been).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -186,6 +188,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   nothing about whether modal fades are safe. Still need ≥3 dual-source **modal** fade
   settlements. Pending counterfactuals awaiting CLIs: LAX low B68.5 @0.71, PHX low B80.5
   @0.46, PHL high T89 @0.61 (all JUL18; KLAX/KPHX/KPHL JUL18 not yet posted).
+- **Modal fades split by LEAD TIME (NEW in v8 — the actionable refinement):** R5a's four
+  losses were all fades of the modal bin **on settlement day**, when the market holds
+  real-time observations my sources don't. That argument has no force at lead ≥24h: at
+  26–38h out the market is running the same public model guidance I am, so its modal bin
+  is an opinion, not an observation. The ledger now separates cleanly on this axis —
+  **dual-source modal fades at lead ≥24h are 1W–0L** (PHX high B97.5 @0.63, +$7.07,
+  entered at 28h lead, thesis explicitly noted "lead ~28h so not a settlement-day fade").
+  **Live test opened this session (n=2):** HOU high B97.5 NO @0.58 and PHX high B104.5 NO
+  @0.54, both JUL20, both at 37–38h lead, both fading the market's modal bin with both
+  sources ≥0.10 under it. *Falsifiable: if these two plus the next such entry go 0–3 or
+  1–2, the lead-time carve-out is dead and modal fades get banned at all leads, not just
+  settlement day. If they win, v9 writes the ≥24h carve-out into R5a explicitly.* Note the
+  two tests differ in source structure — HOU's sources agree on direction AND location
+  (both put the high at 95–96), PHX's merely bracket the market's mode from opposite
+  sides. If they split, that difference is the first thing to look at.
 - ~~Single-source artifact shape~~ — promoted to **R8** in v3.
 - Longshot bias by category; time-to-close effects (is the last-day book sharper? —
   Jul-13 says yes, strongly).
@@ -197,6 +214,28 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v8** (2026-07-19, 16:40 UTC): **PHX high B97.5 NO @0.63 settled +$7.07** — the fourth
+  consecutive NO-fade win. Grading: right for the right reason in the narrow sense (the
+  faded 97–98 bin did not hit), but I should note the trade won on a *weaker* form of
+  dual-source agreement than the JUL17 sweep did — model (mass ≥99) and NBM (mass ≤96)
+  rejected 97–98 from **opposite sides** rather than agreeing where the truth was. That is
+  a real distinction and it is now written into the v8 hypothesis rather than glossed.
+  Changes: (1) R2 → **8W–7L, +$23.21**; NO-fade half → **6W–1L, +$40.56**; kill-clock at
+  losses−wins = −1. (2) New hypothesis: **modal fades split by lead time.** R5a's four
+  losses were all *settlement-day* modal fades, where the market's price carries live
+  observations; at lead ≥24h that argument doesn't hold, and PHX B97.5 (28h lead) is the
+  first data point. **R5a itself is unchanged** — it only ever governed settlement day, and
+  I am not weakening it on n=1. (3) Two pre-registered live tests opened at 37–38h lead:
+  HOU B97.5 NO @0.58 (sources agree on direction and location; best excluded cell at 62%
+  / +11.4%) and PHX B104.5 NO @0.54 (sources bracket from opposite sides; my PHX-high
+  fades are 2W–0L). (4) No rule text added, removed, or re-barred. Vetoes logged for the
+  tallies: **R10** — AUS B97.5 NO @0.61 and LAX B77.5 NO @0.60, both otherwise attractive
+  fades sitting in columns where the model claims something absurd (Austin's high ≤92°F
+  in late July at 0.95; LAX ≥81°F at 0.95 with NBM at 0.01 on three adjacent bins, which
+  reads as degenerate NBM rather than a confident one). Austin also had climatology
+  siding with the market, which is the tell I want on record. **R7** — HOU B95.5 YES @0.19,
+  a model-side longshot under the $0.30 floor, passed despite being the bull case for the
+  HOU fade I did take.
 - **v7** (2026-07-19): **The JUL17 NO-fade cohort settled 3W–0L, +$17.90** — MIA high
   B96.5 NO @0.72 (+$7.97, CLI 94), HOU high B95.5 NO @0.71 (+$5.51, CLI 93), LAX high
   B79.5 NO @0.69 (+$4.42). All three were right for the right reason: the actual high
