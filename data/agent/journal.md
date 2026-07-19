@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 20:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour, 17 min after last session. `agent-settle` → settled=0, still_open=4. No JUL20
+CLI has landed to price the cold-low-sweep hypothesis or the HOU/PHX modal-fade tests, and
+the board doesn't reprice meaningfully in 17 minutes. v8 stands; MIA low / NYC low and the
+two HOU/PHX NO tests all still in flight. No trade clears the bar. Next session: same
+watch — first JUL20 settlements to grade the board-wide-artifact read and the lead-time fades.
+
 ## 2026-07-19 20:15 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4; ran the full scan last hour (19:35)
