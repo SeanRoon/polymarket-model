@@ -9,6 +9,72 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 16:20 UTC — JUL17 NO-fades swept 3W–0L; strategy → v7; one self-inflicted bad entry
+
+`agent-settle` → `settled=3 still_open=1` (before this session's trade). **The three JUL17 NO-fades all won,
++$17.90 combined.** This was the pre-registered live test named in v6, and it passed.
+
+**Grading the settlements (all v5/v6 R2 NO-fades of non-modal bins):**
+
+| trade | entry | CLI actual | bin faded | verdict |
+|:--|:--|:--|:--|:--|
+| MIA high B96.5 NO | 0.72 | **94°F** | 96–97 | +$7.97 — right, right reason |
+| HOU high B95.5 NO | 0.71 | **93°F** | 95–96 | +$5.51 — right, right reason |
+| LAX high B79.5 NO | 0.69 | (settled NO) | 79–80 | +$4.42 — right, right reason |
+
+Not one of these was a near miss: the actual high landed **two or more bins away** in every case, which is what
+"both sources put this bin ≥0.10 below the market" is supposed to mean. This supports R2's NO-fade half
+(→ **5W–1L, +$33.49**) and, more specifically, the subset that also respects R5a — dual-source fades of
+**non-modal** bins, now **3W–0L, +$17.90**. R2 overall is back net-positive (**7W–7L, +$16.14**) and its
+death-clock resets to zero.
+
+**What I deliberately did NOT conclude:** these do not advance the "dual-source fades beat R5a" carve-out.
+All three faded non-modal bins, so they say nothing about whether fading the *modal* bin is safe. That
+hypothesis stays at n=2. Keeping those two claims separate is the whole point of having written them down
+separately.
+
+**Strategy → v7.** R2's NO-fade half scaled up (2 uncorrelated fades per session, normal size, own kill
+clause); excluded-cities hypothesis reframed as "the market overprices non-modal temperature bins, cities
+incidental"; YES-buy restriction clause untouched. Plus R11, below.
+
+**The error — I have to own this one.** I screened `KXLOWTNYC-26JUL19-B69.5` and it was a textbook v7 fade:
+bid 0.30/ask 0.37, modal bin was T67 at 0.43, model 0.03 / NBM 0.14, NO at 0.70 for ~0.18 edge. Then I ran
+three more `agent-scan` calls to check other events; each hit a 300-second timeout, and **~5 hours passed**
+before I placed the trade on that screen. The book had inverted in the meantime:
+
+- T67 (<67°): 0.43 → **0.13** (collapsed)
+- B69.5: mid 0.335 → **0.625** — it is now the modal bin, by a wide margin
+
+The fill printed at **$0.40, not the $0.70 my recorded thesis asserts**. So the position I actually hold
+**fades the market's modal bin (R5a) after a 0.29 adverse move (R5b)** — two live vetoes I would have caught
+with a 20-second re-scan. Worse, it is a settlement-day *low*: the overnight minimum is largely observed by
+now, the market repriced *because it learned something*, and my model/NBM inputs were as stale as my price.
+That is the exact obs-beats-sources shape that killed ATL low B72.5 and drove four R5 counterfactuals.
+
+I expect to lose the $12.51. The ledger is append-only and that is correct — the trade stands, and
+`performance.md` will score it against v7 where it belongs. The thesis text in the ledger is wrong about the
+price and I cannot edit it, so this journal entry is the correction of record.
+
+**New rule R11 (fill freshness):** the live-book check must be the last action before `agent-trade`; if >15
+minutes or any other event-scan intervenes, re-scan and re-run the rule checks. R6 said "verify the live
+book" and I did — it never said the verification expires. It does.
+
+**Vetoes logged this session** (JUL19 board, settlement day, lead 8–11h): the board is overwhelmingly
+dual-source fades of *modal* bins, all R5a — PHIL high B84.5 (0.40 modal, and it drifted 0.02 against me),
+BOS high B81.5 (0.475 modal, drifted 0.055 against), MIN high B90.5 (0.515 modal), DAL high B97.5 (0.565
+modal), HOU high B96.5, MIN low B70.5, SEA high B79.5, LAX low B67.5, HOU low B77.5. **ATL high B94.5** was
+the near-miss worth naming: non-modal (0.305 vs B92.5's 0.395), NBM 0.01 — but model_p 0.21 sits **0.095**
+below the mid, failing R2's ≥0.10 both-sources bar by half a point. Vetoed on the rule's letter; logging it
+as a counterfactual precisely because the temptation to round 0.095 up was real. Denver T93/B97.5 → R9.
+AUS T93 / LAX T80 / PHX low T76 at model 0.94–0.95 vs NBM 0.01–0.53 → R7+R8, complements → R10.
+
+**Trade opened (1):** KXLOWTNYC-26JUL19-B69.5 NO ×30 @ $0.40 ($12.51) — described above; qualified under v7
+R2 at screen time, violated R5a/R5b by fill time.
+
+Want by next session: the NYC B69.5 CLI (I expect a loss, and I want it graded as an R11 failure, not as
+evidence against the NO-fade rule — the rule didn't fail here, my execution did); PHX B97.5 JUL18; and the
+three JUL18 modal-fade counterfactuals (LAX low B68.5, PHX low B80.5, PHL high T89) once KLAX/KPHX/KPHL post.
+
 ## 2026-07-18 06:15 UTC — nothing settled, no qualifying edge, holding 4
 
 `agent-settle` → `settled=0 still_open=4`. No JUL17 CLIs yet (MIA B96.5 / HOU B95.5 / LAX B79.5); PHX B97.5

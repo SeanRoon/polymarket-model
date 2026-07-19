@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v6** (2026-07-17 — ATL low B72.5 YES settled −$9.66; R2 back underwater at 4W–7L, net −$1.76; YES-buy half now 2W–6L, −$17.35 and two settlements from a pre-registered restriction to NO-fades only)
+**Version: v7** (2026-07-19 — the three JUL17 NO-fades ALL WON (+$17.90); R2 is back net-positive at 7W–7L, +$16.14, and the R5a-respecting NO-fade subset is 3W–0L. Also adds **R11 (fill-freshness)** after this session's self-inflicted error: a 5-hour-stale book read produced an entry that violated R5a and R5b)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -32,14 +32,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   record get at most 1 small trade per session, and only when BOTH sources agree
   against the market (model_p and nbm_p on the same side of the midpoint, each by
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
-  correlated with anything already open. **Ledger truth (v5 audit, updated v6): R2 is
-  4W–7L, net −$1.76 — back underwater after ATL low B72.5.** The signal is
-  *directional*, and it keeps sharpening in the same direction:
+  correlated with anything already open. **Ledger truth (v7): R2 is
+  7W–7L, net +$16.14 — back net-positive after the JUL17 NO-fade sweep.** The signal is
+  *directional*, and the split is now the clearest structure in the whole ledger:
   - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
-    market): 2W–1L, +$15.59.** SFO low B59.5 @0.30 (+$27.41) and PHX high B106.5 @0.55
-    (+$10.81) both won; the only loss, SEA B80.5 @0.63, was a fade of the market's
-    modal bin — which R5a bans anyway, so a clean R2 NO-fade that also respects R5a is
-    2W–0L so far (MIA B96.5 / HOU B95.5 in flight are its live test).
+    market): 5W–1L, +$33.49.** SFO low B59.5 @0.30 (+$27.41), PHX high B106.5 @0.55
+    (+$10.81), and the JUL17 sweep — MIA B96.5 @0.72 (+$7.97), HOU B95.5 @0.71 (+$5.51),
+    LAX B79.5 @0.69 (+$4.42). The only loss, SEA B80.5 @0.63, was a fade of the market's
+    modal bin — which R5a bans anyway. **The clean subset (dual-source NO-fade of a
+    NON-modal bin, i.e. R2 + R5a both respected) is 3W–0L, +$17.90** — all three JUL17
+    entries, all right for the right reason (actual CLI landed ≥2 bins away in every
+    case: MIA 94 vs the 96–97 bin, HOU 93 vs 95–96, LAX clear of 79–80).
+    **This is the agent's best-evidenced edge. Scaled up in v7:** up to **2** R2 NO-fades
+    per session (was 1) when they are uncorrelated (different air mass), and normal size
+    rather than minimum size. *Kill if: the non-modal NO-fade subset gives back its
+    +$17.90 and goes net-negative over the next 10 settlements.*
   - **YES-buy half (buy an UNDERpriced weak-cell bin): 2W–6L, −$17.35.** Winners MIA
     B92.5 (Jul-13) and DC low B72.5 (Jul-15); losers SEA B76.5, BOS B94.5, DAL T88,
     MIA B92.5 (Jul-15), NYC B101.5, and now ATL low B72.5 (Jul-16, −$9.66 — the
@@ -48,10 +55,10 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
     NOT reliably rescue this half.
   **Operational lean:** within R2, favor NO-fades of overpriced bins that respect R5a;
   keep YES-buys of weak-cell longshots cautious-size and rare. **Pre-registered (v6,
-  per editing rule 3): the YES-buy half has 8 settled and is net-underwater — if it
+  unchanged in v7): the YES-buy half has 8 settled and is net-underwater — if it
   reaches 10 settled while still net-negative, R2 restricts to NO-fades only.**
   *Kill if (whole rule): cumulative R2 record reaches 5 settled losses more than wins
-  (currently losses−wins = 3; **two more net losses to die**).*
+  (v7: losses−wins = **0**; the death-clock is fully reset).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -126,6 +133,25 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   own reasoning), and must clear the governing rule's bar on that source alone.
   *Kill if: over ≥10 logged vetoes, the vetoed NO side would have net won.*
 
+- **R11 (fill freshness — NEW in v7, earned the hard way):** The live-book check that
+  justifies a trade must be the **last thing done before** the `agent-trade` call. If
+  more than ~15 minutes or any other event-scan has intervened, **re-scan the target
+  event and re-run the rule checks on the new prices** before entering. R6 said "verify
+  the live book"; it did not say "and the verification expires," and this session proved
+  it does. On 2026-07-19 I screened KXLOWTNYC-26JUL19-B69.5 at bid 0.30/ask 0.37 (a
+  clean non-modal dual-source fade, NO at 0.70), then spent ~5 hours on further scans
+  (three `agent-scan` calls that each ran to a 300 s timeout) and entered on the stale
+  read. **The book had repriced completely: T67 collapsed 0.43 → 0.13 and B69.5 ran
+  0.335 → 0.625.** The fill printed at **$0.40, not the $0.70 my thesis asserts** — and
+  the position I actually hold violates two live rules: it fades what is now the
+  **modal** bin (R5a) after a **0.29 adverse move** (R5b). Both vetoes were available in
+  real time; only my staleness hid them. Note the compounding error: a settlement-day
+  *low* whose overnight minimum is largely observed is exactly the obs-beats-sources
+  shape that killed ATL low B72.5 — the market repriced *because it learned something*,
+  and my model/NBM inputs were 5+ hours stale too. *Permanent (process rule). Kill only
+  if it ever blocks a trade that would have won at better than its entry-implied rate,
+  logged ≥10 times.*
+
 ## Open hypotheses (not yet rules)
 
 - **~~NBM-confirmation on strong cells~~ — REJECTED (v3, Jul-14 cohort).** The test
@@ -140,19 +166,26 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   (≥$0.50 vs sub-$0.30) and cell record, which is R7 + R1, not NBM. *Do not resurrect
   without ≥10 fresh settlements.*
 - Is the model's edge on production-excluded cities real money, or is the exclusion
-  wisdom? **Updated read (v6): R2 is net −$1.76 across excluded cells — roughly
-  break-even, so neither "real money" nor "exclusion is wisdom" is settled.** The
-  split remains *directional*, not city-based: NO-fades of overpriced bins win
-  (SFO, PHX), YES-buys of underpriced weak-cell longshots mostly lose (2W–6L). Watch
-  whether the directional split holds as n grows.
+  wisdom? **Updated read (v7): R2 is net +$16.14 across excluded cells — modestly
+  positive, and the positive part is entirely one direction.** The split is not
+  city-based, it is *directional*: NO-fades of overpriced bins win (5W–1L; SFO, PHX,
+  MIA, HOU, LAX), YES-buys of underpriced weak-cell longshots mostly lose (2W–6L).
+  Emerging read: what I actually have is not "the model finds value in excluded cities"
+  but "**the market overprices non-modal temperature bins, and two independent forecasts
+  agreeing they are cheap is a good detector of it**." The excluded cities are just where
+  such bins are findable, not the source of the edge. Test it as n grows.
 - **Dual-source-confirmed fades beat R5a (NEW in v5, n=2 wins):** SFO low B59.5 NO @0.30
   and PHX high B106.5 NO @0.55 both faded high-priced bins (mid 0.735, 0.47) where BOTH
   model AND NBM sat ≥0.10 below the market — both WON (+$27.41, +$10.81). The R5a
   modal-fade LOSERS (Jul-13 DEN/AUS/SEA, SEA B80.5) were driven by the biascorr model
   alone, with the market's own price as the counter-signal. Hypothesis: R5a should carve
-  out fades where NBM (an independent source) *also* rejects the bin by ≥0.10. **Do NOT
-  change R5a yet** — n=2 wins vs 4 model-only modal-fade losses. Require ≥3 more
-  dual-source-fade settlements before promoting a carve-out; track them in the journal.
+  out fades where NBM (an independent source) *also* rejects the bin by ≥0.10. **Still
+  n=2 after v7 — do NOT change R5a.** Being precise about why the JUL17 sweep does not
+  count: MIA B96.5, HOU B95.5 and LAX B79.5 were all fades of **non-modal** bins, so they
+  are evidence for the R5a-*respecting* subset, not for the carve-out. They tell me
+  nothing about whether modal fades are safe. Still need ≥3 dual-source **modal** fade
+  settlements. Pending counterfactuals awaiting CLIs: LAX low B68.5 @0.71, PHX low B80.5
+  @0.46, PHL high T89 @0.61 (all JUL18; KLAX/KPHX/KPHL JUL18 not yet posted).
 - ~~Single-source artifact shape~~ — promoted to **R8** in v3.
 - Longshot bias by category; time-to-close effects (is the last-day book sharper? —
   Jul-13 says yes, strongly).
@@ -164,6 +197,29 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v7** (2026-07-19): **The JUL17 NO-fade cohort settled 3W–0L, +$17.90** — MIA high
+  B96.5 NO @0.72 (+$7.97, CLI 94), HOU high B95.5 NO @0.71 (+$5.51, CLI 93), LAX high
+  B79.5 NO @0.69 (+$4.42). All three were right for the right reason: the actual high
+  landed at least two bins away from the faded bin in every case, exactly as two
+  independent sources said it would. This is the first cohort that confirms a
+  *pre-registered* directional hypothesis rather than discovering one after the fact —
+  v5 called the NO-fade lean, v6 named MIA/HOU as its live test, and the test passed.
+  Changes: (1) **R2 ledger → 7W–7L, net +$16.14**; kill-clock reset to losses−wins = 0.
+  (2) NO-fade half → **5W–1L, +$33.49**; the R5a-respecting non-modal subset is **3W–0L,
+  +$17.90** and is now the agent's best-evidenced edge — **scaled up** to 2 uncorrelated
+  NO-fades per session at normal size (editing rule 3: scale up what wins), with its own
+  kill clause. (3) Excluded-cities hypothesis reframed: the edge looks like *market
+  overprices non-modal temperature bins*, with the cities incidental. (4) The
+  dual-source-modal-fade carve-out gets **no** new evidence — the sweep was non-modal;
+  R5a untouched, still n=2. (5) YES-buy half untouched at 2W–6L; its restriction clause
+  stands. (6) Added **R11 (fill freshness)** after a self-inflicted error this session,
+  described in full in the rule and graded honestly in the journal: I screened NYC low
+  B69.5 as a clean non-modal fade at NO 0.70, then let ~5 hours of slow scans pass and
+  traded on the stale read. The book had inverted (B69.5 0.335 → 0.625, now modal); the
+  fill printed at $0.40 and the recorded thesis misstates both the price and the R5a/R5b
+  status. The trade stands in the ledger — it is not editable and should not be — as a
+  −EV position I expect to lose. R6 assumed a verification stays valid; R11 says it
+  expires.
 - **v6** (2026-07-17): ATL low B72.5 YES @0.37 settled **−$9.66 LOSS** (a v3-cited R2
   dual-source YES-buy; my p 0.45 via NBM 0.56 + climatology against the market's 0.55
   warm lean on T73). The CLI landed ≥74°F — **the market's warm lean was exactly
