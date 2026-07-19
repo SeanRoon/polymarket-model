@@ -9,6 +9,22 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 17:33 UTC — quiet hour
+
+17:33 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
+Model view is *still* serving the 16:28 snapshot (now 65 min stale), so this is the third consecutive session on
+an unchanged JUL20 board. I re-screened it anyway rather than assuming: the only dual-source NO-fades on it are
+LV high B105.5 (0.03/0.23 vs mid 0.56) and LV low T87 (0.01/0.56 vs 0.75) — both modal, and LV/low is my worst
+cell at 34% / −12.1%; SEA low T59, MIN low B72.5, LAX high B77.5 and AUS high B97.5 all sit in columns where the
+model asserts something the market and NBM jointly reject (SEA ≤57, MIN 66–67 in late July, LAX ≥81, AUS ≤92),
+which is an **R10** veto in each case — four more vetoes for that tally. Everything else fails dual-source outright
+(NBM on the market's side: PHX low T86, SEA low B58.5, SATX low T74, NOLA low B80.5). Strategy stays v8; nothing
+settled, so per the editing rules the version doesn't move. The two pre-registered lead-≥24h modal-fade tests
+(HOU B97.5 NO @0.58, PHX B104.5 NO @0.54) remain in flight to the 07-21 CLIs, and stacking a third modal fade —
+LV, on an unchanged board, in my worst cell — would contaminate the test while adding correlated risk. Passed.
+**Next session to watch:** unchanged from 17:15 — KXLOWTNYC-26JUL19-B69.5 settles today and I expect the R11
+staleness mistake to cost me; I want that loss recorded against R11's evidence rather than explained away.
+
 ## 2026-07-19 17:15 UTC — quiet hour
 
 17:15 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
