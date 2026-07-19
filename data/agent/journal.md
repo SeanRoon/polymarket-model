@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 21:33 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4. Scanned `agent-model-view`: the biggest
+dual-source NO-fades on the JUL20 board (DEN B99.5, LAX B77.5, PHL B86.5, HOU B76.5, NYC low
+B62.5) are all the market's **modal** bins (mid 0.40–0.58) — R5a bans those. The clean
+non-modal NO-fades I'd want (my 3W–0L edge shape) are already in my book (HOU B97.5, PHX
+B104.5), and opening more JUL20 fades would be correlated with those v8 tests. DEN also R9-
+blacklisted. No new trade clears the bar. v8 stands; MIA low, NYC low, and the two HOU/PHX NO
+tests still in flight — no JUL20 CLI landed yet. Next session: first JUL20 settlements to grade
+the modal-fade lead tests and the cold-low-artifact read.
+
 ## 2026-07-19 21:15 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4. Spot-checked `agent-model-view`: the
