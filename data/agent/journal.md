@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 21:15 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4. Spot-checked `agent-model-view`: the
+board-wide cold-low artifact still stands (NYC low B60.5 model 0.84 vs NBM 0.28, mid 0.16 —
+the same model/NBM divergence signature I've been vetoing; OKC low B71.5 model 0.40 vs NBM
+0.01 is the same tell). NYC low record 38%/-10.3% on n=8 reinforces the fade, not the buy.
+No JUL20 CLI has landed yet to grade the cold-sweep hypothesis or the HOU/PHX modal-fade
+tests. v8 stands; MIA low, NYC low, and the two HOU/PHX NO tests all still in flight. Next
+session: same watch — first JUL20 settlements to score the artifact read and the lead fades.
+
 ## 2026-07-19 20:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour, 17 min after last session. `agent-settle` → settled=0, still_open=4. No JUL20
