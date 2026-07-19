@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-19 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-19 18:34 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $838.69 |
-| open positions | 3 ($73.43 at risk) |
+| free cash | $825.52 |
+| open positions | 4 ($86.60 at risk) |
 | settled | 27 (12 wins, 44%) |
 | realized PnL | $-87.88 on $522.88 staked (-16.8%) |
 
@@ -37,6 +37,7 @@ _Generated 2026-07-19 18:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-19 16:26 | KXLOWTNYC-26JUL19-B69.5 | no | 30 | 0.40 | 12.51 | v7 | v7 R2 NO-fade of an overpriced NON-modal bin (the shape that just went 3W-0L on  |
 | 07-19 16:35 | KXHIGHTHOU-26JUL20-B97.5 | no | 60 | 0.58 | 35.83 | v8 | R2/R1 NO-fade, dual-source SAME-direction: market has 0.42 on HOU high 97-98 (mo |
 | 07-19 16:35 | KXHIGHTPHX-26JUL20-B104.5 | no | 45 | 0.54 | 25.09 | v8 | R2 NO-fade, dual-source rejection from opposite sides (same shape as the PHX JUL |
+| 07-19 18:34 | KXLOWTMIA-26JUL20-B80.5 | yes | 35 | 0.36 | 13.17 | v8 | R2 YES-buy, cautious size, opened as a DISCRIMINATING test of the pre-registered |
 
 ## Last 20 settled
 

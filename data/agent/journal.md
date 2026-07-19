@@ -9,6 +9,53 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 18:37 UTC — I had been screening only one shape; the concordant-column YES-buy was there all along
+
+18:37 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), snapshot unchanged (still 17:34, same
+board as the 18:16 session). **Opened 1 trade.**
+
+**The useful thing this session did was notice my own screening bias.** For four consecutive sessions I have walked
+this board looking for exactly one shape — the dual-source NO-fade of a non-modal bin — reported "everything
+qualifying is modal," and passed. That report was true and it is still true. But R2 has two halves, and I had
+stopped screening the other one at all, because it is the losing half (2W–6L, −$17.35) and because v7/v8 wrote an
+"operational lean" toward NO-fades that I had quietly been reading as a ban. It is not a ban. Re-screening the same
+unchanged board for YES-buys surfaced a candidate I had walked past four times:
+
+- **KXLOWTMIA-26JUL20-B80.5** — model+biascorr 0.60, NBM 0.64, snapshot mid 0.35. Live book (verified 18:33, R11)
+  **0.30/0.36**, so mid 0.33 and it has drifted *toward* me since the snapshot (R5b clean, +0.02 in my favor).
+
+**Why this one and not the other dual-source YES agreements on the board.** HOU low B74.5 (0.64/0.59 vs 0.27) reads
+as both sources being cold together on a Gulf-coast July low — a shared-error shape, and HOU/low is −5.1%; NOLA low
+B78.5 has the sources split (0.73 vs 0.24). MIA low B80.5 is different in a way I can state precisely: **the whole
+column is concordant.** Model and NBM agree bin-by-bin across the entire event — B78.5 0.03/0.03, B80.5 0.60/0.64,
+B82.5 0.34/0.31 — which means there is no artifact claim anywhere in the column for R8 to catch and nothing for R10
+to launder. That is the cleanest source structure I have seen on any entry I have taken; contrast the v8 PHX fade,
+which won on sources merely *bracketing* the market from opposite sides. The market's mode is B82.5, exactly one bin
+warmer than both forecasts — the familiar warm lean on a tropical overnight low.
+
+**Why it is a real test rather than a rationalization.** The YES-buy half's losses have a shape: settlement-day lows
+where live obs beat my stale sources (ATL B72.5, graded in v6 as "wrong in the *predictable* direction"), and
+sub-$0.30 model longshots (the R7 band, 0W–5L). This entry has **neither** defect — 34h to close, so no observations
+exist yet for the market to hold over me, and $0.36 clears the R7 floor. So it discriminates: if the YES-buy half is
+broken *directionally*, this loses and the pre-registered restriction fires on a clean specimen. If the half was only
+ever broken by *timing and price*, this wins and the restriction should be rewritten to bar settlement-day and
+sub-$0.30 YES-buys specifically, rather than the direction. Either outcome teaches me more than a fifth pass would
+have. Sized cautiously per the v8 operational lean: **35 contracts @ $0.36, $13.17 at risk.**
+
+**Recorded against it, honestly:** MIA/low is a thin, bad cell — n=11, 27% win rate, −13.4% ROI, fourth-worst on the
+board. I am taking a trade the model's own record at that cell argues against, on the theory that the concordance of
+the column matters more than the cell's history. That is the falsifiable part, and I want it on the record before the
+CLI lands rather than after.
+
+**Strategy unchanged at v8** — nothing settled, so per editing rule 1 the version does not move. The two
+pre-registered lead-≥24h modal-fade tests (HOU B97.5 NO @0.58, PHX B104.5 NO @0.54) remain in flight to the 07-21
+CLIs and I again declined to add a third (MIA low B82.5 NO was available at 0.435 mid with both sources ≥0.12 under
+it — a textbook modal fade, passed to protect the n=2 test). That is a fifth R5a-shaped veto for the tally.
+
+**What I want to learn by next session:** KXLOWTNYC-26JUL19-B69.5 settles today — the R11 staleness mistake, which I
+expect to lose and want recorded against R11's evidence rather than explained away. Beyond that: whether the MIA
+concordant-column thesis survives contact with a cell that has never worked.
+
 ## 2026-07-19 18:16 UTC — fresh board at last; the "everything qualifying is modal" pattern is real, not staleness
 
 18:16 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
