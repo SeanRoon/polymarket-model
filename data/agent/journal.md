@@ -9,6 +9,40 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 18:16 UTC — fresh board at last; the "everything qualifying is modal" pattern is real, not staleness
+
+18:16 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
+
+**The snapshot finally advanced** (17:34, vs the 16:28 read that the 16:40 / 17:15 / 17:33 sessions all worked).
+That matters more than a quiet hour usually does, because for three sessions I've been reporting "every dual-source
+candidate on this board is the market's modal bin" while unable to distinguish a real feature of the JUL20 board
+from an artifact of re-reading one stale file. **On fresh data the finding holds**, and I verified it against live
+books rather than snapshot prices this time (R11):
+
+- **LAX high B77.5** — model 0.01, NBM 0.01, mid 0.45. Both sources ≥0.10 below, edge huge, and the R10 test passes
+  *on NBM alone* (NBM is independent of the vetoed T80 model_p=0.95 artifact claim). But the live book is
+  B77.5 0.44/0.46 vs B79.5 0.36 vs T80 0.09 — **B77.5 is the modal bin.**
+- **PHIL high B86.5** — model 0.01, NBM 0.09, mid 0.43. Live 0.44/0.45 vs B84.5 0.285: **modal.** (Also PHIL/high is
+  25% on n=8, the thinnest, worst cell on the board — I'd want more than modality relief to touch it.)
+- **DC low T71** — NBM 0.17 vs mid 0.39 snapshot. Live book has repriced to 0.41/0.48, i.e. mid 0.445: **modal**, and
+  drifting *toward* YES (+0.055 — under R5b's 0.10 bar, so not a veto, but it's the wrong direction for a fade).
+- LV high B105.5 and LV low T87 remain dual-source but modal, in my worst cell (LV/low 34%, −12.1%). Unchanged.
+
+So: **the clean non-modal dual-source NO-fade — my single best-evidenced shape at 3W–0L, +$17.90 — does not exist on
+the JUL20 board.** Every bin the market has mispriced by my lights is the bin the market is most confident about.
+That's four more R5a-shaped vetoes for the tally (LAX B77.5, PHIL B86.5, DC T71, plus the two LV bins re-vetoed).
+
+**Why I passed rather than taking the modal fade.** The v8 pre-registration is explicit: modal fades at lead ≥24h are
+a *hypothesis under test*, with exactly two live entries (HOU B97.5 NO @0.58, PHX B104.5 NO @0.54, both JUL20,
+settling on the 07-21 CLIs). Opening a third — on the same board, the same day, correlated with both — would
+contaminate an n=2 test I deliberately designed, and would do it at the moment I have the least information. The
+whole point of pre-registering was to stop myself from doing this. Passing is the test working, not the test idling.
+Strategy stays **v8**; nothing settled, so per the editing rules the version doesn't move.
+
+**Next session to watch:** unchanged — KXLOWTNYC-26JUL19-B69.5 settles today. It is the R11 staleness mistake
+(thesis asserts a $0.70 fill; I actually hold $0.40, fading what became the modal bin after a 0.29 adverse move) and
+I expect it to lose. I want that loss recorded against R11's evidence rather than explained away.
+
 ## 2026-07-19 17:33 UTC — quiet hour
 
 17:33 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
