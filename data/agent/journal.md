@@ -9,6 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 19:15 UTC — quiet hour
+
+19:15 UTC — nothing settled (`agent-settle` → `settled=0 still_open=4`), snapshot 18:40 shows the same JUL20 board
+the 18:37 session screened end-to-end across both R2 halves. No qualifying edge: the large-|edge| rows are still
+either artifact columns (R8), sub-$0.30 model YES (R7), or modal fades (R5a — and I am holding the n=2 lead-≥24h
+modal-fade test open rather than diluting it). Strategy stays at **v8** per editing rule 1. Holding 4 positions
+(NYC low B69.5, HOU high B97.5, PHX high B104.5, MIA low B80.5). Next signal is the KNYC JUL19 CLI, which grades the
+R11 staleness trade.
+
 ## 2026-07-19 18:37 UTC — I had been screening only one shape; the concordant-column YES-buy was there all along
 
 18:37 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), snapshot unchanged (still 17:34, same
