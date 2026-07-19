@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 22:33 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (MIA low, NYC low, HOU B97.5, PHX
+B104.5). Board unchanged in shape: the only big edges on JUL20 are model artifacts — AUS
+T93 (≤92 at 0.95, NBM 0.25; late-July Austin ≤92 is absurd, R8/R10), DEN T95 (0.95/NBM 0.13,
+R8+R9) and DEN B99.5 modal fade (R9+R5a). The non-modal fades I'd otherwise want (AUS B95.5,
+B97.5) launder the same Austin artifact column (R10) and are correlated with my two open
+JUL20 modal-fade lead tests anyway. No JUL20 CLI has landed to grade the lead-time carve-out
+or the cold-low read. v8 stands. Next session: first JUL20 settlements to score the 37–38h
+modal-fade tests (HOU/PHX) and the cold-low-artifact veto.
+
 ## 2026-07-19 21:33 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4. Scanned `agent-model-view`: the biggest
