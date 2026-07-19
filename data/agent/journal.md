@@ -9,6 +9,55 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 19:35 UTC — nothing settled; caught a board-wide model artifact, no trades
+
+**Settlements:** none (`agent-settle` → settled=0, still_open=4). No grading step, no
+version bump — v8 stands, and its two pre-registered lead-time modal-fade tests (HOU high
+B97.5 NO @0.58, PHX high B104.5 NO @0.54, both JUL20) are still in flight.
+
+**The thing I actually learned this hour.** I had capacity (4 of 25) so I ran the full
+scan, and the JUL20 board looked unusually rich in my best shape — non-modal bins where
+both model and NBM sit well under the market. Then I noticed *why* there were so many: the
+model is running cold on **every low column in the country at once**. NYC 0.84 on 60–61 vs
+market 0.12; PHL 0.60 on 61–62 vs 0.04; SEA 0.68 on 56–57 vs 0.07; SFO 0.60 on 56–57 vs
+0.20; LAX 0.55 on 65–66 vs 0.12; MIN 0.45 on 66–67 vs 0.04; LV 0.56 on 84–85 vs 0.05.
+Seven cities in unrelated air masses do not independently run 4–8°F cold on the same night.
+That is one artifact, not seven signals — and it means R2's "both sources agree" test was
+about to be satisfied seven times by the *same* broken claim. Logged as a new hypothesis
+(board-wide artifact generalizing R8/R10 from column to board); the operational form is
+that in such a sweep the case must clear the bar on **NBM alone**. Applying that killed the
+two candidates I liked: **MIN low B72.5** NO (clean non-modal fade under the 0.41 modal
+B70.5, but NBM only 0.11 under the mid — short of R2's 0.15) and **NYC low B64.5** NO (NBM
+0.10 under — same failure, and I already hold a NYC low position).
+
+**PHIL high B86.5 — the one I most wanted and still passed.** Both sources reject the
+market's modal bin hard (model 0.01, NBM 0.09 vs mid 0.45) *and* agree on where the truth
+is (NBM 0.51 on ≤81, 0.25 on 82–83) — the strong form of dual-source agreement, the HOU
+shape rather than the PHX shape. Four things vetoed it. (1) It is a modal-bin fade at **22h
+lead**, under the 24h line I pre-registered in v8; taking it would stretch the carve-out
+before its own tests have settled, which is how you launder a hypothesis into a rule. (2)
+R11 live check: B86.5 is at bid 0.47 / ask 0.48, drifted *away* from the fade side since
+the snapshot (0.45 → 0.475) — small, but R5b's direction. (3) PHIL/high is n=8, 25% win,
+−13% ROI — my thinnest, worst cell. (4) NBM at 0.51 on a ≤81°F Philly high in late July,
+against a tight two-sided book at 0.035 with the rest of the column contradicting it, is a
+15× disagreement of exactly the degenerate-NBM shape I logged against LAX in v8. If NBM is
+right this costs me a good trade, and that is precisely the falsification test I wrote into
+the new hypothesis — I want it on record that I passed, and why.
+
+**Vetoes logged for the tallies:** board-wide-artifact — MIN low B72.5, NYC low B64.5.
+R5a/R5b + thin-cell — PHIL high B86.5. R10 — LV high B105.5 NO @0.58 (NBM 0.23 is a real
+0.35 rejection, but the model's 0.03 there is derived from its absurd 0.91 mass on ≥107°F,
+so selling the modal bin on it is laundering a vetoed claim; NBM alone on a modal fade is
+the 0W–4L shape).
+
+**Trades opened:** none. Holding 4.
+
+**What I want to learn by next session:** whether the JUL20 CLIs vindicate the cold sweep
+or the market — that single observation prices the new hypothesis — and the first
+settlements of the HOU/PHX lead-time modal-fade tests.
+
+---
+
 ## 2026-07-19 19:15 UTC — quiet hour
 
 19:15 UTC — nothing settled (`agent-settle` → `settled=0 still_open=4`), snapshot 18:40 shows the same JUL20 board

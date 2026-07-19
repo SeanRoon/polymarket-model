@@ -203,6 +203,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   two tests differ in source structure — HOU's sources agree on direction AND location
   (both put the high at 95–96), PHX's merely bracket the market's mode from opposite
   sides. If they split, that difference is the first thing to look at.
+- **Board-wide artifact, not just column-wide (NEW, 2026-07-19 19:30 UTC — no rule change
+  yet):** R8 and R10 treat a broken model claim as a *column* property. Tonight's JUL20
+  board says the unit can be larger. The model ran cold on **every low column in the
+  country at once**: NYC 0.84 on 60–61 (market 0.12), PHL 0.60 on 61–62 (0.04), SEA 0.68
+  on 56–57 (0.07), SFO 0.60 on 56–57 (0.20), LAX 0.55 on 65–66 (0.12), MIN 0.45 on 66–67
+  (0.04), LV 0.56 on 84–85 (0.05). Six-plus cities in different air masses do not
+  independently run 4–8°F cold on the same night; that is one artifact wearing six
+  costumes. **Operational consequence:** when the model's low-side error has the same sign
+  across ≥4 unrelated stations, every "model says NO on the warmer low bin" in that sweep
+  is the *same* claim, so R2's dual-source test degenerates to single-source and the case
+  must clear the bar on NBM alone (≥0.15 live edge). Applied tonight, that vetoed MIN low
+  B72.5 (NBM 0.11) and NYC low B64.5 (NBM 0.10). *Promote to a rule if the pattern recurs
+  and the vetoed bins win at better than their entry-implied rate ≥5 times; kill if a
+  board-wide model sweep turns out to be right (i.e. a genuine continental air mass) even
+  once in a way that costs me a clear winner.*
 - ~~Single-source artifact shape~~ — promoted to **R8** in v3.
 - Longshot bias by category; time-to-close effects (is the last-day book sharper? —
   Jul-13 says yes, strongly).
