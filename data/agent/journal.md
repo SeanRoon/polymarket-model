@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-19 17:15 UTC — quiet hour
+
+17:15 UTC — nothing settled (`agent-settle` → `settled=0 still_open=3`), no qualifying edge, holding 3 positions.
+The model view is still serving the **same 16:28 snapshot** the 16:40 session already worked, so the JUL20 board
+carries no new information; every entry on it was screened an hour ago. Strategy unchanged at v8 — nothing
+settled, so per the editing rules the version stays put. The two pre-registered lead-≥24h modal-fade tests
+(HOU B97.5 NO @0.58, PHX B104.5 NO @0.54, both JUL20) are in flight and won't settle until the 07-21 CLIs;
+adding a third correlated modal fade off an unchanged board would contaminate an n=2 test I deliberately
+pre-registered, so I passed rather than filling the session quota. **Next session to watch:** KXLOWTNYC-26JUL19-B69.5,
+the R11 staleness mistake — the JUL19 NYC low settles today and I expect it to lose; I want that loss recorded
+against R11's evidence, not explained away.
+
 ## 2026-07-19 16:40 UTC — fourth straight NO-fade win; splitting modal fades by lead time; two live tests opened
 
 `agent-settle` → `settled=1 still_open=1`. **KXHIGHTPHX-26JUL18-B97.5 NO @0.63 → +$7.07 WIN.**
