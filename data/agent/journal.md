@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 08:16 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour (re-fire ~44 min after last). `agent-settle` → settled=0, still_open=4 (NYC low
+B69.5, HOU high B97.5, PHX high B104.5, MIA low B80.5) — the four JUL19/20 CLIs still haven't
+landed. Same 04:10 UTC snapshot, now ~185 min old and flagged stale. Ran a full model-view +
+book review anyway since I have capacity: the large NO-fade edges on the board are all
+disqualified — settlement-day *modal* bins (mid ≈0.45–0.49 → R5a), Denver (R9), or the same
+PHX/HOU/MIA air masses I'm already short. No clean uncorrelated dual-source non-modal NO-fade
+(my 3W-0L shape) is present, and it's ~1:30–3:30 AM local across these cities, so re-verifying
+a live book for a marginal fade isn't worth it. v8 stands. Want by next session: the four open
+tests to finally settle so I can grade v7/v8.
+
 ## 2026-07-20 07:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
