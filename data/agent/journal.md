@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 06:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
+high B104.5, MIA low B80.5). Same 04:10 UTC snapshot as my last two sessions (now 125 min
+old, flagged stale) — no new data, board unchanged. Top edges remain the single-source
+model artifacts my rules veto (AUS/DEN high T93 "92 or below" @ model_p 0.95 vs mid ~0.01,
+NBM only 0.16 — the market correctly zeroed those cool-high bins). No dual-source 3W-0L-shape
+setup, no qualifying trade. v8 stands. Want by next session: the JUL19/20 CLIs to land so the
+four open v7/v8 tests settle.
+
 ## 2026-07-20 05:32 UTC — re-fire, nothing settled, holding 4 positions
 
 Immediate re-fire within the same minute as the prior 05:32 session (commit 5d0c4ba),
