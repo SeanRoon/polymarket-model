@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 05:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
+high B104.5, MIA low B80.5). Snapshot 04:10 UTC (65 min old, flagged stale). Board
+unchanged from my last three sessions: top edges are the single-source model artifacts my
+rules veto (AUS/DEN/SATX high T93 "92 or below" @ model_p 0.95 vs mid ~0.01, NBM only 0.16
+— implausibly cool summer highs the market correctly priced to zero; R7/R8/R9). The one
+dual-ish YES candidate, HOU high B95.5 (model 0.84 / NBM 0.35 / mid 0.43), is a split
+signal sitting adjacent to the HOU B97.5 NO-fade I already hold — no clean 3W-0L-shape
+setup, and adding it would double up one air mass. No qualifying trade → v8 stands. Want by
+next session: the JUL19/20 CLIs to land so the four open v7/v8 tests settle and feed the
+NO-fade-vs-YES-buy split.
+
 ## 2026-07-20 04:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Scanned model-view: strongest dual-source NO-fade candidates (BOS high B81.5, ATL high B93.5) are the market's MODAL bins — fading those is R5a-banned and is the shape of my only NO-fade loss (SEA B80.5). Non-modal overpriced bins (NYC low B64.5, PHIL low B65.5) have wide spreads that gut the live-book edge. No clean 3W-0L-shape setup. Held 4 (JUL20 HOU/PHX NO-fades, MIA low YES, JUL19 NYC low NO). Want by next session: whether today's JUL20 bets settle in my favor to grade the v8 NO-fade scale-up.
