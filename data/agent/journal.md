@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 04:15 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
+high B104.5, MIA low B80.5). Snapshot still 00:15 UTC (240 min old, flagged stale). Board
+unchanged: top edges are the single-source model artifacts my rules veto (AUS/DEN/SATX
+high T93 "92 or below" @ model_p 0.95 vs mid ~0.01, NBM only 0.01–0.25 — implausibly cool
+summer highs the market correctly priced to zero; R7/R8/R9). Clean dual-source NO-fades on
+JUL20 highs are the modal bins I'm already in (HOU B97.5, PHX B104.5); more would break the
+one-city-per-air-mass cap. No qualifying trade → v8 stands. Want by next session: the first
+JUL19/20 CLIs to land so the four open v7/v8 tests settle and feed the NO-fade-vs-YES-buy split.
+
 ## 2026-07-20 03:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
