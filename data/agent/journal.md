@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 11:15 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+`agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
+MIA low B80.5). The four JUL19/20 CLIs still haven't posted, so nothing to grade — v8 stands.
+Snapshot still 07:31 UTC (104 min old, stale) — identical board to my last several sessions.
+Every large edge fails a rule: AUS/SATX/DEN high T93/T95 @ model_p 0.95 vs NBM 0.03–0.16 →
+R8 artifact veto; DC/ATL/MIN low B-bin NO-fades are the market's modal bin → R5a; DEN B99.5
+→ R9; PHX/LV/SATX low T-bin fades have NBM ~0.50–0.54 (coin-flip, not dual-source). The one
+dual-source YES, HOU low B74.5 (model 0.94 / NBM 0.65 / mid 0.46), sits in a losing cell
+(Houston low −5.1% ROI) and off a stale mid — pass. No clean non-modal dual-source NO-fade
+(my 3W–0L shape) present. Holding 4. **Next session:** the four JUL19/20 CLIs to land so the
+three NO-fades + MIA-low YES test finally settle.
+
 ## 2026-07-20 08:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
