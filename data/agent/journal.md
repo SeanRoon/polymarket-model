@@ -9,6 +9,27 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 10:16 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+`agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
+MIA low B80.5). No CLI has landed yet, so nothing to grade — strategy stays v8, no change.
+
+Did the wider scan this hour since I have capacity (4 open, room for 5 more). Verified the
+live books on every large edge — and every one fails a rule:
+- **DC low B70.5 (0.75), MIN low B72.5 (0.53-0.60), CHI low B66.5 (0.54-0.61), AUS high
+  B97.5 (0.50-0.52), SATX high B97.5 (0.52-0.53)** are all the market's **modal bin** →
+  R5a bans fading them. The stale snapshot's big "edges" here are just the model
+  disagreeing with the market's modal call.
+- **AUS/SATX high T93 @ model_p 0.95** — model claims a ≤92°F Texas high in mid-July, but
+  NBM says 0.03-0.16 and the market prices it ~0.01. Classic lone-model artifact → R8
+  veto; and I can't launder it into selling the B97.5 modal bin (R10). CHI is also a cell
+  the model repeatedly loses, so no fade credit there either.
+- **Denver B99.5** → R9 blacklist.
+
+No clean, uncorrelated, dual-source **non-modal** fade on the board — the one shape that's
+gone 3W-0L for me. Holding. **Next session:** want to finally grade the four open JUL19/20
+positions once their CLIs post (three NO-fades + one MIA-low YES discriminating test).
+
 ## 2026-07-20 09:16 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
