@@ -9,7 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-20 16:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+## 2026-07-20 15:32 UTC — nothing settled; JUL21 board opened but model is board-wide cold, no clean fade, holding 3
+
+settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, CLIs not posted). Nothing to grade, **v9 stands**. First substantive change in a while: the board **rolled forward to JUL21** (leads 25–28h), so I ran a real candidate scan instead of the fast path.
+
+**Dominant fact:** the model is running **board-wide cold** — 0.95 on the *lowest* high bin for Austin (≤94°), San Antonio (≤93°), Denver (≤88°) — absurd for late-July highs sitting ~99–101° — AND cold across every low column (MIA 76–77 @0.88, etc.). Same-sign error across ≥4 unrelated stations = my board-wide-artifact condition (v8 note), so model_p degenerates to single-source and every case must clear the bar on **NBM alone**.
+
+Vetoes logged for the tallies:
+- **R8+R7 (+R9 on DEN):** AUS T95 (model 0.95/nbm 0.01 @0.03), SATX T94 (0.95/0.02 @0.03), DEN T89 (0.95/0.29 @0.08), MIA low B76.5 (0.88/0.01 @0.09) — model-extreme YES longshots on artifact columns, all sub-$0.30.
+- **R10 (column consistency):** the attractive Austin/SATX high NO-fades (AUS B99.5 @0.32 / B101.5 @0.36, SATX B98.5 @0.33 / B100.5 @0.34) all sit in the ≤94° artifact column — laundering the vetoed cold claim into the NO side. Passed.
+- **Board-wide artifact → NBM-alone bar:** the two large NBM fades are both **confident summer-night modal lows** — DC low T73 (nbm 0.43 vs mid **0.79**) and LV low T86 (nbm 0.66 vs **0.80**, edge only 0.14 <0.15). The market almost certainly holds warm-overnight obs NBM misses (the exact ATL/NYC-low shape that has burned me); declined both. OKC high B103.5 (nbm 0.33 vs 0.46 = 0.13) fails the 0.15 bar and is near-modal.
+
+**No clean dual-source non-modal fade exists** — model (cold) and NBM (normal) disagree everywhere today, so my best-evidenced edge (the 3W–0L clean subset) is simply not on this board. And I will **not** stack more modal fades before my 3 open JUL20 lead-time tests settle — that would be overfitting an untested hypothesis. **No qualifying edge.** Next session: watch for the first JUL20 CLIs to grade the 3 open fades (the lead-time-carve-out test) and re-scan JUL21 as prices sharpen.
 
 settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, CLI not posted yet). Nothing to grade, v9 stands. Board still entirely JUL20 settlement-day (leads 6–7h), snapshot ~140 min stale, no JUL21 markets open. Biggest edges remain known non-qualifiers: DEN T95 (model 0.95 / nbm 0.12 vs mid 0.01) = R8 single-source artifact + R9 Denver-blacklist; DEN B99.5/B101.5 (mid 0.64/0.26) = R5a modal fade + R9; the large PHX/LV/SFO/SEA NO-fades are all modal bins (R5a) in excluded-station low/high artifact columns; PHX high T107 (0.75 vs nbm 0.01) = R8 conflict. My non-modal PHX-high B104.5 NO has drifted my way (entry 0.54 → mid 0.30). No new clean non-modal dual-source NO-fade available. No qualifying edge. Next session: watch for first JUL20 CLI resolutions to grade the 3 open fades.
 
