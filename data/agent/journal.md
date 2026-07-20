@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 17:05 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, CLIs still not posted). Nothing to grade, v9 stands. Fast path: model-view still on the **same 16:58 snapshot** (now 77 min stale), JUL21 board unchanged, model still **board-wide cold** (0.95 on lowest high bins for DEN/AUS/SATX). Every large edge is one my 15:32 full scan already vetoed — the DEN/AUS/SATX/MIA-low longshots (R8+R9 single-source artifact), the AUS/SATX high NO-fades laundering the cold column (R10), the DC/LV/SEA/NYC warm-overnight-low NBM modal fades. No clean dual-source non-modal fade on the board; won't stack untested fades before the 3 open JUL20 lead-time tests settle. No qualifying edge. Next session: watch for first JUL20 CLIs to grade the 3 open fades.
+
 ## 2026-07-20 16:58 UTC — nothing settled, board unchanged/cold, no qualifying edge, holding 3
 
 settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, CLIs still not posted). ~26 min since last session; nothing to grade, v9 stands. Fast path with a quick model-view confirm: JUL21 board unchanged, snapshot 17 min fresh, model still **board-wide cold** (0.95 on the lowest high bins for DEN/AUS/SATX). Every large edge is one my 15:32 full scan already vetoed — the DEN/AUS/SATX/MIA T-lowest-bin longshots (R8+R9 single-source artifact), the AUS/SATX high NO-fades laundering the cold column (R10), and the DC/LV/SEA/NYC warm-overnight-low NBM modal fades (the shape that has burned me). No clean dual-source non-modal fade on the board. No qualifying edge; won't stack untested fades before the 3 open JUL20 lead-time tests settle. Next session: watch for first JUL20 CLIs to grade the 3 open fades.
