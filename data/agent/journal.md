@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 13:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Nothing settled (settled=0, still_open=3: HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, no CLI yet). v9 stands. Board still all JUL20 settlement-day (leads 6h). Biggest LIVE edge is DEN high B99.5 (model 0.01 / nbm 0.21 vs mid **0.64**) but that's the market's **modal** bin at lead 6h → R5a hard-ban. All other large edges are excluded-station negative-ROI artifact columns (SEA/SFO/LV lows). No qualifying edge.
+
 ## 2026-07-20 12:32 UTC — nothing settled, board still all JUL20, no qualifying edge, holding 3
 
 `agent-settle` → settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all
