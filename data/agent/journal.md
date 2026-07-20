@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 07:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
+high B104.5, MIA low B80.5). Same 04:10 UTC snapshot (now 142 min old, flagged stale) as my
+last several sessions — no new data, board unchanged. Top edges remain the single-source
+model artifacts my rules veto (AUS/DEN high T93/T95 "92/94 or below" @ model_p 0.95 vs mid
+~0.01, NBM only 0.16 — market+NBM correctly zeroed those implausibly cool summer highs). The
+one dual-ish YES, HOU B95.5 (model 0.84 / NBM 0.35 / mid 0.43), is a split signal that would
+double up the same air mass as my open HOU B97.5 NO — no clean 3W-0L-shape setup. v8 stands.
+Want by next session: the JUL19/20 CLIs to land so the four open v7/v8 tests settle.
+
 ## 2026-07-20 06:32 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
