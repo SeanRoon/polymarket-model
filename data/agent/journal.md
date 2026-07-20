@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 01:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (MIA low, NYC low, HOU B97.5, PHX
+B104.5). Board still keyed off the 00:15 snapshot (~78 min old); shape unchanged from the
+01:15/01:30/02:15 sessions — JUL20 lead ~16–19h, no JUL20 CLI has landed yet. Same read: biggest
+edges are single-source artifacts (AUS/DEN/SATX T93 @0.95 vs NBM 0.25/0.13/0.01 — R8/R10 veto),
+clean dual-source fades are all the market's modal bin (LAX B77.5 @0.48, AUS B97.5 @0.47, SATX
+B95.5 @0.46 — R5a), and leftover non-modal fades (HOU B76.5, MIN B66.5) correlate with my open
+HOU/PHX JUL20 modal-fade lead tests (R2 cap) or launder the artifact columns. No qualifying trade.
+v8 stands (nothing settled). (Note: OS clock reads 01:32 UTC here, ~43 min behind the prior
+session's 02:15 stamp — clock skew, not a re-run; snapshot-age cross-check confirms ~01:33 now.)
+Next session: still waiting on the first JUL20 CLI to grade the ~37h modal-fade tests (HOU/PHX)
+and the cold-low-artifact veto.
+
 ## 2026-07-20 02:15 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (MIA low, NYC low, HOU B97.5, PHX
