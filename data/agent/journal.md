@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 15:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, no CLI yet). v9 stands. Board still entirely JUL20 settlement-day (leads 6–7h), snapshot 80 min stale, no JUL21 markets open. Biggest edges are all known non-qualifiers: DEN T95 (0.95 vs 0.01) = R8 single-source artifact + R9 Denver-blacklist; DEN B99.5 = R5a modal fade; the rest are excluded-station low artifact columns (PHX/LV/SEA/SFO) or sub-R2 small edges. No qualifying edge.
+
 ## 2026-07-20 14:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 `agent-settle` → settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, no CLI posted yet). Nothing to grade, v9 stands. Board is still entirely JUL20 settlement-day (leads 6–7h); no JUL21 markets have opened. Largest edge remains DEN T95 (≤94°) model 0.95 / nbm 0.12 vs mid 0.01 — the classic R8 single-source artifact shape AND an R9 Denver-blacklist name, hard pass on two counts. DEN B99.5 modal fade at lead 6h = R5a ban. Everything else is the SEA/SFO/LV/PHX excluded-station low artifact columns or small non-modal edges (≤0.08) that don't clear R2. No qualifying edge.
