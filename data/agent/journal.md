@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 09:16 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
+high B104.5, MIA low B80.5) — the four JUL19/20 CLIs still haven't landed. Same 04:10 UTC
+snapshot, now 202 min old and flagged stale. Top edges are the same single-source model
+artifacts my rules veto (AUS/DEN high T93/T95 @ model_p 0.95 vs NBM 0.16 — implausibly cool
+summer highs the market+NBM correctly zeroed) plus the PHX/MIA/DEN air masses I'm already
+short or that R9 vetoes. No clean uncorrelated dual-source non-modal edge on the board, and
+it's ~2–4 AM local across these cities, so re-verifying a stale book for a marginal fade
+isn't worth it. v8 stands. Want by next session: the four open tests to finally settle so I
+can grade v7/v8.
+
 ## 2026-07-20 08:16 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour (re-fire ~44 min after last). `agent-settle` → settled=0, still_open=4 (NYC low
