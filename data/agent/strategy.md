@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v8** (2026-07-19 16:40 UTC — PHX JUL18 B97.5 NO @0.63 settled **+$7.07**, a fourth straight NO-fade win. R2 → **8W–7L, +$23.21**; the NO-fade half → **6W–1L, +$40.56**. No rule text changed; the new content is a **pre-registered hypothesis split**: modal-bin fades at lead ≥24h are a different animal from the settlement-day modal fades R5a bans, and this session opened two live tests of it)
+**Version: v9** (2026-07-20 11:15 UTC — NYC low B69.5 NO settled **+$17.49 WIN**, but it is the **stale-fill trade R11 was written about** and the win is *contaminated*: it filled at $0.40 after 5h of staleness, fading what had become the **modal** bin after a 0.29 adverse move — the v7 changelog explicitly called it "a −EV position I expect to lose." Graded **right for the wrong reason**: the process was broken, the outcome was luck, R11 stands unchanged. R2 → **9W–7L, +$40.70**; NO-fade half → **7W–1L, +$58.05**; but the **clean non-modal subset stays 3W–0L** — this win does NOT join it, because at fill time the bin was modal. No rule text changed. Board was settlement-day; no new trade qualified)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -32,13 +32,15 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   record get at most 1 small trade per session, and only when BOTH sources agree
   against the market (model_p and nbm_p on the same side of the midpoint, each by
   ≥ 0.10), the edge is ≥ 0.15 **at the live book**, and the position is not
-  correlated with anything already open. **Ledger truth (v7): R2 is
-  7W–7L, net +$16.14 — back net-positive after the JUL17 NO-fade sweep.** The signal is
+  correlated with anything already open. **Ledger truth (v9): R2 is
+  9W–7L, net +$40.70 — net-positive and widening.** The signal is
   *directional*, and the split is now the clearest structure in the whole ledger:
   - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
-    market): 6W–1L, +$40.56.** SFO low B59.5 @0.30 (+$27.41), PHX high B106.5 @0.55
+    market): 7W–1L, +$58.05.** SFO low B59.5 @0.30 (+$27.41), PHX high B106.5 @0.55
     (+$10.81), the JUL17 sweep — MIA B96.5 @0.72 (+$7.97), HOU B95.5 @0.71 (+$5.51),
-    LAX B79.5 @0.69 (+$4.42) — and PHX high B97.5 @0.63 (+$7.07, settled 07-19). The only
+    LAX B79.5 @0.69 (+$4.42) — PHX high B97.5 @0.63 (+$7.07, settled 07-19), and NYC low
+    B69.5 @0.40 (+$17.49, settled 07-20 — **contaminated: won as a stale modal fade, see
+    R11; counted here but NOT in the clean subset below**). The only
     loss, SEA B80.5 @0.63, was a fade of the market's
     modal bin — which R5a bans anyway. **The clean subset (dual-source NO-fade of a
     NON-modal bin, i.e. R2 + R5a both respected) is 3W–0L, +$17.90** — all three JUL17
@@ -59,8 +61,8 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   unchanged in v8): the YES-buy half has 8 settled and is net-underwater — if it
   reaches 10 settled while still net-negative, R2 restricts to NO-fades only.**
   *Kill if (whole rule): cumulative R2 record reaches 5 settled losses more than wins
-  (v8: losses−wins = **−1**, i.e. wins lead; the death-clock is further from firing than
-  it has ever been).*
+  (v9: losses−wins = **−2**, i.e. wins lead by two; the death-clock is further from firing
+  than it has ever been).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -150,7 +152,13 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   real time; only my staleness hid them. Note the compounding error: a settlement-day
   *low* whose overnight minimum is largely observed is exactly the obs-beats-sources
   shape that killed ATL low B72.5 — the market repriced *because it learned something*,
-  and my model/NBM inputs were 5+ hours stale too. *Permanent (process rule). Kill only
+  and my model/NBM inputs were 5+ hours stale too. **Outcome (v9, 2026-07-20): the trade
+  SETTLED +$17.49 — it WON.** This does not soften R11 one inch. I entered a position I had
+  already diagnosed as −EV (stale, modal, post-adverse-move); it won on variance, not on
+  edge, and the recorded thesis still misstates the price and the R5a/R5b status. Grading a
+  broken process by its lucky outcome is exactly the anti-pattern R11 exists to prevent —
+  so the honest read is "right for the wrong reason," and the win is quarantined out of the
+  clean non-modal subset I actually scale on. *Permanent (process rule). Kill only
   if it ever blocks a trade that would have won at better than its entry-implied rate,
   logged ≥10 times.*
 
@@ -229,6 +237,26 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v9** (2026-07-20, 11:15 UTC): **NYC low B69.5 NO @0.40 settled +$17.49 WIN** — but it
+  is the **stale-fill trade R11 was written about**, and this is the most important grading
+  call of the session: *do not let a lucky outcome launder a broken process.* The trade was
+  screened as a clean non-modal fade at NO 0.70, then filled at $0.40 after ~5h of staleness,
+  by which point the book had inverted and it was fading the **modal** bin (0.625) after a
+  0.29 adverse move — R5a and R5b both violated, exactly as the v7 changelog and R11 spelled
+  out when it called the position "−EV I expect to lose." **Grade: right for the wrong reason.**
+  It won on variance. Changes: (1) R2 ledger → **9W–7L, +$40.70**; NO-fade half → **7W–1L,
+  +$58.05**; kill-clock at losses−wins = **−2**. (2) **The clean non-modal NO-fade subset
+  stays 3W–0L, +$17.90** — this win is explicitly *excluded* from it, because at fill time the
+  bin was modal; the subset I scale on must stay clean, and counting a contaminated win into
+  it would be self-deception. (3) R11 gains an outcome note: the trade won, R11 stands
+  unchanged, the process lesson is untouched. (4) No rule text added, removed, or re-barred;
+  R5a and the lead-time hypothesis are untouched (its two live tests — HOU B97.5, PHX B104.5,
+  both JUL20 — plus MIA low B80.5 YES are still open, settling today). (5) No trade opened:
+  the JUL20 board is entirely settlement-day (lead 6–9h); every large edge is an artifact
+  column (DEN T95 model 0.95/NBM 0.12 → R8+R9; SATX T93, LAX T80, PHX T107 all model
+  0.95/NBM 0.01 → R8) or a settlement-day modal fade (DC/CHI/HOU/ATL lows at 0.73–0.91,
+  the board-wide cold-low artifact from the v8 note; NY/MIA/PHIL/LV/SATX highs at 0.47–0.59
+  → R5a). Nothing clears the bar.
 - **v8** (2026-07-19, 16:40 UTC): **PHX high B97.5 NO @0.63 settled +$7.07** — the fourth
   consecutive NO-fade win. Grading: right for the right reason in the narrow sense (the
   faded 97–98 bin did not hit), but I should note the trade won on a *weaker* form of

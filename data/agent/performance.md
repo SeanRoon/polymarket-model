@@ -1,16 +1,16 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-20 10:32 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-20 11:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $825.52 |
-| open positions | 4 ($86.60 at risk) |
-| settled | 27 (12 wins, 44%) |
-| realized PnL | $-87.88 on $522.88 staked (-16.8%) |
+| free cash | $855.52 |
+| open positions | 3 ($74.09 at risk) |
+| settled | 28 (13 wins, 46%) |
+| realized PnL | $-70.39 on $535.39 staked (-13.1%) |
 
 ## By strategy version
 
@@ -21,20 +21,19 @@ _Generated 2026-07-20 10:32 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
 | v6 | 2 | 2 | 100% | 23.51 | +11.49 | +48.9% |
-| v7 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v7 | 1 | 1 | 100% | 12.51 | +17.49 | +139.8% |
 | v8 | 0 | 0 | - | 0.00 | +0.00 | - |
 
 ## By category
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 27 | 12 | 44% | 522.88 | -87.88 | -16.8% |
+| Climate and Weather | 28 | 13 | 46% | 535.39 | -70.39 | -13.1% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-19 16:26 | KXLOWTNYC-26JUL19-B69.5 | no | 30 | 0.40 | 12.51 | v7 | v7 R2 NO-fade of an overpriced NON-modal bin (the shape that just went 3W-0L on  |
 | 07-19 16:35 | KXHIGHTHOU-26JUL20-B97.5 | no | 60 | 0.58 | 35.83 | v8 | R2/R1 NO-fade, dual-source SAME-direction: market has 0.42 on HOU high 97-98 (mo |
 | 07-19 16:35 | KXHIGHTPHX-26JUL20-B104.5 | no | 45 | 0.54 | 25.09 | v8 | R2 NO-fade, dual-source rejection from opposite sides (same shape as the PHX JUL |
 | 07-19 18:34 | KXLOWTMIA-26JUL20-B80.5 | yes | 35 | 0.36 | 13.17 | v8 | R2 YES-buy, cautious size, opened as a DISCRIMINATING test of the pre-registered |
@@ -43,6 +42,7 @@ _Generated 2026-07-20 10:32 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-20 | KXLOWTNYC-26JUL19-B69.5 | no | 0.40 | +17.49 | v7 | v7 R2 NO-fade of an overpriced NON-modal bin (the shape that just went 3W-0L on  |
 | 07-19 | KXHIGHTPHX-26JUL18-B97.5 | no | 0.63 | +7.07 | v6 | R2 NO-fade (v6 operational lean, dual-source-fade live test #3 after SFO B59.5 a |
 | 07-19 | KXHIGHMIA-26JUL17-B96.5 | no | 0.72 | +7.97 | v5 | R2 NO-fade (v5 lean): fade MIA high 96-97 bin. My p(yes)~0.08 vs market implied  |
 | 07-19 | KXHIGHTHOU-26JUL17-B95.5 | no | 0.71 | +5.51 | v5 | p(HOU high 95-96)~0.10 vs market 0.295 (NO fills 0.71, live-verified 09:18). v5  |
@@ -62,4 +62,3 @@ _Generated 2026-07-20 10:32 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-15 | KXHIGHTBOS-26JUL14-B94.5 | yes | 0.34 | -17.79 | v1 | My est P(BOS high 94-95F Jul14) ~0.40 vs market 0.20 ask. Dual-model agreement a |
 | 07-15 | KXHIGHTDAL-26JUL14-T88 | yes | 0.28 | -11.77 | v1 | My p~0.75 (model_p 0.68 + NBM 0.90 both far above market; NBM confirmation makes |
 | 07-14 | KXHIGHDEN-26JUL13-T93 | yes | 0.07 | -11.19 | v1 | Model 0.95 that Denver high stays <=92F Jul13 vs market 0.05; NBM disagrees (0.1 |
-| 07-14 | KXHIGHAUS-26JUL13-T89 | yes | 0.17 | -17.99 | v1 | Model 0.95 + NBM 0.64 both above market 0.21 that Austin high stays <=88F Jul13. |

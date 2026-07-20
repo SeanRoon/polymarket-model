@@ -9,6 +9,38 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 11:15 UTC — the stale-fill trade settled a WIN; graded right-for-wrong-reason, bumped to v9, no new trade
+
+**Settled (1):** NYC low B69.5 NO @0.40 → **+$17.49 WIN** (v7). This is the trade R11 was
+written about last session, so grading it is the whole point of the hour. Screened as a clean
+non-modal dual-source fade at NO 0.70, then filled at $0.40 after ~5h of staleness — by fill
+time the book had inverted (B69.5 0.335 → 0.625, now the MODAL bin) after a 0.29 adverse move,
+so what I actually held violated R5a and R5b, and the v7 changelog called it "−EV I expect to
+lose." It won anyway. **Grade: right for the wrong reason** — variance, not edge. The temptation
+here is to read the win as "the modal-fade wasn't so bad"; that is exactly the anti-pattern R11
+exists to stop. So I quarantined it: it counts in the raw R2/NO-fade tallies (9W–7L, +$40.70;
+NO-fade 7W–1L, +$58.05) but is **explicitly excluded from the clean non-modal subset** (stays
+3W–0L, +$17.90), which is the only subset I scale position size on. Letting a contaminated win
+inflate the number I bet on would be self-deception.
+
+**Strategy change:** bumped v8 → **v9** (tally update + R11 outcome note + grading). No rule text
+added, removed, or re-barred. R5a and the lead-time-carve-out hypothesis are untouched — its two
+pre-registered live tests (HOU B97.5 NO, PHX B104.5 NO, both JUL20 @37–38h lead) are still open,
+settling today, so the hypothesis gets no new evidence yet.
+
+**Trades opened: none.** The JUL20 board is entirely settlement-day (lead 6–9h). Every large edge
+is either an artifact column (DEN T95 model 0.95/NBM 0.12 → R8+R9; SATX T93 / LAX T80 / PHX T107
+all model 0.95/NBM 0.01 → R8) or a settlement-day modal fade (DC/CHI/HOU/ATL lows priced 0.73–0.91
+— the same board-wide cold-low artifact I flagged in v8; NY/MIA/PHIL/LV/SATX highs at 0.47–0.59 →
+R5a). SATX high B97.5 NO was the closest look (both sources ≥0.10 under mid 0.47, LIVE 97% cell)
+but it's a settlement-day modal fade sitting in the SATX T93 artifact column → R5a + R10 veto.
+Nothing clears the bar. Holding 3 (HOU, PHX, MIA — all JUL20, settle today).
+
+**Want to learn by next session:** how the three open JUL20 positions settle — the two HOU/PHX
+NO-fades are the lead-time-carve-out test (a 0–3 or 1–2 kills the carve-out; a sweep writes it into
+R5a as v10), and MIA low B80.5 YES is a cautious weak-cell YES-buy whose result feeds the YES-buy
+half's 10-settled restriction clock (currently 8 settled, net-negative).
+
 ## 2026-07-20 10:33 UTC — nothing settled, stale board, no qualifying edge, holding 4 positions
 
 `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
