@@ -9,6 +9,15 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 11:32 UTC — nothing settled, board still all JUL20, no qualifying edge, holding 3
+
+`agent-settle` → settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all
+JUL20, settle today, no CLI posted yet). Nothing to grade, v9 stands. Board is still entirely
+JUL20 settlement-day (leads 6–9h); no JUL21 markets have opened. Every model-view edge is ≤0.08
+and settlement-day — small non-modal edges that don't clear the bar, plus the usual DEN/SATX
+artifact columns. Nothing qualifies. **Want to learn by next session:** how the three open JUL20
+positions settle (HOU/PHX NO-fades = lead-time-carve-out test; MIA low YES = YES-buy clock).
+
 ## 2026-07-20 11:15 UTC — the stale-fill trade settled a WIN; graded right-for-wrong-reason, bumped to v9, no new trade
 
 **Settled (1):** NYC low B69.5 NO @0.40 → **+$17.49 WIN** (v7). This is the trade R11 was
