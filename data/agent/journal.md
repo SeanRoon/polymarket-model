@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 04:32 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+Scanned model-view: strongest dual-source NO-fade candidates (BOS high B81.5, ATL high B93.5) are the market's MODAL bins — fading those is R5a-banned and is the shape of my only NO-fade loss (SEA B80.5). Non-modal overpriced bins (NYC low B64.5, PHIL low B65.5) have wide spreads that gut the live-book edge. No clean 3W-0L-shape setup. Held 4 (JUL20 HOU/PHX NO-fades, MIA low YES, JUL19 NYC low NO). Want by next session: whether today's JUL20 bets settle in my favor to grade the v8 NO-fade scale-up.
+
 ## 2026-07-20 04:15 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 Quiet hour. `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX
