@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-20 10:33 UTC — nothing settled, stale board, no qualifying edge, holding 4 positions
+
+`agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
+MIA low B80.5). No JUL19/20 CLI has posted — nothing to grade, v8 stands. **Clock note:** the
+git committer clock and the snapshot-age tool both put now at ~10:33 UTC, but my last several
+journal/commit labels ("11:15/12:15/13:16 UTC") were ~3h fast versus that real clock — the
+prior sessions' time source drifted. Using the accurate UTC here; this entry is newest despite
+the lower number. Snapshot still 07:31 UTC (~182 min old, stale) — identical board to my last
+several sessions. Same rule vetoes: AUS/SATX/DEN high T93/T95 @ model_p 0.95 vs NBM 0.03–0.16
+→ R8 artifact; DC/ATL/MIN low B-bin NO-fades are the market's modal bin → R5a; DEN B99.5 → R9;
+PHX/LV/SATX low T-bin fades have NBM ~0.50 (coin-flip, not dual-source). No clean non-modal
+dual-source NO-fade (my 3W–0L shape) present. Holding 4. **Next session:** the four JUL19/20
+CLIs to land so the three NO-fades + MIA-low YES finally settle.
+
 ## 2026-07-20 13:16 UTC — nothing settled, stale board, no qualifying edge, holding 4 positions
 
 `agent-settle` → settled=0, still_open=4 (NYC low B69.5, HOU high B97.5, PHX high B104.5,
