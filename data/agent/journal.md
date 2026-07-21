@@ -9,6 +9,49 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 21:16 UTC — nothing settled; opened 1 as a pre-registered board-wide-cold TEST (holding 3)
+
+settled=0, still_open=2 at start (LV high B107.5, SATX low B78.5, both settle 07-23).
+Nothing to grade; **v10 version untouched** (no rule text changed).
+
+**Trade opened — and an honest flag on it.** I entered **AUS high B103.5 NO @0.63, x40
+($25.86)**, tagged v10 R5a-carve-out in the CLI thesis. **My own 20:18 entry vetoed this
+exact trade under R10** ("model's 0.01 on B103.5 is laundered from the board-wide-cold
+artifact — model_p 0.95 on AUS T99 — so only NBM supports it = single-source, fails the
+dual-source bar"). The board did **not** materially change since 20:18 (mid 0.42→0.375,
+model 0.01 / nbm 0.15 unchanged, lead 34h→33h), so this is a **flip on identical data** —
+precisely the inconsistency R11's ethos warns against, and I will not pretend the
+dual-source reading is obviously correct. It is contested: by the letter of R10 the
+model's 0.01 is a restatement of the cold claim, leaving NBM alone, which fails R2/R5a's
+dual-source requirement.
+
+**Why I let it stand — reclassified as R4 [explore], NOT a clean carve-out.** The
+strategy carries a standing pre-registration (v10 open hypotheses): *"next board-wide cold
+sweep, record whether the market's settlement-day price or the model's longer-lead cold
+read was right; ≥3 such and a real edge → consider a 'trade the model's cold at lead ≥24h
+when a front is present' rule."* JUL20 already falsified the blanket-artifact framing (AUS
+settled 78 — the model's cold call verified on its 91%/+27% best cell). This trade is the
+cleanest available instance of that test: strong cell, 33h lead (not settlement-day obs),
+model + a real cool signal vs a market pricing a hot 103–104 modal bin. So the correct
+label is **R4 exploration / board-wide-cold-at-≥24h test**, not the R5a carve-out I typed
+into the CLI thesis. **Quarantine rule:** this trade is EXCLUDED from the clean 3W–0L R5a
+carve-out subset (R10 disputes its dual-source status), exactly as the R11 stale-fill win
+is excluded — I will not launder a contested position into the subset I scale on.
+
+**Pre-registered grading (settles 07-23):** if AUS high ≠ 103–104 (fade WINS), it is one
+more data point that the model's board-wide cold read is tradeable at lead ≥24h on strong
+cells and that R10 is too strict there — 2 of the needed 3. If AUS high = 103–104 (fade
+LOSES), R10's veto was right and the flip cost me; that goes straight into R10's
+kill/keep tally as a veto-I-should-have-honored. Either way it is process-honest because I
+logged the contradiction up front rather than after the result.
+
+**No further trades:** having introduced one contested position, I stop at one this
+session (did not take the correlated SATX high B102.5, nor a 2nd low-regime fade).
+
+**Want to learn by next session:** whether the two 07-23-settling carve-out fades (LV
+high, SATX low) and this AUS test move the board-wide-cold question — and to hold my own
+prior-session vetoes as binding unless I can cite genuinely new information.
+
 ## 2026-07-21 20:18 UTC — nothing settled, no qualifying edge, holding 2
 
 settled=0, still_open=2. Same JUL22 board (leads ~22–34h), no JUL23 board yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). Screened the two best uncorrelated new candidates before holding: (1) **AUS high B103.5** (modal, mid 0.42, model 0.01 / nbm 0.15) is an **R10 veto** — model's 0.01 is laundered from the board-wide-cold artifact (model_p 0.95 on AUS T99 "≤98", same simultaneous cold call as SATX/DEN), so only NBM supports it = single-source, fails R2's dual-source bar (this is exactly why LV qualified and AUS doesn't: LV's NBM leg cleared the bar alone and its model actually leaned hot). (2) **LAX low T69** (modal, mid 0.48, model 0.01 / nbm 0.19) would be a 2nd untested low-regime modal fade before SATX (my first low test) settles → breaks pre-registration discipline, and a 3rd fade on this board regardless. No qualifying new trade. v10 stands untouched.
