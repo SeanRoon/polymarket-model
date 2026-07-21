@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 23:15 UTC — nothing settled, no qualifying edge, holding 3
+
+settled=0, still_open=3 (LV high B107.5 NO + SATX low B78.5 settle 07-23; AUS high
+B103.5 NO settles 07-22). Same JUL22 board as last session, now ~18–21h lead (all
+<24h). Nothing changed: Denver bins vetoed by R9 blacklist; Texas fades (SATX B102.5,
+AUS B103.5) air-mass-correlated with my open AUS high NO; LV high B107.5 modal at <24h
+(R5a) + correlated with LV open; cheap cold longshots (DEN T88, AUS T99, SATX T98) fail
+R7 $0.30 floor + single-source; low-bin fades have nbm at/above market → fail R2
+dual-source. v10 untouched. No trade.
+
 ## 2026-07-22 ~22:15 UTC — nothing settled, no qualifying edge, holding 3
 
 settled=0, still_open=3 (LV high B107.5 NO + SATX low B78.5, both settle 07-23; AUS
