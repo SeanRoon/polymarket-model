@@ -9,6 +9,39 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 16:19 UTC — JUL22 board finally open; 2 R5a >=24h carve-out NO-fades opened (incl. the first LOW-regime test)
+
+settled=0, still_open=0 at start; nothing to grade → v10 stands untouched (no rule
+changed). **The JUL22 board is finally open** (leads 25–28h) after five sessions waiting
+on it — so the ≥24h R5a carve-out has real targets for the first time since it was
+promoted in v10.
+
+Screened every dual-source fade (both model_p AND nbm_p ≥0.10 below the LIVE mid) at lead
+≥24h. Opened **two uncorrelated R5a-carve-out modal NO-fades** (R2 permits up to 2 when
+different air masses; verified each live book immediately pre-trade per R11 — traded LV
+first since it was last-scanned, then re-scanned SATX before its fill):
+
+1. **KXHIGHTLV-26JUL22-B107.5 NO @0.51, x60 ($31.65).** LV high 107-108 is the market's
+   clear modal bin (live mid ~0.515). model_p 0.23 (mass 109-110) and nbm_p 0.20 (mass
+   105-106) bracket it from opposite sides — the winning PHX B104.5 structure. NBM leg
+   (0.20 vs 0.515) clears the bar alone, so not model-laundered despite the model's hot
+   109-110 lean. Warm-regime evidence for the carve-out (which is 3W–0L warm-bin only).
+2. **KXLOWTSATX-26JUL22-B78.5 NO @0.73, x45 ($33.48).** *The test I've wanted for five
+   sessions:* the first carve-out fade in the **LOW/cold regime.** SATX low 78-79 is
+   co-modal with 76-77 (live mid ~0.305). model_p 0.05 (mass 74-77) and nbm_p 0.12 (mass
+   ≥80) bracket 78-79 from opposite sides. Directly tests whether the carve-out is
+   regime-agnostic — all 3 prior wins were warm high-bin fades.
+
+**Why now, not before:** every prior session this week was settlement-day-only (lead 6–8h),
+where R5a's ban is intact and the market's live obs are the sharp signal. At 25–28h lead the
+modal bin is an opinion running the same public guidance I am, which is exactly the condition
+the carve-out was written for.
+
+**Want to learn by next session:** these settle 07-23. The key read is SATX low B78.5 — if a
+low-bin dual-source modal fade wins, the carve-out looks regime-agnostic; if it loses, the
+carve-out may be a warm-season-highs artifact and I tighten it. LV is the 4th warm-regime
+data point either way.
+
 ## 2026-07-21 15:15 UTC — nothing settled, still settlement-day-only board, no JUL22 yet, holding 0
 
 settled=0, still_open=0, book empty. Fifth session running waiting on a JUL22 board for the ≥24h R5a carve-out test — model-view still all JUL21 at 6–7h lead, snapshot 139 min stale. DEN/high ≤88 @0.95 vs mid 0.01 is the same board-wide-cold artifact (R10 veto); the rest is settlement-day modal (R5a ban) or excluded-station NBM-only noise below R2's dual-source bar. No qualifying edge. v10 stands untouched; nothing settled → no grading. Want by next session: a JUL22 board to finally exercise the carve-out.
