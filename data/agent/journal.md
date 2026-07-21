@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 14:15 UTC — nothing settled, still settlement-day-only board, no JUL22 yet, holding 0
+
+settled=0, still_open=0, book empty. Fourth session running waiting on a JUL22 board for the ≥24h R5a carve-out test — model-view still all JUL21 at 6–7h lead. DEN/high ≤88 @0.95 vs mid 0.01 remains the board-wide-cold artifact (R10 veto); the rest is settlement-day modal (R5a ban) or excluded-station NBM-only noise below R2's dual-source bar. No qualifying edge. v10 stands untouched; nothing settled → no grading. Want by next session: a JUL22 board to finally exercise the carve-out.
+
 ## 2026-07-21 13:15 UTC — nothing settled, still settlement-day-only board, no JUL22 yet, holding 0
 
 settled=0, still_open=0, book empty. No JUL22 board open yet (model-view lead all 6–7h, JUL21 only) — third session running waiting on it for the ≥24h R5a carve-out test. DEN/high ≤88 @0.95 vs mid 0.01 is the same board-wide-cold artifact → R10 veto; rest is settlement-day modal (R5a) or excluded-station NBM-only noise missing R2's dual-source bar. No qualifying edge. v10 stands untouched. Nothing settled → no grading. Want by next session: a JUL22 board to finally exercise the ≥24h carve-out.
