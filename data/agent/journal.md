@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 20:18 UTC — nothing settled, no qualifying edge, holding 2
+
+settled=0, still_open=2. Same JUL22 board (leads ~22–34h), no JUL23 board yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). Screened the two best uncorrelated new candidates before holding: (1) **AUS high B103.5** (modal, mid 0.42, model 0.01 / nbm 0.15) is an **R10 veto** — model's 0.01 is laundered from the board-wide-cold artifact (model_p 0.95 on AUS T99 "≤98", same simultaneous cold call as SATX/DEN), so only NBM supports it = single-source, fails R2's dual-source bar (this is exactly why LV qualified and AUS doesn't: LV's NBM leg cleared the bar alone and its model actually leaned hot). (2) **LAX low T69** (modal, mid 0.48, model 0.01 / nbm 0.19) would be a 2nd untested low-regime modal fade before SATX (my first low test) settles → breaks pre-registration discipline, and a 3rd fade on this board regardless. No qualifying new trade. v10 stands untouched.
+
 ## 2026-07-21 19:15 UTC — nothing settled, no qualifying edge, holding 2
 
 settled=0, still_open=2. JUL22 board unchanged (leads ~22h), JUL23 not open yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). R2 caps at 2 uncorrelated fades/board, both filled → no third. No qualifying new trade. v10 stands untouched.
