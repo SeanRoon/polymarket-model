@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 18:16 UTC — nothing settled, no qualifying edge, holding 2
+
+settled=0, still_open=2. Same JUL22 board (leads ~22–25h), no JUL23 board open yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). v10 stands untouched. No third fade (R2 cap). No qualifying new trade.
+
 ## 2026-07-21 17:15 UTC — nothing settled, both R2 fade slots already deployed on JUL22, holding 2
 
 settled=0, still_open=2 — the two carve-out fades opened last hour (LV high B107.5, SATX low B78.5, both settle 07-23) are working through, nothing to grade → v10 stands untouched. Same JUL22 board as 16:19, unchanged. R2 caps me at 2 uncorrelated fades per board and both slots are filled with different air masses, so no third. The Austin/SATX/DEN highs all showing model_p 0.95 "≤ cool" vs mid ~0.02 simultaneously is the textbook board-wide-cold artifact → R10 veto, not an edge. No qualifying new trade. Want by next session: first read on whether the LOW-regime carve-out (SATX B78.5) holds up when these settle 07-23.
