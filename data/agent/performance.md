@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-21 21:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-21 22:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $895.39 |
-| open positions | 2 ($65.13 at risk) |
+| free cash | $869.53 |
+| open positions | 3 ($90.99 at risk) |
 | settled | 31 (15 wins, 48%) |
 | realized PnL | $-39.48 on $609.48 staked (-6.5%) |
 
@@ -37,6 +37,7 @@ _Generated 2026-07-21 21:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
 | 07-21 16:19 | KXHIGHTLV-26JUL22-B107.5 | no | 60 | 0.51 | 31.65 | v10 | R5a >=24h carve-out (v10) modal NO-fade. LV high 107-108 is the market's clear m |
 | 07-21 16:19 | KXLOWTSATX-26JUL22-B78.5 | no | 45 | 0.73 | 33.48 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
+| 07-21 21:18 | KXHIGHAUS-26JUL22-B103.5 | no | 40 | 0.63 | 25.86 | v10 | R5a >=24h carve-out (v10) modal NO-fade, STRONG-cell version. AUS high 103-104 i |
 
 ## Last 20 settled
 

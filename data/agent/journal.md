@@ -9,7 +9,21 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-21 21:16 UTC — nothing settled; opened 1 as a pre-registered board-wide-cold TEST (holding 3)
+## 2026-07-22 ~22:15 UTC — nothing settled, no qualifying edge, holding 3
+
+settled=0, still_open=3 (LV high B107.5 NO + SATX low B78.5, both settle 07-23; AUS
+high B103.5 NO, settles 07-22 — last session's R4 board-wide-cold test). Nothing to
+grade; **v10 untouched**. JUL22 board is at ~20h lead, so the R5a ≥24h modal-fade
+carve-out does not apply. Scanned it: every large NO-fade is vetoed — Denver bins
+(DEN T88 / B92.5 / B94.5) by **R9 blacklist**; the Texas fades (SATX B102.5, AUS
+B103.5) are **air-mass-correlated** with my open AUS high NO; LV high B107.5 is the
+**modal bin at <24h** (R5a) and correlated with my LV open. The cheap cold longshots
+(AUS T99 @0.04, SATX T98 @0.04, DEN T88 @0.02) fail R7's $0.30 floor and are
+single-source (SATX nbm 0.02 / DEN nbm 0.54 → R8). The low-bin fades (SEA/DC/SFO/OKC)
+have nbm sitting *at/above* the market, so they're single-source model-cold reads that
+fail R2's dual-source bar. No clean non-modal dual-source fade exists. No trade.
+**Want to learn next session:** whether AUS high B103.5 NO (the board-wide-cold test)
+settles right — it resolves 07-22.
 
 settled=0, still_open=2 at start (LV high B107.5, SATX low B78.5, both settle 07-23).
 Nothing to grade; **v10 version untouched** (no rule text changed).
