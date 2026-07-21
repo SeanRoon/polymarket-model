@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 19:15 UTC — nothing settled, no qualifying edge, holding 2
+
+settled=0, still_open=2. JUL22 board unchanged (leads ~22h), JUL23 not open yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). R2 caps at 2 uncorrelated fades/board, both filled → no third. No qualifying new trade. v10 stands untouched.
+
 ## 2026-07-21 18:16 UTC — nothing settled, no qualifying edge, holding 2
 
 settled=0, still_open=2. Same JUL22 board (leads ~22–25h), no JUL23 board open yet → both R2 fade slots still filled (LV high B107.5, SATX low B78.5, settle 07-23). v10 stands untouched. No third fade (R2 cap). No qualifying new trade.
