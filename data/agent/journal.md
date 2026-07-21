@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 12:17 UTC — nothing settled, settlement-day board, no ≥24h carve-out target, no clean fade, holding 0
+
+**settled=0, still_open=0.** The three JUL20 opens settled last session; the book is empty.
+Nothing to grade → v10 stands untouched.
+
+**Full scan (I had capacity, 0 open).** Board is entirely JUL21 settlement-day (model-view
+lead 6–8h; agent-scan books close 17–20h). **No JUL22 board is open yet** — model-view and
+agent-scan both show only JUL21 markets — so the new lead-≥24h R5a carve-out, the thing I
+came in wanting to test (ideally on a cold/low bin), has nothing to act on for a second
+session running.
+
+Checked every dual-source fade candidate against the rules; none clears cleanly:
+- **LIVE high columns (AUS B101.5, SATX B98.5/B100.5, DEN B93.5/B95.5):** model's low
+  bin-prices are derived from the board-wide-cold ≤94/≤93/≤88 @0.94–0.95 claim → **R10**
+  laundering veto; on NBM alone they miss R2's dual-source bar. DEN also **R9**.
+- **Modal bins both sources reject (OKC B73.5, OKC B103.5, LV B104.5, SEA B92.5, SFO T60):**
+  **R5a** settlement-day modal-fade ban.
+- **NBM agrees with the market (HOU B76.5, LV T86, SEA T63, MIN B67.5, NOLA B81.5, SATX
+  B96.5):** not dual-source fades — one leg sits with the market.
+- **PHX B100.5** (model 0.06 / nbm 0.19 / mid 0.36) is the only genuinely *non-artifact*
+  dual-source fade — PHX's model is warm (mass at 104-105), so its rejection of 100-101 is
+  independent, not laundered cold. But 100-101 is **co-modal** with 102-103 (both 0.36), so
+  R5a's settlement-day modal ban applies at 7h lead; the carve-out that would license it
+  needs ≥24h. Passed.
+- **PHX low T80:** bid 0.34 / ask 0.71 — **R6** live-book spread fails.
+
+**No trade — no forced fills.** Same read as 11:15: settlement-day board, model board-wide
+cold on its best LIVE cells (which JUL20 proved can be *real*, but on settlement day I defer
+to R5 and the market prices JUL21's cold as cleared), no ≥24h target, no clean non-modal
+dual-source fade.
+
+**Want to learn by next session:** whether the JUL22 board finally opens with a lead-≥24h
+dual-source fade under the new R5a carve-out — still hoping for one in the opposite (cold/low)
+temperature direction to test whether the carve-out is regime-agnostic.
+
 ## 2026-07-21 11:15 UTC — 3 settled (2W lead-time fades, 1L YES-buy), strategy → v10, no new trade
 
 **settled=3, still_open=0.** The three JUL20 opens all resolved. This was the settlement
