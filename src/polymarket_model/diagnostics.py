@@ -55,6 +55,14 @@ class DiagnosticsConfig:
     excluded_stations: frozenset[str] = field(
         default_factory=lambda: frozenset(s.upper() for s in settings.signal_excluded_stations)
     )
+    # (station, kind) cells excluded from live signals via the finer-grained cell list.
+    # The per-station rollup below drops these rows first, so a station whose every cell is
+    # cell-excluded (e.g. KMDW/high + KMDW/low) never rolls up into a phantom exclude_candidate.
+    excluded_cells: frozenset[tuple[str, str]] = field(
+        default_factory=lambda: frozenset(
+            (s.upper(), k.lower()) for s, k in settings.signal_excluded_cells
+        )
+    )
 
 
 def _exclusion_flags(df: pd.DataFrame, cfg: DiagnosticsConfig) -> list[Flag]:
@@ -62,8 +70,22 @@ def _exclusion_flags(df: pd.DataFrame, cfg: DiagnosticsConfig) -> list[Flag]:
 
     For excluded stations: are they ready to re-enable (model Brier <= market)?
     For included stations: should they be excluded (model worse than market AND losing)?
+
+    Cell-excluded (station, kind) rows are dropped before the rollup: a station whose every
+    live cell is cell-excluded (e.g. KMDW, both kinds) must not aggregate its dark shadows
+    into a phantom `exclude_candidate` critical, and a partially cell-excluded station (e.g.
+    KSAT/low dark, KSAT/high live) must be judged on its live cell alone.
     """
     flags: list[Flag] = []
+    if cfg.excluded_cells and not df.empty:
+        cell = list(zip(
+            df["station_id"].astype(str).str.upper(),
+            df["kind"].astype(str).str.lower(),
+            strict=True,
+        ))
+        df = df[[c not in cfg.excluded_cells for c in cell]]
+        if df.empty:
+            return flags
     g = (
         df.groupby(["station_id", "city"], dropna=False)
         .agg(

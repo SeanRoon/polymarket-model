@@ -107,6 +107,36 @@ def test_worse_than_market_but_profitable_does_not_exclude():
     assert not any(f.code == "exclude_candidate" for f in flags)
 
 
+def test_fully_cell_excluded_station_emits_no_exclude_candidate():
+    # KMDW is not in signal_excluded_stations, but both its cells are cell-excluded. The
+    # station rollup must drop those rows and stay silent rather than fire a phantom
+    # exclude_candidate critical (the issue-#6 diagnose-rollup artifact).
+    df = pd.DataFrame(
+        _rows(n=200, city="Chicago", kind="high", station="KMDW",
+              brier_model=0.20, brier_market=0.04, pnl=-9.0)
+        + _rows(n=200, city="Chicago", kind="low", station="KMDW",
+                brier_model=0.18, brier_market=0.05, pnl=-4.0)
+    )
+    cfg = DiagnosticsConfig(excluded_cells=frozenset({("KMDW", "high"), ("KMDW", "low")}))
+    flags = run_diagnostics(df, cfg, reference_date=REF)
+    assert not any(f.code == "exclude_candidate" and "KMDW" in f.dimension for f in flags)
+
+
+def test_partial_cell_exclusion_judges_station_on_live_cell():
+    # KSAT/low is cell-excluded and losing; KSAT/high is live and healthy (Brier <= market,
+    # positive PnL). Dropping the dark /low row means the station reads as its live /high cell,
+    # so no exclude_candidate fires despite the /low drag.
+    df = pd.DataFrame(
+        _rows(n=200, city="San Antonio", kind="high", station="KSAT",
+              brier_model=0.03, brier_market=0.05, pnl=+8.0)
+        + _rows(n=200, city="San Antonio", kind="low", station="KSAT",
+                brier_model=0.22, brier_market=0.04, pnl=-6.0)
+    )
+    cfg = DiagnosticsConfig(excluded_cells=frozenset({("KSAT", "low")}))
+    flags = run_diagnostics(df, cfg, reference_date=REF)
+    assert not any(f.code == "exclude_candidate" for f in flags)
+
+
 def test_below_min_sample_is_ignored():
     df = pd.DataFrame(_rows(
         n=10, city="New York City", kind="high", station="KNYC",
