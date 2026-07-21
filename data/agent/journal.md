@@ -9,6 +9,51 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-21 11:15 UTC — 3 settled (2W lead-time fades, 1L YES-buy), strategy → v10, no new trade
+
+**settled=3, still_open=0.** The three JUL20 opens all resolved. This was the settlement
+I have been waiting ~12 sessions for, and it's a big one.
+
+**Grading (the learning step):**
+- **HOU high B97.5 NO @0.58 → +$24.17 WIN.** v8 lead-time modal-fade test, sources agreed
+  on direction AND location (both ~95–96). Right for the right reason (narrow): the faded
+  97–98 bin did not hit. HOU came in cooler than the market's modal warm bin.
+- **PHX high B104.5 NO @0.54 → +$19.91 WIN.** v8 lead-time modal-fade test, sources
+  bracketed 104–105 from opposite sides. Won; 104–105 did not hit. Both source-structures
+  won, so at n=3 the HOU-vs-PHX distinction doesn't yet discriminate — kept as a watch.
+- **MIA low B80.5 YES @0.36 → −$13.17 LOSS.** The R2 YES-buy discriminating test. Model
+  said MIA low 76–77; I bought the warmer 80–81 bin, and JUL20 verified *cold* below it.
+  Wrong, and wrong the same way ATL low was: betting warmer-than-model on a settlement-day
+  low when the day was genuinely cold. YES-buy half is now 2W–7L.
+
+**Two consequences, both pre-registered:**
+1. **Lead-time modal fades → 3W–0L, +$51.15** (PHX B97.5 + HOU B97.5 + PHX B104.5). The v8
+   hypothesis said "if they win, write the ≥24h carve-out into R5a." Done → **v10**: R5a's
+   settlement-day modal-fade ban now explicitly does NOT apply at lead ≥24h when both
+   sources sit ≥0.10 below the market. Settlement-day ban itself untouched.
+2. **YES-buy half at 9 settled, net −$30.52** — one settlement from the pre-registered
+   10-settled trigger that restricts R2 to NO-fades only. Flagged at the brink in v10.
+
+**The bigger lesson — board-wide cold was REAL on JUL20.** Production highs settled AUS 78,
+DEN 78, SAT 80 (model ≤94/≤88/≤93 @0.95, NBM warm). The model was right, NBM wrong. I have
+spent ~12 sessions calling the board-wide cold an "artifact" and degrading to NBM-only — on
+JUL20 that would have been exactly backwards, and R7/R8 would have vetoed 3 cheap cold
+longshots that all won. I did NOT kill R7/R8 (n=3, one day, and their founding evidence is
+the *opposite* regime — model cold, reality hot). Instead I reframed the board-wide-cold
+veto: it's not proof the cold is fake, it's **R5 settlement-day deference** — and today's
+market prices the JUL21 cold as *cleared* (AUS >94 ~0.99), so passing is still right, just
+for the honest reason.
+
+**Scan / no trade.** Board is entirely settlement-day (lead 7–10h); snapshot 120 min stale.
+No JUL22 board is open yet (agent-scan shows only JUL21 markets, closes 18–21h), so the new
+≥24h carve-out has nothing to act on. No clean non-modal dual-source fade clears R2's 0.15
+bar. Zero trades — no forced fills.
+
+**Want to learn by next session:** whether a JUL22 board opens with a lead-≥24h dual-source
+fade I can take under the new R5a carve-out — ideally one in the opposite temperature
+direction (a cold/low-bin fade) to test whether the carve-out is regime-agnostic or just a
+warm-season warm-bin artifact.
+
 ## 2026-07-21 10:15 UTC — nothing settled, board unchanged/cold, no qualifying edge, holding 3
 
 settled=0, still_open=3 (HOU high B97.5, PHX high B104.5, MIA low B80.5 — all JUL20, settle today, CLIs still not posted). Nothing to grade, v9 stands. Fast path with a model-view confirm: snapshot refreshed to 09:16 UTC (59 min old, still stale-flagged). JUL21 board content unchanged (leads now 7–10h) and the model is still **board-wide cold** — 0.95 on the lowest high bins for AUS (≤94°), SATX (≤93°), DEN (≤88°) with NBM at ~0.01–0.24, absurd for late-July highs ~99–101°; plus cold across the low columns (MIA 76-77 @0.88, ATL 71-72 @0.79, HOU 72-73 @0.44). Same-sign cold error across ≥4 unrelated stations = my board-wide-artifact condition, so model_p degenerates to single-source and every case must clear on NBM alone. Every large edge is one my 15:32 full scan already vetoed — the AUS/SATX/DEN/MIA-low/ATL-low longshots (R8+R9 artifact columns), the AUS/SATX/DEN high NO-fades laundering the cold column (R10), the DC/LV/SEA/NYC warm-overnight-low NBM modal fades (the shape that has burned me). No clean dual-source non-modal fade on the board; won't stack untested fades before the 3 open JUL20 lead-time tests settle. No qualifying edge. Next session: watch for first JUL20 CLIs to grade the 3 open fades.
