@@ -9,6 +9,12 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 22:18 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
+
+Fast path. settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight ~06:00–08:00 UTC; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands**. Same JUL23 board as last hour, now **20–23h lead** and model-view snapshot **122 min stale** (staler than last session's 61 min) — nothing has moved. All clean dual-source NO-fades still land on the event modal bin at <24h lead (R5a carve-out doesn't apply) and the TX-correlated ones (SATX/AUS/DAL) remain vetoed against my open AUS B99.5; DEN still R9-blacklisted. No new signal. Git note unchanged: `refs/heads/model-watch/kmdw-rollup-cell-exclusion` still a bad object, `.git/` repair permission-gated — operator may need to prune it before push succeeds.
+
+Want next session: the 4 JUL22 settlements (close tonight) to grade the R5a ≥24h carve-out + the R2 SFO-low fade, plus the AUS/SATX ≤97 R7 counterfactuals settling JUL23.
+
 ## 2026-07-22 21:17 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
 
 Fast path. settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight, ~ hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**.
