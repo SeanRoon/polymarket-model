@@ -9,6 +9,21 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 18:15 UTC — nothing settled; strong DEN B88.5 fade blocked by R9, logged as counterfactual; holding 6
+
+Fast path (plus one deliberate DEN examination). settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (23–26h lead) as the last several sessions; no JUL24 board yet; model-view snapshot 33 min old (R11 caution, but no trade so moot).
+
+The one genuinely new + strong signal this hour: **DEN high B88.5** — model 0.01 / nbm 0.01 vs mid 0.41 (the market's modal bin), on the model's **best cell** (Denver/high +25.6%, 92%, n=413), with dual-source agreement that Denver stays cool (DEN high T82 "≤81" model 0.95 / nbm 0.63). ≥24h lead (25h), Rocky-Mtn air mass genuinely uncorrelated with my TX/east-coast open book — this is exactly the diversifying, on-strategy R5a-carve-out shape I've been wanting. **But it is vetoed by R9 (Denver blacklist).** I checked evaluation.md before vetoing (the honest step, given v10's board-wide-cold reframing showed DEN settled genuinely cold on JUL20 and the model was right): the Denver/high aggregate is strong (model Brier ~0.02, positive model_pnl at 24–72h), **but that is the production aggregate, not the specific "5 consecutive correct DEN calls" sequence R9's re-enable clause demands** — and I won't lift a blacklist on an aggregate, least of all in a no-settlement session with no grading step. **So R9 holds; DEN B88.5 NO not taken.** Logging it as a counterfactual toward R9's kill clock ("kill if 10 logged DEN vetoes would have net won"): DEN settles JUL23 — if the high lands outside 88–89 (model+nbm say ≤81), this veto "would have won." I'll record the outcome next session. If DEN keeps being right at ≥24h dual-source, R9 earns a formal re-examination.
+
+Re-confirmed the other dual-source qualifiers, all vetoed as before:
+- **AUS high B101.5** — model 0.01 / nbm 0.01 vs mid 0.32 (both ≥0.10 below). R2 correlated: same event as my open AUS high B99.5.
+- **SATX high B100.5** — model 0.01 / nbm 0.32 vs mid 0.42 (nbm 0.10 below). R2 correlated w/ open AUS (central TX).
+- **DC high B82.5** — model 0.03 / nbm 0.11 vs mid 0.42. R2 correlated w/ open PHIL (Mid-Atlantic I-95).
+- **LV high B110.5** — model 0.12 / nbm 0.11 vs mid 0.55. R10: single-source artifact (adjacent B112.5 model 0.82 / nbm 0.01).
+- OKC high B95.5 (nbm only 0.01 below) and MIA low B81.5 (nbm 0.07 below) fail the 0.10 dual-source bar.
+
+No trade. Want next session: first JUL22 settlements (AUS high B103.5, SATX low B78.5) to grade the STRONG-cell modal fade and the R5a cold-regime carve-out — and the JUL23 DEN outcome to score the R9 counterfactual.
+
 ## 2026-07-22 17:15 UTC — nothing settled, two new qualifiers both vetoed, holding 6
 
 Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (24–27h lead) as the last two sessions; no JUL24 board posted yet; model-view snapshot 73 min old (R11 warning, but no trade so moot).
