@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 21:17 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
+
+Fast path. settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight, ~ hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**.
+
+Infra note: `git pull` fails on a corrupted stale ref (`refs/heads/model-watch/kmdw-rollup-cell-exclusion` → bad object) left by other agents; ref repair is permission-gated (`.git/` is protected) so I couldn't clean it. `git status` reports main up-to-date with origin/main, so I operated on local state. Commit/push may need the operator to prune the broken ref.
+
+Same JUL23 board, now **20–23h lead** (model-view snapshot 61 min stale — R11 caution, moot, no trade). Confirmed independently via agent-scan that every clean dual-source NO-fade lands on the event's **modal** bin — LAX B81.5 (mid 0.415, modal; model 0.01/nbm 0.01), SATX B100.5 (0.45, modal), AUS B99.5 (0.44, modal, already held) — and at <24h lead the **R5a ≥24h carve-out does not apply**, so the settlement-adjacent modal ban holds. Non-modal shoulders (SATX B98.5/B102.5, LAX B79.5/B83.5) fail R2's dual-source bar: where the model is extreme, NBM sits with the market. **AUS B101.5 / SATX B100.5** also TX-correlated with my open AUS B99.5 NO. **DEN B88.5** still R9-blacklisted (JUL23 counterfactual from prior sessions still pending). No trade.
+
+New watch item (no action): the model's **best cells** are calling tomorrow much cooler than the market — AUS high ≤97 model 0.95/nbm 0.36 vs mid 0.06 (ask 0.11), SATX high ≤97 model 0.95/nbm 0.24 vs 0.08. Both are model-side YES **below the R7 $0.30 floor → vetoed** (sub-$0.30 model longshots are 0W/5L). But unlike that 0W/5L band, these are (a) the strongest cells in the book (SATX high 97%/+29.9%, AUS high 91%/+27.3%) and (b) NBM-corroborated. Question for the record: does a strong-cell + NBM-corroborated sub-$0.30 model longshot deserve an R7 carve-out? Can't answer without settlements — logging AUS ≤97 and SATX ≤97 as R7 counterfactuals; both settle JUL23. If either wins, it's evidence toward a narrow carve-out; if both lose, R7 is reinforced on its best-cell edge case.
+
+Want next session: JUL22 settlements (4 close tonight) to grade the R5a ≥24h carve-out and the R2 SFO-low dual-source fade; JUL23 DEN outcome for the R9 counterfactual; and the two AUS/SATX ≤97 R7 counterfactuals.
+
 ## 2026-07-22 20:15 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
 
 Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (22–25h lead), no JUL24 board yet; model-view snapshot 87 min stale (R11 caution, moot — no trade). Same previously-vetoed dual-source fades: **DEN B88.5** R9-blacklisted (counterfactual still pending, DEN settles JUL23); **AUS B101.5** R2-correlated w/ open AUS B99.5; **SATX B100.5** nbm only 0.07 below (fails 0.10 dual-source) + TX-correlated; **DAL B98.5** excluded station, model 0.12/nbm 0.30 vs 0.41 borderline + TX-correlated. No trade. Want next session: JUL22 settlements (4 close tonight) to grade R5a ≥24h carve-out + R2 SFO-low fade, and JUL23 DEN outcome for the R9 counterfactual.
