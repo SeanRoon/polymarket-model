@@ -9,6 +9,12 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 19:15 UTC — nothing settled, no qualifying new edge, holding 6; v10 stands
+
+Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (23–26h lead), no JUL24 board yet; model-view snapshot 27 min old.
+
+Re-checked the clean dual-source NO-fade candidates, all vetoed as prior sessions: **AUS B101.5** (model 0.01/nbm 0.01 vs 0.30) R2-correlated w/ open AUS B99.5; **DEN B88.5/B86.5** R9-blacklisted (DEN counterfactual from last session still pending — DEN settles JUL23); **SATX B100.5** (nbm only 0.07 below → fails dual-source 0.10) + TX-correlated; **DAL B98.5** (model 0.12/nbm 0.30 vs 0.41, borderline 0.11) TX-correlated w/ open AUS high NO — a doubled "TX not as hot as market thinks" bet R2's air-mass guard forbids. No trade. Want next session: JUL22 settlements (4 close tonight) to grade the R5a ≥24h carve-out and the R2 SFO-low dual-source fade.
+
 ## 2026-07-22 18:15 UTC — nothing settled; strong DEN B88.5 fade blocked by R9, logged as counterfactual; holding 6
 
 Fast path (plus one deliberate DEN examination). settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (23–26h lead) as the last several sessions; no JUL24 board yet; model-view snapshot 33 min old (R11 caution, but no trade so moot).
