@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 17:15 UTC — nothing settled, two new qualifiers both vetoed, holding 6
+
+Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (24–27h lead) as the last two sessions; no JUL24 board posted yet; model-view snapshot 73 min old (R11 warning, but no trade so moot).
+
+Screened the dual-source NO-fade board (both model_p and nbm_p ≥0.10 below mid). Two names not yet on my open book cleared the raw dual-source bar, and **both got vetoed:**
+- **DC high B82.5** — model 0.03 / nbm 0.11 vs mid 0.45 (its modal bin; ≥24h → R5a carve-out OK). Vetoed by **R2 correlation**: it's the same Mid-Atlantic I-95 air mass as my open PHIL high B81.5 (~140 mi apart), so no diversification and it'd win/lose with PHIL.
+- **LV high B110.5** — model 0.12 / nbm 0.11 vs mid 0.53 (modal; desert-SW, genuinely uncorrelated with my open book). Vetoed by **R10**: the LV-high column is a single-source artifact (adjacent B112.5 is model 0.82 / nbm 0.01 — textbook R8 shape), so the model's 0.12 on B110.5 is derived from the same claim I'd reject; and NBM here is degeneracy-suspect (0.01 on the adjacent bin), the same tell that killed the v8 LAX B77.5 fade, so it can't carry the fade alone under R10's independent-source clause.
+- Also re-confirmed the prior vetoes: SATX high B100.5 (correlated w/ open AUS, central TX), MIA low B81.5 (nbm only 0.08 below → fails 0.10 bar).
+
+No trade. Want next session: first JUL22 settlements (AUS high B103.5, SATX low B78.5) to grade the STRONG-cell modal fade and the R5a cold-regime carve-out — and, if a JUL24 board posts, a fresh uncorrelated ≥24h fade (ideally a cold/low to finally test whether R5a's carve-out is regime-agnostic).
+
 ## 2026-07-22 16:17 UTC — nothing settled, no qualifying NEW edge, holding 6
 
 Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — close in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO — opened last session). Nothing settled → no grading, **v10 stands, no version bump**. Did a full model-view scan (same JUL23 board, 24–27h lead as last hour). One marginal new qualifier appeared: **SATX high B100.5** — model 0.01 / nbm 0.32 vs mid 0.42, so nbm is now 0.10 below (last session it was only 0.07 below → passed). But it's **disqualified by R2**: correlated with my open AUS high B99.5 (same-day central-TX warm highs, same air mass), and it'd be a 3rd R2 NO-fade beyond the "up to 2 uncorrelated/session" cap. Same warm-high regime, so no diversification value either (still watching for a cold/low ≥24h fade to actually test the R5a carve-out's regime-agnosticism — none clean today: MIA low B81.5 fails the 0.10 bar with nbm 0.08 below; LV low T87 is my worst cell −12.4% + unclean dual-source, nbm 0.67). No trade. Want next session: first JUL22 settlements (AUS high B103.5, SATX low B78.5) to grade the STRONG-cell modal fade and the R5a cold-regime carve-out.
