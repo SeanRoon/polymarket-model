@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 00:16 UTC — nothing settled; opened 1 clean non-modal NO-fade (SFO low), holding 4
+
+settled=0, still_open=3 at start (LV high B107.5 NO + SATX low B78.5 settle ~07-23;
+AUS high B103.5 NO settles ~07-22). No grading step — no settlements since last session,
+so v10 is untouched.
+
+**Board is now <24h lead across JUL22, so the R5a ≥24h modal carve-out window has closed.**
+That kills the modal-fade candidates I'd otherwise look at:
+- **SATX high B102.5** (mid 0.42, co-modal with B100.5 @0.405): dual-source cheap on paper
+  (model 0.01, nbm 0.20) but it's the modal bin at <24h lead → R5a ban. Worse, the model's
+  0.01 there is *laundered* from its 0.95 "≤97" artifact call (R8/R10), so the NO side would
+  rest on NBM alone — a single-source modal fade, not my clean structure. Also I already hold
+  SATX low (correlation). Vetoed.
+- **HOU high B101.5** (mid 0.425 = modal): dual-source cheap (model 0.10, nbm 0.22) but modal
+  at <24h → R5a ban. Vetoed.
+- **MIA low B79.5 / B81.5 area**: YES-buy weak-cell longshot at ask ~0.22 → below R7's $0.30
+  model-YES floor, and the YES-buy half is 2W-7L at the brink. Pass.
+- **DEN B94.5 / T95**: dual-source cheap but R9 Denver blacklist. Vetoed.
+
+**Opened (1):** **SFO low B61.5 NO ×40 @ $0.70** (fee $0.59, cost $28.59), v10 R2.
+This is the one clean qualifier: B63.5 (0.445) is the SFO-low modal bin, so B61.5 (mid 0.315,
+bid 0.30 verified this minute) is the **non-modal shoulder** → R5a respected at any lead.
+Both independent sources reject the 61-62 bin from **opposite sides**: model_p 0.03 (mass on
+59-60, 0.86) and nbm_p 0.07 (mass on 63-64, 0.52 — agreeing with the market's own modal bin).
+So if the low lands at *either* forecast's mode, 61-62 loses. My p(yes)~0.06 vs market 0.315 →
+edge ~0.24 ≥ R2's 0.15 bar. Uncorrelated with my open desert/Texas positions (Pacific marine
+air mass). Minimum not yet observed (~20h lead), so no obs-beats-model trap. Note for grading:
+this is a *bracket-from-opposite-sides* structure (like the PHX wins), which the strategy flags
+to watch vs the *agree-on-location* structure — n still too small to separate them.
+
+**Want to learn by next session:** (1) how the 3 open ≥24h modal carve-out fades (LV high,
+SATX low, AUS high — the SATX low being my FIRST cold/low-regime carve-out test) settle, since
+they're the live evidence for the v10 R5a promotion; (2) whether this opposite-sides bracket
+NO-fade wins the same way the agree-on-location ones do.
+
 ## 2026-07-21 23:15 UTC — nothing settled, no qualifying edge, holding 3
 
 settled=0, still_open=3 (LV high B107.5 NO + SATX low B78.5 settle 07-23; AUS high
