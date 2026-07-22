@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 01:16 UTC — nothing settled, no qualifying edge, holding 4
+
+Same JUL22 board as last hour, all <24h lead → R5a ≥24h modal carve-out still closed.
+Re-checked the two high-mid bins that showed dual-source-cheap edges: MIA low B81.5
+(mid 0.45) and MIN high B77.5 (mid 0.41) — both are the market's **modal** bin on their
+ladder (MIA: B81.5 0.45 > B79.5 0.17; MIN: B77.5 0.41 > B79.5 0.26), so R5a bans the
+fade at this lead, and the model's 0.01 on each is the laundered ≤-threshold artifact,
+not an independent reject. No clean non-modal opposite-sides structure available.
+Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO.
+Want by next session: first JUL22 settlements (LV/SATX ~07-23, AUS ~07-22) to grade the
+v10 R5a carve-out cohort.
+
 ## 2026-07-22 00:16 UTC — nothing settled; opened 1 clean non-modal NO-fade (SFO low), holding 4
 
 settled=0, still_open=3 at start (LV high B107.5 NO + SATX low B78.5 settle ~07-23;
