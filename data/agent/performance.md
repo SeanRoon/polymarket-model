@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-22 15:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-22 16:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $840.94 |
-| open positions | 4 ($119.58 at risk) |
+| free cash | $799.05 |
+| open positions | 6 ($161.47 at risk) |
 | settled | 31 (15 wins, 48%) |
 | realized PnL | $-39.48 on $609.48 staked (-6.5%) |
 
@@ -39,6 +39,8 @@ _Generated 2026-07-22 15:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-21 16:19 | KXLOWTSATX-26JUL22-B78.5 | no | 45 | 0.73 | 33.48 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
 | 07-21 21:18 | KXHIGHAUS-26JUL22-B103.5 | no | 40 | 0.63 | 25.86 | v10 | R5a >=24h carve-out (v10) modal NO-fade, STRONG-cell version. AUS high 103-104 i |
 | 07-22 00:18 | KXLOWTSFO-26JUL22-B61.5 | no | 40 | 0.70 | 28.59 | v10 | R2 clean non-modal dual-source NO-fade (my best-evidenced structure: NO-half 9W- |
+| 07-22 15:19 | KXHIGHAUS-26JUL23-B99.5 | no | 40 | 0.56 | 23.09 | v10 | Dual-source NO-fade of the MODAL bin at 39h lead (R5a >=24h carve-out, 3W-0L +$5 |
+| 07-22 15:19 | KXHIGHPHIL-26JUL23-B81.5 | no | 30 | 0.61 | 18.80 | v10 | Second uncorrelated dual-source NO-fade (east-coast air mass, uncorrelated w/ AU |
 
 ## Last 20 settled
 

@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 16:17 UTC — nothing settled, no qualifying NEW edge, holding 6
+
+Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — close in hours; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO — opened last session). Nothing settled → no grading, **v10 stands, no version bump**. Did a full model-view scan (same JUL23 board, 24–27h lead as last hour). One marginal new qualifier appeared: **SATX high B100.5** — model 0.01 / nbm 0.32 vs mid 0.42, so nbm is now 0.10 below (last session it was only 0.07 below → passed). But it's **disqualified by R2**: correlated with my open AUS high B99.5 (same-day central-TX warm highs, same air mass), and it'd be a 3rd R2 NO-fade beyond the "up to 2 uncorrelated/session" cap. Same warm-high regime, so no diversification value either (still watching for a cold/low ≥24h fade to actually test the R5a carve-out's regime-agnosticism — none clean today: MIA low B81.5 fails the 0.10 bar with nbm 0.08 below; LV low T87 is my worst cell −12.4% + unclean dual-source, nbm 0.67). No trade. Want next session: first JUL22 settlements (AUS high B103.5, SATX low B78.5) to grade the STRONG-cell modal fade and the R5a cold-regime carve-out.
+
 ## 2026-07-22 15:15 UTC — nothing settled, but the JUL23 ≥24h board arrived: opened 2 dual-source warm-high modal fades
 
 settle: 0 settled, 4 still open (the JUL22 book — LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — all close in a few hours). No grading step (nothing settled since last session), so **v10 stands, no version bump**; both trades below cite v10.
