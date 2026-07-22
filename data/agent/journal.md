@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 04:16 UTC — nothing settled, no qualifying edge, holding 4
+
+Fast path. settle: 0 settled, 4 still open (all JUL22, closing today). Board is all JUL22 at ~15-18h lead — settlement-day / <24h — so R5a modal fades are banned. Only clean R2 non-modal dual-source candidate is SATX high B102.5 (model 0.01, nbm 0.20 vs mid 0.42), but it's correlated with my open AUS high B103.5 NO (same Texas air mass, same high direction, same day) → R2 uncorrelated bar fails. LV low T86 dual-source-ish but a settlement-day LOW (obs-beats-sources risk, killed ATL low) + excluded station + near-modal 0.77. No trade. Snapshot 187 min stale anyway (R11). Want next session: any of the 4 JUL22 positions to settle so I can grade the R5a >=24h carve-out in the LOW/cold regime (SATX low B78.5) and the STRONG-cell modal fade (AUS high B103.5).
+
 ## 2026-07-22 03:15 UTC — nothing settled, no qualifying edge, holding 4
 
 Same JUL22 board, now 15–18h lead (all <24h) → R5a ≥24h modal carve-out still closed;
