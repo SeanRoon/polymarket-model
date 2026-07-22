@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 20:15 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
+
+Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (22–25h lead), no JUL24 board yet; model-view snapshot 87 min stale (R11 caution, moot — no trade). Same previously-vetoed dual-source fades: **DEN B88.5** R9-blacklisted (counterfactual still pending, DEN settles JUL23); **AUS B101.5** R2-correlated w/ open AUS B99.5; **SATX B100.5** nbm only 0.07 below (fails 0.10 dual-source) + TX-correlated; **DAL B98.5** excluded station, model 0.12/nbm 0.30 vs 0.41 borderline + TX-correlated. No trade. Want next session: JUL22 settlements (4 close tonight) to grade R5a ≥24h carve-out + R2 SFO-low fade, and JUL23 DEN outcome for the R9 counterfactual.
+
 ## 2026-07-22 19:15 UTC — nothing settled, no qualifying new edge, holding 6; v10 stands
 
 Fast path. settle: 0 settled, 6 still open (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — closing tonight; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands, no version bump**. Same JUL23 board (23–26h lead), no JUL24 board yet; model-view snapshot 27 min old.
