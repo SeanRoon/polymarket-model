@@ -9,6 +9,25 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 15:15 UTC — nothing settled, but the JUL23 ≥24h board arrived: opened 2 dual-source warm-high modal fades
+
+settle: 0 settled, 4 still open (the JUL22 book — LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — all close in a few hours). No grading step (nothing settled since last session), so **v10 stands, no version bump**; both trades below cite v10.
+
+**Why this hour broke the fast-path streak:** the JUL23 board finally posted at ≥24h lead (26–39h), so the R5a settlement-day modal-fade ban lifts and the ≥24h dual-source carve-out (3W–0L, +$51.15) is live. I have capacity (4/25). Model-view snapshot was 51 min stale (R11 warning) so I re-scanned both target events live before entering (books 15:17–15:18 UTC, traded immediately after).
+
+Screened for bins where **both** model_p and nbm_p sit ≥0.10 below mid:
+- **AUS high B99.5** — model 0.01 / nbm 0.21 vs mid ~0.45 (the market's MODAL bin, bid0.44/ask0.46). Strong LIVE cell. Central-TX.
+- **PHIL high B81.5** — model 0.05 / nbm 0.18 vs mid ~0.40 (MODAL, bid0.39/ask0.42). Excluded station, thin cell → R2 weak-cell governs. East-coast, uncorrelated air mass.
+- Passed: SATX high B100.5 (nbm only 0.07 below → fails dual-source bar); LV low T87 / LAX low T68 / DC low (lows on my weaker/worst cells, threshold tails, less evidence).
+
+**Opened (both v10):**
+1. **KXHIGHAUS-26JUL23-B99.5 NO x40 @ $0.56** (fee $0.69, cost $23.09). Fair NO ~0.88 vs 0.56 → edge ~0.31. R5a ≥24h carve-out + R2 NO-fade. My best-evidenced shape (warm-high modal fade in warm season). Uncorrelated w/ the JUL22 AUS position, which settles before this matters.
+2. **KXHIGHPHIL-26JUL23-B81.5 NO x30 @ $0.61** (fee $0.50, cost $18.80). Fair NO ~0.87 vs 0.61 → edge ~0.24. Second uncorrelated NO-fade (R2 up-to-2 provision), east-coast.
+
+**Honest caveat:** both are the SAME hypothesis (warm-season market overprices its warm-high modal bin; two independent forecasts agree it's cheap). Geographically uncorrelated, but they'd win/lose together on that regime signal. The carve-out's open question — is it regime-agnostic, or only "warm bins come cooler than priced"? — is NOT tested by these; they're more of the same warm-high evidence. Watching for a cold/low ≥24h modal fade to actually diversify it.
+
+Holding 6 open. Want next session: first JUL22 settlements (AUS high B103.5, SATX low B78.5 — grading the STRONG-cell modal fade and the R5a cold-regime carve-out) and, later, whether these two JUL23 warm-high fades verify (high lands outside the faded mode).
+
 ## 2026-07-22 14:16 UTC — nothing settled, no qualifying edge, holding 4
 
 Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~6-7h lead → <24h so R5a modal fades banned; still no JUL23 ≥24h board). Model-view snapshot 132 min old (R11 warning) — read confirms every edge sits at 6-7h lead, same board as the last several hours. Cleanest dual-source ≥0.10 NO-fade is still LV low T86 (model 0.01/nbm 0.45 vs mid 0.65) but that's my worst cell (LV low -12.3% ROI, 33% win) AND a settlement-day low → ban stands; central-TX high fades stay <24h and correlated with the open book (R2). No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements to grade the STRONG-cell modal fade (AUS high B103.5) and the R5a cold-regime carve-out (SATX low B78.5).
