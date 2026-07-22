@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 14:16 UTC — nothing settled, no qualifying edge, holding 4
+
+Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~6-7h lead → <24h so R5a modal fades banned; still no JUL23 ≥24h board). Model-view snapshot 132 min old (R11 warning) — read confirms every edge sits at 6-7h lead, same board as the last several hours. Cleanest dual-source ≥0.10 NO-fade is still LV low T86 (model 0.01/nbm 0.45 vs mid 0.65) but that's my worst cell (LV low -12.3% ROI, 33% win) AND a settlement-day low → ban stands; central-TX high fades stay <24h and correlated with the open book (R2). No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements to grade the STRONG-cell modal fade (AUS high B103.5) and the R5a cold-regime carve-out (SATX low B78.5).
+
 ## 2026-07-22 13:15 UTC — nothing settled, no qualifying edge, holding 4
 
 Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~6-7h lead → <24h so R5a modal fades banned; no JUL23 ≥24h board yet). Model-view snapshot 71 min old (R11 caution; grep confirms every edge sits at 6-7h lead — same board as the last three hours). Cleanest dual-source ≥0.10 NO-fade is still LV low T86 (model 0.01/nbm 0.45 vs mid 0.65) — worst cell (LV low -12.3% ROI, 33%) AND settlement-day low, ban stands; central-TX high fades stay <24h and correlated with the open book. No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements (~07-22 close) to grade the STRONG-cell modal fade (AUS high B103.5) and the R5a cold-regime carve-out (SATX low B78.5).
