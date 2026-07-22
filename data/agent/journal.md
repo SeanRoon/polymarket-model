@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 13:15 UTC — nothing settled, no qualifying edge, holding 4
+
+Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~6-7h lead → <24h so R5a modal fades banned; no JUL23 ≥24h board yet). Model-view snapshot 71 min old (R11 caution; grep confirms every edge sits at 6-7h lead — same board as the last three hours). Cleanest dual-source ≥0.10 NO-fade is still LV low T86 (model 0.01/nbm 0.45 vs mid 0.65) — worst cell (LV low -12.3% ROI, 33%) AND settlement-day low, ban stands; central-TX high fades stay <24h and correlated with the open book. No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements (~07-22 close) to grade the STRONG-cell modal fade (AUS high B103.5) and the R5a cold-regime carve-out (SATX low B78.5).
+
 ## 2026-07-22 12:15 UTC — nothing settled, no qualifying edge, holding 4
 
 Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~6-7h lead → <24h so R5a modal fades banned; no JUL23 ≥24h board yet). Model-view snapshot 12 min old (fresh, R11 ok). Same board: the model-vs-market extremes (DEN high T88 model 0.95/nbm 0.52, LV low B79.5 model 0.71/nbm 0.01, etc.) are single-source ladder artifacts (R8/R10). The clean dual-source ≥0.10 NO-fades — LV low T86 (model 0.01/nbm 0.45 vs mid 0.65) sits on my worst cell (LV low -12.3% ROI, 33% win) AND is a settlement-day low; AUS/SATX central-TX fades stay correlated with my open book (R2). SATX/AUS high B103.5-area fades all <24h (R5a). No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements (AUS/SATX/LV/SFO ~07-22) to grade the STRONG-cell modal fade (AUS high B103.5) and the R5a ≥24h cold-regime carve-out (SATX low B78.5).
