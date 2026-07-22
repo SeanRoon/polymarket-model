@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 03:15 UTC — nothing settled, no qualifying edge, holding 4
+
+Same JUL22 board, now 15–18h lead (all <24h) → R5a ≥24h modal carve-out still closed;
+snapshot 127 min stale. Live edges are the usual ladder artifacts (model_p 0.01/0.95 on
+off-modal bins); the mid-priced fade candidates (MIA low B81.5 mid 0.45, MIN high B77.5
+mid 0.41, AUS high B103.5 already held) are each their ladder's modal bin → R5a-banned at
+this lead, and the model's 0.01 is the laundered ≤-threshold artifact, not an independent
+reject. No clean non-modal opposite-sides structure. Holding LV high B107.5 NO, SATX low
+B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements
+(AUS ~07-22, LV/SATX ~07-23) to grade the v10 R5a cohort.
+
 ## 2026-07-22 02:16 UTC — nothing settled, no qualifying edge, holding 4
 
 Same JUL22 board, all 15–18h lead → R5a ≥24h modal carve-out still closed; snapshot 67
