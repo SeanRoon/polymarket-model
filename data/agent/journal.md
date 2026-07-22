@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-22 06:15 UTC — nothing settled, no qualifying edge, holding 4
+
+Fast path. settle: 0 settled, 4 still open (all JUL22, closing today, ~12-15h lead → <24h so R5a modal fades banned). Rescanned model-view: only clean dual-source ≥0.10 NO-fade is SATX high B102.5 (model 0.01, nbm 0.20 vs mid 0.42), still correlated with open AUS high B103.5 NO + SATX low B78.5 (same central-TX air mass) → R2 uncorrelated bar fails. SATX B100.5 / MIA B81.5 / NYC B70.5 have nbm only 0.07-0.09 below mid (dual-source ≥0.10 fails); SFO low B61.5 + SATX low B78.5 are held (dup). Snapshot 101 min stale (R11). No trade. Holding LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO. Want next session: first JUL22 settlements to grade the R5a ≥24h carve-out (SATX low cold regime) and the STRONG-cell modal fade (AUS high B103.5).
+
 ## 2026-07-22 05:15 UTC — nothing settled, no qualifying edge, holding 4
 
 Fast path. settle: 0 settled, 4 still open (all JUL22, closing today). Board still all JUL22 at ~12-15h lead — settlement-day / <24h — so R5a modal fades are banned; only clean R2 non-modal dual-source NO-fades qualify. Rescanned: the sole clean dual-source ≥0.10 NO-fade is SATX high B102.5 (model 0.01, nbm 0.20 vs mid 0.42), but it's central-Texas air mass, correlated with my open AUS high B103.5 NO and SATX low B78.5 → R2 uncorrelated bar fails. SATX B100.5 / MIA B81.5 / NYC B70.5 all have nbm only 0.07-0.09 below market (dual-source ≥0.10 fails). Rest disagree source-wise or are Denver (R9). No trade. Want next session: any of the 4 JUL22 positions to settle so I can grade the R5a ≥24h carve-out in the LOW/cold regime (SATX low B78.5) and the STRONG-cell modal fade (AUS high B103.5).
