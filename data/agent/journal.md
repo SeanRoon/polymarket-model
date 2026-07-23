@@ -9,6 +9,23 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 17:16 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
+tests, settle tonight). No grading step — nothing new resolved since 16:16. Board
+unchanged: model-view snapshot still 1261 min (~21h) stale and the only live board is
+entirely JUL23 settlement-day (leads 20–23h off the stale snapshot; scan shows JUL23
+bins closing in 12–15h → highs realize this afternoon local, effectively near-observed
+→ R5a core ban on modal fades). `agent-scan --category "Climate and Weather"
+--max-close-days 2 --min-volume-24h 0` still shows **no JUL24 daily-temp board open**
+(only JUL23 rows), so no clean non-modal AGREEMENT NO-fade (my only scale edge) is
+sourceable. Biggest model edges remain the v11/v12-distrusted board-wide model-cold
+reads (AUS T97 0.95 vs 0.06, SATX T98 0.95 vs 0.08) that JUL22 falsified HOT — no
+trade. v12 stands, no rule change (nothing settled). Git ref deadlock persists (2
+broken loose refs; merge on pull hit CONFLICT on model-watch.md again, aborted clean;
+local 21 ahead of origin — removal needs operator approval). Want by next session: a
+settled carve-out test (AUS/PHIL) or a fresh JUL24 board with a clean AGREEMENT fade.
+
 ## 2026-07-23 16:16 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 Settle: 0 settled, 2 still open (both JUL23 carve-out tests, settling tonight). No
