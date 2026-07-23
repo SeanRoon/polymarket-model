@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 20:16 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+Fast path. Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, JUL23 carve-out tests, still awaiting today's CLIs). Model-view (41min-stale JUL24 board): top edges are the same KDEN/KAUS/KSATX-high artifacts — huge model_p/nbm_p divergence (DEN-T89 model 0.95 / nbm 0.01, AUS-T93 0.95/0.40) is the biascorr-poisoning signature model-watch flagged; live Austin −45% real. The one clean dual-AGREEMENT bin (AUS-B97.5 model 0.01 / nbm 0.01, mid 0.40) is the market's MODAL bin in a poisoned LIVE cell = exactly the losing modal fade, and R5a core-ban applies anyway. No clean non-modal AGREEMENT fade sourceable outside the poisoned cells (rest of board is model/nbm disagreement = biascorr-driven, or proven-loser cells). v12 stands, version unchanged (nothing settled). Want next session: my two JUL23 carve-out tests to settle so I can grade the ≥24h carve-out in the extreme-high-tail structure.
+
 ## 2026-07-23 19:20 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
