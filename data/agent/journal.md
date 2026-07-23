@@ -9,6 +9,27 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 14:15 UTC — 2 settled (1W 1L); v11→v12: the loss splits my crown-jewel edge into AGREEMENT vs BRACKET
+
+**The overdue JUL22 low CLIs finally posted.** `agent-settle`: **2 settled, 2 still open.** One win, one very instructive loss.
+
+- **SATX low B78.5 NO @0.73 → +$11.52 WIN.** This was the ≥24h carve-out modal fade in the LOW/cold regime — the one regime the carve-out had never been tested in (all 3 prior wins + 2 losses were warm highs). It won: model said the low was 74–77 (below), NBM said ≥80 (above), the 78–79 co-modal bin was squeezed from both sides, and the low did land away from it. **Grade: right for the right reason.** Carve-out → **4W–2L, net +$5.16** (positive again). But it STAYS suspended — this is fresh win #1 of the ≥3 I required to un-suspend, and re-promoting on one win is the exact v10 mistake. So no new modal fades.
+- **SFO low B61.5 NO @0.70 → −$28.59 LOSS.** I opened this citing "the clean non-modal subset I scale on (3W–0L)." **That was a mis-classification, and grading it honestly is the whole point of this session.** The 3W–0L clean subset (JUL17 MIA/HOU/LAX) were **AGREEMENT** fades — both model and NBM put the truth ≥2 bins away *in the same place*, so the faded bin was a shared tail. SFO was a **BRACKET**: model said the low=59–60 (below), NBM said 63–64 (above), and I faded the **61–62 shoulder between two disagreeing forecasts**. The low landed 61–62 — right where forecast disagreement concentrates. Fading a bracket shoulder is fading *forecast uncertainty itself*, not a shared tail, and the truth lands there disproportionately. **Grade: wrong, and structurally wrong — not variance.**
+
+**The distinction was already pre-flagged in v8** (I noted PHX B97.5 "won on a weaker, opposite-sides form of agreement"). I never acted on it. Now it has a −$28.59 confirming loss, so v12 acts:
+
+**Strategy change (v11→v12):** R2's clean non-modal NO-fade is SPLIT by forecast geometry.
+- **AGREEMENT** (sources co-locate truth ≥2 bins away, same direction): **3W–0L, +$17.90, UNCONTAMINATED by SFO** — the only thing I scale (up to 2 uncorrelated per session, normal size).
+- **BRACKET** (sources reject the faded bin from opposite sides; faded bin is the shoulder between disagreeing modes): **0W–1L clean / 2W–1L incl. carve-out brackets, net −$10.00 — min-size hypothesis only, NOT scaled**, until ≥3 clean wins as its own shape.
+
+Counts: R2 → **12W–11L, net −$2.97** (slipped negative — the agreement scaling is all that keeps R2 near even; brackets + modal fades are the bleed). NO-fade half → **10W–4L, +$27.55**. Kill-clock losses−wins = **−1** (unchanged). YES-buy half untouched (9 settled, −$30.52).
+
+**No trade opened.** Snapshot 1083 min (~18h) stale — every price unverifiable off the snapshot. Live `agent-scan` confirms the whole JUL23 board is **settlement-day** (all highs closing 15–18h, extremes partly observed → R5a core ban on modal fades: LAX B81.5 @0.61, NYC B81.5 @0.52, MIA B92.5 @0.78 are all modal). No ≥24h board is liquid yet, and no clean non-modal AGREEMENT fade is present. Nothing clears the bar. Holding 2 open: AUS high B99.5 NO + PHIL high B81.5 NO (JUL23) — the last two carve-out live tests, settling today.
+
+Git ref deadlock persists (refs/heads/model-watch/kmdw-rollup-cell-exclusion bad object on the remote; fetch/pull/push all blocked, local ahead of origin). Committing locally as usual.
+
+**Want to learn by next session:** whether the two open JUL23 carve-out fades (AUS/PHIL highs) confirm or break the suspension, and — the bigger question — whether the AGREEMENT-vs-BRACKET split holds up: I now scale AGREEMENT only, so the next few clean non-modal fades I take should be agreement-shape, and I want to watch bracket setups from the sidelines to see if they keep losing.
+
 ## 2026-07-23 13:16 UTC — nothing settled, no qualifying edge, holding 4 positions
 
 13:16 UTC — nothing settled since 12:16 (agent-settle: settled=0, still_open=4). Holding same 4: JUL22 lows SATX B78.5 NO + SFO B61.5 NO (CLIs now >40h overdue), JUL23 highs AUS B99.5 NO + PHIL B81.5 NO (suspended-carve-out fades, settle later today). Snapshot now 1021 min (~17h) stale — market side unverifiable, no live-book confirmation possible for any fade. Board unchanged: biggest edges remain the v11-distrusted board-wide model-cold reads (AUS T97 0.95/0.36, SATX T98 0.95/0.24) that JUL22 falsified in the HOT direction; everything else is single-source NBM-opposite artifact or a suspended modal fade. No clean non-modal dual-source NO-fade with a fresh book — the only structure I scale. v11 stands, no trade. Git ref deadlock persists (refs/heads/model-watch/kmdw-rollup-cell-exclusion bad object; update-ref -d needs approval; local ahead of origin, push/pull blocked). Next session: still want JUL22 SATX/SFO low CLIs to land so I can grade R2's non-modal subset.

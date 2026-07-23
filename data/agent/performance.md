@@ -1,23 +1,23 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-23 13:16 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-23 14:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $799.05 |
-| open positions | 4 ($103.96 at risk) |
-| settled | 33 (15 wins, 45%) |
-| realized PnL | $-96.99 on $666.99 staked (-14.5%) |
+| free cash | $844.05 |
+| open positions | 2 ($41.89 at risk) |
+| settled | 35 (16 wins, 46%) |
+| realized PnL | $-114.06 on $729.06 staked (-15.6%) |
 
 ## By strategy version
 
 | version | n | wins | win_rate | staked$ | pnl$ | roi |
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
-| v10 | 2 | 0 | 0% | 57.51 | -57.51 | -100.0% |
+| v10 | 4 | 1 | 25% | 119.58 | -74.58 | -62.4% |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
@@ -29,14 +29,12 @@ _Generated 2026-07-23 13:16 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 33 | 15 | 45% | 666.99 | -96.99 | -14.5% |
+| Climate and Weather | 35 | 16 | 46% | 729.06 | -114.06 | -15.6% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-21 16:19 | KXLOWTSATX-26JUL22-B78.5 | no | 45 | 0.73 | 33.48 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
-| 07-22 00:18 | KXLOWTSFO-26JUL22-B61.5 | no | 40 | 0.70 | 28.59 | v10 | R2 clean non-modal dual-source NO-fade (my best-evidenced structure: NO-half 9W- |
 | 07-22 15:19 | KXHIGHAUS-26JUL23-B99.5 | no | 40 | 0.56 | 23.09 | v10 | Dual-source NO-fade of the MODAL bin at 39h lead (R5a >=24h carve-out, 3W-0L +$5 |
 | 07-22 15:19 | KXHIGHPHIL-26JUL23-B81.5 | no | 30 | 0.61 | 18.80 | v10 | Second uncorrelated dual-source NO-fade (east-coast air mass, uncorrelated w/ AU |
 
@@ -44,6 +42,8 @@ _Generated 2026-07-23 13:16 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-23 | KXLOWTSATX-26JUL22-B78.5 | no | 0.73 | +11.52 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
+| 07-23 | KXLOWTSFO-26JUL22-B61.5 | no | 0.70 | -28.59 | v10 | R2 clean non-modal dual-source NO-fade (my best-evidenced structure: NO-half 9W- |
 | 07-23 | KXHIGHTLV-26JUL22-B107.5 | no | 0.51 | -31.65 | v10 | R5a >=24h carve-out (v10) modal NO-fade. LV high 107-108 is the market's clear m |
 | 07-23 | KXHIGHAUS-26JUL22-B103.5 | no | 0.63 | -25.86 | v10 | R5a >=24h carve-out (v10) modal NO-fade, STRONG-cell version. AUS high 103-104 i |
 | 07-21 | KXHIGHTHOU-26JUL20-B97.5 | no | 0.58 | +24.17 | v8 | R2/R1 NO-fade, dual-source SAME-direction: market has 0.42 on HOU high 97-98 (mo |
@@ -62,5 +62,3 @@ _Generated 2026-07-23 13:16 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-16 | KXLOWTNOLA-26JUL15-B74.5 | yes | 0.38 | -23.79 | v2 | p~0.55 (blend: model+biascorr 0.68 on an R1-qualifying cell — NOLA/low 73% win,  |
 | 07-16 | KXHIGHTPHX-26JUL15-B106.5 | no | 0.55 | +10.81 | v2 | p(PHX high in 106-107) ~0.15: NBM 0.19 and model 0.08 vs market 0.47 mid - both  |
 | 07-16 | KXHIGHNY-26JUL15-B101.5 | yes | 0.02 | -4.28 | v2 | My p~0.12 vs market 0.02: NBM says 0.25 for NYC high 101-102 and only 0.16 for < |
-| 07-15 | KXHIGHDEN-26JUL14-T93 | yes | 0.10 | -15.95 | v1 | P(DEN high <=92F Jul14) ~0.90: model+biascorr 0.95 AND NBM 0.70 both far above m |
-| 07-15 | KXHIGHAUS-26JUL14-T85 | yes | 0.55 | +25.96 | v1 | P(AUS high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.45, market 0.53. Austi |
