@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
@@ -32,6 +32,15 @@ _MONTHS = {m: i for i, m in enumerate(
 
 _HEADER_DATE_RE = re.compile(
     r"CLIMATE SUMMARY FOR\s+([A-Z]+)\s+(\d{1,2})\s+(\d{4})",
+    re.IGNORECASE,
+)
+# A CLI issued mid-morning carries "VALID [TODAY] AS OF 0700 AM LOCAL TIME." — its
+# MAXIMUM is only the overnight max so far, NOT the day's afternoon high (which hasn't
+# happened yet). The final daily CLI has no such marker, or a PM one. Storing an AM
+# preliminary as ground truth understates the high by 15-25F and poisons bias/eval —
+# see data/reports/model-watch.md 2026-07-23. We detect and reject the AM case.
+_PRELIMINARY_RE = re.compile(
+    r"VALID\s+(?:TODAY\s+)?AS\s+OF\s+\d{3,4}\s+AM\b",
     re.IGNORECASE,
 )
 _PRE_RE = re.compile(r"<pre[^>]*>(.*?)</pre>", re.IGNORECASE | re.DOTALL)
@@ -56,6 +65,10 @@ class CliObservation:
     min_f: float | None
     raw_text: str
     fetched_at_utc: datetime
+    # True when this is a mid-morning PRELIMINARY report ("VALID AS OF 0700 AM"),
+    # whose max_f is the incomplete overnight max, not the day's high. Callers must
+    # not treat a preliminary as settlement ground truth.
+    is_preliminary: bool = False
 
 
 _RETRYABLE = retry_if_exception_type((httpx.HTTPError, httpx.TimeoutException))
@@ -118,7 +131,7 @@ def _parse_temp(body: str, pattern: re.Pattern) -> float | None:
 
 def fetch_cli_for_station(station_id: str, *, version: int = 1) -> CliObservation | None:
     issuedby = issuedby_from_station(station_id)
-    fetched_at = datetime.now(timezone.utc)
+    fetched_at = datetime.now(UTC)
     html = _fetch_cli_text(issuedby, version=version)
     pre = _PRE_RE.search(html)
     body = pre.group(1) if pre else html
@@ -137,6 +150,7 @@ def fetch_cli_for_station(station_id: str, *, version: int = 1) -> CliObservatio
         min_f=min_f,
         raw_text=body.strip(),
         fetched_at_utc=fetched_at,
+        is_preliminary=bool(_PRELIMINARY_RE.search(body)),
     )
 
 
@@ -156,6 +170,20 @@ def fetch_cli_for_date(
         if obs is None:
             return None
         if obs.report_date_local == target_date_local:
+            if obs.is_preliminary:
+                # Mid-morning preliminary for the target day — the afternoon high isn't
+                # in yet. The superseding FINAL is issued later, so it lands at a NEWER
+                # (lower) version and we'd have returned it above; reaching a preliminary
+                # here means no final exists yet. Keep walking: the next older version is
+                # a prior date, so the branch below returns None and the day stays
+                # unresolved until a final CLI is published. Never store a preliminary.
+                log.info(
+                    "cli_preliminary_skipped",
+                    station_id=station_id,
+                    target=target_date_local.isoformat(),
+                    version=version,
+                )
+                continue
             return obs
         if obs.report_date_local < target_date_local:
             # We've stepped past the desired date going backward; not in the live archive.
