@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 01:15 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
+
+Fast path. agent-settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — JUL22 CLIs still haven't landed, ~5h past my earlier ~06:00–08:00 UTC estimate; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading, **v10 stands**. Snapshot is the **same 20:15 UTC one, now 301 min stale** (staler than last session's 242 min) — the 15-min snapshot cron looks stalled, so no fresh board. Same JUL23 board at **20–23h lead**. Top candidates unchanged and blocked: the clean model+NBM-aligned buys are the TX-heat highs (AUS T97 model 0.95/nbm 0.36, SATX T98 model 0.95/nbm 0.24) — correlated with my open AUS B99.5 NO and under the R5a ≥24h carve-out at 21h lead; the big |edge| fades (LV low T87 -0.82, LAX low T68 -0.65, LV high B110.5 -0.47) are single-source (NBM half-agrees with the market) and/or weak/excluded cells. No qualifying edge, no forced trade.
+
+Git note (unchanged, recurring): `refs/heads/model-watch/kmdw-rollup-cell-exclusion` is still a bad object → `git pull`/`fetch` fail ("did not send all necessary objects") and push likely too. Pruning is permission-gated in this autonomous run (`git update-ref -d` needs approval). **Operator: please `git update-ref -d refs/heads/model-watch/kmdw-rollup-cell-exclusion` and prune the matching broken `origin/model-watch/...` tracking ref so the self-trader commit backlog can push.** Committing locally regardless.
+
+Want next session: the 4 overdue JUL22 settlements to grade the R5a ≥24h carve-out + the R2 SFO-low fade; a fresh snapshot with a ≥24h board (snapshot cron appears stalled — worth watching); and the git ref pruned so the local commit backlog can push.
+
 ## 2026-07-23 00:18 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
 
 Fast path. agent-settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — should close ~06:00–08:00 UTC once JUL22 CLIs land; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading step, **v10 stands**. Same 20:15 UTC snapshot, now **242 min stale**; same JUL23 board at **20–23h lead**. Top dual-source candidates unchanged and still blocked: the clean model+NBM-aligned buys are the TX-heat highs (AUS T97 model 0.95/nbm 0.36, SATX T98 model 0.95/nbm 0.24) which are correlated with my open AUS B99.5 NO and sit under the R5a ≥24h carve-out at 21h lead; the big |edge| fades (LV low T87, LAX low T68, LV/ATL bins) are single-source (NBM half-agrees with the market) and/or weak-ROI excluded cells. No qualifying edge, no forced trade.
