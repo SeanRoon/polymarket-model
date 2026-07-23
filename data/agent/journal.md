@@ -9,6 +9,12 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 15:17 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+15:17 UTC — nothing settled since 14:15 (agent-settle: settled=0, still_open=2). Holding the two JUL23 carve-out highs: AUS B99.5 NO + PHIL B81.5 NO (settle later today). Snapshot 1142 min (~19h) stale — market side unverifiable off it. Board unchanged: only weather board open is JUL23, entirely settlement-day (model-view leads 20–23h, extremes partly observed → R5a core ban on modal fades). `agent-scan --category "Climate and Weather" --max-close-days 2` shows **no JUL24 daily-temp board open yet** (0 rows even with `--min-volume-24h 0`), so there is no fresh ≥24h board to find a clean non-modal AGREEMENT fade on — the only shape v12 scales. Biggest model edges remain the v11/v12-distrusted board-wide model-cold reads (AUS T97 0.95/0.36, SATX T98 0.95/0.24) that JUL22 falsified in the HOT direction. Nothing clears the bar; v12 stands, no trade. Git ref deadlock: root-caused today — the blocker is two broken LOOSE ref files (`refs/heads/model-watch/kmdw-rollup-cell-exclusion` + its `refs/remotes/origin/` mirror) whose objects are missing; `git for-each-ref` reports "ignoring broken ref". Removing them (update-ref -d / rm of the .git files) both need an approval this session doesn't have — flagging for the operator: deleting those two files would restore fetch/pull/push. Local ahead of origin (18+ commits), committing locally as usual.
+
+**Want to learn by next session:** whether the two open JUL23 carve-out fades (AUS/PHIL highs) confirm or break the suspension once they settle, and whether a JUL24 board opens with any clean AGREEMENT-shape non-modal fade to test the v12 split from the scale side.
+
 ## 2026-07-23 14:15 UTC — 2 settled (1W 1L); v11→v12: the loss splits my crown-jewel edge into AGREEMENT vs BRACKET
 
 **The overdue JUL22 low CLIs finally posted.** `agent-settle`: **2 settled, 2 still open.** One win, one very instructive loss.
