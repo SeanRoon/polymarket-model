@@ -1,6 +1,6 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-23 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-23 11:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
@@ -8,16 +8,16 @@ _Generated 2026-07-23 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:-------|------:|
 | starting bankroll | $1000.00 |
 | free cash | $799.05 |
-| open positions | 6 ($161.47 at risk) |
-| settled | 31 (15 wins, 48%) |
-| realized PnL | $-39.48 on $609.48 staked (-6.5%) |
+| open positions | 4 ($103.96 at risk) |
+| settled | 33 (15 wins, 45%) |
+| realized PnL | $-96.99 on $666.99 staked (-14.5%) |
 
 ## By strategy version
 
 | version | n | wins | win_rate | staked$ | pnl$ | roi |
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
-| v10 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v10 | 2 | 0 | 0% | 57.51 | -57.51 | -100.0% |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
@@ -29,15 +29,13 @@ _Generated 2026-07-23 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 31 | 15 | 48% | 609.48 | -39.48 | -6.5% |
+| Climate and Weather | 33 | 15 | 45% | 666.99 | -96.99 | -14.5% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-21 16:19 | KXHIGHTLV-26JUL22-B107.5 | no | 60 | 0.51 | 31.65 | v10 | R5a >=24h carve-out (v10) modal NO-fade. LV high 107-108 is the market's clear m |
 | 07-21 16:19 | KXLOWTSATX-26JUL22-B78.5 | no | 45 | 0.73 | 33.48 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
-| 07-21 21:18 | KXHIGHAUS-26JUL22-B103.5 | no | 40 | 0.63 | 25.86 | v10 | R5a >=24h carve-out (v10) modal NO-fade, STRONG-cell version. AUS high 103-104 i |
 | 07-22 00:18 | KXLOWTSFO-26JUL22-B61.5 | no | 40 | 0.70 | 28.59 | v10 | R2 clean non-modal dual-source NO-fade (my best-evidenced structure: NO-half 9W- |
 | 07-22 15:19 | KXHIGHAUS-26JUL23-B99.5 | no | 40 | 0.56 | 23.09 | v10 | Dual-source NO-fade of the MODAL bin at 39h lead (R5a >=24h carve-out, 3W-0L +$5 |
 | 07-22 15:19 | KXHIGHPHIL-26JUL23-B81.5 | no | 30 | 0.61 | 18.80 | v10 | Second uncorrelated dual-source NO-fade (east-coast air mass, uncorrelated w/ AU |
@@ -46,6 +44,8 @@ _Generated 2026-07-23 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-23 | KXHIGHTLV-26JUL22-B107.5 | no | 0.51 | -31.65 | v10 | R5a >=24h carve-out (v10) modal NO-fade. LV high 107-108 is the market's clear m |
+| 07-23 | KXHIGHAUS-26JUL22-B103.5 | no | 0.63 | -25.86 | v10 | R5a >=24h carve-out (v10) modal NO-fade, STRONG-cell version. AUS high 103-104 i |
 | 07-21 | KXHIGHTHOU-26JUL20-B97.5 | no | 0.58 | +24.17 | v8 | R2/R1 NO-fade, dual-source SAME-direction: market has 0.42 on HOU high 97-98 (mo |
 | 07-21 | KXHIGHTPHX-26JUL20-B104.5 | no | 0.54 | +19.91 | v8 | R2 NO-fade, dual-source rejection from opposite sides (same shape as the PHX JUL |
 | 07-21 | KXLOWTMIA-26JUL20-B80.5 | yes | 0.36 | -13.17 | v8 | R2 YES-buy, cautious size, opened as a DISCRIMINATING test of the pre-registered |
@@ -64,5 +64,3 @@ _Generated 2026-07-23 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-16 | KXHIGHNY-26JUL15-B101.5 | yes | 0.02 | -4.28 | v2 | My p~0.12 vs market 0.02: NBM says 0.25 for NYC high 101-102 and only 0.16 for < |
 | 07-15 | KXHIGHDEN-26JUL14-T93 | yes | 0.10 | -15.95 | v1 | P(DEN high <=92F Jul14) ~0.90: model+biascorr 0.95 AND NBM 0.70 both far above m |
 | 07-15 | KXHIGHAUS-26JUL14-T85 | yes | 0.55 | +25.96 | v1 | P(AUS high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.45, market 0.53. Austi |
-| 07-15 | KXHIGHTSATX-26JUL14-T85 | yes | 0.57 | +20.64 | v1 | P(SATX high <=84F Jul14) ~0.80: model+biascorr 0.95, NBM 0.38, market 0.53. San  |
-| 07-15 | KXHIGHDEN-26JUL14-B95.5 | no | 0.59 | -24.28 | v1 | My P(DEN high 95-96F Jul14) ~0.10 vs market 0.41 (NO costs ~0.59). Both models e |

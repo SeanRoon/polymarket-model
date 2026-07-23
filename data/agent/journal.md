@@ -9,6 +9,27 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 11:15 UTC — 2 settled, BOTH LOSSES (carve-out modal fades); v10→v11: R5a ≥24h carve-out SUSPENDED
+
+**The overdue JUL22 CLIs finally posted and the verdict on the v10 carve-out is in — it lost.** `agent-settle`: **2 settled, 4 still open**. Both settles were the R5a ≥24h carve-out modal NO-fade, and both LOST the way R5a's founding evidence always warned they could:
+
+- **TLV high B107.5 NO @0.51 → −$31.65.** LV high WAS 107–108. I faded the market's modal warm bin at ≥24h; the modal bin hit exactly.
+- **AUS high B103.5 NO @0.63 → −$25.86.** AUS high WAS 103–104. Same — and this was the **STRONG-cell (91%) version** of the fade, so cell quality did *not* save it.
+
+**Grading:** right process by the carve-out's letter (dual-source ≥0.10, lead ≥24h), wrong bet — and the carve-out itself was the mistake. Both were warm-bin fades in warm season, the *identical* regime that produced the carve-out's 3 wins, so those wins were variance, not a regime-specific edge that JUL22 happened to fall outside of. The carve-out is now **3W–2L, net −$6.36** — it gave back the entire +$51.15 and went net-negative, firing its own kill clause at n=2 of the "next 10."
+
+**Strategy change (v10 → v11):** SUSPENDED the R5a ≥24h modal-fade carve-out; demoted it back to a hypothesis. **No new modal-bin NO-fades** until it re-earns ≥3 clean wins. The settlement-day R5a core ban was always separate and stays. Banked the meta-lesson: n=3 is never enough to promote a carve-out that overrides a ban built on a larger, clearer loss record — be slower to promote, faster to suspend, anything that fades the market's modal bin (every modal fade in the ledger — SEA B80.5, TLV, AUS, plus settlement-day DEN/AUS/SEA — has lost). Counts: R2 → **11W–10L, +$14.10**; NO-fade half → **9W–3L, +$44.62**; kill-clock losses−wins = **−1** (moved 2 toward firing). **The clean non-modal NO-fade subset stays UNTOUCHED at 3W–0L, +$17.90** — the losses were modal and are excluded; it's the only edge I scale on.
+
+Two carve-out trades remain OPEN (AUS high B99.5 JUL23, PHIL high B81.5 JUL23) — they are the carve-out's last live tests; I can't close paper positions, so they'll settle on their own. Given JUL22 came in HOT, both are at risk (they fade JUL23 warm modal bins).
+
+**Board note:** JUL22 also FALSIFIED the model's board-wide *cold* read in the HOT direction (model had AUS/TLV cold, reality hot) — the exact opposite of JUL20 (model cold, reality cold, model right). Two consecutive days, opposite outcomes ⇒ board-wide cold is day/regime noise, not a fade signal. JUL23 board is again model-cold (AUS ≤96/SATX ≤97 @0.95) and I distrust it more than ever.
+
+**No new trade.** Snapshot 902 min (~15h) stale; every sizable edge on the JUL23 board is a single-source artifact column (R8: AUS T97 0.95/0.36, SATX T98 0.95/0.24, LV lows/ATL lows model-extreme/NBM-opposite), a modal fade (suspended carve-out / R5a: LV high B110.5 0.12&0.11 vs 0.59, SATX B100.5, AUS B99.5), or a YES-buy of an underpriced weak-cell bin (losing half: LAX B67.5, NOLA B76.5). No clean non-modal dual-source NO-fade where model AND NBM agree ≥0.10 below the market. Holding 4 open (2 JUL22 lows awaiting CLIs, 2 JUL23 carve-out fades).
+
+Git ref deadlock (`refs/heads/model-watch/kmdw-rollup-cell-exclusion` = bad object, loose ref file permission-denied) still blocks fetch/push; committing locally as prior sessions have.
+
+**Want to learn by next session:** whether the two open JUL23 carve-out fades (AUS B99.5, PHIL B81.5) settle — if they also lose, the carve-out is 3W–4L and I'll consider deleting the hypothesis entirely rather than leaving it dormant.
+
 ## 2026-07-23 10:15 UTC — nothing settled (0), holding 6; snapshot 841min stale, settlement-day board = no clean fresh edge; v10 stands
 
 Fast path. `agent-settle` ran clean (API healthy, all 200s): **0 settled, 6 still open**. The 4 JUL22 NO-fades (LV high B107.5, SATX low B78.5, AUS high B103.5, SFO low B61.5) remain unresolved — their NWS CLIs are now **>36h overdue** for the earliest; nothing I can do but wait for the offices to post. JUL23 holdings (AUS high B99.5 NO, PHIL high B81.5 NO) not yet due. Nothing settled → no grading step, **v10 stands**.
