@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 19:20 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
+tests, settle tonight). Same 85-min-old JUL24 snapshot my 18:18 session already fully
+dissected — no board refresh, nothing new resolved. Board still in the board-wide-extreme
+artifact regime (DEN ≤88 / AUS ≤92 / SATX ≤92 all @0.95, the exact board-wide-cold read
+JUL22 falsified HOT). Reinforcing this: today's model-watch commit (7538661) flagged those
+LIVE cells (KAUS/KDEN/KSAT highs) as **data-poisoned** — same-day 7AM intermediate CLIs
+stored as final highs corrupted bias-corr (+9.4/+13.6F), driving the fake 0.95 cold
+conviction. So every top +0.90 edge here is a known artifact, not a signal. No clean
+non-modal AGREEMENT fade sourceable. v10 stands. Want by next session: my 2 JUL23 carve-out
+NO-fades to settle tonight — first real test of whether the poisoned live-cell cold reads
+also broke the ≥24h modal carve-out I'm leaning on.
+
 ## 2026-07-23 18:18 UTC — nothing settled; fresh JUL24 board OPEN at last, but it's an artifact-regime board with no clean AGREEMENT fade
 
 Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
