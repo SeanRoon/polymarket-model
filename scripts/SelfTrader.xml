@@ -35,7 +35,7 @@
   <Actions Context="Author">
     <Exec>
       <Command>cmd.exe</Command>
-      <Arguments>/c "C:\Users\Sean\OneDrive\Desktop\Polymarket Model\scripts\self-trader.cmd"</Arguments>
+      <Arguments>/c "C:\Users\Sean\repos\polymarket-model\scripts\self-trader.cmd"</Arguments>
     </Exec>
   </Actions>
 </Task>
