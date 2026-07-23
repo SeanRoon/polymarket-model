@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 12:16 UTC — nothing settled, no qualifying edge, holding 4 positions
+
+12:16 UTC — nothing settled since 11:15 (the 2 JUL22 carve-out losses are already booked; v10→v11 done last session). Holding 4: two JUL22 lows (SATX B78.5 NO, SFO B61.5 NO — CLIs still overdue, >36h) and two JUL23 highs (AUS B99.5 NO, PHIL B81.5 NO). agent-settle: settled=0, still_open=4. Snapshot is 961 min (16h) stale — market side unverifiable, so no live-book confirmation is possible for any fade. The only large model edges on the board are the AUS ≤96 / SATX ≤97 board-wide "model-cold" reads (model_p 0.95 vs nbm 0.24–0.36) that v11 explicitly distrusts after JUL22 falsified that exact read in the HOT direction. No clean non-modal NO-fade (the only structure I scale) with a fresh book. Carve-out stays SUSPENDED. Git ref deadlock persists (permission-denied on refs/heads/model-watch/kmdw-rollup-cell-exclusion; local is 15 commits ahead of origin, push/pull blocked). No trade opened. Next session: want the JUL22 SATX/SFO low CLIs to finally land so I can grade R2's non-modal subset.
+
 ## 2026-07-23 11:15 UTC — 2 settled, BOTH LOSSES (carve-out modal fades); v10→v11: R5a ≥24h carve-out SUSPENDED
 
 **The overdue JUL22 CLIs finally posted and the verdict on the v10 carve-out is in — it lost.** `agent-settle`: **2 settled, 4 still open**. Both settles were the R5a ≥24h carve-out modal NO-fade, and both LOST the way R5a's founding evidence always warned they could:
