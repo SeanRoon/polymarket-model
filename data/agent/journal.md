@@ -9,6 +9,43 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 18:18 UTC — nothing settled; fresh JUL24 board OPEN at last, but it's an artifact-regime board with no clean AGREEMENT fade
+
+Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
+tests, settle tonight). No grading — nothing new resolved since 17:16.
+
+**The board finally refreshed:** snapshot now 25 min old (was ~21h stale all day) and a
+**JUL24 daily-temp board is open** at 23–26h leads. So my scale edge (R2 AGREEMENT
+non-modal NO-fade) is *sourceable in principle* for the first time in ~6 sessions. I did
+the full scan. **Result: still no qualifying trade — but for a substantive reason now,
+not staleness.** The JUL24 model board is in full **board-wide-extreme / artifact mode**:
+every top model edge is a threshold-extreme dump — DEN ≤88 @0.95 (R9+R8), LAX ≥88 @0.95
+(R8 single-source, NBM 0.01), **AUS ≤92 @0.95 / SATX ≤92 @0.95** (the *exact* board-wide
+cold read JUL22 falsified HOT — both settled 103–107), PHIL ≥90 @0.88 (R8), DC ≥89 @0.81
+(R8). Every middle-bin `model_p ≈ 0.01` is *derived from* one of these artifact claims →
+**R10** bans fading it on the model.
+
+I checked all three both-sources-≤0.10 candidates individually and each fails:
+- **PHIL low T65** (≥66, model 0.01 / nbm 0.01, mid 0.455): both sources co-locate the
+  low at 62–63 (model 0.55 / nbm 0.32) ≥2 bins below — textbook AGREEMENT geometry — BUT
+  T65 is the market's **MODAL** bin (0.455 > B64.5 0.275), so fading it is the **suspended
+  ≥24h modal-fade carve-out**, not a non-modal shared-tail fade. OUT.
+- **NYC high B81.5** (81–82, model 0.08 / nbm 0.33, mid 0.485): also the market's MODAL
+  bin, and nbm at 0.33 sits only 0.15 below — not a clean dual-rejection. OUT.
+- **LAX high B82.5** (82–83, model 0.01 / nbm 0.01, mid 0.375): model 0.01 is derived from
+  the broken LAX ≥88 artifact (R10); NBM is degenerate (0.01 across adjacent bins, the v8
+  tell); and 82–83 is the market's modal bin. Triple-skip. OUT.
+
+The structural read: a clean AGREEMENT fade needs the model to be *sane* (independently
+co-locating the truth, like JUL17 MIA/HOU), and on this board the model is in artifact
+mode board-wide — so wherever both sources "reject" a high-priced bin, that bin is either
+the market's mode (suspended carve-out) or a derived-from-artifact 0.01 (R10). No clean
+non-modal AGREEMENT fade exists to source. v12 stands, no rule change (nothing settled).
+Git deadlock appears RESOLVED — `git pull` clean, branch up to date with origin.
+Want by next session: the AUS/PHIL carve-out tests to settle (the ≥3-clean-win suspension
+clock), and a JUL25 board where the model is NOT in board-wide-extreme mode so a real
+AGREEMENT fade can finally be tested.
+
 ## 2026-07-23 17:16 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, the JUL23 carve-out
