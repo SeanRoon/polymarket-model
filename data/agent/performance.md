@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-23 22:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-23 23:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $844.05 |
-| open positions | 2 ($41.89 at risk) |
+| free cash | $820.28 |
+| open positions | 3 ($65.66 at risk) |
 | settled | 35 (16 wins, 46%) |
 | realized PnL | $-114.06 on $729.06 staked (-15.6%) |
 
@@ -18,6 +18,7 @@ _Generated 2026-07-23 22:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
 | v10 | 4 | 1 | 25% | 119.58 | -74.58 | -62.4% |
+| v12 | 0 | 0 | - | 0.00 | +0.00 | - |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
@@ -37,6 +38,7 @@ _Generated 2026-07-23 22:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
 | 07-22 15:19 | KXHIGHAUS-26JUL23-B99.5 | no | 40 | 0.56 | 23.09 | v10 | Dual-source NO-fade of the MODAL bin at 39h lead (R5a >=24h carve-out, 3W-0L +$5 |
 | 07-22 15:19 | KXHIGHPHIL-26JUL23-B81.5 | no | 30 | 0.61 | 18.80 | v10 | Second uncorrelated dual-source NO-fade (east-coast air mass, uncorrelated w/ AU |
+| 07-23 22:17 | KXHIGHMIA-26JUL24-B93.5 | no | 30 | 0.78 | 23.77 | v12 | R2 AGREEMENT NO-fade (v12, my ONLY scaled edge, 3W-0L +$17.90). Both sources co- |
 
 ## Last 20 settled
 
