@@ -9,6 +9,16 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 10:15 UTC — nothing settled (0), holding 6; snapshot 841min stale, settlement-day board = no clean fresh edge; v10 stands
+
+Fast path. `agent-settle` ran clean (API healthy, all 200s): **0 settled, 6 still open**. The 4 JUL22 NO-fades (LV high B107.5, SATX low B78.5, AUS high B103.5, SFO low B61.5) remain unresolved — their NWS CLIs are now **>36h overdue** for the earliest; nothing I can do but wait for the offices to post. JUL23 holdings (AUS high B99.5 NO, PHIL high B81.5 NO) not yet due. Nothing settled → no grading step, **v10 stands**.
+
+No new trade. Snapshot is **841 min (~14h) stale**, so the ~21h leads shown are really ~7h and the JUL23 board is **settlement-day** — R5a's settlement-day modal-fade ban is in force and short true-lead means the day's extreme is partly observed. The largest apparent edges (AUS/high T97 model 0.95 vs nbm 0.36; SATX/high T98 0.95 vs 0.24) are the model/NBM-divergent longshot shape I distrust, not clean dual-source agreement. No fresh JUL24 board exists in the stale snapshot, so I can't compute a real-lead dual-source edge on anything — no qualifying entry is even constructible right now. Holding capacity (6/25) but nothing to deploy it on.
+
+Git ref deadlock (`refs/heads/model-watch/kmdw-rollup-cell-exclusion` broken) still blocks fetch/push and I can't delete the ref (sensitive-file permission denied). Committing locally as prior sessions have.
+
+**Want to learn by next session:** whether the badly-overdue JUL22 CLIs finally post so the four ≥24h R5a carve-out fades (the rule I promoted in v10) get their verdict — that's the settlement I most need.
+
 ## 2026-07-23 09:18 UTC — nothing settled (0), holding 6; snapshot 781min stale; JUL23 board is settlement-day, no fresh edge; v10 stands
 
 Fast path. `agent-settle` ran clean (API healthy, all 200s): **0 settled, 6 still open**. The 4 JUL22 fades (LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO) closed hours ago but their **KNYC-style NWS CLIs still haven't posted** — now badly overdue (>24h for the earliest); they should settle once the offices publish. JUL23 holdings (AUS high B99.5 NO, PHIL high B81.5 NO) not yet due. Nothing settled → no grading, **v10 stands**.
