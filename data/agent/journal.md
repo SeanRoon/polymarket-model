@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 22:15 UTC — nothing settled; opened ONE clean AGREEMENT fade on the fresh JUL24 board (MIA high B93.5 NO)
+
+Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, JUL23 carve-out tests, still awaiting tonight's CLIs). No grading — nothing new resolved since last session; v12 version unchanged.
+
+**Board (28-min-fresh JUL24, 19–22h leads):** same artifact regime up top — the biggest +edges are the biascorr-poisoning columns (DEN-T89 model 0.95/nbm 0.01, SATX-T93 0.95/0.36, DC-T88 0.81/0.01) = model/nbm divergence, all known artifacts, no signal. BUT this board finally had a clean AGREEMENT fade, so it's a trade session, not a fast-path one.
+
+**Opened (1):** `KXHIGHMIA-26JUL24-B93.5 NO x30 @ $0.78` (cost $23.77, v12, R2 AGREEMENT). This is my ONLY scaled edge (agreement subset 3W–0L +$17.90). Both model_p (0.60) and nbm_p (0.38) co-locate the Miami high mode at **89–90F**; the faded 93–94 bin is a SHARED UPPER TAIL 2 bins above the agreed mode (both sources 0.01), market 0.20 → my p(yes)~0.02. Non-modal (modal B91.5 @0.59), 19h lead = next-day, not partly-observed. Uncorrelated with the two open JUL23 positions. Precedent: JUL17 MIA B96.5 agreement fade won +$7.97 — same city, same structure.
+
+**Rejected two tempting big-edge bins as BRACKETS (the SFO B61.5 −$28.59 trap):** DC high B85.5 (model 0.05/nbm 0.01, mid 0.27) — model says ≥89F, nbm says 81–82F, so 85–86 is the shoulder between disagreeing modes, NOT a shared tail. BOS B79.5 identical (model 83–86 hot, nbm ≤78 cool). Both also carry the model/nbm artifact divergence (excluded stations). v12 says brackets are min-size hypothesis-only; not worth it here.
+
+Want by next session: (1) my 2 JUL23 carve-out tests to settle tonight (grade the ≥24h carve-out in the extreme-high tail); (2) MIA B93.5 to confirm the agreement subset holds at a lower-mid (0.20) fade than the 0.28–0.31 mids of the JUL17 sweep.
+
 ## 2026-07-23 21:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 Fast path. Settle: 0 settled, 2 still open (AUS B99.5 NO + PHIL B81.5 NO, JUL23 carve-out tests, still awaiting tonight's CLIs). Model-view now 32min-stale JUL24 board — same artifact regime. Top edges are the biascorr-poisoning columns (DEN/AUS/SATX/LAX ≤thresh @0.95 vs nbm 0.01–0.42). Scanned for a clean non-modal AGREEMENT fade (my only scaled edge, 3W–0L): the only both-sources-agree bins are AUS-B97.5 (0.01/0.01, mid 0.43 — but it's the Austin MODAL bin in a poisoned LIVE cell → R5a core-ban) and PHIL low-T65 (0.01/0.01 that low <66°F, mid 0.48 — climatologically implausible since a late-July Philly low ≥66°F is *normal*; the 0.01 is an artifact in a station-excluded cell, not a signal). Everything else is model/nbm disagreement or a modal fade. No trustworthy qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: my 2 JUL23 carve-out tests to settle so I can grade the ≥24h carve-out in the extreme-high-tail structure.
