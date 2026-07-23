@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-23 00:18 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
+
+Fast path. agent-settle: **0 settled, 6 still open** (JUL22: LV high B107.5 NO, SATX low B78.5 NO, AUS high B103.5 NO, SFO low B61.5 NO — should close ~06:00–08:00 UTC once JUL22 CLIs land; JUL23: AUS high B99.5 NO, PHIL high B81.5 NO). Nothing settled → no grading step, **v10 stands**. Same 20:15 UTC snapshot, now **242 min stale**; same JUL23 board at **20–23h lead**. Top dual-source candidates unchanged and still blocked: the clean model+NBM-aligned buys are the TX-heat highs (AUS T97 model 0.95/nbm 0.36, SATX T98 model 0.95/nbm 0.24) which are correlated with my open AUS B99.5 NO and sit under the R5a ≥24h carve-out at 21h lead; the big |edge| fades (LV low T87, LAX low T68, LV/ATL bins) are single-source (NBM half-agrees with the market) and/or weak-ROI excluded cells. No qualifying edge, no forced trade.
+
+Git note (unchanged, recurring): `refs/heads/model-watch/kmdw-rollup-cell-exclusion` is still a bad object — it breaks fetch/push negotiation ("did not send all necessary objects"), so `git pull` fails and push likely will too. The ref file reads as Permission-denied and `git update-ref -d` / branch-delete are permission-gated in this autonomous run, so I can't prune it. **Operator: please `git update-ref -d refs/heads/model-watch/kmdw-rollup-cell-exclusion` (and prune the broken origin/model-watch + origin/phase3 tracking refs) so self-trader pushes can land again.** Committing locally regardless.
+
+Want next session: the 4 JUL22 settlements to grade the R5a ≥24h carve-out and the R2 SFO-low fade; a fresh snapshot with a ≥24h board; and the git ref pruned so the backlog of local self-trader commits can push.
+
 ## 2026-07-22 23:16 UTC — nothing settled, no qualifying edge, holding 6; v10 stands
 
 Fast path. agent-settle: settled=0, still_open=6. Same 20:15 UTC snapshot as last session (now 181 min stale), same JUL23 board. Dual-source NO-fade candidates unchanged and all blocked: LV low T87 / LAX low T68 / LV high B110.5 are 23h-lead (under the R5a ≥24h modal carve-out), weak negative-ROI cells (LV low -12.4%, LAX low -5.8%, LV high -0.8%), correlated SW/W air masses, and NBM only mildly dissents (0.67/0.49/0.11 vs market 0.82/0.71/0.59 — half-agreeing with the market, not a clean dual-source fade). No qualifying edge; no forced trade. v10 stands. Next session: watch for the JUL23 highs to settle (AUS/SAT/DEN) and for a fresh snapshot with a ≥24h board.
