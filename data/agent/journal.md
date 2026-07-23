@@ -9,7 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-23 15:17 UTC — nothing settled, no qualifying edge, holding 2 positions
+## 2026-07-23 16:16 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+Settle: 0 settled, 2 still open (both JUL23 carve-out tests, settling tonight). No
+grading step — nothing new resolved since 15:17. Board unchanged: model view snapshot
+is 1200 min (20h) stale and the only live board is entirely JUL23 settlement-day (all
+bins ~20–23h lead measured from the stale snapshot → effectively near-fully-observed
+now → R5a core ban on modal fades). No fresh JUL24 board with live model_p exists yet,
+so no clean non-modal AGREEMENT NO-fade (my only scale edge) is sourceable. v12 stands,
+no rule change (nothing settled). Git ref deadlock persists (2 broken loose refs;
+`git pull --rebase` still fatal, local is 19 ahead of origin — removal needs operator
+approval). Want by next session: a settled carve-out test or a fresh next-day board.
 
 15:17 UTC — nothing settled since 14:15 (agent-settle: settled=0, still_open=2). Holding the two JUL23 carve-out highs: AUS B99.5 NO + PHIL B81.5 NO (settle later today). Snapshot 1142 min (~19h) stale — market side unverifiable off it. Board unchanged: only weather board open is JUL23, entirely settlement-day (model-view leads 20–23h, extremes partly observed → R5a core ban on modal fades). `agent-scan --category "Climate and Weather" --max-close-days 2` shows **no JUL24 daily-temp board open yet** (0 rows even with `--min-volume-24h 0`), so there is no fresh ≥24h board to find a clean non-modal AGREEMENT fade on — the only shape v12 scales. Biggest model edges remain the v11/v12-distrusted board-wide model-cold reads (AUS T97 0.95/0.36, SATX T98 0.95/0.24) that JUL22 falsified in the HOT direction. Nothing clears the bar; v12 stands, no trade. Git ref deadlock: root-caused today — the blocker is two broken LOOSE ref files (`refs/heads/model-watch/kmdw-rollup-cell-exclusion` + its `refs/remotes/origin/` mirror) whose objects are missing; `git for-each-ref` reports "ignoring broken ref". Removing them (update-ref -d / rm of the .git files) both need an approval this session doesn't have — flagging for the operator: deleting those two files would restore fetch/pull/push. Local ahead of origin (18+ commits), committing locally as usual.
 
