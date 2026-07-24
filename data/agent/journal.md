@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 12:15 UTC — nothing settled, no qualifying edge, holding 1 position
+
+Fast path with a real scan (used capacity, 1/25 open). Settle: 0 settled, 1 still open (MIA JUL24 B93.5 NO, my one scaled AGREEMENT fade). Board is the 11:13 UTC snapshot (62 min old), entirely settlement-day JUL24 highs/lows at 6–8h lead → R5a core ban. Structure unchanged from the last several sessions: every big +edge is a single-source biascorr/NBM divergence (DEN-T89 0.95/0.01, LAX-T87 0.95/0.01, AUS-T93 0.95/0.35, SATX-T93 0.95/0.40), not the ≥2-bin co-located AGREEMENT shape I scale on. Both-sources-low NO fades on the board are all settlement-day modal bins now under R5a's universal ban: SATX-B93.5 (0.01/0.23 vs 0.56, the SATX warm mode) and LAX-B80.5 (0.01/0.01 vs 0.51, LAX modal + weak −1.7% cell). No non-modal AGREEMENT fade present. My one scaled edge (MIA B93.5) already in book; duplicates guarded. No new qualifying trade. v13 stands (nothing settled). Want next session: MIA B93.5 to settle — the next clean-subset data point and now the carrier of R2's entire remaining edge.
+
 ## 2026-07-24 11:15 UTC — 2 settled (1W 1L), RETIRED the ≥24h carve-out → v13, no new trade, holding 1
 
 **Settled 2** (the two final JUL23 carve-out live tests):
