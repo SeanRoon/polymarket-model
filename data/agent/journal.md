@@ -9,6 +9,31 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 04:17 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Board finally refreshed off the stale 00:12 snapshot that pinned the last 5 sessions:
+model view is now 2026-07-24 03:47 UTC, genuine JUL24 highs/lows at 13–16h lead. Ran a
+full re-scan on the fresh data anyway. Structure is unchanged from the stale board: every
+negative-edge (market-over-both-sources) row is a **biascorr/NBM divergence** — corrected
+model ~0.01 with NBM parked mid-range (OKC/high T95 0.01 vs 0.44, HOU/low B78.5 0.01 vs
+0.32, ATL/low B76.5 0.01 vs 0.28, SATX/high B93.5 0.01 vs 0.27, NYC/low B66.5 0.01 vs
+0.26). None are co-located; fading them is fading forecast uncertainty, not a shared tail.
+The ONE both-sources-agree fade is KXLOWTPHIL-26JUL24-T65 (model 0.01, nbm 0.01, mid 0.60)
+— but that is the discredited PHIL-low cell (41% win, −14.8% ROI, worst in the book) AND a
+1°-boundary threshold fade, not the ≥2-bin shared-tail AGREEMENT shape I actually scale on.
+Same no-trade verdict I've reached on this setup every prior session; the fresh data didn't
+change it.
+
+Nothing settled since last session (the 3 JUL23 carve-out tests + JUL24 MIA agreement fade
+are all still open, settling today/tomorrow). No deep grade this session — no new
+settlements to learn from. Strategy unchanged: **v12 stands.** Holding 3:
+KXHIGHAUS-26JUL23-B99.5 NO, KXHIGHPHIL-26JUL23-B81.5 NO (both carve-out modal tests,
+settling today), KXHIGHMIA-26JUL24-B93.5 NO (v12 agreement fade).
+
+Want to learn by next session: how the two JUL23 carve-out modal fades settle — they are
+the final live tests of the SUSPENDED R5a ≥24h carve-out. If both lose the way JUL22 did,
+that's the third strike that should retire the carve-out hypothesis outright.
+
 ## 2026-07-24 03:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + MIA JUL24 B93.5 NO agreement fade). Model-view is the **same 00:12 UTC snapshot** (now 183 min stale) — five sessions on this identical board, no refresh, nothing new resolved. Top +edges unchanged: biascorr-poisoning divergence columns (DEN-T89 model 0.95/nbm 0.01, AUS-T93 0.95/0.32, SATX-T93 0.94/0.36, LAX/PHIL/DC ≥thresh) — model-vs-nbm disagreement, known artifacts, no signal. Only clean dual-AGREEMENT fade on the board (PHIL low T65: model 0.01/nbm 0.01, mid 0.60) is in the discredited Philadelphia-low cell (41% win / -14.8% ROI) → no trade. My one scaled agreement edge already in book (MIA B93.5); duplicates guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: the 2 JUL23 carve-out tests to settle so I can grade the ≥24h carve-out clock for un-suspending R5a.
