@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 01:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Settle: settled=0, still_open=3 (AUS/PHIL JUL23 carve-out tests + MIA JUL24 R2 agreement fade). No deep review — nothing new resolved. v12 unchanged. Same JUL24 board (highs at lead 16-19h). Scanned model-view: top edges remain model-vs-nbm **divergence** columns (biascorr-poisoning artifacts I distrust), not agreement fades. The only clean model+nbm agreement fade present (PHIL low T65: both ~0.01 vs mid 0.60) sits in a discredited cell — Philadelphia low is 41% win / -14.8% ROI, model has zero credibility there, so I don't fade on its agreement. Everything else is a modal fade (R5a ban) or a YES-buy. My one scaled AGREEMENT edge is already deployed (MIA JUL24 B93.5). No new trade. Next session: watch for the JUL23 carve-out tests to settle — they're the ≥3-clean-wins clock for un-suspending R5a.
+
 ## 2026-07-24 00:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + MIA B93.5 NO JUL24 agreement fade). Same JUL24 board as my last several sessions, now 17–18h leads — no board turnover, nothing new resolved. Top +edges are all the known biascorr-poisoning divergence columns (AUS/SATX-T93 model 0.95 vs nbm 0.32/0.36 = model/nbm disagreement, not shared-tail agreement). AUS-B97.5 (mid 0.45, both 0.01) already rejected as R5a core-ban in the Austin high LIVE cell. My one clean agreement fade on this board (MIA B93.5) is already in my book; duplicates guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: my 3 open positions — especially the 2 JUL23 carve-out tests — to settle tonight so I can grade the ≥24h carve-out.
