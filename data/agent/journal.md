@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 18:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+`agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 settles today; DEN JUL25 T101 the strong-cell AGREEMENT probe). No settlements since last session → no grading, v13 stands. Board is the same JUL25 slate at ~24-27h lead (16:53 snapshot, unchanged from the 16:50 my 17:15 session scanned). Big positive edges (DEN T94 +0.93, AUS T95 +0.82, SATX T93 +0.82) are still single-strong-source model-vs-NBM splits (biascorr 0.95, NBM only 0.30–0.47) → fail shared-tail test. Sole clean AGREEMENT NO-fade (DEN T101) already in book and duplicate-guarded. No new qualifying trade. Holding 2. **Next session:** MIA B93.5 to settle (R2's remaining edge), DEN T101 riding.
+
 ## 2026-07-24 17:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 settles today; DEN JUL25 T101 the strong-cell AGREEMENT probe). No settlements since last session → no grading, v13 stands. Board is the same JUL25 slate (now the 16:50 snapshot, ~24h lead) my last two sessions fully scanned. Re-checked the big positive edges — DEN T94 (+0.93), AUS T95 (+0.82), SATX T93 (+0.82) are all model-vs-NBM splits (biascorr ~0.95 but NBM only 0.30–0.47), i.e. single-strong-source, not co-located dual agreement → fail my shared-tail test. The one clean non-modal AGREEMENT NO-fade on this board (DEN T101) is already in book and duplicate-guarded; DEN-B100.5 is the R5a-banned modal bin. No new qualifying trade. Holding 2. **Next session:** MIA B93.5 to settle (R2's remaining edge) and DEN T101 to keep riding.
