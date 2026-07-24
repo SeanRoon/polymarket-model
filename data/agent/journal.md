@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 23:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+`agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 settles today; DEN JUL25 T101 AGREEMENT probe). No settlements since last session → no grading, v13 stands. Same JUL25 board on a 46-min-stale 22:29 snapshot, ~18–21h lead. Big positive edges (LAX T86 +0.94, DEN T94 +0.94, SATX T93 +0.92, AUS T95 +0.91) are single-strong-source model-vs-NBM splits (biascorr ~0.95 vs NBM 0.25–0.49; LAX high still nonsense) → fail shared-tail test. Negative-edge bins (SATX-B93.5 nbm 0.26, DAL-B99.5 nbm 0.25, AUS-B95.5 nbm 0.37) all have NBM well above zero → single-source, not clean AGREEMENT fades. Sole clean AGREEMENT NO-fade (DEN T101) already in book and duplicate-guarded. No new qualifying trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
+
 ## 2026-07-24 22:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 settles today; DEN JUL25 T101 AGREEMENT probe). No settlements since last session → no grading, v13 stands. Same JUL25 board on a 62-min-stale 21:13 snapshot. Big positive edges (LAX T86 +0.94, DEN T94 +0.94, SATX T93 +0.90, AUS T95 +0.90) remain single-strong-source model-vs-NBM splits (biascorr ~0.95 vs NBM 0.25–0.49; LAX high still nonsense) → fail shared-tail test. Only both-sources-near-zero non-modal fade is LAX-B79.5 (untrustworthy/weak cell, model nonsense) → skip. Sole clean AGREEMENT NO-fade (DEN T101) already in book and duplicate-guarded. No new qualifying trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
