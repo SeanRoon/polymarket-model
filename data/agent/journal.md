@@ -9,6 +9,40 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 15:15 UTC — nothing settled; FRESH JUL25 board → opened 1 AGREEMENT fade (first ever in a STRONG cell), holding 2
+
+`agent-settle`: settled=0, still_open=1 (MIA high B93.5, settles today). No new settlements
+since last session → no grading, **v13 stands unchanged** (no version bump).
+
+**Board changed materially:** the JUL25 slate is now up at ~25–28h lead — the first board
+with *real* lead time in several sessions (the JUL24 board that dominated all day was
+settlement-day, under R5a's core ban). So I could finally look for my one scaled edge on a
+board where it's allowed.
+
+**Scan for the clean non-modal AGREEMENT NO-fade (my only scaled structure, 3W–0L +$17.90):**
+- **DEN high JUL25 — FOUND ONE, and it's an upgrade.** Market: 98-99 @0.34, **100-101 @0.38
+  (modal)**, **102+ @0.23**. Both independent sources sit far below the market's ~100 read:
+  model+biascorr p(DEN≤93)=0.95, NBM p(≤93)=0.47 / center ~95. The modal bin (B100.5) is
+  R5a-banned, but **T101 (102°+)** is a clean overpriced UPPER TAIL: mid 0.225, model 0.01,
+  nbm 0.01 — both co-locate the truth ≥2 bins BELOW in the *same* direction (agreement, not
+  a bracket), near-zero on the faded bin. This is the exact JUL17 shape — except Denver/high
+  is a **strong LIVE cell (92% / +25.9%, n=425)**, whereas the 3W–0L subset was all weak
+  cells. Better prior, same structure. **Opened NO x30 @0.78 (cost $23.77, edge ~0.20).**
+  Uncorrelated with the open MIA position (different air mass).
+- **HOU high B95.5 — PASSED.** Superficially similar (both sources say ≤92) but NOT clean:
+  nbm gives the faded bin 0.20 (fat tail, not near-zero) and the market is bimodal 93-94
+  @0.46 / 95-96 @0.42, so B95.5 is a co-mode, not an empty tail. Fails the shared-empty-tail
+  test; too close to R5a. No trade.
+- Everything else on the board is single-source divergence (biascorr-vs-NBM splits) or the
+  DAL/OKC model-HOT-vs-market disagreement (bracket geometry, not agreement). Model's read is
+  mixed today (DEN/AUS/HOU cold, LAX/CHI/DC hot) — NOT the board-wide cold read I distrust.
+
+**Note:** DEN T101 is the first live test of whether the AGREEMENT edge transfers to a strong
+cell. If it wins it's confirmation the structure (not the weak-cell context) is what pays;
+if it loses on a genuine Denver 102+ day, it warns the shared-tail edge is thinner than the
+n=3 sample suggests. **Next session:** MIA B93.5 to settle (carries R2's remaining edge), and
+watch DEN T101 as the strong-cell AGREEMENT probe.
+
 ## 2026-07-24 14:15 UTC — nothing settled, no qualifying edge, holding 1 position
 
 `agent-settle`: settled=0, still_open=1 (MIA high B93.5 AGREEMENT NO-fade, settles today). No new settlements since 13:15 → no grading, v13 stands unchanged. Board (12:48 UTC snapshot, 87 min old) is again entirely settlement-day JUL24 highs/lows at 6–7h lead → R5a core ban. Structure identical to the last several sessions: every big +edge is a single-source biascorr/NBM divergence (LAX-T87 0.95/0.01, DEN-T89 0.95/0.01), not the ≥2-bin co-located AGREEMENT shape I scale on. Both-sources-low candidates all disqualified: DEN-B66.5 (0.01/0.23 vs mid 0.85) and LAX-B80.5 (0.01/0.01 vs 0.52) are the market's MODAL bin (R5a universal ban); LAX-B82.5 (0.01/0.01 vs 0.33) is the stale-model shoulder — model piles LAX≥88 (T87 0.95) while market sits 80–83, the SFO/BOS divergence geometry, not a shared tail. My one scaled AGREEMENT edge (MIA B93.5) already in book; duplicates guarded. No trade. Holding 1. **Next session:** MIA B93.5 to settle (next clean-subset data point, carries R2's remaining edge) and a fresh JUL25 board with real lead time.
