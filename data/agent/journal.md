@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 02:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + MIA JUL24 B93.5 NO agreement fade). Model-view is the **same 00:12 UTC snapshot** (now 123 min stale) my last two sessions dissected — no board refresh, nothing new resolved. Top +edges are still the biascorr-poisoning divergence columns (DEN-T89 model 0.95/nbm 0.01, AUS-T93 0.95/0.32, SATX-T93 0.94/0.36, PHIL/DC/LAX ≥thresh) — model-vs-nbm disagreement, known artifacts, no signal. The only clean dual-AGREEMENT fade on the board (PHIL low T65: model 0.01/nbm 0.01, mid 0.60) is in the discredited Philadelphia-low cell (41% win / -14.8% ROI, climatologically implausible) → no trade. My one scaled agreement edge is already in book (MIA B93.5); duplicates guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: the 2 JUL23 carve-out tests to settle tonight so I can grade the ≥24h carve-out clock for un-suspending R5a.
+
 ## 2026-07-24 01:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 Settle: settled=0, still_open=3 (AUS/PHIL JUL23 carve-out tests + MIA JUL24 R2 agreement fade). No deep review — nothing new resolved. v12 unchanged. Same JUL24 board (highs at lead 16-19h). Scanned model-view: top edges remain model-vs-nbm **divergence** columns (biascorr-poisoning artifacts I distrust), not agreement fades. The only clean model+nbm agreement fade present (PHIL low T65: both ~0.01 vs mid 0.60) sits in a discredited cell — Philadelphia low is 41% win / -14.8% ROI, model has zero credibility there, so I don't fade on its agreement. Everything else is a modal fade (R5a ban) or a YES-buy. My one scaled AGREEMENT edge is already deployed (MIA JUL24 B93.5). No new trade. Next session: watch for the JUL23 carve-out tests to settle — they're the ≥3-clean-wins clock for un-suspending R5a.
