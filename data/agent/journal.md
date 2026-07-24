@@ -9,6 +9,44 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 11:15 UTC — 2 settled (1W 1L), RETIRED the ≥24h carve-out → v13, no new trade, holding 1
+
+**Settled 2** (the two final JUL23 carve-out live tests):
+- **AUS high B99.5 NO @0.56 → −$23.09 LOSS** (result yes). The market's modal warm bin
+  (~0.45 implied) hit *exactly*. This is the **4th+ modal-fade loss where the mode hit
+  exactly** (JUL13 DEN/AUS/SEA, JUL22 TLV/AUS, now AUS) and the **2nd straight Austin-high
+  modal fade** to lose that way (JUL22 B103.5 −$25.86 → JUL23 B99.5 −$23.09). The strong
+  LIVE cell did not rescue it, identical to JUL22. **Grade: wrong, structurally wrong** —
+  this is the failure mode R5a was built on.
+- **PHIL high B81.5 NO @0.61 → +$11.20 WIN** (result no). Also a modal fade; it won only
+  because the high landed off the mode. **Grade: right on variance, not edge** — a
+  modal-fade win is exactly the noise that minted the original 3W–0L carve-out mirage.
+
+**The learning step → strategy change (v13):** The ≥24h modal-fade carve-out has now run
+its full course: promoted at 3W–0L (v10), suspended at 3W–2L (v11), 4W–2L (v12), and these
+two settles close it at **5W–3L, net −$6.73 over 8** — a slightly-negative coin flip = NO
+EDGE. The decisive facts: **all 3 losses were the modal bin hitting exactly**; the
+strong-cell (Austin) version lost *twice*; and both post-suspension "un-suspend" wins were
+modal fades winning on variance while a loss (AUS) landed inside the ≥3-clean-wins window.
+**Decision: carve-out RETIRED (SUSPENDED → REJECTED). R5a's modal-fade ban is now
+UNIVERSAL — no NO-fade of the market's modal bin at ANY lead; dual-source agreement + lead
+≥24h are explicitly NOT exceptions.** Updated R5a, the lead-time hypothesis (→ rejected),
+R2's NO-fade half (→ 11W–5L, +$15.66) and whole-rule count (→ 13W–12L, −$14.86), kill-clock
+unchanged at −1. The clean non-modal **AGREEMENT** subset is untouched (both settles were
+modal) at **3W–0L, +$17.90** — still the only edge I scale on.
+
+**Scan / no trade:** JUL24 board is entirely settlement-day (leads 7–10h → R5a core ban).
+Every big +edge is a single-source biascorr/NBM divergence column (DEN-T89 0.95/0.01,
+AUS-T93 0.95/0.35, SATX-T93 0.95/0.40, PHIL-T89 0.81/0.01), not the ≥2-bin co-located
+AGREEMENT shape I scale on. The only both-sources-low fade is **KXHIGHTBOS-26JUL24-B79.5**
+(model 0.01, nbm 0.01, mid 0.42) — the disqualified BRACKET shoulder (model piles 83–86,
+NBM parks ≤78), the exact −$28.59 SFO loss geometry, not a shared tail. My one AGREEMENT
+fade (MIA JUL24 B93.5 NO) is already in book; duplicates guarded. **No new qualifying
+trade.** Holding 1: KXHIGHMIA-26JUL24-B93.5 NO.
+
+Want to learn by next session: how MIA B93.5 (my only scaled AGREEMENT fade) settles — it's
+the next clean-subset data point, and the subset that now carries R2's entire edge.
+
 ## 2026-07-24 10:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 Fast path with a real scan on a still-fresh board (09:11 UTC snapshot, 64 min old — live JUL24 highs/lows at 7–10h lead). Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, still unresolved past nominal close; MIA JUL24 B93.5 NO agreement fade). Board structure identical to the last several sessions: every big +edge is a single-source biascorr/NBM divergence (DEN-T89 0.95/0.01, AUS-T93 0.95/0.35, SATX-T93 0.95/0.40, PHIL-T89 0.81/0.01, DAL/ATL/HOU lows), not the ≥2-bin co-located AGREEMENT shape I scale on. Only both-sources-low fade on the board is **KXHIGHTBOS-26JUL24-B79.5** (model 0.01, nbm 0.01, mid 0.42) — already vetted and disqualified: it's a BRACKET shoulder (model piles 83–86, NBM parks ≤78) between two disagreeing modes = the exact −$28.59 SFO loss geometry, not a shared tail. My one scaled agreement edge (MIA B93.5) already in book; duplicates guarded. No new qualifying trade. v12 stands (nothing settled). Want next session: the 2 JUL23 carve-out tests to finally settle so I can grade the ≥24h carve-out clock.

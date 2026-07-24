@@ -1,6 +1,6 @@
 # Agent strategy playbook
 
-**Version: v12** (2026-07-23 14:15 UTC — **two settled, one W one L, and the L splits my crown-jewel edge in two.** (1) SFO low B61.5 NO @0.70 **−$28.59 LOSS** was pitched as the "clean non-modal dual-source NO-fade" I scale on (was 3W–0L), but it was NOT the same structure: it was a **BRACKET** fade — model said the low=59–60 (below), NBM said 63–64 (above), and I faded the 61–62 **shoulder between two disagreeing forecasts**. The low landed 61–62, exactly between them. The 3W–0L clean subset (JUL17 MIA/HOU/LAX) were **AGREEMENT** fades: both sources co-located the truth ≥2 bins away *in the same place*, so the faded bin was a shared tail. Fading a shoulder between two disagreeing modes is fading forecast *uncertainty*, and the truth lands there disproportionately — a distinction I already flagged in v8 (PHX B97.5 "won on a weaker, opposite-sides form of agreement") and now have a −$28.59 loss confirming. **v12 splits R2's clean non-modal NO-fade into AGREEMENT (scale, still 3W–0L +$17.90) vs BRACKET (do NOT scale; min-size hypothesis, now 0W–1L clean-non-modal / mixed with carve-out brackets). SFO is excluded from the agreement subset — it does not contaminate it.** (2) SATX low B78.5 NO @0.73 **+$11.52 WIN** was a ≥24h carve-out modal fade in the LOW/cold regime (the open regime question) AND a bracket-structure fade — it won, answering the cold-regime question with one data point. Carve-out → **4W–2L, net +$5.16** (recovered positive) but **stays SUSPENDED**: SATX is fresh win #1 of the ≥3 clean wins required to un-suspend. Counts: R2 → **12W–11L, net −$2.97** (went slightly negative — only the agreement-subset scaling keeps it near even; brackets + modal fades are the bleed); NO-fade half → **10W–4L, +$27.55**; kill-clock losses−wins = **−1** (unchanged). **No trade opened:** snapshot 1083 min stale; the live board is entirely settlement-day (all highs closing 15–18h, partly observed → R5a core ban on modal fades), no ≥24h board is liquid yet, and no clean non-modal AGREEMENT fade is present. Holding 2 open (both JUL23 carve-out tests, settling today). --- prior v11 note: the R5a ≥24h modal-fade carve-out **took its first two losses and is SUSPENDED**. Both JUL22 settles were carve-out modal NO-fades and both LOST *the way R5a's founding evidence warned* — the market's modal bin hit exactly: **TLV high B107.5 NO @0.51 −$31.65** (LV high WAS 107–108) and **AUS high B103.5 NO @0.63 −$25.86** (AUS high WAS 103–104). Carve-out is now **3W–2L, net −$6.36** — it gave back the entire +$51.15 and went net-negative, firing its own kill clause at n=2 of the "next 10." Crucially the AUS loss was the **STRONG-cell (91%) version** — cell strength did NOT rescue the modal fade, and both losses were warm-bin fades in warm season, the *same* regime that produced the 3 wins. So the carve-out is not a real edge; it was 3 lucky variance wins. **Demoted back to a hypothesis; no NEW modal fades until it re-earns ≥3 clean wins.** The settlement-day R5a core ban was always intact and stays. R2 → **11W–10L, +$14.10**; NO-fade half → **9W–3L, +$44.62**; kill-clock losses−wins = **−1**. The clean non-modal NO-fade subset is UNTOUCHED (these losses were modal): still **3W–0L, +$17.90** — the only edge I actually scale on. **Board note:** JUL22 also FALSIFIED the model's board-wide cold read in the HOT direction (model had AUS/TLV cold, reality was hot) — the exact opposite of JUL20 (model cold, reality cold, model right). Two consecutive days, opposite outcomes ⇒ the model's confident board-wide cold read is day/regime-dependent noise, not a signal I can fade the modal bin on. JUL23 board is again model-cold (AUS ≤96/SATX ≤97 @0.95) and I distrust it. No trade opened: snapshot 902 min stale, every edge is an artifact column / modal fade / YES-buy)
+**Version: v13** (2026-07-24 11:15 UTC — **the two JUL23 carve-out modal fades settled 1W–1L, and the L retires the carve-out for good.** (1) **AUS high B99.5 NO @0.56 −$23.09 LOSS** (result yes): the market's modal warm bin (0.45) hit *exactly* — the **fourth+** time a modal fade has lost this precise way (JUL13 DEN/AUS/SEA, JUL22 TLV/AUS, now AUS again), and the **second consecutive Austin-high** modal fade to lose with the mode hitting exactly (JUL22 B103.5 −$25.86, JUL23 B99.5 −$23.09). Strong LIVE cell did NOT rescue it — same as JUL22. **Grade: wrong, structurally wrong.** (2) **PHIL high B81.5 NO @0.61 +$11.20 WIN** (result no): also a modal fade — it won only because the high landed elsewhere. **Grade: right on variance, not edge** — a modal-fade win is exactly the noise that minted the original 3W–0L carve-out mirage. **DECISION: the ≥24h carve-out is RETIRED (SUSPENDED → REJECTED). Final record 5W–3L, net −$6.73 over 8 settled — a slightly-negative coin flip = NO EDGE. All 3 losses were the modal bin hitting exactly; both post-suspension "un-suspend" wins (SATX, PHIL) were modal fades winning on the temp landing elsewhere, and the un-suspend clock (≥3 clean wins) took a LOSS (AUS) inside its own window. R5a's modal-fade ban is now UNIVERSAL — no modal-bin NO-fades at ANY lead, dual-source agreement and lead ≥24h are NOT exceptions.** This is the cleanest confirmation of R5a's founding thesis in the whole ledger: the market's mode is the hardest thing to beat, full stop. (3) Counts: R2 → **13W–12L, net −$14.86**; NO-fade half → **11W–5L, +$15.66**; the clean non-modal **AGREEMENT** subset is UNTOUCHED (both settles were modal) at **3W–0L, +$17.90** — still the only edge I scale on; kill-clock losses−wins = **−1** (unchanged). (4) **No trade opened:** JUL24 board is entirely settlement-day (leads 7–10h → R5a core ban), every big +edge a single-source biascorr/NBM divergence column, and the only both-sources-low fade (BOS B79.5) is the disqualified BRACKET shoulder. My one AGREEMENT fade (MIA B93.5) already in book; duplicates guarded. Holding 1 open. --- prior v12 note: **two settled, one W one L, and the L splits my crown-jewel edge in two.** (1) SFO low B61.5 NO @0.70 **−$28.59 LOSS** was pitched as the "clean non-modal dual-source NO-fade" I scale on (was 3W–0L), but it was NOT the same structure: it was a **BRACKET** fade — model said the low=59–60 (below), NBM said 63–64 (above), and I faded the 61–62 **shoulder between two disagreeing forecasts**. The low landed 61–62, exactly between them. The 3W–0L clean subset (JUL17 MIA/HOU/LAX) were **AGREEMENT** fades: both sources co-located the truth ≥2 bins away *in the same place*, so the faded bin was a shared tail. Fading a shoulder between two disagreeing modes is fading forecast *uncertainty*, and the truth lands there disproportionately — a distinction I already flagged in v8 (PHX B97.5 "won on a weaker, opposite-sides form of agreement") and now have a −$28.59 loss confirming. **v12 splits R2's clean non-modal NO-fade into AGREEMENT (scale, still 3W–0L +$17.90) vs BRACKET (do NOT scale; min-size hypothesis, now 0W–1L clean-non-modal / mixed with carve-out brackets). SFO is excluded from the agreement subset — it does not contaminate it.** (2) SATX low B78.5 NO @0.73 **+$11.52 WIN** was a ≥24h carve-out modal fade in the LOW/cold regime (the open regime question) AND a bracket-structure fade — it won, answering the cold-regime question with one data point. Carve-out → **4W–2L, net +$5.16** (recovered positive) but **stays SUSPENDED**: SATX is fresh win #1 of the ≥3 clean wins required to un-suspend. Counts: R2 → **12W–11L, net −$2.97** (went slightly negative — only the agreement-subset scaling keeps it near even; brackets + modal fades are the bleed); NO-fade half → **10W–4L, +$27.55**; kill-clock losses−wins = **−1** (unchanged). **No trade opened:** snapshot 1083 min stale; the live board is entirely settlement-day (all highs closing 15–18h, partly observed → R5a core ban on modal fades), no ≥24h board is liquid yet, and no clean non-modal AGREEMENT fade is present. Holding 2 open (both JUL23 carve-out tests, settling today). --- prior v11 note: the R5a ≥24h modal-fade carve-out **took its first two losses and is SUSPENDED**. Both JUL22 settles were carve-out modal NO-fades and both LOST *the way R5a's founding evidence warned* — the market's modal bin hit exactly: **TLV high B107.5 NO @0.51 −$31.65** (LV high WAS 107–108) and **AUS high B103.5 NO @0.63 −$25.86** (AUS high WAS 103–104). Carve-out is now **3W–2L, net −$6.36** — it gave back the entire +$51.15 and went net-negative, firing its own kill clause at n=2 of the "next 10." Crucially the AUS loss was the **STRONG-cell (91%) version** — cell strength did NOT rescue the modal fade, and both losses were warm-bin fades in warm season, the *same* regime that produced the 3 wins. So the carve-out is not a real edge; it was 3 lucky variance wins. **Demoted back to a hypothesis; no NEW modal fades until it re-earns ≥3 clean wins.** The settlement-day R5a core ban was always intact and stays. R2 → **11W–10L, +$14.10**; NO-fade half → **9W–3L, +$44.62**; kill-clock losses−wins = **−1**. The clean non-modal NO-fade subset is UNTOUCHED (these losses were modal): still **3W–0L, +$17.90** — the only edge I actually scale on. **Board note:** JUL22 also FALSIFIED the model's board-wide cold read in the HOT direction (model had AUS/TLV cold, reality was hot) — the exact opposite of JUL20 (model cold, reality cold, model right). Two consecutive days, opposite outcomes ⇒ the model's confident board-wide cold read is day/regime-dependent noise, not a signal I can fade the modal bin on. JUL23 board is again model-cold (AUS ≤96/SATX ≤97 @0.95) and I distrust it. No trade opened: snapshot 902 min stale, every edge is an artifact column / modal fade / YES-buy)
 
 This file is owned by the `/self-trader` agent. The agent rewrites it after every
 session based on what its settled trades actually did. Humans read it; only the
@@ -38,7 +38,10 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   non-modal subset.** The signal is
   *directional*, and the split is now the clearest structure in the whole ledger:
   - **NO-fade half (sell an OVERpriced bin where both sources sit ≥0.10 BELOW the
-    market): 10W–4L, +$27.55** (v12: +SATX low B78.5 W +$11.52, +SFO low B61.5 L −$28.59;
+    market): 11W–5L, +$15.66** (v13: +PHIL high B81.5 W +$11.20 modal-carve-out win,
+    +AUS high B99.5 L −$23.09 modal-carve-out loss — both belong to the now-RETIRED
+    carve-out subset, NOT the clean non-modal subset below; v12: +SATX low B78.5 W +$11.52,
+    +SFO low B61.5 L −$28.59;
     the JUL22 losses are the JUL22 carve-out modal fades
     TLV B107.5 −$31.65 and AUS B103.5 −$25.86 — both MODAL, so they belong to the
     suspended carve-out subset, NOT the clean non-modal subset below). (added JUL20 HOU high B97.5 @0.58 +$24.17 and PHX high
@@ -85,8 +88,9 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   YES-buy in the ledger has done — so practically the restriction is one settlement away
   regardless.)**
   *Kill if (whole rule): cumulative R2 record reaches 5 settled losses more than wins
-  (v11: losses−wins = **−1**, i.e. wins lead by one; the two JUL22 modal-fade losses moved
-  the death-clock 2 toward firing — a reminder that modal fades are where R2 bleeds).*
+  (v13: R2 is 13W–12L, losses−wins = **−1**, i.e. wins still lead by one; every unit of
+  R2's bleed has come from modal fades, now banned universally — the clean AGREEMENT
+  subset is 3W–0L and carries the whole edge).*
 - **R3 (own judgment, unchanged — untested):** Outside weather, trade only markets
   closing within 7 days, 24h volume ≥ 1,000, spread ≤ $0.10, where my own
   world-knowledge estimate differs from the midpoint by ≥ 0.10. State the estimate
@@ -103,24 +107,24 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   *0.735* modal bin and WON +$27.41 — because both model (0.01) AND NBM (0.41) put it
   ≥0.10 below the market, not just the biascorr model. R5a **stands for settlement day**
   — the model-only modal-fade record is still net-losing (4L: DEN/AUS/SEA Jul-13 + SEA
-  B80.5). **CARVE-OUT — SUSPENDED in v11, still suspended in v12 (3W–0L → 3W–2L → now 4W–2L,
-  net +$5.16 after SATX low B78.5 NO @0.73 +$11.52 WIN, the first LOW/cold-regime test —
-  it won, answering the "warm-bin-only?" open question with one cold data point, but it is
-  fresh win #1 of the ≥3 needed to un-suspend, so the ban on new modal fades stands).** The premise was
-  that at lead ≥24h the market's modal bin is an *opinion* running the same public
-  guidance I am, so a dual-source fade of it is safe. **JUL22 killed that premise:** TLV
-  high B107.5 NO @0.51 (−$31.65) and AUS high B103.5 NO @0.63 (−$25.86) both faded the
-  modal bin at ≥24h lead with both sources ≥0.10 below the market — and the modal bin hit
-  *exactly* both times, the same failure mode as the settlement-day modal fades R5a was
-  built on. The AUS loss was the STRONG-cell (91%) version, so cell quality did not save
-  it; both losses were warm-bin fades in warm season, the identical regime that produced
-  the 3 wins — so the wins look like variance, not edge. **No new modal-bin NO-fades under
-  this carve-out** until it re-earns ≥3 clean wins as a *hypothesis* (the 3W–0L that
-  promoted it was clearly premature at n=3). Two carve-out trades remain OPEN (AUS high
-  B99.5 JUL23, PHIL high B81.5 JUL23) — count them as the final live tests, do not add
-  more. Original wins for the record: PHX high B97.5 @0.63 (+$7.07), HOU high B97.5 @0.58
-  (+$24.17), PHX high B104.5 @0.54 (+$19.91). The settlement-day ban was always separate
-  and is **untouched**. **(b)** sharp adverse repricing against the model side since
+  B80.5). **CARVE-OUT — RETIRED in v13. The ≥24h modal-fade carve-out is DEAD: final
+  record 5W–3L, net −$6.73 over 8 settled — a slightly-negative coin flip, i.e. NO EDGE.
+  R5a's modal-fade ban is now UNIVERSAL: no NO-fade of the market's modal bin at ANY lead,
+  and dual-source agreement + lead ≥24h are explicitly NOT exceptions.** History: promoted
+  to a rule at 3W–0L (v10), suspended at 3W–2L (v11, JUL22), briefly back to 4W–2L (v12,
+  SATX low +$11.52), and the two final JUL23 live tests settled 1W–1L — PHIL high B81.5
+  +$11.20 (won on the temp landing elsewhere = variance) and **AUS high B99.5 −$23.09 (the
+  modal bin hit exactly, the 2nd straight Austin-high modal fade to lose that way after
+  JUL22 B103.5).** The killer facts: **all 3 carve-out losses were the modal bin hitting
+  exactly** (TLV, AUS×2); the STRONG-cell (Austin 91%) version lost *twice*, so cell
+  quality never rescued a modal fade; and the two post-suspension "un-suspend" wins were
+  both modal fades winning on variance while a LOSS landed inside the same un-suspend
+  window. The premise — "at lead ≥24h the market's modal bin is just an opinion running
+  the same public guidance, so a dual-source fade is safe" — is falsified: the market's
+  mode is the single hardest thing to beat regardless of lead. Wins for the record (all
+  variance): PHX B97.5 +$7.07, HOU B97.5 +$24.17, PHX B104.5 +$19.91, SATX low B78.5
+  +$11.52, PHIL B81.5 +$11.20. **No modal-bin NO-fades, period — do not resurrect this
+  carve-out.** **(b)** sharp adverse repricing against the model side since
   the prior session is information, not an entry discount — do not open or add to
   the model's side after the market has moved ≥ 0.10 away from it (Jul-13: the
   overnight collapse of DEN T93 / AUS T89 / SATX T90 predicted all three losses);
@@ -235,13 +239,15 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   nothing about whether modal fades are safe. Still need ≥3 dual-source **modal** fade
   settlements. Pending counterfactuals awaiting CLIs: LAX low B68.5 @0.71, PHX low B80.5
   @0.46, PHL high T89 @0.61 (all JUL18; KLAX/KPHX/KPHL JUL18 not yet posted).
-- **Modal fades split by LEAD TIME — promoted to R5a in v10 (3W–0L), SUSPENDED in
-  v11 after 0W–2L, now 4W–2L net +$5.16 after SATX low B78.5 W (v12).** SATX was the first
-  LOW/cold-regime carve-out test and it won — so the "warm-bin-only?" doubt has one cold
-  counterexample, but the carve-out STAYS suspended (fresh win #1 of ≥3 needed; do not
-  re-promote on one win, the exact mistake v10 made). Also note SATX was BRACKET-shaped
-  (model below / NBM above) — see the new AGREEMENT-vs-BRACKET geometry split under R2,
-  which is the more general lesson from this session. The v10 promotion was premature: the
+- **Modal fades split by LEAD TIME — REJECTED/RETIRED in v13 (final 5W–3L, net −$6.73).**
+  Promoted to R5a in v10 (3W–0L), SUSPENDED in v11 (0W–2L), briefly 4W–2L in v12 (SATX
+  low W), and the two final JUL23 live tests settled 1W–1L (PHIL W on variance, **AUS L
+  with the modal bin hitting exactly — the 2nd straight Austin-high modal fade to lose
+  that way**). Over 8 settled it is a slightly-negative coin flip = NO EDGE, and all 3
+  losses were the modal bin hitting exactly. **Dead — no modal-bin NO-fades at any lead;
+  R5a's ban is now universal.** Banked lesson (repeated, now proven): the market's modal
+  bin is the single hardest thing to beat, and neither dual-source agreement nor lead
+  ≥24h creates a safe fade of it. The v10 promotion was premature: the
   open question it flagged — "all 3 wins are warm-bin fades in warm season, untested in
   other regimes" — got answered by JUL22, which was the *same* warm-bin-fade regime and
   the fade LOST twice (TLV high B107.5, AUS high B103.5 — both modal bins hit exactly). So
@@ -287,6 +293,27 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v13** (2026-07-24, 11:15 UTC): **the two JUL23 carve-out modal fades settled 1W–1L and
+  the loss RETIRES the ≥24h carve-out for good.** (1) **AUS high B99.5 NO @0.56 −$23.09
+  LOSS** (result yes) — the market's modal warm bin (0.45) hit *exactly*, the 4th+ time a
+  modal fade has lost this precise way and the 2nd straight Austin-high modal fade to do it
+  (after JUL22 B103.5 −$25.86). Strong LIVE cell did not save it. **Wrong, structurally
+  wrong.** (2) **PHIL high B81.5 NO @0.61 +$11.20 WIN** (result no) — also a modal fade;
+  won only because the high landed off the mode. **Right on variance, not edge.** (3)
+  **DECISION: carve-out RETIRED (SUSPENDED → REJECTED), final 5W–3L net −$6.73 over 8
+  settled** — a slightly-negative coin flip = NO EDGE. All 3 losses were the modal bin
+  hitting exactly (TLV, AUS×2); the strong-cell (Austin) version lost twice; both
+  post-suspension wins were modal fades winning on variance while a loss (AUS) landed
+  inside the ≥3-clean-wins un-suspend window. **R5a's modal-fade ban is now UNIVERSAL — no
+  NO-fade of the market's modal bin at ANY lead; dual-source agreement + lead ≥24h are NOT
+  exceptions.** This is the cleanest confirmation of R5a's founding thesis in the ledger.
+  (4) Counts: R2 → **13W–12L, net −$14.86**; NO-fade half → **11W–5L, +$15.66**; clean
+  non-modal AGREEMENT subset UNTOUCHED at **3W–0L, +$17.90** (both settles were modal),
+  still the only scaled edge; kill-clock losses−wins = **−1** (unchanged). (5) **No trade
+  opened:** JUL24 board entirely settlement-day (leads 7–10h → R5a core ban); every big
+  +edge a single-source biascorr/NBM divergence column; the only both-sources-low fade
+  (BOS B79.5, 0.01/0.01 vs 0.42) is the disqualified BRACKET shoulder (model 83–86, NBM
+  ≤78). My one AGREEMENT fade (MIA B93.5) already in book; duplicates guarded. Holding 1.
 - **v12** (2026-07-23, 14:15 UTC): **two settled (1W 1L) and the loss splits the crown
   jewel.** (1) **SFO low B61.5 NO @0.70 −$28.59 LOSS.** Cited as the clean non-modal
   subset I scale on (3W–0L), but it was a *different geometry*: model said low=59–60,
