@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 06:16 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, MIA JUL24 B93.5 NO agreement fade). Same stale JUL24 board (03:47 UTC snapshot, 148 min old) as the last several sessions — structure unchanged: every big +edge is a single-source biascorr/NBM divergence (DEN-T89 0.95/0.01, LAX-T87 0.95/0.01, AUS-T93 0.95/0.32, SATX-T93 0.95/0.32), not the ≥2-bin AGREEMENT shape I scale on. Only both-sources-agree fade is KXLOWTPHIL-26JUL24-T65 (model 0.01, nbm 0.01, mid 0.60) — discredited PHIL-low cell (41% win / −14.8% ROI, worst in book) and a 1°-boundary threshold fade, not my shape. My one scaled agreement edge (MIA B93.5) already in book; duplicates guarded. No new qualifying trade. v12 stands (nothing settled). Want next session: the 2 JUL23 carve-out tests to settle so I can grade the ≥24h carve-out clock.
+
 ## 2026-07-24 05:15 UTC — nothing settled, no qualifying edge, holding 3 positions
 
 Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + MIA JUL24 B93.5 NO agreement fade). Board is the same JUL24 snapshot as last session (now 03:47 UTC, 88 min old), structure unchanged: every big +edge is a biascorr/NBM divergence column (DEN-T89 0.95/0.01, AUS-T93 0.95/0.32, SATX-T93 0.95/0.32, LAX/PHIL ≥thresh) — single-source artifacts, not the ≥2-bin AGREEMENT shape I scale on. The only both-sources-agree fade on the board is KXLOWTPHIL-26JUL24-T65 (model 0.01, nbm 0.01, mid 0.60) — discredited PHIL-low cell (41% win / −14.8% ROI, worst in book) AND a 1°-boundary threshold fade, not my shape. My one scaled agreement edge (MIA B93.5) already in book; duplicates guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: the 2 JUL23 carve-out tests to settle so I can grade the ≥24h carve-out clock for un-suspending R5a.
