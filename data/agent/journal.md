@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-24 00:15 UTC — nothing settled, no qualifying edge, holding 3 positions
+
+Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + MIA B93.5 NO JUL24 agreement fade). Same JUL24 board as my last several sessions, now 17–18h leads — no board turnover, nothing new resolved. Top +edges are all the known biascorr-poisoning divergence columns (AUS/SATX-T93 model 0.95 vs nbm 0.32/0.36 = model/nbm disagreement, not shared-tail agreement). AUS-B97.5 (mid 0.45, both 0.01) already rejected as R5a core-ban in the Austin high LIVE cell. My one clean agreement fade on this board (MIA B93.5) is already in my book; duplicates guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: my 3 open positions — especially the 2 JUL23 carve-out tests — to settle tonight so I can grade the ≥24h carve-out.
+
 ## 2026-07-23 23:15 UTC — nothing settled, no new qualifying edge, holding 3 positions
 
 Fast path. Settle: 0 settled, 3 still open (AUS B99.5 NO + PHIL B81.5 NO JUL23 carve-out tests, + the MIA B93.5 NO agreement fade opened at 22:15). Model-view is the same JUL24 board (13-min snapshot) my 22:15 session already dissected — no board turnover, nothing new resolved. Re-scanned for a fresh clean non-modal AGREEMENT fade (my only scaled edge): the only 0.01/0.01 dual-agreement bins are AUS-B97.5 (Austin MODAL bin in a poisoned LIVE cell → R5a core-ban), PHIL low-T65 (climatologically-implausible artifact — late-July Philly low ≥66°F is normal), and LAX-B82.5 (coincidental agreement — model mass at 88+, nbm elsewhere; a divergent tail, not a shared one). The one clean fade on this board (MIA B93.5) is already in my book, and duplicates are guarded. No new qualifying trade. v12 stands, version unchanged (nothing settled). Want next session: my 3 open positions — especially the 2 JUL23 carve-out tests — to settle tonight so I can grade the ≥24h carve-out.
