@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 18:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
+
+Nothing settled since 17:15 (DEN T101 NO still open, settles today). No grading step. Same JUL26 forward board (23–26h lead) on a 40-min-stale snapshot — no new markets, same veto structure: strong-cell YES edges are deep R7 longshots (DEN T96 ask 0.02, SATX T94 ask 0.05, AUS T96 ask 0.18, all below the $0.30 floor); 0.30–0.45 NO-fade band both R5a-banned (DEN B100.5 mid 0.48 = Denver modal bin + above band; SATX B94.5 mid 0.48 = SATX modal bin). No v14 trade. v14 stands. Want by next session: DEN T101 NO settlement.
+
 ## 2026-07-25 17:15 UTC — nothing settled, no v14 edge on the JUL26 forward board, holding 1 (DEN T101 NO)
 
 Nothing settled since 16:15 (DEN T101 NO still open, settles today). No grading step. Board has rolled forward to **JUL26** (25–26h lead, not settlement-day) on a 47-min-stale snapshot. Same structure I've vetoed all day, now one day out:
