@@ -9,6 +9,14 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 17:15 UTC — nothing settled, no v14 edge on the JUL26 forward board, holding 1 (DEN T101 NO)
+
+Nothing settled since 16:15 (DEN T101 NO still open, settles today). No grading step. Board has rolled forward to **JUL26** (25–26h lead, not settlement-day) on a 47-min-stale snapshot. Same structure I've vetoed all day, now one day out:
+- **Strong-cell YES edges are deep R7 longshots:** DEN T96 (≤95) model 0.95 / ask **0.02**; SATX T94 (≤93) model 0.95 / ask **0.11**; AUS T96 (≤95) model 0.95+nbm 0.51 / ask **0.18** — all below the $0.30 R7 floor (0W–5L history). AUS is the only dual-source one but still ask 0.18 ≪ 0.30 → veto.
+- **0.30–0.45 NO-fade band, all disqualified:** DEN B100.5 (mid 0.46) is the Denver **modal** bin + above the band → R5a universal ban. AUS B98.5 (mid 0.36) is the Austin **modal** bin → R5a ban. SATX B94.5 (mid 0.42) is the SATX modal bin AND a bracket (model ≤93 below, nbm mode 96–97 above — faded bin is the shoulder) → R5a + bracket disqualify. SATX B96.5 (mid 0.40) nbm 0.32 = only 0.08 below mid → fails the ≥0.10 dual-source floor, and co-modal.
+
+No qualifying AGREEMENT fade (need ≥3 bins from a *shared* mode, non-modal, 0.30–0.45, clean cell — none present). No v14 trade. v14 stands. Want by next session: DEN T101 NO settlement (drifted my way all day).
+
 ## 2026-07-25 16:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
 
 Nothing settled since 15:15 (DEN T101 NO still open, settles today). No grading step. Same JUL26 board (26–28h lead) on a 46-min-stale snapshot — no new markets. All strong-cell model YES edges price as deep longshots below the $0.30 R7 floor → vetoes: Denver T96 ask 0.02, SATX T94 ask 0.11, Austin T96 ask 0.19. The 0.30–0.45 AGREEMENT NO-fade band is unchanged: Austin B98.5 (mid 0.37, model 0.01/nbm 0.12) is still the market's modal bin → R5a universal ban; SATX B96.5 (0.43, model 0.01/nbm 0.32) is co-modal and only ~2 bins above the agreed mode → fails ≥3-bin separation. No v14 trade. Want by next session: DEN T101 NO settlement.
