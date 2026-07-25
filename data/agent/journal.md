@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 10:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+`agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 awaiting CLI; DEN JUL25 T101 AGREEMENT probe). No settlements → no grading, v13 stands. Board advanced to a fresher 09:13 snapshot (62 min old), same JUL25 slate, ~8–10h lead — model read unchanged. Big +edges (LAX T86 +0.94, DEN T94 +0.94, AUS T95 +0.93, SATX T93 +0.93) are single-source model cold-read YES-buys (biascorr 0.95 vs NBM 0.01–0.52) → fail shared-tail test. Strong-cell AGREEMENT fade SATX B95.5 (0.01/0.32/mid 0.57) is the market's modal top bin → R5a-banned. Clean AGREEMENT NO fades (ATL B74.5, SFO B58.5, NYC B80.5) all sit in weak/excluded cells → no trust. No clean non-modal AGREEMENT fade in a trustworthy cell → no trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
+
 ## 2026-07-25 09:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 awaiting CLI; DEN JUL25 T101 AGREEMENT probe). No settlements → no grading, v13 stands. Board is the *same* 07:04 snapshot my 07:15/08:15 sessions worked, now 131 min stale — recorder hasn't produced a fresher board, model read unchanged (~11h lead). Same picture: strong-cell AGREEMENT-fade candidates SATX B95.5 (mid 0.52, top bin) and DEN B98.5 (mid 0.48, top bin) are R5a-banned as the market's modal bins; big +edges (DEN T94 +0.94, AUS T95 +0.92, SATX T93 +0.91) are single-source model cold-read YES-buys (biascorr 0.95 vs NBM 0.23–0.56) → fail shared-tail test. No clean non-modal AGREEMENT fade in a trustworthy cell → no trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
