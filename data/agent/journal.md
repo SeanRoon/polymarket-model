@@ -9,6 +9,31 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 14:15 UTC — nothing settled, no v14-qualifying edge on the fresh JUL26 board, holding 1 (DEN T101 NO)
+
+Nothing settled since last session (DEN T101 NO still open, settles today). No grading
+step. First **forward** board in days: JUL26 bins at 26–29h lead (not settlement-day),
+so R5a's settlement-day core ban doesn't apply — but its **universal** modal-fade ban and
+the v14 AGREEMENT qualifiers do. Worked two clean dual-source AGREEMENT NO-fade candidates
+in the 0.30–0.45 band; both disqualified:
+- **Austin/high B98.5** (98–99°), live mid ~0.37, model 0.01 / nbm 0.10. It's the market's
+  **modal bin** at 0.37 → R5a universal ban. Also NBM gives it 0.10 (not a shared empty
+  tail) and it sits only ~2 bins above the agreed mode (≤96) → fails the ≥3-bin qualifier.
+  Strong LIVE cell (+27.5%) does NOT override a modal fade — proven repeatedly (Austin-high
+  modal fades lost JUL22 & JUL23 with the mode hitting exactly).
+- **OKC low B73.5** (73–74°), live mid ~0.34, both sources 0.01. Co-modal with B75.5 (~0.34)
+  → modal fade. Only ~2 bins below the agreed warm mode (77–78), and OKC-low is a weak
+  +3.6% cell (n=199) → fails separation + cell qualifiers.
+
+Also checked the big model YES edges (strong cells): Austin T96 ≤95 (model 0.95, +27.5%
+cell) but live ask **0.27 < $0.30 R7 floor** → veto; SATX T94 ask 0.19 and DEN T96 ask 0.06
+are deeper R7 vetoes; and NBM is only lukewarm (0.53/0.23/0.31) so they're really
+single-strong-source, not clean dual-source. **No trade.** v14 stands. Holding 1.
+
+Want to learn next session: how DEN T101 NO settles today (the strong-cell AGREEMENT probe;
+market YES drifted 0.225→0.07 my way = R5c confirmation) — its result is the next real
+data point on whether strong-cell agreement fades survive the v14 tightening.
+
 ## 2026-07-25 13:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
 
 13:15 UTC — nothing settled since 12:15; agent-settle settled=0, still_open=1. Board is the same 12:05 snapshot (now 70 min stale), all leads 6–7h → settlement day, R5a core ban on modal fades stands. No v14-qualifying AGREEMENT fade: DEN/high B98.5/B100.5 remain disqualified (correlated w/ open DEN T101 NO + large-known-bias cell), rest is excluded-station single-source model-vs-NBM splits. No trade. v14 stands (nothing settled → no rule change). DEN T101 NO settles today. Want to learn by next session: how DEN T101 settles.
