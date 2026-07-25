@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 12:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
+
+12:15 UTC — nothing settled since 11:15; agent-settle settled=0, still_open=1. Fresh 12:05 board (10 min old) is entirely settlement-day (all edges at 6–7h lead → R5a core ban on modal fades). No v14-qualifying AGREEMENT fade: the only clean both-sources-low LIVE fades (DEN/high B98.5 mid 0.42, B100.5 mid 0.43) are disqualified twice — correlated with my open DEN/high T101 NO (R2 no-correlated-add), and Denver high is a large-known-bias cell (~+11°F raw), the exact independence-failure profile v14 qualifier (ii) disqualifies. Rest of board is excluded-station single-source model-vs-NBM splits or deep-tail(<0.25)/modal bins outside the 0.30–0.45 band. No trade. v14 stands (nothing settled → no rule change). Open DEN T101 NO settles today, still drifting my way. Want to learn by next session: how DEN T101 settles — a win is R5c drift-confirmation working; a loss would be the strong-cell AGREEMENT probe failing and would pressure the whole subset toward its kill clock.
+
 ## 2026-07-25 11:15 UTC — MIA B93.5 settled LOSS (my only scaled edge's FIRST loss) → v14 de-scale + independence caveat; no new trade, holding 1
 
 **Settled 1:**
