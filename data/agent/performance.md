@@ -1,6 +1,6 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-25 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-25 11:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
@@ -8,9 +8,9 @@ _Generated 2026-07-25 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:-------|------:|
 | starting bankroll | $1000.00 |
 | free cash | $826.51 |
-| open positions | 2 ($47.54 at risk) |
-| settled | 37 (17 wins, 46%) |
-| realized PnL | $-125.95 on $770.95 staked (-16.3%) |
+| open positions | 1 ($23.77 at risk) |
+| settled | 38 (17 wins, 45%) |
+| realized PnL | $-149.72 on $794.72 staked (-18.8%) |
 
 ## By strategy version
 
@@ -18,7 +18,7 @@ _Generated 2026-07-25 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 |:--------|--:|-----:|---------:|--------:|-----:|----:|
 | v1 | 15 | 4 | 27% | 339.36 | -144.36 | -42.5% |
 | v10 | 6 | 2 | 33% | 161.47 | -86.47 | -53.6% |
-| v12 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v12 | 1 | 0 | 0% | 23.77 | -23.77 | -100.0% |
 | v13 | 0 | 0 | - | 0.00 | +0.00 | - |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
@@ -31,19 +31,19 @@ _Generated 2026-07-25 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 37 | 17 | 46% | 770.95 | -125.95 | -16.3% |
+| Climate and Weather | 38 | 17 | 45% | 794.72 | -149.72 | -18.8% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-23 22:17 | KXHIGHMIA-26JUL24-B93.5 | no | 30 | 0.78 | 23.77 | v12 | R2 AGREEMENT NO-fade (v12, my ONLY scaled edge, 3W-0L +$17.90). Both sources co- |
 | 07-24 15:19 | KXHIGHDEN-26JUL25-T101 | no | 30 | 0.78 | 23.77 | v13 | R2 AGREEMENT non-modal NO-fade (my ONLY scaled edge, 3W-0L +$17.90) -- and the F |
 
 ## Last 20 settled
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-25 | KXHIGHMIA-26JUL24-B93.5 | no | 0.78 | -23.77 | v12 | R2 AGREEMENT NO-fade (v12, my ONLY scaled edge, 3W-0L +$17.90). Both sources co- |
 | 07-24 | KXHIGHAUS-26JUL23-B99.5 | no | 0.56 | -23.09 | v10 | Dual-source NO-fade of the MODAL bin at 39h lead (R5a >=24h carve-out, 3W-0L +$5 |
 | 07-24 | KXHIGHPHIL-26JUL23-B81.5 | no | 0.61 | +11.20 | v10 | Second uncorrelated dual-source NO-fade (east-coast air mass, uncorrelated w/ AU |
 | 07-23 | KXLOWTSATX-26JUL22-B78.5 | no | 0.73 | +11.52 | v10 | R5a >=24h carve-out (v10) modal NO-fade -- FIRST test in the LOW/cold regime, th |
@@ -63,4 +63,3 @@ _Generated 2026-07-25 10:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-16 | KXHIGHTSATX-26JUL15-T81 | yes | 0.71 | +13.77 | v2 | P(SATX high <=80F Jul15) ~0.70 vs market 0.55. Model+biascorr 0.95 on the system |
 | 07-16 | KXLOWTDC-26JUL15-B72.5 | yes | 0.17 | +32.80 | v2 | P(DC low 72-73F Jul15) ~0.45 vs live ask 0.17 (verified via agent-scan this minu |
 | 07-16 | KXHIGHMIA-26JUL15-B92.5 | yes | 0.33 | -15.55 | v2 | p~0.50: model+biascorr 0.56 and NBM 0.44 both >=0.10 over live mid 0.325 (book v |
-| 07-16 | KXLOWTNOLA-26JUL15-B74.5 | yes | 0.38 | -23.79 | v2 | p~0.55 (blend: model+biascorr 0.68 on an R1-qualifying cell — NOLA/low 73% win,  |

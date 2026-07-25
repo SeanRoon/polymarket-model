@@ -9,6 +9,50 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 11:15 UTC — MIA B93.5 settled LOSS (my only scaled edge's FIRST loss) → v14 de-scale + independence caveat; no new trade, holding 1
+
+**Settled 1:**
+- **MIA high B93.5 NO @0.78 → −$23.77 LOSS** (result yes: CLI high landed **93–94**).
+  This was my ONLY scaled edge — the clean non-modal AGREEMENT subset (was 3W–0L +$17.90).
+  Thesis (v12, opened 07-23 22:15): model+biascorr 0.60 and NBM 0.38 co-located the
+  Miami-high mode at **89–90F**, both 0.01 on the faded 93–94 bin (a "shared upper tail 2
+  bins above the mode"), market 0.20. **The truth landed in the exact bin both sources
+  called empty.** **Grade: WRONG, structurally wrong — not variance.** Two independent-looking
+  forecasts jointly cold-missed by ~4°F in the *same* direction.
+
+**What it taught (the learning step):** the AGREEMENT edge's whole premise is that
+model+biascorr and NBM are two *independent* votes co-locating the truth. This loss found
+the hole: (1) **Independence failure** — Miami high is a −4.8% model cell with a huge known
+ensemble cold bias (~−7°F raw, per CLAUDE.md); when both sources lean on the same cold-biased
+guidance, "agreement" is one biased vote counted twice. (2) **Payout asymmetry / thin
+separation** — I faded the deepest, cheapest tail (market YES 0.20, NO 0.78: win pays only
+0.22, loss costs 0.78) with only ~2 bins (~4°F) of separation, which one ordinary forecast
+error erases. The 3 wins were at NO 0.69–0.72 (win ~0.30) and ≥2 bins clear. The furthest-tail,
+best-looking-edge fade was the worst-structured one — and it lost.
+
+**Strategy change → v14** (rule change, version bumped): AGREEMENT subset is now **3W–1L, net
+−$5.87** — no longer net-positive, no longer proven. (a) **De-scaled** back to 1 cautious
+trade/session (reverts v7's 2/session). (b) **New qualifiers (all required):** tail ≥3 bins
+from the mode; cell has NO large known bias / negative model record (Miami-high-type
+disqualified); market overpricing in the **0.30–0.45** band, not the deep ≤0.25 tail. (c) New
+subset kill: net-negative already, so kill AGREEMENT fades at losses−wins = +2 or net −$40.
+R2 whole rule now **13W–13L, net −$38.63** (wins no longer lead); NO-fade half **11W–6L,
+−$8.11** (now negative).
+
+**Scan / no trade:** JUL25 board is settlement-day (6–9h lead → R5a core ban); every big +edge
+is a single-source biascorr-vs-NBM split (LAX T86 0.95/0.01, DEN T94 0.95/0.52, SATX T93
+0.95/0.18, AUS T95 0.95/0.46) → fails the shared-tail test. The overpriced NO-fade candidates
+(PHIL T65, NYC B65.5, LV T89, CHI/AUS/ATL/SATX lows) all have NBM well above zero → single-source,
+not clean agreement, and mostly weak/excluded cells. Nothing clears the new v14 bar. **No trade.**
+
+**Open position:** DEN T101 (JUL25, strong-cell AGREEMENT probe, NO @0.78) has drifted my way —
+market YES 0.225 at entry → **0.07** now (model 0.01/nbm 0.01) = R5c confirmation, settles today.
+Holding 1.
+
+**Want to learn next session:** whether DEN T101 (a strong-cell AGREEMENT fade in the ≥3-bins,
+proper-cell shape v14 now requires) settles a WIN — the first real test of whether the tightened
+AGREEMENT qualifiers point at a genuine edge or the whole structure was variance.
+
 ## 2026-07-25 10:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 awaiting CLI; DEN JUL25 T101 AGREEMENT probe). No settlements → no grading, v13 stands. Board advanced to a fresher 09:13 snapshot (62 min old), same JUL25 slate, ~8–10h lead — model read unchanged. Big +edges (LAX T86 +0.94, DEN T94 +0.94, AUS T95 +0.93, SATX T93 +0.93) are single-source model cold-read YES-buys (biascorr 0.95 vs NBM 0.01–0.52) → fail shared-tail test. Strong-cell AGREEMENT fade SATX B95.5 (0.01/0.32/mid 0.57) is the market's modal top bin → R5a-banned. Clean AGREEMENT NO fades (ATL B74.5, SFO B58.5, NYC B80.5) all sit in weak/excluded cells → no trust. No clean non-modal AGREEMENT fade in a trustworthy cell → no trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
