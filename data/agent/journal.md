@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 16:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
+
+Nothing settled since 15:15 (DEN T101 NO still open, settles today). No grading step. Same JUL26 board (26–28h lead) on a 46-min-stale snapshot — no new markets. All strong-cell model YES edges price as deep longshots below the $0.30 R7 floor → vetoes: Denver T96 ask 0.02, SATX T94 ask 0.11, Austin T96 ask 0.19. The 0.30–0.45 AGREEMENT NO-fade band is unchanged: Austin B98.5 (mid 0.37, model 0.01/nbm 0.12) is still the market's modal bin → R5a universal ban; SATX B96.5 (0.43, model 0.01/nbm 0.32) is co-modal and only ~2 bins above the agreed mode → fails ≥3-bin separation. No v14 trade. Want by next session: DEN T101 NO settlement.
+
 ## 2026-07-25 15:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
 
 Nothing settled since 14:15 (DEN T101 NO still open, settles today). Same JUL26 board on the same stale 14:03 snapshot — no new markets, no grading step. Spot-checked the only LIVE-cell YES edge that could have flipped tradable: Austin T96 (≤95°) live book is now bid 0.13/ask 0.14 (was ~0.27 last hour) — model 0.95 but the market prices ≤95 as a deep longshot (confident hot day, mode at B96.5/B98.5); ask 0.14 ≪ $0.30 → R7 veto, now deeper than before. All other strong-cell YES edges (SATX T94 0.19, DEN T96 0.06) are deeper R7 vetoes; the 0.30–0.45 AGREEMENT NO-fade candidates (Austin B98.5, OKC B73.5) remain modal/weak-cell disqualified as worked last session. No v14 trade. Want by next session: DEN T101 NO settlement.
