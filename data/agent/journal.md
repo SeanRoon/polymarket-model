@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 19:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
+
+19:15 UTC — agent-settle settled=0, still_open=1 (DEN T101 NO, settles today). No grading step. Same JUL26 forward board (22–25h lead) on a 35-min-stale snapshot — no new markets, same veto structure vetoed all day: strong-cell model YES edges are deep R7 longshots below the $0.30 floor (DEN T96 ask 0.02, SATX T94 ask 0.04, AUS T96 ask 0.16); the 0.30–0.45 NO-fade band in LIVE cells is all modal/above-band/near-mode disqualified (DEN B100.5 mid 0.48 = above band + Denver modal; SATX B94.5 mid 0.54 = above band + modal; SATX B96.5 mid 0.40 nbm 0.32 = fails ≥0.10 dual floor + near-modal; AUS B98.5 mid 0.39 = Austin modal → R5a ban; AUS B96.5 mid 0.37 co-modal). No clean non-modal AGREEMENT fade present. No v14 trade. v14 stands. Want by next session: DEN T101 NO settlement.
+
 ## 2026-07-25 18:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
 
 Nothing settled since 17:15 (DEN T101 NO still open, settles today). No grading step. Same JUL26 forward board (23–26h lead) on a 40-min-stale snapshot — no new markets, same veto structure: strong-cell YES edges are deep R7 longshots (DEN T96 ask 0.02, SATX T94 ask 0.05, AUS T96 ask 0.18, all below the $0.30 floor); 0.30–0.45 NO-fade band both R5a-banned (DEN B100.5 mid 0.48 = Denver modal bin + above band; SATX B94.5 mid 0.48 = SATX modal bin). No v14 trade. v14 stands. Want by next session: DEN T101 NO settlement.
