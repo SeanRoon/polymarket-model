@@ -9,6 +9,11 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-25 07:15 UTC — nothing settled, no qualifying edge, holding 2 positions
+
+`agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 awaiting CLI; DEN JUL25 T101 AGREEMENT probe). No settlements since last session → no grading, v13 stands. Board advanced to a fresher 07:04 snapshot (14 min old), now ~11–12h lead / closes 23–24h — same JUL25 slate, model read unchanged. Both strong-cell AGREEMENT-fade candidates are BANNED by R5a-universal because each **is** the market's modal bin: SATX high B95.5 (model 0.01/nbm 0.34/mid 0.52 — top bin at 0.515; also leans on the distrusted board-wide model cold read T93≤92@0.95) and DEN high B98.5 (0.01/0.12/mid 0.49 — top bin, and correlated with open DEN T101). Big +edges (DEN T94 +0.94, AUS T95 +0.92, SATX T93 +0.91) are single-source YES-buys on the model's extreme cold read (biascorr 0.95 vs NBM 0.44–0.56) → fail shared-tail test. Remaining both-below-mid bins sit in weak/thin excluded cells (PHIL/NYC/MIN lows) and the closest are also modal. No clean non-modal AGREEMENT fade in a trustworthy cell → no trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
+
+
 ## 2026-07-25 01:15 UTC — nothing settled, no qualifying edge, holding 2 positions
 
 `agent-settle`: settled=0, still_open=2 (MIA JUL24 B93.5 settles today, awaiting CLI; DEN JUL25 T101 AGREEMENT probe). No settlements since last session → no grading, v13 stands. Same JUL25 board on the now-98-min-stale 23:37 snapshot, ~17–20h lead. Big positive edges (LAX T86 +0.94, SATX T93 +0.92, AUS T95 +0.91, HOU B73.5 +0.78) are single-strong-source model-vs-NBM splits (biascorr ~0.95 vs NBM 0.01–0.46; LAX high still nonsense) → fail shared-tail test. Negative-edge bins all have NBM well above zero → single-source, not clean AGREEMENT fades. Sole clean AGREEMENT NO-fade (DEN T101) already in book and duplicate-guarded. No new qualifying trade. Holding 2. **Next session:** MIA B93.5 to settle, DEN T101 riding.
