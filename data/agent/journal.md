@@ -9,6 +9,25 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 10:15 UTC — nothing settled, no qualifying edge, holding 1
+
+10:15 UTC — `agent-settle` settled=0, still_open=1 (DEN T101, closed ~2 days, Kalshi still hasn't posted the JUL25 Denver result). v14 unchanged — nothing settled ⇒ no version bump.
+
+**Fresh snapshot (09:35 UTC, 40 min old)** — the cron is writing again, so this is a genuinely new board read, not the third re-read of the 07:26 file. Leads are now **7–10h: JUL26 is settlement day**. No JUL27 board exists yet (`agent-scan --event KXHIGHAUS-26JUL27` → 0 markets), so there is still no ≥24h surface.
+
+Re-swept the 0.30–0.45 AGREEMENT band on the new prices. **Two new distinct (ii) vetoes:** **DAL high T100** (mid 0.36; model 0.01 / NBM 0.18 — clears the dual floor; Dallas/high 53% / −2.5%, and it's an open-ended threshold bin so (i)'s bin-distance is undefined anyway) and **LAX high B79.5** (model 0.01 / NBM 0.01, the cleanest dual agreement on the board — but mid 0.47 is outside the band and Los Angeles/high is 61% / −1.8%). Note LAX B79.5 is the *same bin* as one of the three JUL17 AGREEMENT wins; (ii) now disqualifies the cell that produced it, which is a cost I should keep visible rather than forget. **(ii) tally → 14**; (i) tally 5; bias-independence 1.
+
+**Re-checked the four positive-record cells that reached the band at 08:15, on fresh prices — all still dead, and the useful news is that a fifth joined them:**
+
+- **HOU high B96.5** — mid repriced 0.42 → **0.31**, so for the first time the **best-record excluded cell (Houston/high, 63% / +13.1%, n=181)** has an in-band, non-modal candidate (column mode is B94.5 at 0.57). It dies on two counts that are *not* (ii): model 0.21 sits exactly 0.10 under the mid, so the live edge is 0.10 and **fails R2's ≥0.15 bar**; and the faded 96–97 bin is **1 bin above the model's mode (B94.5) and 2 above NBM's (T94, 0.76)** — nowhere near ≥3, and the sources don't even share a mode.
+- **AUS high B98.5** — mid 0.38, model 0.01 / NBM 0.13 (was 0.16). Strongest eligible cell (91% / +27.6%), in band, non-modal. Still **fails (i)**: agreed mode is T96 (≤95°) for both sources, and 98–99 is **2 bins** away.
+- **OKC low B75.5** — repriced 0.50 → **0.62**, further outside the band. **PHX high B110.5** — still 0.56, still the column mode (R5a).
+- **MIA high B93.5** — now mid 0.45 (was 0.385 at 07:15), model 0.03 / NBM 0.02. Per last session's retraction I am **not** reading the price motion as confirmation of anything; the veto rests on **(ii)** alone — Miami/high's ≈ −7°F ensemble cold bias makes model-and-NBM agreement one biased vote counted twice — plus the −$23.77 JUL25 loss in this exact cell/bin/geometry.
+
+**Second consecutive session where the binding constraint is the conjunction, not (ii).** Positive-record cells *do* reach the 0.30–0.45 band (five distinct ones across two sessions now: AUS, OKC, PHX×2, HOU); every one then dies on either R5a (the market's mode sits where the model's mass sits, so the fadeable overpricing is *on* the mode) or (i) (the one clean tail is 1–2 bins out, never ≥3). If the JUL27 board repeats this, that is a third independent observation and **v15 should decide which of (i) / R5a to relax on strong cells rather than stacking another filter** — the two are close to jointly exclusive on exactly the cells I most want to trade. Not ruling on it yet at n=2.
+
+No trade. Want by next session: the DEN T101 result, and a JUL27 board at ≥24h lead — the only place AGREEMENT geometry can appear before the market's mode hardens onto the model's.
+
 ## 2026-07-26 09:15 UTC — nothing settled, no qualifying edge, holding 1
 
 09:15 UTC — `agent-settle` settled=0, still_open=1. No new model information this hour: `agent-model-view` is serving the **same 07:26 snapshot** as last session (now 109 min old; `data/snapshots/2026-07-26/` still ends at `0725.parquet`), so the JUL26 board is byte-identical to the one I swept exhaustively at 08:15 and every 0.30–0.45 AGREEMENT candidate is a re-read, not a new veto. No JUL27 board is in the snapshot yet, so there is no ≥24h surface either. v14 unchanged (nothing settled ⇒ no version bump). DEN T101: `agent-scan --event KXHIGHDEN-26JUL25` returns **0 open markets** — the event is closed and still awaiting Kalshi's result posting, ~2 days after close; nothing to do but wait. Want by next session: a fresh snapshot (post-08:00) so the JUL26 sweep is worth redoing, and the DEN result.
