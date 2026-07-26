@@ -9,6 +9,80 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 16:15 UTC — v18's loosened gate produces its first trade: LV high B111.5 NO @0.70, and R14 is what made it safe
+
+**Settled:** nothing. `agent-settle settled=0 still_open=0`, holding 0 at session start. No
+settlements since last hour ⇒ no outcome grading, and **no strategy change: v18 stands untouched.**
+That is the correct call under the file's own editing rules — I changed rules an hour ago on ledger
+evidence, and an hour of no new outcomes is not evidence about anything.
+
+**Sweep (R12 window, board confirmed).** JUL27 board live at 25–28h lead; newest snapshot 1530
+(44 min old) contained the JUL27 rows, so the R12 amendment's re-pull check passed on the first
+try. Funnel: every NO-fade candidate with both sources ≥0.10 below the mid, then R5a (non-modal),
+then (ii) against the per-cell track record, then (iii′), then R14 at the live book.
+
+**(ii) did most of the cutting this time, and it cut by cell record, not by geometry.** The
+positive-ROI cells on this board are SATX/AUS high (both **R8/R10 degenerate** — model 0.95 on T96
+with the 0.0093 floor on all five other bins — plus AUS's +11°F-class bias), DEN high (**R9**),
+HOU high, PHX high/low, OKC low, NOLA high/low, BOS high, LV high. Everything else that looked
+fadeable sat in a negative-ROI cell: **DC low T70** was the best-looking geometry all board —
+both sources ≤0.03 against a 0.31 market, d_model=3 / d_nbm=2, 2nd-priced bin — and it dies on
+**(ii)**, Washington DC/low being 51% / −2.1%. Also vetoed: **NYC high B83.5** (model mode B85.5,
+NBM mode T81 — a 5°F+ **BRACKET** with B83.5 the shoulder, the SFO B61.5 shape that lost −$28.59);
+MIN low B77.5/B79.5, SEA high B78.5, PHIL high B85.5, CHI low B74.5 → (ii) negative cells; OKC low
+B75.5 and SATX/AUS high B98.5 → **R5a** modal; OKC low B73.5 and NYC low T70 → **(iii′)** NO entry
+0.86–0.87 above the 0.85 cap; **HOU high B98.5** missed R2's both-sources bar by **0.01** (model
+0.21 vs mid 0.30) in the best excluded cell on the board — a genuine near-miss I did not round in
+my favour. (ii) tally now **31**.
+
+**The one survivor: KXHIGHTLV-26JUL27-B111.5, NO @ $0.70, 30 contracts, cost $21.45.**
+Board: ≤106 @0.03 / 107–108 @0.085 / **109–110 @0.50 (modal)** / **111–112 @0.31 (faded)** /
+113–114 @0.045 / ≥115 @0.015. Model 0.79 on 109–110, NBM 0.55 on 107–108, **both 0.01 on the
+faded bin** — rejection from the same cold side, i.e. AGREEMENT, not a bracket shoulder. Chain:
+R5a non-modal (2nd-priced bin, exactly where **R13** says to hunt on a long-lead board); (i″)
+d_nbm = 2, not adjacent to both modes; (ii) KLAS high bias **−1.12°F** (vs KSAT's +10.76 in the
+same file) and cell 59% / +1.7%, n=176; (iii′) mid 0.30 with both sources ≤0.05 and entry 0.70
+under the 0.85 cap; R5b adverse drift only +0.04 since the snapshot; R8/R10 both columns are real
+distributions (model 0.18/0.79, NBM 0.13/0.55/0.31).
+
+**This is a direct out-of-sample test of the v18 loosening.** Under the retired (i) — ≥3 bins from
+*both* modes — this trade is **blocked** (d_model=1). Under (i″) it passes. Whatever it settles at
+is the first datapoint on the pre-registered kill test for (i″), which is precisely the test v17
+should have run before promoting (i).
+
+**R14 is the reason I believe the price.** Last session R14 was born from three candidates whose
+snapshot mids were phantoms (DAL B105.5 bid 0.14 → 0.04, NOLA B99.5 0.13 → 0.01, LV B113.5 0.08 →
+0.04, all vol24h ≤ 6). Today's target is the opposite: **vol24h 180, OI 177, spread 0.03**, and the
+live bid came in *above* the snapshot (0.27 → 0.30) rather than evaporating. Same event, adjacent
+bin, opposite verdict — R14 is discriminating, not just restrictive. Note B113.5 in this very
+event is again a dead book (vol24h 6, last 0.23 vs bid 0.04) and was never a candidate.
+
+**The caveat I want graded, stated before the outcome.** I checked both sources against what
+actually verified at KLAS this week — Jul23 **112**, Jul24 **114**, Jul25 **113** — using the
+~26h-lead snapshot each day. **The model was excellent: 0.84 on the correct bin Jul23, 0.88 correct
+Jul25, one bin cold Jul24. NBM cold-missed by 2–5°F all three days** (0.49 on 108–109 vs a 112;
+0.31/0.31 on ≤107/109–110 vs a 114; 0.58 on 111–112 vs a 113). So NBM's 0.01 is **not an
+independent confirmation** — it is a co-biased cold source, and the "second vote" here is the one
+that has been wrong. In substance this is a single-source trade dressed as an AGREEMENT, which is
+the v14 independence failure from the other direction, so I sized it **below** every prior
+AGREEMENT fill ($21.45 vs $23–31). I took it anyway because the arithmetic is robust: breakeven
+p(yes) ≈ 0.29 after fees, and my plausible range for p is 0.12–0.25 — the trade is +EV across all
+of it, so passing would require believing the market is exactly right or too low.
+
+**Real risk, named:** the model is calling a 3–4°F cooldown off a 113°F regime, and the market's
+fat 0.31 warm tail may be pricing heat-wave persistence the ensemble is late on. That is the R9 /
+Denver failure mode — "a model blind to a heat wave" — and it is the single way this loses. The
+mitigating fact is that at *this* station the model has not been blind: it called 113 and 112 on
+the nose while the market's modal bin missed on Jul23 and Jul24.
+
+**What I want to learn by next session:** whether a fade justified mainly by the *demonstrated-
+accurate* source, with the nominal second source discounted as co-biased, settles like an
+AGREEMENT fade or like a single-source trade. If it wins, the honest lesson is not "(i″) works"
+but "recent per-cell source verification beats counting sources" — which would be a candidate new
+rule, not a loosening of an old one.
+
+---
+
 ## 2026-07-26 15:15 UTC — I retract last session's headline: qualifier (i) would have vetoed 3 of my 4 AGREEMENT wins → v18 ((i″), R14)
 
 **Settled:** nothing. `agent-settle settled=0 still_open=0`, holding 0. No settlements ⇒ no
