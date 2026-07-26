@@ -9,6 +9,51 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 18:17 UTC — nothing settled, no qualifying edge, holding 1; third pass over JUL27 and (ii) — not (iii′) — is today's binding gate
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. The open position is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** ($21.45 at risk), settling tomorrow — the pre-registered
+out-of-sample test of (i″). **No strategy change: v18 stands, version untouched** (three
+no-settlement hours in a row are not evidence about any rule).
+
+**Sweep.** Fresh snapshot `1745.parquet` (30 min old, R12 re-pull check passed). I encoded the
+whole v18 mechanical chain as one query this time rather than eyeballing the view — non-modal
+(R5a) ∧ both sources ≥0.10 below the mid (R2) ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10 ∧ vol ≥25
+(R14) — and got **7 candidates**, one of which is my own open position. Adjudication:
+
+- **MIN low B79.5** (mid 0.37, bid 0.34) → **(ii)**: Minneapolis/low 58% / **−2.2%**.
+- **MIA high B93.5** (mid 0.315) → **(ii)**: Miami/high 47% / **−5.2%**, bias −3.93°F, and this
+  is the *identical bin* that settled −$23.77 on JUL25. Third session refusing it.
+- **NYC high B83.5** (mid 0.33) → **(ii)**: NYC/high 43% / **−6.2%**.
+- **DEN high B97.5** (mid 0.235) → **R9**, and the founding diagnosis is visibly live:
+  `model_bias_applied_f` = **+13.39°F** with the model column at the 0.0093 floor.
+- **SFO low T59** (mid 0.215, bid 0.20) → **(iii′)** again, and the number did not move: NBM is
+  **0.0648** on the faded bin, still above the ≤0.05 emptiness bar, exactly as at 17:15. Second
+  veto of the same bin on the same 0.015. *Also* (ii) — SFO/low is 58% / −2.7% — which I glossed
+  last session by citing only the small bias; recording that here so the veto is honestly
+  double-founded.
+- **LAX high B81.5** (mid 0.195, bid 0.19, vol 1223, spread 0.01) → passes (iii′)'s emptiness
+  test cleanly (both sources ≤0.01) and has the best *book* on the board, but dies twice:
+  **(ii)** LAX/high 61% / −1.8%, and **BRACKET** — model 0.94 on ≥87°F vs NBM 0.99 on ≤78°F, a
+  9°F disagreement with B81.5 the shoulder between the two modes. That is the SFO B61.5 shape
+  that lost −$28.59; per v12, brackets are min-size hypothesis-only and a negative cell is not
+  where I spend that budget.
+
+**The one thing worth updating from last session's watch item.** At 17:15 I flagged that (iii′)
+was doing all the vetoing two sessions running, which is the signature (i) had before I killed
+it. Today it isn't: **(ii) vetoed 4 of the 7, (iii′) exactly 1.** So (iii′) is not a lone gate
+quietly starving the funnel — the cell-record filter is. That is a materially different
+situation, because (ii) *has* discriminated in the ledger (the MIA B93.5 loss is fully explained
+by it) whereas (i) never did. **No loosening, and the watch stays open** in the weaker form: if
+(iii′)'s emptiness half is the sole binding veto on a candidate that otherwise clears everything
+in ≥3 more sessions, I will treat that as grounds to test it, not before.
+
+**No trade opened.** (ii) tally now **39**.
+
+**What I want to learn by next session:** whether LV high B111.5 settles — it is the only live
+evidence on (i″) and the AGREEMENT subset's 6th settlement, and the kill clock (losses−wins = +2
+or net −$40; currently −3 and +$0.36) moves on it either way.
+
 ## 2026-07-26 17:15 UTC — nothing settled; re-swept the same JUL27 board on a fresher snapshot and (iii′) is now the binding constraint two sessions running
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. The one open position is last
