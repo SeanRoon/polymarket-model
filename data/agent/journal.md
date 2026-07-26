@@ -9,6 +9,92 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 22:15 UTC — nothing settled; I almost invented a gate, measured it first, and it would have vetoed my entire winning subset — v20 adds R16 to forbid it
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk, opened 16:21 UTC on v18),
+settling tomorrow. Six no-settlement hours in a row.
+
+**Why I re-swept again.** The pull brought `2140.parquet` (previous 2030). Same standing reason:
+a fresh snapshot can move the model/NBM columns, and the binding gates are no longer all
+price-invariant now that R14 exists. It was worth it — the v19 mechanical chain (non-modal ∧ both
+sources ≥0.10 below mid ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10) returned **7** candidates and one of
+them, **OKC low B73.5**, was the first in ten sessions to clear *every single gate I own*.
+
+**The candidate: `KXLOWTOKC-26JUL27-B73.5`** (OKC low 73–74°F). Snapshot mid 0.185, bid 0.17,
+ask 0.20, spread 0.03, vol 277, lead 20h. Model 0.009, NBM 0.0050. Non-modal (market's mode is
+b3, 75–76 @0.485). Model mode b4 @0.62, NBM mode b4 @0.462 → **d=2 from both**, so (i″) is clean
+and this is an **AGREEMENT** shape, not a bracket. The model column is *not* degenerate (0.62 /
+0.306 / 0.046 / floor — a real distribution). **R15 passes emphatically:** NBM's quantiles are
+q10 **77.14**, q50 **78.84**, q90 **80.35** ⇒ reconstruction **0.0022**, so the near-zero binned
+`nbm_p` is NBM's genuine opinion and not a discretization artifact. (iii′): mid <0.30 so the
+emptiness test applies — both sources ≤0.05 ✓ — and the snapshot NO entry was 0.83 ≤ 0.85 ✓.
+On paper: a qualifying trade.
+
+**What made me hesitate, and the mistake I nearly made.** Both sources put the low at 77–78 while
+the *market's* mode is 75–76. So the faded bin is 2 bins from both forecast modes but sits
+**immediately adjacent to the market's own center** — one ordinary error from where the money
+says the answer is. That felt like the MIA B93.5 structure restated against a different reference
+point, and I started writing a new qualifier: require separation from the **market's** modal bin,
+not just the sources'. **Then I remembered what v18 cost me and measured it before adopting it.**
+
+| trade | outcome | d_market |
+|:---|:---|--:|
+| MIA high B96.5 (JUL17) | **W** +$7.97 | 1 |
+| HOU high B95.5 (JUL17) | **W** +$5.51 | 1 |
+| LAX high B79.5 (JUL17) | **W** +$4.42 | 1 |
+| DEN high T101 (JUL25) | **W** +$6.23 | 1 |
+| MIA high B93.5 (JUL24) | **L** −$23.77 | 1 |
+| LV high B111.5 (open) | — | 1 |
+
+**Constant at 1 across all six.** Zero variance ⇒ zero discriminating power, and a "d_market ≥2"
+gate would have vetoed **4W–1L — the whole AGREEMENT book.** Adjacency to the market's mode is not
+a warning sign, it is the *normal shape* of my winning fades, and there's a structural reason:
+R2 needs mid ≳0.15, and on a 6-bin board the only non-modal bins priced that high are the mode's
+neighbours. **This is the (i) failure caught one step earlier** — a gate reverse-engineered from
+the optics of one candidate I was inclined to refuse. → **R16**, written as a rule that *forbids*
+a rule, so a future session with the same intuition finds the measurement instead of re-deriving
+the gate.
+
+**What did differ between the loss and the wins** is source-vs-market *displacement*
+(|model mode − market mode|): the three JUL17 wins and the open LV position all sat at **0**
+(model mode = market mode), the MIA loss at **1**, DEN T101 at **4** and won. OKC B73.5 is at 1.
+That is 3W at 0 / 1L at 1 / 1W at 4 — **far too thin to gate on**, and building a rule from it in
+the same session I killed one for the same defect would be absurd. **Logged in R16 as an
+unpromoted hypothesis** to track, not a qualifier.
+
+**Then the live book decided it for me — R14's second firing.** Snapshot said bid 0.17; the live
+book at 22:18 quotes **0.13 / 0.19**. So the real NO entry is **0.87, above (iii′)'s 0.85 cap**,
+and R2's ≥0.15 edge bar is now *mechanically unreachable* — a NO-fade's maximum edge is the bin's
+own price, and that price is 0.13. Same failure mode as R14's founding cases: the snapshot's price
+side decayed and manufactured a phantom edge on a mid-liquidity tail bin. **And independently it
+fails (ii′)'s surviving bias half**: `model_bias_applied_f` on OKC low is **+4.96°F**, larger than
+the −3.93 Miami bias I have now refused five times. Even after a ~5°F downward correction the model
+still sits 2 bins warm of the market — the MIA/Denver signature. Three independent vetoes; passing
+is not a close call.
+
+**Full adjudication of all 7.** OKC low B73.5 → **R14** live decay + **(iii′)** + **(ii′)** bias.
+**DC low T70** → **R15** again (fresh quantiles q50 68.52 / q90 70.36 ⇒ **0.0839** > 0.05; last
+session's figure was 0.098 — same verdict, and this is now two straight sessions where the funnel's
+best-looking candidate is the input check's only casualty). **AUS high B100.5** → triple veto: bias
+**+12.26**, degenerate model column (0.0093 floor under a 0.95 mode = R8/R10), R15 0.0789.
+**DC high B89.5** → **BRACKET** (model mode b4 warm vs NBM mode b0 cool, faded bin the shoulder) +
+bias −3.41. **NYC high B83.5** (vol 5146, deepest book) → **(iii′)**: mid 0.295 < 0.30 so the
+emptiness test binds and NBM is **0.153** (R15 0.177), plus it's adjacent to the model's mode.
+**AUS high B98.5 (JUL26)** → **R5a**, settlement day, lead 0. **MIA high B93.5** → disqualified
+cell, sixth refusal. **Seven candidates, seven different binding reasons** — no single gate is
+starving the funnel, which is the check I keep running on myself since v18.
+
+**Position health.** LV B111.5 NO @0.70: yes 0.30 at entry → 0.32 last session; unchanged in the
+21:41 snapshot. Thesis, AGREEMENT geometry, and R15 (0.0216) all intact. Well inside R5b.
+
+**No trade opened.**
+
+**What I want to learn by next session:** whether LV B111.5 settles — still my only live test of
+(i″) and the first v18 trade. And I want to check whether OKC low B73.5's book recovers: if the
+0.17 bid returns and the bin later settles NO, R14 will have cost me a winner, which is the exact
+evidence its kill clause asks for. Logging it as a tracked veto either way.
+
 ## 2026-07-26 21:15 UTC — nothing settled, but the best candidate in nine sessions exposed a broken INPUT; v19 adds R15 and demotes (ii)'s record half
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
