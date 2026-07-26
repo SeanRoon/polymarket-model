@@ -9,6 +9,62 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 17:15 UTC — nothing settled; re-swept the same JUL27 board on a fresher snapshot and (iii′) is now the binding constraint two sessions running
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. The one open position is last
+hour's **KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk), which settles
+tomorrow — it is the pre-registered out-of-sample test of (i″) and there is nothing to grade
+until it resolves. **No strategy change: v18 stands, version untouched.** Two consecutive
+no-settlement hours are not evidence about any rule, and the file's editing rules say bump only
+on a rule change driven by outcomes.
+
+**Sweep.** R12 window (17:15 UTC), and the re-pull check passed: `1635.parquet` landed since last
+session, so I re-ran the whole v18 funnel on a snapshot 40 minutes newer than the one that
+motivated the LV trade, specifically to see whether an hour of repricing had created anything new
+(R11/R14 both say long-lead prices decay fast). Nine non-modal bins clear "both sources ≥0.10
+below the mid" with `yes_bid` ≥ 0.15. One is my own open position (duplicate-guarded). Of the
+other eight, six are verbatim repeats of last session's vetoes and I am not re-litigating them:
+**SATX high B96.5** → R8/R10 degenerate model + bias **+10.76°F**; **DC low T70** → (ii), 51%/−2.1%
+cell, still the best geometry on the board and still disqualified by record; **MIN low B79.5**,
+**MIA high B93.5** (47%/−5.1%), **LAX high B81.5** → (ii); **NYC high B83.5** → BRACKET.
+
+**Two candidates I had not previously worked, both new to the log:**
+
+- **KXHIGHTDC-26JUL27-B89.5 (NO @0.70, mid 0.31) → VETO: BRACKET, and a wide one.** The full DC
+  high column is model `0.009 / 0.028 / 0.120 / 0.213 / 0.343 / 0.287` (mode B93.5, and 0.63 on
+  ≥93°F) against NBM `0.859 / 0.121 / 0.005 / 0.005 / 0.005 / 0.005` (mode T87, ≤86°F). That is a
+  **7°F+ disagreement between the two sources**, and the faded bin sits at index 2, dead between
+  them — the exact SFO B61.5 shoulder that lost −$28.59. Fading it would be fading forecast
+  uncertainty, not a shared tail.
+- **KXLOWTSFO-26JUL27-T59 (≥60°F, NO @0.76, mid 0.245) → VETO on (iii′), by 0.015.** This one
+  passed everything else and I want it on the record because it is a genuine near-miss:
+  board ≤51 @0.01 / 52–53 @0.025 / 54–55 @0.085 / 56–57 @0.075 / **58–59 @0.64 (modal)** /
+  **≥60 @0.245 (faded, 2nd-priced — exactly where R13 says to hunt)**. Model 0.861 on 56–57,
+  NBM 0.48 on 58–59: **rejection from the same cold side ⇒ AGREEMENT, not a bracket.** (i″):
+  d_model = 2, d_nbm = 1 — ≥2 from one mode, not adjacent to both ✓. (ii): SFO low bias **+0.52°F**,
+  the smallest on the board ✓. R8/R10: NBM is a real distribution (0.44/0.48/0.065), so this is
+  not one model claim counted twice ✓. R14: vol 204, spread **0.01** — a real book ✓. R2 edge at
+  the bid ≈ 0.20 ✓. **It dies on (iii′): mid 0.245 < 0.30, which requires BOTH sources ≤0.05 on
+  the faded bin, and NBM is 0.065.** I am not rounding that in my favour — last session I let
+  HOU high B98.5 go for missing R2's bar by 0.01 and the same discipline applies to my own
+  qualifier.
+
+**No trade opened.** (ii) tally now **35**.
+
+**What I want to watch (pre-registered, no rule change yet).** For two sessions in a row the
+funnel has ended on **(iii′)** — first as the entry cap (OKC low B73.5, NYC low T70 at NO
+0.86–0.87), now as the ≤0.05 emptiness test (SFO T59 at NBM 0.065). That is the same signature
+(i) had before I killed it: a gate doing all the vetoing while having never once discriminated a
+win from a loss. The difference is that (iii′)'s *cap* half has a mechanical justification (a
+0.86 NO needs a ~86% win rate I cannot estimate) whereas its *emptiness* half is an untested
+prior, exactly like the 0.30–0.45 band it replaced. **I am not loosening it on zero settlements
+— that is how (i) was manufactured.** Instead: if a third session ends on the emptiness half, I
+will measure it the way I should have measured (i) — pull every settled AGREEMENT trade, compute
+both sources' probability on the faded bin, and check whether ≤0.05 separates the wins from the
+loss before touching the number.
+
+**By next session I want:** the LV B111.5 settlement, which is the first real datapoint on (i″).
+
 ## 2026-07-26 16:15 UTC — v18's loosened gate produces its first trade: LV high B111.5 NO @0.70, and R14 is what made it safe
 
 **Settled:** nothing. `agent-settle settled=0 still_open=0`, holding 0 at session start. No

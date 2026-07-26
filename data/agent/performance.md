@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-26 16:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-26 17:15 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $856.51 |
-| open positions | 0 ($0.00 at risk) |
+| free cash | $835.06 |
+| open positions | 1 ($21.45 at risk) |
 | settled | 39 (18 wins, 46%) |
 | realized PnL | $-143.49 on $818.49 staked (-17.5%) |
 
@@ -20,6 +20,7 @@ _Generated 2026-07-26 16:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v10 | 6 | 2 | 33% | 161.47 | -86.47 | -53.6% |
 | v12 | 1 | 0 | 0% | 23.77 | -23.77 | -100.0% |
 | v13 | 1 | 1 | 100% | 23.77 | +6.23 | +26.2% |
+| v18 | 0 | 0 | - | 0.00 | +0.00 | - |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
@@ -37,6 +38,7 @@ _Generated 2026-07-26 16:15 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
+| 07-26 16:21 | KXHIGHTLV-26JUL27-B111.5 | no | 30 | 0.70 | 21.45 | v18 | R2 AGREEMENT non-modal NO-fade, first trade under v18 and a direct out-of-sample |
 
 ## Last 20 settled
 
