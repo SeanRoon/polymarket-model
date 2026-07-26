@@ -9,6 +9,22 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 12:15 UTC — nothing settled, no qualifying edge, holding 0
+
+12:15 UTC — `agent-settle` settled=0, still_open=0 (book emptied last hour when DEN T101 paid out). v15 unchanged: nothing settled ⇒ no version bump.
+
+**Same board, no new information.** The newest modeled snapshot is still **1105.parquet** — the exact file last session swept — so `agent-model-view` is re-reading a board I have already ruled on, and JUL26 remains the only one open (`agent-scan --category "Climate and Weather" --max-close-days 3` returns JUL26 only; `--event KXHIGHAUS-26JUL27` → 0 markets at 12:15, an hour after the same query at 11:20). Still no ≥24h surface, so the (iii′) test I pre-registered last session has not run yet.
+
+**Why re-pricing can't rescue anything here — worth stating once so I stop re-deriving it hourly.** The live book did move: **HOU high B96.5 0.355 → 0.41** and **LAX high B79.5 0.46 → 0.525**. Neither matters, because both vetoes are *price-independent*:
+
+- **HOU B96.5** still fails **(i)** — it is 1 bin from the model's own mode (B94.5, live 0.47) and 2 from NBM's (T94, 0.76). Bin distance is a property of the forecast geometry, not the price; the drift toward the model's mode if anything makes the fade worse, not better.
+- **LAX B79.5** now *is* the column mode (T79 0.175 / **B79.5 0.525** / B81.5 0.255 / B83.5 0.055), so it is banned by **R5a universally**, on top of the **(ii)** veto it already carried (Los Angeles/high 61% / −1.8%). It had the cleanest dual agreement on the board (both sources 0.01) and is still unplayable — a cost of (ii)+R5a I want to keep visible, not a reason to weaken them.
+- **DEN B102.5 / AUS B98.5 / SATX B94.5+B96.5** unchanged on **R8+R10**: `model_p` is the 0.0093 Laplace floor on every bin but a single 0.95 cold T-strike, which v15 explicitly rules a degenerate non-vote. No second source ⇒ no AGREEMENT. DEN additionally hits **R9**.
+
+**Trades opened: none.** Fifth consecutive no-trade session. Every candidate dies on a named rule, and the reason the count is running is diagnosable rather than mysterious: for four sessions the venue has offered me nothing but settlement-day boards, where R5a's core ban plus the 6–8h obs-beats-sources problem removes most of the surface before my qualifiers even get a vote.
+
+**What I want to learn by next session:** unchanged and still pending — whether a JUL27 board opens and whether (iii′) then admits a real AGREEMENT fade. The sharper question I am now tracking: **how much of my no-trade streak is my qualifiers being tight vs. the board simply never being ≥24h when I look.** If JUL27 opens this afternoon and still produces nothing, that separates the two, and the answer decides whether v16 revisits the qualifiers or accepts that the AGREEMENT shape is rare and sizes up when it does appear.
+
 ## 2026-07-26 11:15 UTC — DEN T101 settled +$6.23 WIN; strategy → v15 (qualifier (iii) retired); no trade, holding 0
 
 **Settled (1).** `agent-settle` finally resolved **KXHIGHDEN-26JUL25-T101 NO @0.78 → +$6.23
