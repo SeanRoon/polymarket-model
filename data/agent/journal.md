@@ -9,6 +9,101 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 14:15 UTC — R12 fires and pays: the JUL27 board is real, and the sweep proves (i) is the one binding qualifier → v17 (R13)
+
+**Settled:** nothing. `agent-settle` settled=0, still_open=0, holding 0. No settlements ⇒ no
+grading step and no outcome-derived rule moves. The version bump is board-measurement evidence,
+not settlement evidence, and I'm labeling it as such.
+
+**R12 CONFIRMED on its first firing.** This is the first session in a week to run inside the
+post-14:00 window R12 defined, and the prediction held: `agent-scan --event KXHIGHLAX-26JUL27
+--min-volume-24h 0` returned a full 6-bin book at **42h to close**, and the modeled board came in
+at **36 events, 26–29h lead**. Seven sessions of "no ≥24h board exists" was my clock, exactly as
+v16 diagnosed.
+
+**R12 needed one amendment, and it nearly cost me the session.** The Kalshi book and the committed
+snapshot tree open at *different* times. At 14:16 the JUL27 book was quoting live while the newest
+snapshot — `1215.parquet` — contained **zero** JUL27 rows (I checked: 40 events, all JUL26). I only
+got `model_p`/`nbm_p` because a second `git pull` mid-session brought down `1410.parquet` (216 JUL27
+rows, 36 events). **Without that re-pull I'd have written "board open but no model coverage" and
+this would have been a seventh empty session for a purely mechanical reason** — the same class of
+error R12 exists to fix, one layer down. Amended into R12: after 14:00, pull → *verify the newest
+snapshot actually contains tomorrow's tickers* → then sweep.
+
+**The pre-registered question, answered decisively.** Last session I wrote that the next ≥24h board
+would separate two hypotheses: my qualifiers are tight-but-right, or they're miscalibrated and even
+a good board yields nothing. So I didn't eyeball it — I encoded the **entire v16 chain** as one query
+over the 1410 snapshot (R5a non-modal ∧ both columns non-degenerate ∧ both sources ≥0.10 below mid ∧
+live-book edge ≥0.15 ∧ spread ≤0.10 ∧ (i) ≥3 bins from *both* modes) and ran a **drop-one-out
+sensitivity**:
+
+| drop this qualifier | survivors |
+|:--|--:|
+| R5a non-modal | 0 |
+| non-degenerate columns | 0 |
+| both sources ≥0.10 below | 0 |
+| live edge ≥0.15 | 0 |
+| liquid book | 0 |
+| **(i) ≥3 bins from both modes** | **1** |
+| *(full chain)* | *0* |
+
+**(i) is the only binding qualifier on the entire board.** And the one candidate it blocks is
+**KXHIGHMIA-26JUL27-B93.5** — the *identical* city/kind/bin that settled **−$23.77** on JUL25, one
+day earlier, at a near-identical price (NO @0.73 today vs @0.78 then), failing (i) at **2 bins** from
+the model's mode. That is verbatim the post-mortem that wrote (i): *"only ~2 bins (~4°F) of
+separation, which one ordinary forecast error erases."* It also independently fails (iii′) (model
+0.083 > the 0.05 emptiness bar at mid 0.29) and (ii) (Miami/high is **47% / −5.1%, n=389** — my
+second-worst high cell).
+
+**So the answer is: the qualifiers are not too tight. The board yields nothing because the only
+thing on offer is the known-bad shape, and (i)'s first out-of-sample test caught a same-shape repeat
+of the loss that created it.** That's the opposite of the finding I was braced for, and the strongest
+evidence in the ledger that v15 is calibrated rather than merely restrictive.
+
+**The funnel is the other half of the lesson.** 180 non-modal bins → 105 with two non-degenerate
+source columns → **7** with both sources ≥0.10 below the market → **1** at ≥0.15 live edge → **0**
+after (i). The scarce resource is neither lead time nor R5a; it's dual-source disagreement of *any*
+magnitude (7/105), then magnitude (1/7). **An AGREEMENT fade is a ~1-candidate-per-board event** —
+so v14's "de-scaled to 1 per session" was never a real constraint. The board only ever offers one.
+
+**Strategy change → v17, new rule R13 (long-lead edge/mode coupling).** At ≥24h lead the market's
+distribution is wide, so the bin holding the most probability is also where a confident model shows
+the largest absolute gap: **large edge ⇒ modal bin, by construction.** Measured — all five of the
+biggest both-sources-below gaps today were the market's modal bin (OKC low B73.5 @0.46, PHIL low T68
+@0.475, DAL high T101 @0.42, DC low T70 @0.315, HOU low B78.5 @0.585), while the real AGREEMENT
+candidates sat at mid 0.20–0.29 with edges of 0.16–0.19. R13 pre-commits me to read that as geometry,
+hunt the 2nd/3rd-priced bins, and **not** relapse into the ≥24h modal carve-out v13 retired at
+5W–3L — a rich board is exactly when that temptation returns. **No trading qualifier changed.**
+
+**Other vetoes logged:**
+- **AUS high B100.5** (mid 0.23, edge 0.157, Austin/high is my best cell at 91%/+27.6%) — died on
+  **R8/R10**: the model column is 0.954 on T96 with the **0.0093 Laplace floor on all five other
+  bins**, so its 0.009 on B100.5 is the T96 claim restated, not an independent vote. Plus bias
+  **+11.39°F** → (ii). A strong cell does not rescue a degenerate column; that's R10's whole point.
+- **LAX high B81.5** (mid 0.205, edge 0.181, passes (iii′)) — **BRACKET, not AGREEMENT**: model puts
+  the LA high ≥87°F @0.935, NBM puts it ≤78°F @0.995 — a **9°F disagreement** with B81.5 as the
+  shoulder between them. Same shape as SFO low B61.5, −$28.59. Plus (ii) LAX/high 61%/−1.8%. Note
+  the market's mode (B79.5 @0.465) sits *between* the two forecasts — the market is pricing the
+  shoulder as most likely, which is the sane read and I'm on the wrong side of it.
+- **NYC high B81.5** — fails R2's both-sources ≥0.10 bar (NBM 0.308 vs mid 0.395 = 0.087), and modal.
+- Board-wide: 12 of 36 model columns are degenerate (≥4 bins at the floor), so degeneracy is real but
+  not the binding constraint — 21 events had two genuinely-spread columns.
+
+(ii) veto tally now **22**.
+
+**Trades opened: none.** Seventh straight no-trade session — but this one is categorically different
+from the six before it. Those were sweeps of a board that structurally couldn't qualify. This was a
+real ≥24h board, swept properly, and it produced a *measured* answer about which of my rules is
+actually doing the work. I'd rather have this result than a manufactured trade.
+
+**What I want to learn by next session:** whether the ~1-candidate-per-board rate holds, and
+specifically **whether a board ever offers an AGREEMENT candidate at ≥3 bins from both modes in a
+clean cell** — the shape (i) admits rather than blocks. Today's board had 7 both-sources-below bins
+and only 1 cleared the edge bar; if that ratio persists over a few boards, the honest conclusion may
+be that the AGREEMENT edge is real but so rare (~1 qualifying trade per week or two) that patience,
+not looser rules, is the correct posture. I also want to confirm the R12 re-pull amendment works:
+next session should see tomorrow's board *and* its snapshot on the first pull after 14:00.
+
 ## 2026-07-26 13:15 UTC — the no-trade streak has a cause: I've been showing up before the board opens → v16 (R12)
 
 **Settled:** nothing. `agent-settle` settled=0, still_open=0. Book is empty; holding 0. No
