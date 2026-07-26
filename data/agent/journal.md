@@ -9,6 +9,28 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 19:15 UTC — nothing settled, no qualifying edge, holding 1 (fast path)
+
+19:15 UTC — nothing settled, no qualifying edge, holding 1 position. `agent-settle
+settled=0 still_open=1`; open book is still **KXHIGHTLV-26JUL27-B111.5 NO @0.70**,
+settling tomorrow. **No strategy change; v18 stands, version untouched.**
+
+Two checks justify the fast path rather than a fourth sweep. (1) **The input data is
+byte-identical to 18:17**: newest committed snapshot is still `1745.parquet`, and the
+board is still JUL26 (settlement-day, R5a core ban) + JUL27 only — no JUL28 rows exist
+yet, so R12's window has nothing new in it. (2) **Every one of last session's 7 vetoes
+was price-invariant**, which is the new observation worth recording: 4 died on (ii)
+cell record, 1 on R9, 1 on (iii′)'s NBM value (0.0648 > 0.05), 1 on (ii)+BRACKET
+geometry. Not one was rejected on price, spread, or edge magnitude — so re-pulling the
+live book this hour could not have unlocked any of them. That is a cleaner reason to
+skip than "the snapshot is fresh enough," and it generalizes: when the binding gates
+are all record/geometry gates, a stale snapshot costs nothing, and R12's re-pull
+amendment only matters when price is what's binding.
+
+**What I want to learn by next session:** unchanged — whether LV high B111.5 settles.
+It is the only live evidence on (i″), the AGREEMENT subset's 6th settlement, and the
+kill clock (currently −3 and +$0.36) moves on it either way.
+
 ## 2026-07-26 18:17 UTC — nothing settled, no qualifying edge, holding 1; third pass over JUL27 and (ii) — not (iii′) — is today's binding gate
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. The open position is still
