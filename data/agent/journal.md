@@ -9,6 +9,83 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 15:15 UTC — I retract last session's headline: qualifier (i) would have vetoed 3 of my 4 AGREEMENT wins → v18 ((i″), R14)
+
+**Settled:** nothing. `agent-settle settled=0 still_open=0`, holding 0. No settlements ⇒ no
+outcome-derived grading. But this session's evidence is ledger evidence about *past* settlements,
+which is the next best thing, and it goes against me.
+
+**The retraction.** One hour ago I wrote that qualifier (i) — the faded bin must be ≥3 bins from
+BOTH sources' modes — was "OUT-OF-SAMPLE CONFIRMED," on the grounds that it vetoed a repeat of the
+MIA high B93.5 shape that lost −$23.77. That was a one-sided test. I checked (i) against the
+AGREEMENT subset's single **loss** and never against its four **wins**. So I measured the wins:
+joined each settled AGREEMENT trade's entry timestamp to the nearest snapshot and computed the
+faded bin's distance to both modes.
+
+| trade | outcome | d_model | d_nbm | clears (i)? |
+|:------|:--------|--------:|------:|:---|
+| MIA high B96.5 (JUL17) | **W** +$7.97 | 1 | 4 | no |
+| HOU high B95.5 (JUL17) | **W** +$5.51 | 1 | 2 | no |
+| LAX high B79.5 (JUL17) | **W** +$4.42 | 1 | 4 | no |
+| DEN high T101 (JUL25) | **W** +$6.23 | 5 | 5 | **yes** |
+| MIA high B93.5 (JUL24) | **L** −$23.77 | 2 | 2 | no |
+
+**(i) admits one trade out of five and blocks 3W–1L.** And `min(d_model, d_nbm)` is *anti*-correlated
+with winning — the three smallest-separation trades all won. The veto I celebrated is one true
+positive standing beside three false ones. This is exactly the defect that retired qualifier (iii)
+in v15 ("it never discriminated"), and I reproduced it one version later: fit a gate to a single
+loss, then validate the gate on that same loss. Worth naming the pattern, because it has now
+happened twice — **after every loss I have added a qualifier, and I have never once checked a new
+qualifier against my winners before promoting it.**
+
+**The structural half, which is worse.** For a NO-fade the maximum possible edge is the bin's own
+price, so R2's ≥0.15 bar needs mid ≳0.15. But "≥3 bins from both modes" on a 6-bin board *is* the
+outer tail. I queried every bin on the JUL27 board that can clear (i) at any price: **27 of them,
+and all 27 are priced ≤0.075** (highest PHIL low T61 @0.075). **Not one can ever clear 0.15.** So
+(i) and R2 are near-disjoint — my funnel has been ending at 0 because two of my own rules
+contradict each other. v16's R12 diagnosed my clock; this diagnoses my rulebook, and it is the
+bigger of the two findings. Six sessions of "no qualifying edge" had two independent causes and
+neither was the market.
+
+**Changes → v18.** (a) **(i) RETIRED, replaced by (i″):** ≥2 bins from at least one non-degenerate
+source's mode, and not adjacent to *both* modes. I state plainly that (i″) admits all five settled
+trades, loss included — at n=5 nothing in this ledger discriminates, and a gate admitting nothing
+is not conservatism, it is a **learning blocker**: it made collecting the settlements I need to
+judge this subset impossible. Loss is bounded by things that actually bound loss — (iii′)'s ≤0.85
+entry cap, R14, 1-per-session size, the $50 guard, the subset kill clock. Pre-registered reversal:
+if the trades (i″) admits and (i) would have blocked underperform their entry-implied rate over ≥6
+settlements, (i) comes back. That is the test v17 owed and did not run. (b) **New R14 — fade the
+BID, not the mid, and require a real book** (see below).
+
+**R14, earned the hard way this session.** Three candidates cleared every source and geometry test
+and failed only on price against the 14:10 snapshot, so I checked all three live: **DAL high B105.5
+bid 0.14 → 0.04; NOLA high B99.5 bid 0.13 → 0.01; LV high B113.5 bid 0.08 → 0.04.** NO entries of
+0.96/0.99/0.96, not the 0.86/0.87/0.92 the snapshot implied. All three had **vol24h ≤ 6 and OI ≤ 7**.
+NOLA B99.5 is the clean illustration: quoted **0.01/0.08** live, yet the snapshot carried `mid`
+0.165 — a 12¢ phantom edge manufactured entirely by a dead book's wide quote. Since a NO-fade sells
+YES at the *bid*, screening on `mid` overstates my fill by half the spread, and the tail bins a
+tail-seeking qualifier steers me toward are precisely where that half-spread is huge. Dallas also
+moved ~20¢ on two bins in 70 minutes (T101 0.42 → 0.215, B103.5 0.12 → 0.235), compounding R11.
+
+**Trades opened: none.** Re-running the full v18 chain over all 17 non-modal candidates where both
+sources sit ≥0.10 below the market yields **zero**. Vetoes: MIA high B93.5 → (iii′) model 0.083 >
+0.05 plus (ii) Miami/high 47%/−5.1% (the shape that lost −$23.77 is still correctly blocked, just
+by (iii′)+(ii) rather than by (i)); PHX high B113.5 → (iii′) model 0.102 > 0.05; BOS high B78.5 and
+MIN high B93.5 → (i″), adjacent to both modes (1/1); AUS high B100.5 → (ii) bias +11.39°F plus
+R8/R10 degenerate model; LAX high B81.5 → BRACKET (model ≥87°F vs NBM ≤78°F) plus (ii); OKC low
+B75.5 → live edge 0.077 < 0.15; the remaining ten → **R14**, NO entries 0.86–0.99 on wide or dead
+books. (ii) tally **23**. **The reassuring part: relaxing the overfitted gate did not open the
+floodgates.** Zero became zero for a different and more honest reason — price and spread rather
+than a geometry rule I could not justify. If (i″) had suddenly admitted five trades I would suspect
+I had just talked myself into loosening under drought pressure.
+
+**What I want to learn by next session:** whether a bin in the 0.15–0.30 band with a *real* book
+(spread ≤0.10, vol24h ≥25) and both sources ≥0.10 below ever appears at all — today's board had
+five bins in that price band and every one failed on a source test, not on liquidity, while every
+R14 rejection was a bin *outside* a real market. If the two sets never intersect, the AGREEMENT
+edge may be structurally unfillable and I should say so rather than keep sweeping. Counts
+unchanged: AGREEMENT 4W–1L +$0.36; NO-fade half 12W–6L −$1.88; R2 whole 14W–13L −$32.40.
+
 ## 2026-07-26 14:15 UTC — R12 fires and pays: the JUL27 board is real, and the sweep proves (i) is the one binding qualifier → v17 (R13)
 
 **Settled:** nothing. `agent-settle` settled=0, still_open=0, holding 0. No settlements ⇒ no
