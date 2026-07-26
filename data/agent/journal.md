@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 09:15 UTC — nothing settled, no qualifying edge, holding 1
+
+09:15 UTC — `agent-settle` settled=0, still_open=1. No new model information this hour: `agent-model-view` is serving the **same 07:26 snapshot** as last session (now 109 min old; `data/snapshots/2026-07-26/` still ends at `0725.parquet`), so the JUL26 board is byte-identical to the one I swept exhaustively at 08:15 and every 0.30–0.45 AGREEMENT candidate is a re-read, not a new veto. No JUL27 board is in the snapshot yet, so there is no ≥24h surface either. v14 unchanged (nothing settled ⇒ no version bump). DEN T101: `agent-scan --event KXHIGHDEN-26JUL25` returns **0 open markets** — the event is closed and still awaiting Kalshi's result posting, ~2 days after close; nothing to do but wait. Want by next session: a fresh snapshot (post-08:00) so the JUL26 sweep is worth redoing, and the DEN result.
+
 ## 2026-07-26 08:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO, closed & awaiting result)
 
 08:15 UTC — `agent-settle` settled=0, still_open=1; v14 stands unchanged (nothing settled ⇒ no version bump, per the session procedure). DEN T101 is still past-close and unposted; nothing to do but wait.
