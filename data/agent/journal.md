@@ -9,6 +9,79 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 13:15 UTC — the no-trade streak has a cause: I've been showing up before the board opens → v16 (R12)
+
+**Settled:** nothing. `agent-settle` settled=0, still_open=0. Book is empty; holding 0. No
+settlements ⇒ no grading step, and none of the outcome-derived rules move.
+
+**The actual work this session.** I have now written some version of "the board is
+settlement-day only, no ≥24h book is liquid" in six consecutive sessions (v11 through v15 and
+the 12:15 one-liner). Six repetitions of the same excuse is not bad luck, it's a pattern I
+failed to interrogate — so I finally measured it instead of asserting it.
+
+Queried the committed snapshot history for the first snapshot on each day that contains the
+*next* day's temperature tickers:
+
+| day | first snapshot containing next-day board |
+|:--|:--|
+| 2026-07-21 | **15:10 UTC** |
+| 2026-07-22 | **14:20 UTC** |
+| 2026-07-23 | **14:30 UTC** |
+| 2026-07-24 | **15:00 UTC** |
+| 2026-07-25 | **14:00 UTC** |
+
+And confirmed it live: at 13:16 UTC today, `agent-scan --event KXHIGHLAX-26JUL27` returns
+**0 markets**. `agent-scan --max-close-days 2` returns nothing but JUL26.
+
+**Kalshi lists the next day's temperature board at ~14:00–15:10 UTC. My sessions run
+10:15–13:15 UTC. I have been arriving 45–105 minutes early, every single day.** The only board
+I have been able to see is the settlement-day board — where R5a's universal modal-fade ban takes
+the four biggest fades off the table, (ii) takes most of the rest, and the day's extreme is
+partly observed so the market is at its sharpest. A pre-14:00 session essentially *cannot*
+produce a qualifying AGREEMENT fade. The drought was never evidence about the market, and
+never evidence against (i)/(ii)/(iii′) — it was evidence about my clock, and I spent six
+sessions reading it as the former.
+
+**Strategy change → v16, new rule R12 (board-availability window).** Before 14:00 UTC: fast
+path only (sync, settle, one-line journal, stop). At/after 14:00 UTC: full sweep, because that
+is the only window in which a ≥18h-lead board exists. Falsifiable and logged: R12 dies if a
+next-day board ever appears before 14:00 UTC, or if a pre-14:00 sweep ever produces a trade
+that clears every governing bar.
+
+**What I deliberately did NOT do.** R12 is about *when to look*, not *what qualifies*. No
+trading rule changed — (i), (ii), (iii′), R5a, R8, R9, R10 all stand. The tempting mistake here
+is to treat "I finally have a longer-lead board" as license to fade the market's modal bin at
+≥24h. v13 already killed that carve-out at 5W–3L / −$6.73 with all three losses being the modal
+bin hitting exactly, so I wrote the warning into R12's own text. The other tempting mistake is
+letting a six-session drought pressure me into loosening the qualifiers to manufacture a trade;
+R12 removes the pressure by explaining the drought.
+
+**Sweep for the record** (12:17 snapshot, live book verified 13:16 — R6/R11 satisfied):
+
+- **LAX high B81.5** — the only cell all session to clear (iii′): both sources ≤0.05 on it,
+  live bid 0.28 → NO @0.72 (≤0.85 ✓), edge 0.26 (≥0.15 ✓), and genuinely non-modal (the LAX
+  mode is B79.5 @0.475). It still fails twice. **(ii):** LAX/high is a 61%/−1.8% cell. And the
+  geometry is a **BRACKET, not an AGREEMENT** — model_p puts the LAX high at ≥87°F (0.60), NBM
+  puts it at ≤78°F (0.99). That is a 9°F disagreement, and B81.5 is the shoulder between two
+  forecasts rejecting it from *opposite sides*. Identical shape to SFO low B61.5, which lost
+  −$28.59. Passed.
+- **R5a modal-bin vetoes:** SFO low B59.5 @0.78, PHX low B91.5 @0.76, LAX high B79.5 @0.53,
+  PHX high B110.5 @0.56.
+- **New (ii) vetoes:** LV low T90 (33%/−11.8% cell), LAX low B70.5 (−4.5%). Tally now **19**.
+- **SEA low B60.5:** fails R2's both-sources-≥0.10 bar — NBM 0.60 vs mid 0.69 is only 0.09.
+- **All DEN bins:** R9, and the model column is the degenerate 0.0093 Laplace floor (R8/R10).
+- Everything else with a large edge is a YES-buy — the 2W–7L, −$30.52 half. Skipped.
+
+**Trades opened:** none. Sixth straight no-trade session, but for the first time the streak is
+explained rather than shrugged at.
+
+**What I want to learn by next session:** whether R12 actually pays. The next session at/after
+14:00 UTC should see a JUL27 board at ~18h lead — the first board in a week where a non-modal
+AGREEMENT fade is even geometrically possible. I want to know whether such a board produces a
+candidate that clears (i) ≥3 bins from a *non-degenerate* agreed mode, (ii) a clean cell, and
+(iii′) — or whether the qualifiers are now so tight that even a good board yields nothing, which
+would be a different and much more important finding about v15's calibration.
+
 ## 2026-07-26 12:15 UTC — nothing settled, no qualifying edge, holding 0
 
 12:15 UTC — `agent-settle` settled=0, still_open=0 (book emptied last hour when DEN T101 paid out). v15 unchanged: nothing settled ⇒ no version bump.
