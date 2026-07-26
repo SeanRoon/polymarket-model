@@ -9,6 +9,25 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 08:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO, closed & awaiting result)
+
+08:15 UTC — `agent-settle` settled=0, still_open=1; v14 stands unchanged (nothing settled ⇒ no version bump, per the session procedure). DEN T101 is still past-close and unposted; nothing to do but wait.
+
+**The snapshot cron resumed** — `agent-model-view` is now serving `2026-07-26 07:26 UTC` (49 min old) instead of the frozen 04:43 board I read three hours running. So this is a genuinely new sweep of JUL26, and it finally answers the question I set myself last session: **does v14's qualifier (ii) leave the AGREEMENT subset any surface at all?** Answer: yes, but the qualifiers stack multiplicatively, and on this board no single column clears all of them.
+
+Full sweep of the 0.30–0.45 AGREEMENT band (both sources ≥0.10 below mid, non-modal). **Five new (ii) negative-record vetoes:** ATL high B92.5 (mid 0.32; 0.08/0.01; cell 48% / −2.2%), SEA low B58.5 (0.32; 0.10/0.08; −4.1%), MIN high B96.5 (0.35; 0.12/0.20; −5.8%), DC low T68 (0.34; 0.01/0.18; −2.6%), DEN low B70.5 (0.38; 0.18/0.24; −4.8% **and** R9 blacklist). Running tallies: **(ii) negative-record 12**, (ii) bias-independence 1, (i) bin-distance 5.
+
+**Four columns actually PASSED (ii) — the first time I've had positive-record cells reach the band — and each died on a different downstream qualifier.** That is the useful finding:
+
+- **AUS high B98.5** (mid 0.40; model 0.01 / NBM 0.16; cell 91% / +27.6%, the strongest excluded-status-free cell on the board). Clean on (ii) and (iii), non-modal (market's mode is B96.5 at 0.57). **Fails (i):** the agreed mode is T96 (≤95°) and 98–99 is **2 bins away, not ≥3** — exactly the ~4°F separation that one ordinary forecast error erased in the JUL25 Miami loss. Independent second veto: the model side is 0.95/0.01 extreme against NBM's much flatter 0.46/0.37/0.16, which is R8 shape, and Austin-high fades have already cost me twice (JUL22 B103.5, JUL23 B99.5).
+- **OKC low B75.5** (0.25/0.01 vs mid 0.50; cell 66% / +3.3%). Passes (ii) — but 0.50 is the **top price in its column, i.e. the modal bin** → R5a's now-universal ban. Also out of the (iii) band on the high side.
+- **PHX high B110.5** (0.23/0.29 vs mid 0.56; cell +3.2%). Same story: 0.56 is the column mode (B108.5 0.18, B112.5 0.21) → R5a. Out of band.
+- **PHX low B91.5** (0.25/0.26 vs mid 0.34; cell +2.2%). In band, non-modal, positive cell — but the dual margins are **0.09/0.08, under the ≥0.10 floor**, and the live book is 0.19 bid / 0.49 ask, so a NO would fill at 0.81 against a 0.34 mid. R6 alone kills it.
+
+**What this teaches (logged, not yet ruled):** the binding constraint is not (ii) after all — it's the *conjunction*. Positive-record cells do reach the band; they then tend to be the market's modal bin (OKC, PHX high), because a cell the model reads well is usually a cell where the market's mass and the model's mass sit near each other, leaving the fadeable overpricing on the mode rather than in a tail. The one clean tail on a strong cell (AUS) was too close to the mode. If that pattern repeats on the JUL27 board, it's evidence that (i) and R5a are *jointly* near-exclusive on good cells, and v15 would need to decide which one to relax rather than adding more filters. **No drift-based reasoning used this session** — per last session's retraction, price motion is position management only, never veto confirmation.
+
+No trade. Want by next session: the DEN T101 result, and a JUL27 board at ≥24h lead — a fresh-day board is the only place the AGREEMENT geometry can appear before the market's mode has hardened onto the model's.
+
 ## 2026-07-26 07:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO, now closed & awaiting result)
 
 07:15 UTC — `agent-settle` settled=0, still_open=1; v14 stands unchanged. **DEN T101 has closed**: `agent-scan --event KXHIGHDEN-26JUL25` now returns 0 open markets, so the position is past its close and simply waiting on Kalshi to post the result — no further action possible from my side, and the next settlement is a mechanical read rather than a decision. Last live look (06:15) had B100.5 at 0.99/1.00 with T101 at 0.00/0.01, so the expected outcome is a win on a NO entered at market-YES 0.225.
