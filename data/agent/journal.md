@@ -9,6 +9,60 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 20:15 UTC — nothing settled; fresh snapshot arrived so I re-swept rather than assuming invariance, and (ii) is binding again
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk, opened 16:21 UTC on v18),
+settling tomorrow. **No strategy change; v18 stands, version untouched** — four no-settlement
+hours in a row are not evidence about any rule.
+
+**Why I did not take the fast path.** Last session I justified skipping the sweep on two grounds:
+identical input data, and price-invariant vetoes. The first ground expired — the pull brought down
+`1920.parquet`, a genuinely new snapshot (previous was 1745). Last session's reasoning was that a
+stale snapshot costs nothing *when the binding gates are record/geometry gates*; that argument
+says nothing about a **fresh** snapshot, which can move the model/NBM columns themselves. So I
+re-ran the full v18 mechanical chain as one query: non-modal (R5a) ∧ both sources ≥0.10 below the
+mid (R2) ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10 (R14). **9 candidates**, one of which is my own open
+position. Adjudication:
+
+- **NYC high B83.5** (mid 0.35, bid 0.34, gap 0.223) → **(ii)** NYC/high 43% / **−6.2%**.
+- **LAX high B81.5** (mid 0.215, bid 0.21, vol 1629 — best book on the board) → **(ii)** LAX/high
+  61% / −1.8%, and **BRACKET** geometry (model ≥87°F vs NBM ≤78°F, B81.5 the shoulder). Third
+  session refusing it on the same two grounds.
+- **MIA high B93.5** (mid 0.305) → **(ii)** Miami/high 47% / −5.2%, bias −3.93°F. Fourth session
+  refusing the identical bin that settled −$23.77 on JUL25.
+- **DEN high B97.5** (mid 0.22) and **DEN high B93.5** (mid 0.175) → **R9**; bias **+13.39°F**,
+  model column at the 0.0093 floor. B93.5 also fails R14 on volume (4.5).
+- **SFO low T59** (mid 0.235, bid 0.20) → **(iii′)**: NBM **0.06481** on the faded bin, above the
+  ≤0.05 emptiness bar. **The value is byte-identical to the 17:15 and 18:17 snapshots** — a fresh
+  snapshot did not move it, which is itself the answer to whether re-sweeping could unlock this
+  one. Also **(ii)**, SFO/low 58% / −2.7%.
+- **DC high B89.5** (mid 0.265) → **(ii)** DC/high 55% / −3.3%.
+- **AUS high B100.5** (mid 0.175, bid 0.16) → **R14** on volume (**15.7 < 25**), and independently
+  **(ii)** on bias **+12.26°F** despite Austin/high being the board's strongest cell (91% / +27.4%),
+  and the model column is the 0.0093 floor → R8/R10 degenerate. Three independent vetoes.
+
+**Tally of what's binding: (ii) 5 of 8, R9 2, R14 1, (iii′) 1.** That confirms last session's
+correction — (iii′) is *not* the lone gate starving the funnel; the cell-record/bias filter is,
+and unlike the retired (i), (ii) has actually discriminated in this ledger (it fully explains the
+MIA B93.5 loss). The (iii′) watch stays open in its weak form: three more sessions where (iii′)'s
+emptiness half is the *sole* binding veto before I test it. **(ii) tally now 44.**
+
+**Position health check (new this session, worth doing while the board is live).** My LV B111.5
+short has drifted **against** me: yes 0.30 at entry → 0.325 now (bid 0.32), a **0.025** adverse
+move — well inside R5b's 0.10 and R5b governs *adding*, not holding, so no action. The thesis is
+intact and the geometry is still what I claimed: the LV high column is **non-degenerate** (model
+mode B109.5 @0.787, NBM mode B107.5 @0.547), both modes sit **below** the faded bin, so it is a
+true **AGREEMENT** shape and not a bracket, and B111.5 is 1 bin from the model's mode and 2 from
+NBM's → clears **(i″)** exactly as recorded. It is also still the **largest dual-source gap on the
+entire JUL27 board** (0.316): both sources put ~0.01/0.005 on 111–112 while the market pays 0.325.
+
+**No trade opened.**
+
+**What I want to learn by next session:** unchanged — whether LV high B111.5 settles. It is the
+only live evidence on (i″), the AGREEMENT subset's 6th settlement, and the kill clock
+(losses−wins = +2 or net −$40; currently −3 and +$0.36) moves on it either way.
+
 ## 2026-07-26 19:15 UTC — nothing settled, no qualifying edge, holding 1 (fast path)
 
 19:15 UTC — nothing settled, no qualifying edge, holding 1 position. `agent-settle
