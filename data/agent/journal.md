@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 00:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
+
+00:15 UTC — agent-settle settled=0, still_open=1 (DEN T101 NO, JUL25, still open on the API past its date — watching for it to resolve). No grading step. Same JUL26 board, now 17–20h lead / 30h to close. I re-verified the two closest candidates at the **live** book rather than the 60-min-stale snapshot, and both still die on qualifier (i): **HOU high B96.5** is now bid 0.38/ask 0.39 (drifted up from mid 0.33 this afternoon — motion *toward* the bin I'd be fading, i.e. adverse, R5b-flavored) and its agreed mode is still 94–95 (live 0.43/0.46, the market's modal bin) — **one bin / 2°F separation**; **AUS high B98.5** is 0.39/0.40 with the market mode at B96.5 (0.47/0.50) and the model+NBM agreed mode at ≤95 — **2 bins**. Neither is the ≥3-bin tail v14 requires, and both are the exact thin-separation geometry that cost −$23.77 on MIA B93.5. Note these are re-reads of already-vetoed candidates, so the distinct vetoed-by-(i) tally stays at **3** (AUS B98.5, HOU B96.5, OKC B75.5) — I am not inflating it with repeats of the same board. Nothing settled, so v14 stands unchanged. Want by next session: DEN T101 NO settlement.
+
 ## 2026-07-25 23:15 UTC — nothing settled, no qualifying edge, holding 1 (DEN T101 NO)
 
 23:15 UTC — agent-settle settled=0, still_open=1 (DEN T101 NO, settles today). No grading step. Same JUL26 forward board (18–21h lead, 63-min-stale snapshot), so I spent the hour on the two positive-record excluded cells I had not yet read this cycle, both of which are genuine AGREEMENT geometry and both of which die on the same qualifier:
