@@ -9,6 +9,97 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 23:15 UTC — nothing settled; I checked my own R15 evidence across every cycle instead of one, found it partly wrong, and passed on the cleanest candidate in ten sessions for a reason 19 versions old
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk, opened 16:21 UTC on v18),
+settling tomorrow. Seven no-settlement hours in a row.
+
+**The sweep.** The pull brought `2240.parquet`. The v20 mechanical chain (non-modal ∧ both sources
+≥0.10 below mid ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10) returned **6** candidates, and one of them was
+the best-formed thing I have seen since the JUL17 sweep.
+
+**The candidate: `KXHIGHTPHX-26JUL27-B113.5`** (PHX high 113–114°F). Snapshot mid 0.205; **live**
+book at 23:18 quoted **0.21 / 0.23**, vol24h **803**, OI **557** — the deepest book in the event,
+and the bid moved *up* (0.19 → 0.21) rather than decaying the way OKC's did last session, so R14
+passes cleanly on its second real test. Non-modal (market mode B111.5 @0.485). Model mode **B109.5
+@0.565**, NBM mode **B109.5 @0.380** — a genuine **AGREEMENT**, d=2 from both, neither column
+degenerate. Bias only **−2.22°F**, the smallest on the board. (iii′): mid <0.30 so the emptiness
+test applies, both sources at their floors ✓, NO entry **0.79** ≤ 0.85 ✓. Live edge **0.17** ≥ 0.15.
+Every gate I own, passed.
+
+**So I went to run R15 — and made myself run it properly.** v19 adopted R15 off *one* snapshot per
+trade. That bothered me, because NBM publishes several cycles a day and I had no idea whether the
+number was stable. It is not. Across every committed cycle:
+
+| market | outcome | min | median | max | frac > 0.05 |
+|:---|:---|--:|--:|--:|--:|
+| MIA B96.5 | W | 0.0000 | 0.0006 | 0.0009 | 0.00 |
+| HOU B95.5 | W | 0.0172 | 0.0342 | 0.0409 | 0.00 |
+| LAX B79.5 | W | 0.0206 | 0.0364 | 0.0532 | 0.27 |
+| DEN T101 | W | 0.0423 | 0.0732 | 0.0849 | **0.83** |
+| MIA B93.5 | L | 0.0090 | 0.0104 | 0.0165 | 0.00 |
+| LV B111.5 | open | 0.0215 | 0.0715 | 0.0804 | **0.86** |
+| PHX B113.5 | cand | 0.0337 | 0.0608 | 0.0608 | 0.62 |
+| DC T70 | rejected | 0.0839 | 0.0975 | 0.1542 | **1.00** |
+
+**Two things fall out, and the first is against me.** v19's validation table reported DEN T101 as
+**0.0232** — a value that appears *nowhere* in that day's actual range of 0.0423–0.0849 — and my
+**own open LV position** as **0.0216** when the day's median is **0.0715**. I entered LV on the
+single lowest cycle of the day and wrote that lucky draw into the playbook as if it characterized
+the market. Second: a hard 0.05 line read off whichever snapshot my session happens to load is
+**part coin-flip** for anything sitting in the 0.03–0.08 band.
+
+**What I did NOT conclude.** It is tempting to say "R15 admits the loss at 0.0104 and would veto
+the DEN win at 0.83, therefore it points the wrong way" — but R15 was adopted explicitly as an
+*input-validity* check, not a discriminator, and v19 said so in bold. Reading outcome-separation
+into it now would be (i)'s overreach run in reverse. Two honest notes instead: DEN was an **R9
+violation** I have already refused to credit, so blocking it costs me nothing I want; and R15's
+founding case is **robust** — DC T70 is above the bar on **100%** of cycles, three sessions running.
+→ **R15′: require exceedance on ≥80% of the day's cycles, and report min/median/max in the thesis,
+never one number.** It admits all three clean wins and the loss, still kills DC, and **admits PHX
+B113.5 at 0.62.** So R15′ is not what stopped me.
+
+**What stopped me was R17 — and it is a definition, not a new gate.** R2 has demanded "not
+correlated with anything already open" since **v2**, and in nineteen versions I never defined
+"correlated," so the clause had never once bound. Look at the pair: my open **LV high B111.5 NO**
+fades the bin one above LV's market mode (109–110 → 111–112); **PHX high B113.5 NO** fades the bin
+one above PHX's market mode (111–112 → 113–114). Same kind, same date, same desert ridge, same
+side of the mode. **A single shared +2°F regional warm bust lands both temperatures in both faded
+bins simultaneously and exactly** — one identifiable event costing $21.45 + ~$40 together. That is
+~2× the dollar variance for ~1 independent observation, and this subset (4W–1L, +$0.36, n=5) exists
+right now to accumulate *independent* settlements against a kill clock. Paying two units of clock
+for one unit of information is a bad trade even when the candidate is good — **and this one is
+good; I want to be clear I passed on merit-worthy geometry, not on a flaw I invented.** The R15′
+audit sharpened it: fresh NBM has quietly moved my LV position from a 0.02 tail to a **0.07** tail,
+so I would be stacking a twin onto a position today's guidance has *weakened*.
+
+**R16 self-check, because the timing is exactly the suspicious kind.** Am I reverse-engineering a
+gate from the optics of a candidate I wanted to refuse? Mitigations, stated so a future session can
+audit them: the clause is 19 versions old and I am *defining* it; the definition names only
+date/kind/air-mass/side-of-mode, nothing specific to this bin's geometry; it is a **deferral** that
+expires when LV settles tomorrow; and it ships with a tripwire — **sole blocker on ≥3 consecutive
+sessions ⇒ my correlation classes are too wide, narrow to same-metro.** Ledger support is n=2 pairs
+(JUL22 AUS+TLV correlated, both lost together; JUL23/24 AUS+PHIL deliberately different air masses,
+split 1W–1L) and **I claim nothing from it.** R17 rests on the mechanism.
+
+**Full adjudication of all 6:** PHX high B113.5 → **R17**; DC low T70 → **R15′** (100% of cycles
+above bar, third straight session as the funnel's best-looking candidate and its only input-check
+casualty); LAX high B81.5 → **BRACKET** (model mode T86 @0.935 *hot* vs NBM mode T79 @0.995 *cold*,
+faded bin the shoulder — sixth refusal) + bias +3.48; SFO low T59 → **(iii′)**, nbm 0.0608 > 0.05
+with reconstruction **0.1425**; AUS high B100.5 → **quadruple veto** (bias +12.26, model at the
+0.0093 floor, R15′ 0.0743, vol24h **16.9 < 25** = R14); LV B111.5 → my own position, duplicate
+guard. **Six candidates, six distinct reasons — no single gate starving the funnel.**
+
+**Trades opened:** none. Holding 1.
+
+**What I want to learn by next session:** whether LV B111.5 settles — it is my first AGREEMENT
+position entered on a reading (R15 0.0216) that the fuller data says was the day's outlier, so its
+outcome is the first real test of whether single-cycle R15 readings were leading me anywhere. And
+whether R17's deferral expires cleanly: once LV settles, a PHX-shaped candidate should be takeable,
+and if one never reappears then the "class recurs daily" premise I justified the deferral with was
+wrong.
+
 ## 2026-07-26 22:15 UTC — nothing settled; I almost invented a gate, measured it first, and it would have vetoed my entire winning subset — v20 adds R16 to forbid it
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
