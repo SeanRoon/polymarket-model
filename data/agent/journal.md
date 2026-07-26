@@ -9,6 +9,80 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 11:15 UTC — DEN T101 settled +$6.23 WIN; strategy → v15 (qualifier (iii) retired); no trade, holding 0
+
+**Settled (1).** `agent-settle` finally resolved **KXHIGHDEN-26JUL25-T101 NO @0.78 → +$6.23
+WIN** (result `no`; Kalshi posted the JUL25 Denver result ~2 days after close). Book is now
+empty: 0 open, 39 settled, 18W (46%), realized **−$143.49** on $818.49 staked.
+
+**Grading the settle.** Thesis (v13): an R2 AGREEMENT non-modal NO-fade of the >101°F upper
+tail in a strong cell (Denver/high 93%/+26.0%, n=431), at 27h lead, both sources ~0.01 on
+102+ vs a market at 0.225. The high landed well below 102. **Right for the right reason** —
+this is the shape the AGREEMENT subset is supposed to catch. Two honest caveats, both of
+which drove today's rule changes:
+
+1. **Payout.** +26% ROI for risking 0.78 — exactly the asymmetry v14 flagged when it wrote
+   the 0.30–0.45 band. A deep-tail fade wins small and loses large; it needs a genuinely
+   high win rate, not merely a cheap price.
+2. **It would have been vetoed by the rule I wrote last session.** At mid 0.225 it sat
+   outside v14's **(iii) 0.30–0.45 band**. And the loss that band was invented to prevent
+   (MIA B93.5, mid 0.20) is fully explained by **(i)** — the faded bin was ~2 bins from the
+   agreed mode — and **(ii)** — a −7°F-bias, −5.1% cell. So **(iii) has never once separated
+   a winner from a loser**, while it has now blocked six candidates across three sessions.
+   It was also internally inconsistent: for a NO-fade the maximum achievable edge *is* the
+   market's price, so R2's ≥0.15 live-edge bar already forbids sub-0.15 fades — the band was
+   double-counting a constraint I already had.
+
+**Strategy → v15.** (a) **Retired (iii)'s price band**, replaced with **(iii′)**: at mid <
+0.30 both sources must put **≤0.05** on the faded bin (an *empty* tail, not merely a cheap
+one) **and** the NO entry price must be **≤0.85** (above that, one loss costs >5.7× the win).
+At mid ≥0.30 no extra test. (b) **(i) and (ii) unchanged and now explicitly load-bearing** —
+both settled AGREEMENT outcomes are explained by them alone, so relaxing (i), which the last
+two sessions flirted with, would be exactly backwards. Sharpened (i): a source pinned at the
+**Laplace floor (0.0093) across a whole event** is degenerate and does not count as a second
+vote. (c) Counts: AGREEMENT **4W–1L, +$0.36**; NO-fade half **12W–6L, −$1.88**; R2 whole
+**14W–13L, −$32.40** (kill-clock −1). Subset stays de-scaled to 1 fade/session — n=5 proves
+nothing. (d) **R9 violation logged and the rule reaffirmed:** the settled trade was itself a
+Denver position, and the JUL24 session that opened it never mentioned the Denver blacklist.
+It won — and a win does not retire a silently-ignored rule (that is the R11 anti-pattern).
+Today's board says R9's diagnosis is still live: Denver's `model_bias_applied_f` is **+14.0°F**
+and the model is degenerate at 0.95 on ≤95°F while the market prices Denver ≥100°F at ~98%.
+
+**Scan.** Snapshot fresh (7 min old, 1105.parquet). JUL26 is the only board — leads 6–8h,
+and `agent-scan` at 11:20 UTC shows no JUL27 weather book open. Sweep under the new rules:
+
+- **DEN B102.5 (0.415), AUS B98.5 (0.39), SATX B94.5 (0.455), SATX B96.5 (0.435)** — all die
+  on **R8+R10**. In each of those columns `model_p` is the 0.0093 floor on every bin except a
+  single 0.95 cold T-strike: one claim restated six times, not an independent vote. NBM is
+  flat (DEN: 0.18/0.23/0.23/0.18 across four bins). No second source ⇒ no AGREEMENT.
+- **HOU high B96.5 (mid 0.355)** — the session's best candidate and the **first to clear the
+  new (iii′)**, which is a good sign the change opened real space: best excluded cell
+  (63%/+13.1%), small −2.5°F bias, a real non-degenerate model spread (0.25/0.49/0.19), both
+  sources ≥0.15 below the market. **Dies on (i)**: the faded bin is 1 bin from the model's own
+  mode (B94.5 @0.49) and 2 from NBM's (T94 @0.76). Fading a bin that sits inside your own
+  forecast's uncertainty is the MIA B93.5 mistake.
+- **(ii) vetoes (3 new, tally 17):** MIN high B96.5 (−5.8% cell), LAX high B81.5 (−1.8%),
+  LAX low B70.5 (−4.5%).
+- **OKC low B73.5 (mid 0.23, model 0.03 / NBM 0.01, cell +3.3%)** — cleared (i)/(ii)/(iii′)
+  on paper. **Passed on judgment:** it is a settlement-day LOW at 6h lead, i.e. 6:17 AM local
+  with the overnight minimum largely already observed, on a 0.18/0.29 book. That is the
+  obs-beats-sources shape that lost on ATL low B72.5 and MIA low B80.5 — the market is
+  reading a thermometer I can't. Logged as a near-miss so the tally is honest.
+- **Board context worth banking:** this is an unmistakable regional heat wave (PHX 110–111
+  @0.56, LV 111–112 @0.66, DAL/OKC 100–103, DEN ≥100 at ~98%), and the model's response is a
+  simultaneous 0.95 cold call on DEN/AUS/SATX. That is the board-wide-cold-artifact shape in
+  its purest form, and unlike JUL20 there is no front — there is a ridge.
+
+**Trades opened: none.** Fourth consecutive no-trade session; the strategy explicitly says
+not to force one, and every candidate died on a named rule rather than on vibes.
+
+**What I want to learn by next session:** whether the newly-relaxed (iii′) actually produces
+a qualifying AGREEMENT fade once a ≥24h board (JUL27) opens this afternoon — the three
+sessions of sweeps say (i) is the binding constraint, so my expectation is that (iii′) helps
+only when a deep, genuinely empty tail shows up in a small-bias positive-record cell. If
+JUL27 also produces nothing, the question stops being "which qualifier is too tight" and
+starts being "is the AGREEMENT shape findable often enough to be a strategy at all."
+
 ## 2026-07-26 10:15 UTC — nothing settled, no qualifying edge, holding 1
 
 10:15 UTC — `agent-settle` settled=0, still_open=1 (DEN T101, closed ~2 days, Kalshi still hasn't posted the JUL25 Denver result). v14 unchanged — nothing settled ⇒ no version bump.
