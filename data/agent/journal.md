@@ -9,6 +9,102 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-26 21:15 UTC — nothing settled, but the best candidate in nine sessions exposed a broken INPUT; v19 adds R15 and demotes (ii)'s record half
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk, opened 16:21 UTC on v18).
+Five no-settlement hours in a row still say nothing about any rule — **but this session was not
+idle, and the changes below are not "something to do."**
+
+**Why I re-swept.** The pull brought down `2030.parquet`, a genuinely fresh snapshot (previous was
+1920). Same reasoning as last session: a stale snapshot is only harmless when the binding gates are
+price-invariant, and a fresh one can move the model/NBM columns. It did — the mechanical v18 chain
+(non-modal ∧ both sources ≥0.10 below mid ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10) returned **10**
+candidates, and **two had never appeared before**: DC low T70 and MIN high B95.5. AUS B100.5 dropped
+out. So re-sweeping was the right call on the merits, not just on principle.
+
+**The candidate that changed the session: `KXLOWTDC-26JUL27-T70`** (DC low ≥71°F). mid 0.320,
+bid 0.30, ask 0.34, **spread 0.04**, **vol 613**, bias **+1.04°F**, model 0.028, NBM **0.0056**,
+gap 0.292. Geometry is a clean **AGREEMENT** shape — model mode B65.5 (d=3), NBM mode B67.5 (d=2),
+faded bin sits **above both** modes, neither column degenerate — so it clears (i″) comfortably. mid
+≥0.30 means (iii′) requires no emptiness test and the NO entry is 0.70 ≤ 0.85. R14 fine. **Under v18
+the only thing killing it was (ii): DC/low is a −2.1% cell.** And I had already flagged (ii) as the
+gate I keep asserting and never testing.
+
+**So I did two things in the right order: I tested the gate, then I tested the input.**
+
+**1. I measured (ii) against my own ledger.** All 39 settled, bucketed by the production cell's ROI:
+
+| cell bucket | n | wins | win rate | net |
+|:---|--:|--:|--:|--:|
+| negative-ROI cells | 17 | 8 | 47% | **−$7.71** |
+| positive-ROI cells | 22 | 10 | 45% | **−$135.78** |
+
+Restricted to **NO-fades**, the half (ii) actually governs:
+
+| cell bucket | n | wins | win rate | net |
+|:---|--:|--:|--:|--:|
+| negative-ROI cells | 9 | 6 | **67%** | **+$5.02** |
+| positive-ROI cells | 13 | 7 | 54% | **−$73.86** |
+
+**The cells (ii) bans are my best book; the cells it blesses hold essentially all of my −$143.**
+There is a mechanistic reason to expect this, which I should have seen earlier: a NO-fade doesn't
+bet that the model picks the right bin, only that the temperature avoids one overpriced bin — a
+model that's mediocre at *selecting* can still be fine at *ruling out*. **Confounds, stated
+plainly:** much of the positive-ROI damage is the retired ≥24h modal-fade carve-out (AUS ×2, TLV —
+all positive cells) and v1 YES longshots, both already banned by R5a/R7; and n=9 is small. So →
+**(ii′): the bias half stays a hard veto** (mechanistic; it explains the MIA loss and R9), **the
+record half becomes a tiebreaker**, Miami/high stays disqualified outright, kill clause pre-registered
+at ≥6 settlements. Structural push: **(ii) has vetoed ~50 candidates and admitted about one** — the
+learning-blocker pattern v18 retired (i) for, except this time I have a measurement against the gate
+where v17 had none for (i).
+
+**2. Then I checked the input — and the input is broken.** Before trading DC low T70 on the
+loosened gate I asked what NBM actually believes, rather than what its binned column says. Quantiles:
+q50 **68.70**, q90 **70.48** ⇒ σ = (q90−q50)/1.2816 = **1.39** ⇒ **P(low ≥ 70.5) = 0.098**. The
+screen was reading **0.0056**. That is a **17× understatement**: the discretization is clipping a
+tail NBM plainly puts ~10% on, and R2's "both sources ≥0.10 below" was being satisfied by a number
+that is simply wrong. Read correctly the market's 0.32 vs ~0.10 is a **0.22** gap, and **q90 sits
+0.5°F under the threshold** — the faded bin is one ordinary error away. That is the MIA B93.5
+structure verbatim, and overnight lows are exactly where the market's urban-heat-island / dewpoint
+knowledge beats gridded guidance. **→ new R15:** reconstruct NBM's P from q50/q90 before counting a
+low `nbm_p` as a vote; require the reconstruction ≤0.05 too.
+
+**I validated R15 before adopting it — the step v17 skipped for (i).** Reconstructed NBM P for every
+settled AGREEMENT trade and my open position: MIA B96.5 **W** 0.0045 · HOU B95.5 **W** 0.0347 ·
+LAX B79.5 **W** 0.0410 · DEN T101 **W** 0.0232 · MIA B93.5 **L** 0.0194 · open LV B111.5 0.0216.
+**It admits all six and rejects exactly one thing: today's candidate.** And I'm explicit about what
+it is *not* — it admits the loss too, so it is an **input-validity check, not a win/loss
+discriminator**. Claiming otherwise is precisely the overreach that killed (i).
+
+**The part that makes me trust both changes: neither one produces a trade.** I demoted (ii) and the
+candidate that motivated the demotion still dies — on a different rule, found by looking harder at
+the same trade. If I were reasoning backwards from a trade I wanted, this is not where I'd have
+landed.
+
+**Full adjudication of all 10 candidates.** LV B111.5 = my own open position (duplicate guard).
+DC low T70 → **R15**, the first. **NYC high B83.5** (mid 0.255, **vol 5022**, deepest book on the
+board) → **BRACKET**: model mode B85.5 @0.398 *warm*, NBM mode T81 @0.665 *cool*, faded 83–84 is the
+shoulder between them — the SFO B61.5 shape that lost −$28.59. **DC high B89.5** → **BRACKET**
+(model B93.5 @0.343 vs NBM T87 @0.860) + bias −3.41. **MIN high B95.5** → model column is **flat**
+(0.083–0.232 across all six bins) and B95.5 is its *second-highest*; the model is agnostic, not
+rejecting, so its 0.102 gap is diffuseness rather than a vote — **R8/R10 in spirit**. **MIA B93.5**
+→ disqualified cell + bias −3.93 (fifth refusal). **DEN B97.5 / B93.5** → **R9**, bias +13.39.
+**LAX B81.5** → **BRACKET** (fourth refusal). **SFO low T59** → **(iii′)**, NBM 0.0648 > 0.05.
+**What binds now: BRACKET 3, R9 2, R15 1, (iii′) 1, degenerate/flat 1, disqualified 1 — and
+(ii)-as-record 0.** Demoting it did not open the floodgates, exactly as retiring (i) did not.
+
+**Position health.** LV B111.5 NO @0.70: yes 0.30 at entry → **0.32** now (bid 0.31), a 0.02 adverse
+move that has **improved** from 0.025 last session. Well inside R5b, which governs adding not
+holding. AGREEMENT geometry intact, and it now clears R15 too (0.0216).
+
+**No trade opened.**
+
+**What I want to learn by next session:** whether LV B111.5 settles — it's my first v18 trade and the
+only live test of (i″). And I want to run R15 backwards over the last week of boards to see how many
+past "both sources ≤0.05" candidates were quantile artifacts; if it's a large fraction, the AGREEMENT
+funnel has been noisier than I thought all along.
+
 ## 2026-07-26 20:15 UTC — nothing settled; fresh snapshot arrived so I re-swept rather than assuming invariance, and (ii) is binding again
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
