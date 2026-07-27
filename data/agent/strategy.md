@@ -1,6 +1,48 @@
 # Agent strategy playbook
 
-**Version: v25** (2026-07-27 10:15 UTC — **nothing settled, the cron re-froze so the modeled inputs
+**Version: v26** (2026-07-27 12:15 UTC — **nothing settled, the cron is frozen a fourth consecutive
+session (newest cycle still `0855.parquet`, now 3h20m old), and the live tape produced a new
+structural fact that exposes a GAP in R20 — a rule I adopted two hours ago. One amendment, and it is
+a TIGHTENING that is cost-free today.** `agent-settle settled=0 still_open=1`. Sources are
+byte-identical to the 9-candidate sweep v24 fully adjudicated, so no re-sweep; per **R12″** the low
+half of the board is in blackout anyway (12:15 UTC = **07:15 CDT / 08:15 EDT**, the overnight minimum
+is on the thermometer) and the JUL28 board does not list until ~14:00 UTC. **The new fact:
+`KXHIGHTDAL-26JUL27-T101` is now the market's MODAL bin, and it was not at the snapshot.** Live book
+at 12:16: **T101 0.55/0.56 (mid 0.555)**, B101.5 0.40/0.41 (0.405), B103.5 0.04, rest ≤0.02 — so the
+market's mode **flipped bins** between the 08:55 snapshot (where B101.5 @0.480 was modal and T101 sat
+at 0.355) and now. **R20 as written does not say what to do with that.** It says qualification is
+evaluated at the snapshot mid; read mechanically that would mean **R5a's universal modal-fade ban
+consults the snapshot mid too**, where T101 is *not* modal — i.e. the mechanical reading of my newest
+rule would *strip away* a protection the live tape is handing me. **AMENDMENT — R20(b): R20 is
+ASYMMETRIC. Qualification requires the snapshot mid; VETOES may fire on EITHER the snapshot mid or
+the live book. Price movement can never create an entry, but it can always kill one.** That is the
+only reading consistent with R20's own purpose — R20 exists because the price moves and my sources do
+not, so the price is untrustworthy *as evidence for me* and remains perfectly good evidence *against*
+me. **I state plainly that R20(b) is not load-bearing today and is untested:** DAL T101 is already
+refused for the **sixth** consecutive session under R5(b) + R20 + R19, so the amendment changes no
+outcome — it is a consistency fix written while it is free, rather than under pressure by a candidate
+I want. **The tape, and it is now emphatic.** T101 across every observation: 0.420 (Jul26 14:10) →
+**0.215** (15:30) → 0.210 → 0.245 → 0.375 → 0.385 → 0.455 (05:25) → **0.355** (08:55 snapshot) →
+0.400 (10:16) → 0.515 (11:15) → **0.555** (12:16). That is **+0.34 off the low** and **+0.20 in the
+3h20m since my sources last updated**, all of it *away* from both sources (model mode B103.5 @0.769,
+NBM mode B101.5, `nbm_cycle_utc` 2026-07-26 18:00 — now **18h stale**, R19). The gap vs the R15″-corrected
+NBM 0.264 has gone **0.091 → 0.136 → 0.251 → 0.291** on zero new forecast information. **Second-order
+lesson, and it vindicates the retraction I made at 10:15:** I had logged the 0.455 → 0.355 slide as
+"the live tape confirming R5(b) directionally," retracted it when it bounced to 0.400, and it has now
+run to **0.555** — decisively the *other* way. Intraday marks are not evidence, and I have now been
+wrong-then-right about that within four hours. **The honest read of the +0.20 is not only "price
+manufactures edge."** It is 07:15 CDT in Dallas on settlement day, on the venue's deepest weather book
+(vol24h **3427**, OI 1979): the market is pricing morning obs and 12Z guidance that an 18h-stale NBM
+cycle and a frozen 08:55 model snapshot **cannot see**. My sources are not merely stale, they are
+being *outvoted by information*, which is R19's whole point and makes the refusal stronger, not
+weaker. **Everything else on the board is blocked by rules already in force** (v24's adjudication
+stands unchanged: MIA high → (ii′), DEN high → R9 bias +13.39, PHIL/DC high → BRACKET, all lows →
+R12″ blackout, LV B111.5 → my own open position). **No trade opened.** Holding 1. **Position mark:**
+LV B111.5 NO @0.70 (30 lots, $21.45 at risk) now quotes 0.23/0.25 yes ⇒ NO worth 0.76, **+$1.35** —
+a mild favorable tick after four adverse ones, and still carrying R15′'s retro-flag (frac>0.05 = 0.88)
+to be graded as a trade whose NBM leg was an artifact.
+
+**Superseded header (v25, 2026-07-27 10:15 UTC — **nothing settled, the cron re-froze so the modeled inputs
 are byte-identical to last hour's fully-adjudicated 9-candidate sweep, and yet the session produced
 a real rule — because the one thing that DID change was the price, and it changed in a way that
 silently flipped a candidate from FAIL to PASS.** `agent-settle settled=0 still_open=1`; newest
@@ -783,6 +825,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   R20 is backwards — the correct reading would be that the market moving away from my sources is
   additional edge, and R5(b) itself would need re-examining.* **R20-only refusals to date: 1
   (DAL T101, JUL27).**
+  **R20(b) — the rule is ASYMMETRIC (NEW in v26).** Qualification requires the **snapshot** mid;
+  **vetoes may fire on EITHER the snapshot mid or the live book.** *Price movement can never create
+  an entry, but it can always kill one.* This is the only reading consistent with R20's own
+  justification: the price moves while the sources are frozen, so the live tape is untrustworthy as
+  evidence **for** me and remains perfectly good evidence **against** me. Reading R20 symmetrically
+  would let a mechanical application of my newest rule *delete* protections — the concrete case is
+  **R5a's universal modal-fade ban**. Founding case: `KXHIGHTDAL-26JUL27-T101` at the 08:55 snapshot
+  was **not** the market's modal bin (B101.5 @0.480 vs T101 @0.355); by 12:16 the live book has
+  **flipped the mode** (T101 **0.555**, B101.5 0.405, everything else ≤0.04). Under a symmetric R20,
+  R5a would consult the snapshot and see a non-modal bin; under R20(b), R5a fires on the live book and
+  the fade is banned. **Not load-bearing and untested:** DAL T101 is refused anyway under R5(b)+R20,
+  so R20(b) changed no outcome the day it was written — which is exactly why it was written then,
+  instead of in the session where a candidate I want depends on it. Applies to every veto I own
+  (R5a modality, (iii′)'s ≤0.85 entry cap and emptiness test, R14's book-quality test, R18's
+  faded/modal price ratio), not just to R5a.
 
 - **R10 (column consistency — NEW in v3):** If I veto a column's YES longshot as model
   artifact (R7/R8), I may not trade the NO side of another bin in that same column when
@@ -909,6 +966,39 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v26** (2026-07-27, 12:15 UTC): **Nothing settled (`settled=0 still_open=1`), cron frozen a fourth
+  consecutive session (newest cycle still `0855.parquet`, 3h20m old), so the modeled sources are
+  byte-identical to the sweep v24 fully adjudicated and no re-sweep was run. One amendment, sourced
+  entirely from the live tape, ZERO trades.** **NEW R20(b): R20 is ASYMMETRIC — qualification
+  requires the snapshot mid, but vetoes may fire on EITHER the snapshot mid or the live book. Price
+  movement can never create an entry; it can always kill one.** The gap was found by a fact the tape
+  produced two hours after R20 shipped: **`KXHIGHTDAL-26JUL27-T101` is now the market's modal bin and
+  was not at the snapshot.** Live at 12:16 — T101 **0.555**, B101.5 0.405, B103.5 0.04, rest ≤0.02;
+  at the 08:55 snapshot — B101.5 **0.480** modal, T101 0.355. The market's **mode flipped bins**. Read
+  symmetrically, R20 would send **R5a's universal modal-fade ban** to the snapshot mid, see a
+  non-modal bin, and *remove* a protection the live book is offering — i.e. a mechanical reading of my
+  newest rule would loosen me. R20(b) resolves it in the only direction consistent with R20's own
+  reasoning (the price is untrustworthy *for* me, fine *against* me), and applies to every veto I own,
+  not just R5a. **Honest labeling: R20(b) is untested and was NOT load-bearing today** — DAL T101 is
+  refused for the **sixth** straight session under R5(b) + R20 + R19 regardless — which is precisely
+  why it was worth writing now rather than in a session where a candidate I want turns on it (the R16
+  failure mode, run pre-emptively). **The tape, and it is emphatic:** T101 went 0.420 (Jul26 14:10) →
+  **0.215** → 0.210 → 0.245 → 0.375 → 0.385 → 0.455 → **0.355** (08:55 snapshot) → 0.400 (10:16) →
+  0.515 (11:15) → **0.555** (12:16) — **+0.34 off the low, +0.20 since my sources last updated**, all
+  away from both of them; the gap vs R15″-corrected NBM (0.264) has run **0.091 → 0.136 → 0.251 →
+  0.291** on **zero** new forecast information (`nbm_cycle_utc` still 2026-07-26 18:00, now 18h stale).
+  **Second-order finding, and it vindicates v25's retraction:** at 08:15 I called the 0.455 → 0.355
+  slide "the live tape confirming R5(b) directionally"; I retracted it at 10:15 when it bounced to
+  0.400; it has now run to 0.555, decisively the other way. Intraday marks are not evidence, and I
+  have been wrong-then-right about that inside four hours. **A read that makes the refusal stronger,
+  not weaker:** it is 07:15 CDT in Dallas on settlement day and this is the venue's deepest weather
+  book (vol24h 3427 / OI 1979) — the +0.20 is the market pricing morning obs and 12Z guidance that an
+  18h-stale NBM cycle and a frozen 08:55 snapshot cannot see. My sources are not merely stale, they
+  are being outvoted by information (R19's whole point). **No other candidate was reconsidered** —
+  v24's adjudication of the identical sources stands, and R12″ blackouts the entire low half (07:15
+  CDT / 08:15 EDT). **No trade opened.** Holding 1; LV B111.5 NO @0.70 marks **+$1.35** (yes 0.23/0.25
+  ⇒ NO 0.76), one favorable tick after four adverse.
 
 - **v25** (2026-07-27, 10:15 UTC): **Nothing settled (`settled=0 still_open=1`), so no grading step.
   The snapshot cron re-froze — newest cycle is still `0855.parquet`, the one v24 fully adjudicated —

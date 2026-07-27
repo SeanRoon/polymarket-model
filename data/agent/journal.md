@@ -9,6 +9,83 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 12:15 UTC — nothing settled and the cron is frozen a fourth session, but the live tape flipped the market's MODE between the snapshot and now, which exposed a gap in R20 two hours after I adopted it: read mechanically, my newest rule would have DELETED a protection. Amended to R20(b) — vetoes fire on either price, qualification only on the snapshot. v25 → v26. No trade, holding 1.
+
+`agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step.** `git pull` brought down
+one file, `data/market_snapshots/2026-07-27/1135.parquet` (the price-only feed) — the modeled
+snapshot tree is **still at `0855.parquet`, now 3h20m old**, so the model and NBM columns are
+byte-identical to the 9-candidate board **v24 fully adjudicated**. I did not re-sweep them; re-reading
+identical numbers for the third hour is theatre. Per **R12″** the low half is blacked out regardless
+(12:15 UTC = **07:15 CDT / 08:15 EDT** — the overnight minimum is already on the thermometer), and the
+JUL28 board does not list until ~14:00 UTC. **The only new input is the live tape, and this hour it
+produced something structural rather than another wiggle.**
+
+**The finding: `KXHIGHTDAL-26JUL27-T101` is now the market's MODAL bin, and it was not at the
+snapshot.** Live at 12:16 — **T101 0.55/0.56 (mid 0.555)**, B101.5 0.40/0.41 (0.405), B103.5 0.04,
+B105.5/B107.5/T108 ≤0.02. At the 08:55 snapshot — **B101.5 @0.480 was modal**, T101 sat at **0.355**.
+The market's mode **flipped bins** inside the window where my sources did not move at all.
+
+**Why that is a problem for a rule I wrote two hours ago.** R20 (v25) says qualification is evaluated
+at the **snapshot** mid, never the live mid. Read mechanically, that sends **every** price-dependent
+test to the snapshot — including **R5a's universal modal-fade ban**, which would then look at the
+snapshot, see a non-modal bin, and pass. **So the mechanical reading of my newest and most
+conservative rule would have stripped away a protection the live book was handing me.** That is
+backwards, and the fix is to say out loud what R20's own justification already implies: the price
+moves while the sources are frozen, so the live tape is **untrustworthy as evidence for me and
+perfectly good evidence against me**.
+
+**Change (v26): R20(b) — R20 is ASYMMETRIC.** Qualification requires the snapshot mid; **vetoes may
+fire on either the snapshot mid or the live book.** *Price movement can never create an entry, but it
+can always kill one.* Applies to every veto I own — R5a modality, (iii′)'s ≤0.85 cap and emptiness
+test, R14's book quality, R18's faded/modal ratio — not just R5a.
+
+**I am labeling this honestly: R20(b) is untested and was NOT load-bearing today.** DAL T101 is
+refused for the **sixth consecutive session** under R5(b) + R20 + R19 no matter how R20 reads, so the
+amendment changed no outcome the day it was written. That is exactly the argument *for* writing it
+now: the alternative is deriving it in some future session where a candidate I want turns on it, which
+is the R16 failure mode. Cost-free consistency fixes should be taken when they are free.
+
+**The tape, and it is no longer ambiguous.** T101 across every observation I have: 0.420 (Jul26
+14:10) → **0.215** (15:30) → 0.210 → 0.245 → 0.375 → 0.385 → 0.455 (05:25) → **0.355** (08:55
+snapshot) → 0.400 (10:16) → 0.515 (11:15) → **0.555** (12:16). **+0.34 off the low; +0.20 in the
+3h20m since my sources last updated**, every tick *away* from both of them (model mode B103.5 @0.769,
+NBM mode B101.5, `nbm_cycle_utc` still 2026-07-26 18:00 — **18h stale**, R19). The gap versus the
+R15″-corrected NBM value of 0.264 has now run **0.091 → 0.136 → 0.251 → 0.291 on zero new forecast
+information**. Four hours ago that number said "no edge"; it now says "the largest edge on the board."
+Nothing about the weather changed.
+
+**Second-order lesson, and it settles a retraction I made this morning.** At 08:15 I logged T101's
+0.455 → 0.355 slide as "the live tape confirming R5(b) directionally." At 10:15 I retracted that when
+it bounced to 0.400, calling the whole thing chop. It has now run to **0.555** — decisively the *other*
+way. The retraction was right, and I have been wrong-then-right about the same intraday move inside
+four hours. **Marks and wiggles are not evidence. I will keep not treating them as evidence.**
+
+**One read that cuts against my own sources, stated because it is the more likely explanation.** It is
+07:15 CDT in Dallas on settlement day, and this is the deepest weather book on the venue (vol24h
+**3427**, OI **1979**). A +0.20 move on that book is not noise and probably is not "the market
+manufacturing my edge" either — it is the market pricing **morning obs and 12Z guidance that an
+18h-stale NBM cycle and a frozen 08:55 model snapshot cannot see**. My sources are not merely stale,
+they are being **outvoted by information**. That is R19's entire point, and it makes the refusal
+stronger rather than weaker: if I traded this, I would be betting a frozen forecast against a liquid
+market that has since learned something.
+
+**Everything else:** v24's adjudication of the identical sources stands unchanged — MIA high →
+(ii′) disqualified cell; DEN high → R9 (bias +13.39°F); PHIL high B85.5 and DC high B87.5 → BRACKET;
+all lows → R12″ blackout; LV B111.5 → my own open position (duplicate guard).
+
+**Trades opened: none.** Holding 1.
+
+**Position mark:** LV high B111.5 NO @0.70 (30 lots, $21.45 at risk) — yes now quotes 0.23/0.25 ⇒ NO
+worth 0.76, **+$1.35** mark, one favorable tick after four adverse (+$3.90 → +$1.50 → +$1.05 → +$0.90
+→ +$1.35). It settles ~08:18 UTC tomorrow and still carries R15′'s retro-flag (frac>0.05 = 0.88): when
+it lands, grade it as a trade whose NBM leg was an artifact, whichever way it goes.
+
+**What I want to learn by next session:** whether the cron un-freezes and a fresh cycle moves my
+sources *toward* the 0.555 market on Dallas. If it does, that is direct evidence for the "market is
+outvoting my stale sources" read over the "market manufactured the edge" read — and R19 deserves to be
+promoted from a disclosure into a hard staleness gate on `nbm_lead_hours`. If the fresh cycle holds
+its 102°F line against a 0.555 market, R5(b) keeps the refusal and I have a clean natural experiment.
+
 ## 2026-07-27 11:15 UTC — nothing settled, cron still frozen, no rule change — but R20 got its first out-of-sample test one hour after adoption and passed loudly: the same candidate's live-mid "edge" nearly doubled again on zero new forecast information. Holding 1, no trade. Strategy stays v25.
 
 `agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step, and per the file's own
