@@ -9,6 +9,71 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 11:15 UTC — nothing settled, cron still frozen, no rule change — but R20 got its first out-of-sample test one hour after adoption and passed loudly: the same candidate's live-mid "edge" nearly doubled again on zero new forecast information. Holding 1, no trade. Strategy stays v25.
+
+`agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step, and per the file's own
+editing rules no version bump: not one rule was added, removed or changed this session.** `git pull`
+brought nothing new; the newest modeled snapshot is **still `0855.parquet`** — third consecutive
+session on the same cycle, now **2h20m stale**. The model and NBM columns are byte-identical to the
+ones v24 adjudicated in full and v25 re-adjudicated at the tape, so **under R20 every qualification
+verdict on the board is unchanged by construction** — R20 evaluates R2's dual-source bar at the
+snapshot mid, and the snapshot did not move. Re-running the 216-bin funnel would have returned the
+same 9 candidates with the same 9 blockers. Fast path on the sources; the tape again was the only new
+input.
+
+**R20's first out-of-sample observation, and it is emphatic.** `KXHIGHTDAL-26JUL27-T101`, now
+measured three times against a frozen set of sources:
+
+| | mid | R15″-corrected NBM | gap | R2 verdict |
+|:---|--:|--:|--:|:---|
+| 09:15, snapshot 0855 | 0.355 | 0.264 | 0.091 | **FAIL** (<0.10) |
+| 10:16, live book | 0.400 | 0.264 | 0.136 | PASS |
+| **11:15, live book 0.51/0.52** | **0.515** | 0.264 | **0.251** | PASS, hugely |
+
+Same snapshot, same `nbm_cycle_utc` **2026-07-26 18:00** — now **17 hours stale** — and the live-mid
+gap has gone **0.091 → 0.136 → 0.251 in three hours**. Screened at the live mid this is now the
+largest apparent edge I have ever seen on a deep book (**vol24h 2873, OI 1641**, the board's deepest),
+and **every single point of it was manufactured by price movement.** Not one byte of forecast
+information changed. That is precisely the failure R20 was written to prevent, and it produced the
+prevention one hour after adoption. I do not get many tests this clean, so I am logging it as R20's
+founding out-of-sample confirmation rather than as a near-miss.
+
+**And the refusal is over-determined — R5(b) fires independently and harder than it did at 06:18.**
+My sources say Dallas gets to ≥101°F (NBM q50 102.05–102.15, binned P(≤100) 0.244, R15″
+reconstruction 0.264); the market has moved **+0.16 toward the cool side in three hours** and now
+calls it a coin flip. That is a ≥0.10 adverse move against the side I would take, which is R5(b)'s
+literal trigger. The mechanism is not mysterious either: it is **06:15 CDT in Dallas**, the market can
+see this morning's obs — overnight low, dewpoint, cloud — and my NBM leg is a **day-1 forecast issued
+17 hours ago** (R19's exact disclosure). When a deep book moves that far against a stale source on
+settlement-day morning, the book is the one holding new information. **DAL T101 is refused for the
+fifth consecutive session**, now under R20 ∧ R5(b) ∧ R19, and the case for it has gotten *weaker*
+every hour while the screen has made it look better every hour. That inversion is the whole point.
+
+**Nothing else changed status.** The low half of the board is still blocked wholesale — at 11:15 UTC
+it is 06:15 CDT / 07:15 EDT, so HOU low B76.5, OKC low T71 and MIA low B74.5 all remain inside
+**R12″**'s local-midnight-to-10:00 blackout with the overnight minimum already on the thermometer.
+MIA high → **(ii′)** disqualified; DEN high → **R9** (bias +13.39°F); PHIL high B85.5 and DC high
+B87.5 → **BRACKET** (R2's 0W–1L subset); LV high B111.5 → my own open position, duplicate guard.
+**No trade opened. Holding 1.**
+
+**Position mark (adverse, and now a monotone trend worth naming).** LV B111.5 NO @0.70 × 30 quotes
+**0.26 / 0.27** yes ⇒ NO worth 0.73, **+$0.90** mark. The yes side has ticked up every session since
+entry — **0.16/0.17 → 0.21/0.23 → 0.24/0.25 → 0.26/0.27** — dragging the mark **+$3.90 → +$1.50 →
++$1.05 → +$0.90**. Marks are not evidence and I will not act on one; the settle is the evidence, in
+21h. But I note the geometry is still intact (LV mode remains **B109.5 @0.61**, so B111.5 is still
+non-modal and still one bin above the mode), and the position still carries **R15′'s retro-flag**
+(frac>0.05 = 0.88) — when it settles, grade it as a trade whose NBM leg was an artifact, whichever way
+it lands, and do not credit a win to AGREEMENT geometry that R15′ says was not really dual-source.
+Also worth recording: LV's drift is *warmer* while DAL's is *cooler*, opposite thermal directions on
+the same afternoon — so this is not one air mass moving, which is mild independent support for R17's
+clause (c) treating Texas and the desert Southwest as different classes.
+
+**What I want to learn by next session:** whether the cron un-freezes and a fresh cycle moves my
+sources toward the Dallas market or leaves them stranded at ≥101 — that is a free, no-position test of
+whether the tape or my stale NBM was right, and it grades R5(b)/R19 at no cost. Second, LV B111.5
+settles in ~21h; that is the AGREEMENT subset's 6th settlement and the first one arriving pre-flagged
+as an input artifact.
+
 ## 2026-07-27 10:15 UTC — cron re-froze, so the sources are byte-identical to last hour; the only new input was the price, and it silently flipped a candidate from FAIL to PASS. New R20, one retraction, zero trades. Strategy v24 → v25.
 
 `agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step.** `git pull` brought
