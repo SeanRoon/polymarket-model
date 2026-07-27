@@ -9,6 +9,64 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 15:15 UTC — R19′ fires for real one hour after adoption (165-min gap vs a 60–110 min baseline), and R12‴'s "15:15 is the sweep hour" misses on its first live test. No version bump — deliberately. Zero trades, provably, for the second straight hour. Position back above water.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Nothing to grade, so no
+by-version or by-category re-read.
+
+**R19′ fires — and this is what it was for.** Newest snapshot is still **1230.parquet, 165 minutes old**
+at 15:15 UTC. Yesterday's measured baseline for the 11:00–24:00 UTC window is **60–110 min**, so this gap
+is genuinely outside its window's range and is disclosable under R19′ — phrased the way the rule demands:
+*165 minutes old against a 60–110 minute normal for this hour.* One hour after I retracted three sessions
+of false "frozen cron" claims, the replacement rule flags a real one. That is the useful shape: R19′ is
+not a rule that never fires, it is a rule that fires when the gap actually leaves the distribution.
+Today's file count is now **4 by 15:15** against a 6-day median of ~7 by this hour, and all four of its
+gaps (4h05m, 3h30m, 3h35m, 2h45m+) sit at or above the top of their windows. Today is a tail day.
+
+**R12‴'s scheduling half missed, and I am NOT bumping the version for it.** An hour ago I wrote that my
+14:15 session loses the coverage race 4 days in 5 while **15:15 has coverage 5 of 5**, and moved the first
+real sweep of the next-day board to this session. It is 15:15 and coverage is **zero**: a direct read of
+the 1230 Parquet returns **0 rows** matching `%26JUL28%`, and `agent-model-view --min-lead-hours 20` again
+returns `_none at this threshold_`. So the prediction failed on the first day it was tested.
+
+The tempting move is to bump to v29 and rewrite the scheduling clause. I am declining, for a reason I want
+on the record. This is **N=1 against a 5-day measurement**, and it is N=1 on a day I had *already* flagged
+as the slow tail of the distribution before the test ran — so the miss is exactly what the measured
+distribution predicts happens on a tail day, not evidence the measurement was wrong. Rewriting a five-day
+baseline off one anticipated outlier is the error that produced the "frozen cron" fiction in the first
+place: reading one slow observation as a regime change. **The predicate half of R12‴ — sweepability
+requires source coverage — did its job perfectly and is the part that matters.** The "15:15" clause was
+always an operational estimate of *when* coverage tends to arrive, not a gate. Revisit only if 15:15 comes
+up empty on ≥3 non-tail days.
+
+**What I did add: an open hypothesis about my own churn rate.** In six hours v23→v28 I bumped the playbook
+**five times** on **zero** settled trades. Every bump was justified by reasoning or measurement, never by
+an outcome — and editing rule 3, which kills a rule after ≥10 settled trades underwater, can never reach a
+rule that gets rewritten hourly on an empty book. v27's R20(b) amending R20 one hour after R20 shipped is
+the tell. Logged under *Open hypotheses* with its confirm/refute conditions, **not** as a rule, and
+therefore **no version bump** (the fixed editing rules tie bumps to active-rule changes). Version stays
+**v28**. Today is the first hour I've had a plausible-looking edit available and left the file alone.
+
+**Trades opened: none — provable again, same construction as last hour.** JUL28 has no coverage (R12‴),
+so R1 and R2 have no sources to run on. JUL27's snapshot is the *same byte-identical 1230 file* v27 and
+v28 each fully adjudicated, and **R20 evaluates qualification at the snapshot mid** — so the qualifying
+set is identical to a set already shown empty, while R20(b) lets live prices only *add* vetoes. Candidate
+set ⊆ ∅. Scope also narrowed further: at 15:15 UTC it is 11:15 EDT / 10:15 CDT / 09:15 MDT, so Eastern,
+Central *and* Mountain highs are now past R12′'s ~09:00 local predicate; only the Pacific highs (08:15 PDT)
+remain inside it, and all 20 low events remain in R12″'s blackout.
+
+**Position — first favorable tick in six.** LV B111.5 NO @0.70 (30 lots, $21.45 at risk) quotes **0.29/0.30**
+live ⇒ NO worth 0.705, **+$0.15**. The bin retraced from 0.325 to 0.295, so the mark sequence is now
++$3.90 → +$1.50 → +$1.05 → +$1.35 → +$1.05 → −$0.75 → **+$0.15**. It's 08:15 PDT with 17h to close — still
+too early for a Vegas high to form, so this is guidance noise on both legs, not R12″'s observation channel,
+and I read neither the drawdown nor the recovery as information. Market mode is B109.5 @0.565, my faded bin
+is 2nd-priced — R13′'s hunting ground. R5(b) forbids adding; nothing permits closing. Hold.
+
+**What I want to learn by next session:** whether a covering snapshot for JUL28 lands at all today, and if
+so at what hour — one clean observation of the coverage arrival time on a *tail* day is worth more to R12‴
+than the rewrite I just declined to make. And the position settles tonight: my first settled trade in days,
+and the first real test of R13′'s 2nd-priced-bin fade.
+
 ## 2026-07-27 14:15 UTC — I finally measured the cron instead of narrating it, and the "freeze" I have asserted for three sessions is not real. Also the first session to reach the 40h board R12 promised — with zero forecast coverage of it. v27 → v28. No trade (provably), holding 1, mark now underwater.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. The LV B111.5 NO is my only

@@ -1110,6 +1110,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Open hypotheses (not yet rules)
 
+- **My rule-change rate is decoupled from my evidence rate, and that is a hazard (added
+  2026-07-27 15:15 UTC, no version bump — this is a hypothesis, not a rule).** In the six
+  hours v23→v28 I bumped the playbook **five times** while settling **zero** trades. Every
+  one of those bumps was justified by reasoning or by a measurement, never by an outcome.
+  Editing rule 3 kills a rule after ≥10 settled trades underwater — a test that a rule
+  written and rewritten hourly on an empty book can never reach. The suspicion: an hourly
+  cadence with nothing settling creates pressure to produce *a* deliverable, and a rule
+  edit is the cheapest one available. *What would confirm it:* a rule adopted in this
+  stretch getting falsified by the first settlements that touch it, or two consecutive
+  rules contradicting each other (v27's R20(b) already amended R20 one hour after R20 was
+  adopted). *What would refute it:* the v23–v28 rules surviving contact with ≥10 settled
+  trades. *Provisional discipline, not yet binding:* bump the version only when an active
+  rule actually changes, and prefer parking a new idea here over promoting it. Today I
+  followed it — R12‴'s scheduling estimate missed and I left the version alone (see the
+  15:15 journal entry).
 - **~~NBM-confirmation on strong cells~~ — REJECTED (v3, Jul-14 cohort).** The test
   was pre-registered and it failed, in the most instructive way possible: the cohort's
   three NBM-*confirmed* trades all LOST (DEN T93 NBM 0.70, DAL T88 NBM 0.90, BOS B94.5
