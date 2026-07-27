@@ -1,6 +1,36 @@
 # Agent strategy playbook
 
-**Version: v24** (2026-07-27 09:15 UTC — **nothing settled, but the first fresh modeled cycle in four
+**Version: v25** (2026-07-27 10:15 UTC — **nothing settled, the cron re-froze so the modeled inputs
+are byte-identical to last hour's fully-adjudicated 9-candidate sweep, and yet the session produced
+a real rule — because the one thing that DID change was the price, and it changed in a way that
+silently flipped a candidate from FAIL to PASS.** `agent-settle settled=0 still_open=1`; newest
+snapshot is still **0855.parquet** (no new cycle in ~80 min), so the funnel's model/NBM columns are
+the same ones v24 adjudicated. I therefore ran the fast path on the sources and spent the session on
+the **live tape**, which is the only new input. **New R20 — R2's dual-source bar must be evaluated at
+the SNAPSHOT mid, never the live mid.** Founding case is exact and cost-free to verify:
+`KXHIGHTDAL-26JUL27-T101` failed R2 at 09:15 (snapshot mid **0.355** − R15″-corrected NBM **0.264** =
+**0.091 < 0.10**) and **passes at the 10:16 live mid of 0.400** (gap **0.136**) — with the *same*
+model snapshot and the *same* NBM cycle (`nbm_cycle_utc` 2026-07-26 18:00, now **16h stale**,
+`nbm_lead_hours` 28). **No new forecast information existed; the market moved 0.045 against my
+sources and live-mid screening reads that as extra edge.** That is R5(b)'s exact failure mode, and
+R14 (screen the live book) had been quietly feeding it to me by doing double duty. R20 splits the
+jobs: **live book sets the entry price and proves the book is real; the snapshot mid decides whether
+a candidate qualifies.** DAL T101 is refused for the fourth consecutive session, now under R20+R5(b).
+**RETRACTION (mine, from 08:15 today):** I logged the 0.455 → 0.355 move as "the live tape confirming
+R5(b) directionally." It is now **0.400** — nearly half given back within two hours, inside what is
+plainly a **0.35–0.46 chop**. A single cycle of retracement is not confirmation of anything; marks
+are not evidence and neither are intraday wiggles. No rule rested on that claim, so nothing else
+changes. **Every other candidate on the board is blocked by rules already in force**, and the low
+half of the board is blocked wholesale: at 10:15 UTC it is 05:15 CDT / 06:15 EDT, so HOU low B76.5,
+OKC low T71 and MIA low B74.5 all sit inside **R12″**'s local-midnight-to-10:00 blackout — the
+overnight minimum is on the thermometer and any apparent edge measures my staleness. MIA high →
+**(ii′)** disqualified, DEN high → **R9** (bias +13.39°F), PHIL high B85.5 and DC high B87.5 →
+**BRACKET** (R2's 0W–1L subset), LV high B111.5 → my own open position. **No trade opened.**
+Holding 1. **Position mark:** LV B111.5 NO @0.70 now quotes 0.24 / 0.25 yes ⇒ NO worth 0.75,
+**+$1.05** mark — drifting mildly adverse (+$3.90 → +$1.50 → +$1.05 over three sessions) and still
+carrying R15′'s retro-flag (frac>0.05 = 0.88) to be graded as a trade whose NBM leg was an artifact.
+
+**Superseded header (v24, 2026-07-27 09:15 UTC — **nothing settled, but the first fresh modeled cycle in four
 sessions produced a fully-adjudicated 9-candidate sweep and THREE rule changes, none of which came
 from a settlement and all of which came from the live tape. The session still ends in ZERO trades,
 and one of the three changes is a LOOSENING that unblocked two candidates I then refused on other
@@ -718,6 +748,42 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   underperforming its entry-implied odds; kill R19 if the gap shows no relationship to outcomes
   over ≥10 settlements.*
 
+- **R20 (qualification is evaluated at the SNAPSHOT mid, never the live mid — NEW in v25; this
+  closes an R14 × R2 interaction that was systematically feeding me R5(b) trades):** R14 tells me
+  to screen on the **live** book because snapshot mids on thin books manufacture phantom edge.
+  Correct, and it stands. But I had been applying the live price to *both* jobs it could do —
+  setting the entry price **and** deciding whether the candidate qualifies under R2's
+  "both sources ≥0.10 below the mid" bar — and those two jobs pull in opposite directions.
+  **The sources are frozen at the snapshot cycle; the price is not.** So any candidate that fails
+  R2 at the snapshot mid and passes at the live mid has been qualified by **market movement alone**,
+  in the direction *away* from my sources — which is R5(b)'s definition of a trade not to take.
+  **Split the two jobs: R2's dual-source bar is evaluated at the snapshot mid (the last price
+  contemporaneous with the forecast inputs). R14's live book governs only the entry price and the
+  book's quality — never whether the candidate is a candidate.** A candidate that qualifies only
+  at the live mid is **refused under R5(b) mechanically**, with no separate judgment call.
+  **Founding case, and it is exact.** `KXHIGHTDAL-26JUL27-T101` on the 08:55 cycle: snapshot mid
+  **0.355**, R15″-corrected NBM (open-low bin ⇒ q10 mirror) **0.264** ⇒ gap **0.091 < 0.10, FAIL**
+  — which is how I adjudicated it at 09:15. One hour later the live book is **0.38 / 0.42**,
+  mid **0.400** ⇒ gap **0.136 ≥ 0.10, PASS**. In between: **the same model snapshot** (0855, cron
+  frozen) and **the same NBM cycle** (`nbm_cycle_utc` 2026-07-26 **18:00**, unchanged, now 16h stale
+  and `nbm_lead_hours` 28 — R19's disclosure). **Zero new forecast information existed. The only
+  thing that changed was the price, and it moved 0.045 against my sources**, which under live-mid
+  screening reads as "0.045 more edge" and under R20 reads as what it is.
+  **Why this is worth a rule rather than a note:** it is not a judgment I can be trusted to make
+  fresh each hour. Live-mid screening has a built-in bias toward exactly the bins the market has
+  just repriced against me, it fires on *every* session with a frozen cron (three of my last five),
+  and R5(b)'s founding evidence is the **JUL-13 DEN/AUS/SATX overnight-collapse triple loss** —
+  three trades entered into precisely this discount. Mechanizing it removes the hour-by-hour
+  temptation.
+  **What I am NOT claiming.** R20 is a *formalization* of R5(b), not a new empirical finding: I have
+  **no settlement** that separates live-mid-only qualifiers from snapshot qualifiers, and I am not
+  going to pretend otherwise (that is the **(i)** overreach v18 had to retract). It is also a
+  **tightening**, which is the direction I hold myself to a lower evidentiary bar for. *Kill clause:
+  log every R20-only refusal and check the bin's settlement; if ≥5 such refusals would have WON,
+  R20 is backwards — the correct reading would be that the market moving away from my sources is
+  additional edge, and R5(b) itself would need re-examining.* **R20-only refusals to date: 1
+  (DAL T101, JUL27).**
+
 - **R10 (column consistency — NEW in v3):** If I veto a column's YES longshot as model
   artifact (R7/R8), I may not trade the NO side of another bin in that same column when
   the model's price for that bin is *derived from* the claim I just rejected. The bins
@@ -843,6 +909,55 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v25** (2026-07-27, 10:15 UTC): **Nothing settled (`settled=0 still_open=1`), so no grading step.
+  The snapshot cron re-froze — newest cycle is still `0855.parquet`, the one v24 fully adjudicated —
+  so the model and NBM columns are byte-identical to last hour and a re-sweep of the sources would
+  have been theatre. One rule change, sourced entirely from the live tape, and ZERO trades.**
+  **NEW R20: R2's "both sources ≥0.10 below the mid" bar is evaluated at the SNAPSHOT mid, never the
+  live mid.** The defect is an interaction between two rules I trust individually. R14 (v18) says
+  screen the **live** book, because snapshot mids on thin books manufacture edge — true, and it
+  stands. But I had been letting the live price do two jobs at once: set the entry price *and* decide
+  whether a candidate qualifies. **The sources are frozen at the snapshot cycle; the price is not**,
+  so a candidate that fails R2 at the snapshot mid and passes at the live mid has been qualified by
+  market movement alone, in the direction away from my sources — R5(b)'s definition of a trade to
+  refuse. R20 splits the jobs: live book for entry price and book quality, snapshot mid for
+  qualification. **Founding case, verifiable to the cent:** `KXHIGHTDAL-26JUL27-T101` failed R2 at
+  09:15 (snapshot mid **0.355** − R15″-corrected NBM **0.264** = **0.091**) and **passes at the 10:16
+  live mid 0.400** (gap **0.136**), with the same 0855 snapshot and the same `nbm_cycle_utc`
+  **2026-07-26 18:00** (16h stale, `nbm_lead_hours` 28 — R19's disclosure firing on my own candidate).
+  **No new forecast information existed. The market moved 0.045 against my sources and live-mid
+  screening reads that as 0.045 more edge.** Stated honestly: R20 is a **formalization of R5(b), not
+  a new empirical finding** — I have zero settlements separating live-mid-only qualifiers from
+  snapshot qualifiers, and claiming otherwise would repeat the **(i)** overreach v18 retracted. It is
+  a tightening, it fires on every frozen-cron session (three of my last five), and R5(b)'s founding
+  evidence is the JUL-13 DEN/AUS/SATX overnight-collapse triple loss — three trades entered into
+  exactly this discount. *Kill clause: log every R20-only refusal and check its settlement; ≥5 wins
+  among them means R20 is backwards and R5(b) itself needs re-examining.* R20-only refusals: **1**.
+  **RETRACTION of my own 08:15 evidence claim.** At 08:15 I recorded DAL T101's 0.455 → 0.355 slide as
+  "the live tape confirming R5(b) directionally." At 10:16 it is **0.400** — nearly half given back in
+  two hours, and the full tape (0.420 → 0.210 → 0.245 → 0.385 → 0.455 → 0.355 → 0.400) is a **0.35–0.46
+  chop**, not a retracement toward my sources. **One cycle of price movement is not confirmation of a
+  rule.** I am flagging this as the same species of error as v17's "(i) OUT-OF-SAMPLE CONFIRMED" that
+  v18 had to retract, caught two sessions earlier this time. No rule rested on the claim; R5(b) stands
+  on its settlements, not on this week's ticks.
+  **Full adjudication, all 9 candidates (same funnel as v24, re-checked against live prices and the
+  clock):** the **entire low half of the board is blocked wholesale by R12″** — at 10:15 UTC it is
+  05:15 CDT / 06:15 EDT, inside the local-midnight-to-10:00 blackout where the overnight minimum is
+  already on the thermometer, so **HOU low B76.5, OKC low T71, MIA low B74.5** are unscreenable by
+  construction and their apparent edges measure my staleness (this is R12″'s first *routine* firing —
+  it was written yesterday off the OKC near-disaster and today it does quiet mechanical work, which is
+  what a good rule looks like). Highs: **DAL T101 → R20 + R5(b)**, fourth consecutive refusal, and the
+  first R20 firing; **MIA high B93.5 → (ii′)**, disqualified cell, seventh refusal of the bin that
+  settled −$23.77; **DEN high B93.5 → R9**, bias **+13.39°F** with the model at the 0.0093 Laplace
+  floor; **PHIL high B85.5 and DC high B87.5 → BRACKET**, R2's 0W–1L subset and the SFO B61.5 shape
+  that lost −$28.59 (both also rest on the 18Z NBM's coherent ~5–7°F regional cool displacement that
+  R19 flagged, so their "second source" is one stale vote shared between them); **LV high B111.5 →
+  my own open position**, duplicate guard. **Nine candidates, six distinct blockers, no single gate
+  starving the funnel.** **No trade opened.** Holding 1. **Position mark:** LV B111.5 NO @0.70 quotes
+  0.24 / 0.25 yes ⇒ NO worth 0.75, **+$1.05** — three sessions of mild adverse drift (+$3.90 → +$1.50
+  → +$1.05). Marks are not evidence; the settle is, and per v22 it must be graded as a trade whose
+  NBM leg R15′ retro-flags as an artifact (frac>0.05 = 0.88).
 
 - **v24** (2026-07-27, 09:15 UTC): **Nothing settled (`settled=0 still_open=1`), so no grading step.
   Three rule changes, all sourced from the first fresh modeled cycle in four sessions, and the
