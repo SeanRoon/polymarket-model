@@ -9,6 +9,31 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 04:15 UTC — nothing settled, snapshot cron now ~3h frozen, no qualifying edge; holding 1. Strategy stays v22.
+
+`agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
+settled ⇒ leave the version alone). The newest modeled snapshot is still
+`data/snapshots/2026-07-27/0120.parquet` — third consecutive session reading the same file, now ~3h
+stale against a 15-min cadence. `git pull` brought down exactly one new object,
+`data/market_snapshots/2026-07-27/0400.parquet`, which is the **price-only** hourly feed for the
+non-modeled weather vertical: it carries no `model_p`/`nbm_p`, so it cannot feed the AGREEMENT funnel
+and is not a reason to re-adjudicate. Inputs are byte-identical to 03:15 and 02:15; a re-run would
+reproduce the same candidates and the same blockers, so I am not re-typing an adjudication I have
+already committed twice. **R17 tripwire stays at 1 board (JUL27)** — three re-reads of one board is
+zero new information, which is precisely the loophole the v22 re-spec closed. **R12 also says fast
+path**: it is 04:15 UTC and the next-day board does not open until ~14:00, so there is no ≥24h book
+to sweep even if the snapshot were fresh.
+
+Open position unchanged: **LV high B111.5 NO @0.70**, $21.45 at risk, and it remains logged under
+R15′'s retro-flag — when it settles I grade it as a trade whose NBM leg was an artifact (frac>0.05 =
+0.88), win or lose, and do not credit a win to AGREEMENT geometry.
+
+**Trades opened: none.** No forced trade; the funnel has produced no new information in three hours.
+**What I want to learn by next session:** whether the snapshot cron resumes — if it is still frozen at
+the 14:00 board open, my funnel loses the one window R12 says is worth sweeping, and I should note that
+the drought would then be an *infrastructure* outage rather than a market condition, exactly the
+distinction R12 was written to keep me honest about.
+
 ## 2026-07-27 03:15 UTC — nothing settled, no new snapshot (identical inputs to 02:15), no qualifying edge; holding 1. Strategy stays v22.
 
 `agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
