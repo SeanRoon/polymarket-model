@@ -9,6 +9,97 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 18:15 UTC — a genuinely fresh snapshot, a second fully-covered 36-event JUL28 sweep, and again ZERO trades and ZERO rule changes. The one candidate that survives every source, geometry and bias gate is refused by **one cent** for the third consecutive session, and naming that temptation is the whole entry.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Book unchanged at 39 settled,
+18W (46%), realized −$143.49 on $818.49 staked. Nothing to grade, so per the editing rules the version
+stays at **v29**.
+
+**This hour is NOT a repeat of the last two — the sources actually moved.** `git pull` brought
+**`1720.parquet` (17:23 UTC, 53 min old at 18:17)**, the first new modeled cycle since 15:31. That gap
+was **1h49m**, inside **R19′**'s measured 60–110 min afternoon band at its top edge — so the two
+"snapshot unchanged" sessions at 16:15 and 17:15 were ordinary cadence, exactly as R19′ predicts, and I
+did not call them a freeze. **R20's subset-of-an-empty-set shortcut therefore does NOT apply today**: new
+snapshot mids mean a new candidate set, so I ran the full sweep over all 36 JUL28 events (23–26h lead,
+extremes not yet in progress ⇒ sweepable under **R12′/R12″**, and covered under **R12‴**).
+
+**Result: zero survivors, and R13′ was confirmed a third time on an independent board.** Every
+both-sources-≥0.10-below bin priced above ~0.40 is the market's **modal** bin, killed by **R5a**. I
+verified modality on the live book rather than the snapshot for the four that were not obvious:
+
+| candidate | live mid | market's mode | verdict |
+|:---|---:|:---|:---|
+| `KXLOWTDC-26JUL28-T72` | 0.505 | **is the mode** (next B71.5 0.30) | R5a |
+| `KXLOWTCHI-26JUL28-B68.5` | 0.485 | **is the mode** (next B70.5 0.23) | R5a |
+| `KXLOWTATL-26JUL28-B75.5` | 0.43 | **is the mode** (next T76 0.265) | R5a |
+| `KXHIGHTMIN-26JUL28-B89.5` | 0.405 | **is the mode** (next B91.5 0.25) | R5a |
+
+Same for HOU low B78.5 (0.60), LAX low B68.5 (0.65), SFO low B59.5 (0.56), AUS high B99.5 (0.51), DAL
+low B79.5 (0.51), LV low T87 (0.85). R13′ says the largest gaps can only live where the market put its
+mass; on this board that accounts for **ten of the twelve** biggest dual-source gaps. It is not a drought.
+
+**The one real candidate, and the one-cent refusal. `KXHIGHTLV-26JUL28-B111.5`.** It clears everything I
+own: **(i″)** (d_nbm 2, d_model 1, not adjacent to both modes), **(iii′)** (both sources 0.03 ≤ 0.05, a
+genuinely empty tail; NO entry 0.83 ≤ 0.85), **(ii′)** (LV/high bias only −1.12°F), **R18** (ratio
+0.21/0.635 = 0.33, just inside the observed support), **R8/R10** (neither column degenerate), **R5a**
+(market mode is B109.5 @0.635), **R9**, **R17** (my open LV position is JUL**27** — different settlement
+date, so clause (b) does not bind). **It dies on R2's ≥0.15 live-edge bar at R14's bid:** live bid
+**0.17**, so edge = 0.17 − 0.03 = **0.14**. One cent.
+
+**The tape on that bin is now four observations long and it says the same thing every time:**
+
+| when | source | bid | implied NO entry | live edge |
+|:---|:---|---:|---:|---:|
+| 15:31 | snapshot 1530 | **0.22** | 0.78 | 0.19 ✅ |
+| 16:23 | live | 0.15 | 0.85 | 0.12 ❌ |
+| 17:16 | live | 0.16 | 0.84 | 0.13 ❌ |
+| 17:23 | snapshot 1720 | **0.19** | 0.81 | 0.16 ✅ |
+| 18:17 | live | 0.17 | 0.83 | **0.14** ❌ |
+
+**Both snapshots price the bid ABOVE the contemporaneous live bid, and both times the staleness falls on
+the side that would have paid me to trade.** That is now **n=3** in one direction (LV twice, PHIL low T72
+once yesterday-hour), on a 26-lot book. **R14 already covers this exactly** — screen the bid, not the mid,
+and demand a real book — so the right response is to bank the corroboration and write no new rule.
+
+**What I am refusing to do, stated in advance so I cannot do it quietly later.** The gap between 0.14 and
+R2's 0.15 is one cent on a 26-lot book, and I have now been stopped by it three sessions running on the
+same bin. Shaving the bar to 0.14, or switching the entry price from the bid to the mid "just for liquid
+tails", or re-reading `nbm_p` 0.03 as 0.02 to buy back the cent — each would hand me the trade, and each
+is **R16**'s failure mode run in the loosening direction: a rule edited to fit one candidate I want. The
+bar was set when I had no candidate at 0.14, which is precisely why it is worth something now. **The
+board also gets a vote here:** if 0.15 were genuinely starving me, I would expect qualifying candidates to
+be piling up just under it. They are not — this is one bin, on one board, for the third hour.
+
+**Everything else on the board, briefly.** `KXLOWTOKC-26JUL28-B73.5` remains disqualified by **(ii″)** —
+the JUL27 CLI still has not posted (`data/resolutions.parquet` ends JUL26), so the joint-warm-miss
+realization is still the settlement-grade market proxy it was labeled as. `KXLOWTPHIL-26JUL28-T72` is now
+dead at the **snapshot** rather than the live book: its snapshot mid collapsed 0.18 → **0.09**, below R2's
+effective ≥0.15 price floor, so it no longer even qualifies under R20. AUS high B99.5/B101.5 → **(ii′)**
+(bias +12.26°F) + **R8/R10** (model 0.95 on T97). PHIL high B79.5/B81.5, CHI low B66.5, OKC high T100 →
+**(iii′)** (mid < 0.30 with NBM > 0.05). SATX low B74.5 (0.09 gap), PHX high B107.5, HOU low B76.5, BOS
+high B79.5, SEA/NYC/ATL/NOLA bins → **R2** (one source is not ≥0.10 below). MIA anything → **(ii′)**
+outright. Denver → **R9**. **No trade opened.**
+
+**On the YES side, one candidate I want on the record as refused for a reason, not for lack of noticing.**
+`KXLOWTLAX-26JUL28-B66.5` shows model 0.79 / NBM 0.42 against a mid of 0.09 — a dual-source YES agreement
+of a size I rarely see. **R2's YES-buy half is 2W–7L, net −$30.52 at 9 settled, one settlement from the
+pre-registered trigger that restricts R2 to NO-fades only.** Taking a YES longshot to *reach* that trigger
+would be the worst possible use of it. Refused on the operational lean, not on the geometry.
+
+**Trades opened:** none.
+
+**Position mark:** LV high JUL27 B111.5 NO @0.70 (30 lots, $21.45 at risk) quotes 0.24/0.25 live ⇒ NO
+worth 0.755, **+$1.65** — a third consecutive favorable tick (+$0.60 → +$1.65). It is 11:17 PDT with 14h
+to close, so the Vegas high is now actively forming and **R12″**'s observation channel is open on it: from
+here the market knows things I do not, and any further move in either direction is information, not noise.
+
+**What I want to learn by next session:** JUL27 LV closes overnight (~08:18 UTC), so it should settle
+before my morning sessions — that is my **first AGREEMENT settlement since v15**, and it carries
+**R15′**'s pre-registered retro-flag (frac>0.05 = 0.88), so whichever way it lands I grade it as a trade
+whose NBM leg was an artifact and it does **not** count as evidence for AGREEMENT geometry. Second: the
+JUL27 CLI posts ~13:00 UTC tomorrow and will either confirm or refute the OKC low 71–72°F proxy that
+**(ii″)** was founded on — I will record which either way.
+
 ## 2026-07-27 17:15 UTC — nothing settled, snapshot unchanged, ZERO rule changes — the first session in seven hours that ends without a version bump, deliberately. Two live re-checks and one settlement-grade confirmation, none of which earn an edit.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Book unchanged at 39 settled,
