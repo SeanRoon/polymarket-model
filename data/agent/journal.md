@@ -9,6 +9,87 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 02:15 UTC — nothing settled; a fresh snapshot re-ran the funnel and the shape of the board changed: my R17 candidate lost its model column entirely, and a bin I refused an hour ago on *price* came back blocked on *geometry*. No trade. Holding 1.
+
+**Settle:** `agent-settle settled=0 still_open=1`. Nothing has resolved since 00:15, so **no grading
+step and no version bump — strategy stays v22.** (Editing rule: nothing settled ⇒ say so and leave
+the version alone.)
+
+**New data this time, unlike last session.** `git pull` brought `data/snapshots/2026-07-27/0120.parquet`
+(01:22 UTC, 53 min old at scan time), so re-running the chain was worth the cycles. The JUL27 board is
+now at **15–18h lead** — `agent-model-view --min-lead-hours 20` returns *nothing*, which is a lead-floor
+artifact, not a drought; at the default 6h floor the board is fully populated. Note for the record that
+the day has not begun in any of these cities (Austin is 21:15 local), so this is **not** a partly-observed
+settlement-day board in R5a's sense — the extreme is still ~16h out.
+
+**Mechanical funnel (non-modal ∧ both sources ≥0.10 below mid ∧ `yes_bid` ≥0.15 ∧ spread ≤0.10) on
+0120: 7 candidates, down from 10.** Full adjudication:
+
+1. **`KXHIGHNY-26JUL27-B83.5` (NYC high 83–84°F) → BRACKET.** This is the session's real finding.
+   An hour ago I refused this exact bin under **(iii′)**: mid was **0.28**, under the 0.30 line, so the
+   emptiness test applied and both sources (0.153 / 0.176) were an order of magnitude over the 0.05 floor.
+   **The market has since repriced it to 0.36**, and at mid ≥0.30 **(iii′) applies no emptiness test at
+   all** — so the gate that blocked it yesterday is simply gone. Everything else it clears: non-modal
+   (market mode B81.5 @0.415), model 0.176 and NBM 0.153 both ≥0.18 below the mid, bias only **−2.27°F**,
+   spread **0.02**, **vol24h 6747 — the deepest book on the board**, so R14 is comfortable, NO entry
+   **0.65** ≤ (iii′)'s 0.85 cap, live edge ~0.18 ≥ 0.15. (i″) passes too: 2 bins from each mode. **It dies
+   on BRACKET geometry, and this is the eighth time that shape has saved me from something that looked
+   good.** Model column is warm — B85.5 0.324, **B87.5 0.361 (mode)**, T88 0.120 — while NBM's mode is
+   **T81 @0.615** with q50 **80.23**. A ~6–7°F disagreement, and the faded bin 83–84 sits **exactly between
+   them**. That is the SFO low B61.5 structure that cost **−$28.59** verbatim: fading the shoulder between
+   two disagreeing forecasts is fading *forecast uncertainty*, and the truth lands there disproportionately.
+   **And this one is worse than the brackets I have refused before, in a way worth logging.** Every prior
+   BRACKET refusal (LAX B81.5 ×7, DC B89.5) had both sources at ≤0.01 on the shoulder — they at least
+   *claimed* it was empty. Here the sources put **0.15–0.18** on it themselves: they do not call the bin
+   empty, they merely call it less likely than the market's 0.36 does. So I would be fading a shoulder my
+   own sources say is live, on the argument that the middle of a 7°F disagreement is unlikely — which is
+   the market's own reasoning, inverted. Refused, and I am satisfied this is mechanistic rather than a
+   gate fitted to one loss: the reason (uncertainty concentrates in the shoulder) predicts the SFO
+   outcome rather than being derived from it.
+2. **`KXHIGHTPHX-26JUL27-B113.5` (my R17 deferral) → dropped out of the funnel on its own.** The 0120
+   cycle has **`model_p` NULL for the entire PHX and LV high events** — no model column at all, where the
+   23:40 cycle had a full one (mode B109.5 @0.565). With one source missing it fails **R2's dual-source
+   requirement** outright, before R17 is even reached. Two consequences. (a) **The R17 tripwire count does
+   not advance: R17 was NOT the sole blocker this session**, so the count stays at **1 distinct board
+   (JUL27)**, exactly as the v22 re-spec intends — the tripwire is measuring information, not repetition.
+   (b) A caution I should not lose: the AGREEMENT geometry I priced so carefully at 00:15 rested on a model
+   column that **vanished one cycle later**. Whatever v22's argument was worth, the input under it is not
+   continuously available.
+3. **`KXHIGHPHIL-26JUL27-B87.5` (PHIL high 87–88°F) → (iii′), new candidate.** Mid **0.285** < 0.30 fires
+   the emptiness test; NBM is 0.005 but the model puts **0.157** on the bin — 3× the 0.05 floor. Cheap is
+   not empty. Bias also **−3.92°F**, which the surviving half of (ii′) would flag on its own.
+4. **`KXLOWTOKC-26JUL27-B73.5` → (ii′) bias +4.96°F.** Third consecutive session refused on the same
+   number. Worth noting for accuracy that R15′ **clears it cleanly** — reconstruction **0.00011** — and its
+   book has recovered further (0.32/0.33, spread 0.01, vol 591), so the bias veto is doing all the work,
+   alone, exactly as it did yesterday. If I ever retire the bias half, this is the candidate that returns.
+5. **`KXLOWTDC-26JUL27-T70` → R15′, fifth straight session.** Reconstruction **0.0839** against a binned
+   `nbm_p` of 0.005 — over the bar on **100%** of cycles, as it has been every session since v19. The
+   funnel's best-looking candidate remains its only input-validity casualty, and the number has barely
+   moved in 24 hours, which is what a real artifact looks like versus a tail estimate wobbling near 5%.
+6. **`KXHIGHLAX-26JUL27-B81.5` → BRACKET, eighth refusal.** Model ≥87°F @0.94 vs NBM ≤78°F, faded bin
+   81–82 the shoulder. Bias +3.48. Unchanged.
+7. **`KXHIGHAUS-26JUL27-B100.5` → triple veto.** Bias **+12.26°F**, model column at the 0.0093 Laplace
+   floor (degenerate, R8/R10), R15′ over the bar. vol24h 53 so R14 no longer bites — logged for accuracy.
+
+**Position check.** LV B111.5 NO @0.70 now quotes **0.23 / 0.24** (was 0.22/0.25 an hour ago, 0.31/0.32
+two hours ago), so NO is worth ~0.76–0.77 and the position is **up ~$1.5–$2 mark-to-market**. Closes
+08:00 UTC Jul 28. Holding; no close path exists and I would not want one. **The v22 grading commitment
+stands unchanged: when it settles, grade it as a trade whose NBM leg R15′ retro-flags as an artifact
+(frac>0.05 = 0.88), and do not credit a win to AGREEMENT geometry that was not really dual-source.**
+
+**No trade opened.** Seven candidates, five distinct blockers (BRACKET ×2, (iii′), (ii′) bias, R15′,
+degenerate/R8), plus one that fell out for missing data. No single gate is starving the funnel.
+
+**What I want to learn by next session:** whether the PHX/LV model column comes back on the next cycle
+or stays NULL — if the model drops these stations for the rest of the board, then R17's whole
+correlated-pair argument was moot from the start and the honest lesson is about **input availability**,
+not correlation. And whether NYC B83.5's reprice continues: if the market walks it toward 0.45+ while both
+sources hold at ~0.15, BRACKET will be the sole blocker on a bin with the board's deepest book, and I
+should start counting that the way I count R17 — a rule that is *always* the last one standing needs a
+tripwire too.
+
+---
+
 ## 2026-07-27 01:15 UTC — nothing settled, no new snapshot, no qualifying edge; holding 1. The v22 tripwire re-spec passed its first live test by *not* firing
 
 **Fast path, and deliberately so.** `agent-settle settled=0 still_open=1`. The last committed
