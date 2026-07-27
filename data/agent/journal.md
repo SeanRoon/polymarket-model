@@ -9,18 +9,48 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-27 23:15 UTC — fast path. Nothing settled, snapshot unchanged so R20 proves the sweep is empty in advance, zero trades, no rule change.
+## 2026-07-27 23:15 UTC — I claimed the fast path, a fresh snapshot landed one minute later and voided the claim, so I swept the board anyway. Fifth fully-covered JUL28 sweep, zero trades, no rule change.
 
-23:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
+**Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands and
+no version bump** — with nothing settled the playbook's editing rules forbid moving a rule.
 
-**Why the fast path is provable, not a judgment call.** Newest snapshot is still **2145.parquet** (commit
-`ef00dff`, 21:52 UTC) — **byte-identical to the file last session fully adjudicated at 22:15**. Under
-**R20**, qualification is evaluated at the snapshot mid, so today's qualifying set on the JUL28 board is
-*identical* to last hour's, which was empty (17 bins cleared R2; 11 died on R5a, the two survivors —
-CHI low B66.5 and SATX low B74.5 — died on the BRACKET shape and R18). R20(b) lets live prices only
-*add* vetoes, never create candidates. **A re-sweep can only re-derive an empty set**, so no rule change
-is owed and none is made — **v30 stands**, and with nothing settled the playbook's editing rules forbid
-moving a rule anyway.
+**A retraction inside my own session, recorded because the reasoning was live for about a minute.** I
+opened by checking the snapshot tree at 23:15, saw **2145.parquet** (commit `ef00dff`, 21:52 UTC) — the
+same file last session fully adjudicated — and took the **R20** shortcut: qualification is evaluated at
+the snapshot mid, so the qualifying set had to be identical to last hour's empty one, and R20(b) lets
+live prices only *add* vetoes. That was correct reasoning on the facts I had. **It was also obsolete
+before I finished writing it:** my `git pull --rebase` pulled `4a7e99b` — **`Snapshot: 23:16:03Z`**,
+i.e. **2310.parquet**, landing one minute after my check. R20's premise is *byte-identical snapshot*, and
+it no longer held. **So the shortcut was void and the set could only be re-derived.** I swept. The honest
+statement of what happened is that my fast-path justification was true when written and false when
+committed, and the fix was to do the hour's work rather than keep the tidy paragraph.
+
+**The sweep, on 2310.parquet (6 min old at read — comfortably inside R19′'s 60–110 min evening
+baseline, so no staleness disclosure is owed).** Seventeen bins cleared R2's both-sources-≥0.10-below bar.
+**Eleven are the market's modal bin** — LV low T87 (0.88), LAX low B68.5 (0.67), ATL low B75.5 (0.51),
+PHIL low B71.5 (0.49), DAL high B100.5 (0.51), DC low T72 (0.39), MIN low B71.5 (0.41), MIN high B89.5
+(0.33), PHIL high B81.5 (0.29), DC high B86.5 (0.34), NYC high B77.5 (0.35) — all → **R5a**. That is
+**R13′'s seventh consecutive confirmation**, and this hour it produced a small sharpening worth noting:
+**NYC high B77.5 is modal by two cents over B79.5 (0.35 vs 0.33)**, which flips last session's B79.5
+candidate from "non-modal shoulder" to "the bin next to the mode." The coupling is not just holding, it
+is reshuffling which side of R5a a bin sits on hour to hour.
+
+**Complete adjudication of the six survivors — every refusal names a rule and a number.**
+- **`KXLOWTMIN-26JUL28-T72`** is the only genuinely new survivor and the only one to clear **R18** cleanly:
+model 0.01 / NBM 0.09 vs mid 0.26 ⇒ gaps 0.25 / 0.17; non-modal (B71.5 @0.41 is the mode); **R18 ratio
+0.26/0.41 = 0.634**, squarely mid-band — versus **0.918 when v29 screened this same bin**, so the
+geometry genuinely improved. Live **bid 0.24 / ask 0.28**, spread 0.04, vol24h 625, OI 614 at 31h, so
+**R14** and R2's live bar clear (0.24 − 0.01 = 0.23 ≥ 0.15). It dies on **(iii′)**: mid 0.26 < 0.30
+triggers the emptiness test and **NBM is 0.09 > 0.05**. That is the *same rule for the same reason* v29
+refused it on (nbm 0.102 then, 0.09 now) — a rule reproducing itself across two cycles and a much better
+R18 ratio is the cheapest kind of out-of-sample check I get, and I would rather log it than let a
+newly-passing R18 tempt me into treating (iii′) as the technicality.
+- **`KXHIGHTLV-26JUL28-B111.5`** — R18 ratio 0.28/0.60 = **0.467**, in band; still **(ii‴)**, the
+five-day −2.33°F cold-bias veto that points straight into the bin I would be selling. Unchanged.
+- **`KXLOWTSATX-26JUL28-B74.5`** — **R18** (0.40/0.43 = 0.93) and **BRACKET**. **`KXHIGHNY-26JUL28-B79.5`**
+— **R18** (0.33/0.35 = 0.943) and **BRACKET**. **`KXLOWTOKC-26JUL28-B73.5`** — **R18** (0.36/0.36 = **1.00**,
+co-modal to the cent) and **(ii‴)**, its own founding case. **Denver bins → R9 + R21; SATX high → R21.**
+**No trade opened. Holding 1.**
 
 **Position, marked honestly and it is the best mark since entry.** LV high **JUL27** B111.5 NO @0.70
 (30 lots, $21.45 at risk) — live **0.10/0.13** ⇒ NO worth **0.87** at the take side, mark **+$5.10**, with
@@ -31,13 +61,19 @@ NO-fade) is the structure I most want to be right about, and a favorable intrada
 settlement — v25/v26 already caught me wrong-then-right on this exact position inside four hours. It
 grades when it grades.
 
-**BRACKET count unchanged at three** (NYC high B79.5, CHI low B66.5, SATX low B74.5, all 07-27). No new
-board, so no new observations to add. Still a count, still not a rule.
+**BRACKET count stays at three distinct bins** (NYC high B79.5, CHI low B66.5, SATX low B74.5). Two of
+them re-qualified on tonight's fresh mids and were refused on the same geometry, which is persistence of
+the *shape* rather than a fourth instance. CHI low B66.5 dropped out of the R2 set entirely this cycle.
+Still a count, still not a rule — **no BRACKET has settled since the SFO loss**, so there is nothing to
+fit to.
 
-**What I want by next session:** a fresh snapshot — the next cron cycle should land inside R19′'s 60–110
-min evening baseline — and, more importantly, **the JUL27 LV settlement**, which is the first outcome to
-grade the R2 AGREEMENT non-modal NO-fade out-of-sample under v18+ and the first data point on whether
-(ii‴)'s five-day cold-bias veto was right to block the JUL28 twin.
+**What I want by next session:** the **JUL27 LV settlement**. B109.5 is 0.86 with 9h to close, so the
+answer is nearly in, and it does double duty — it is the first out-of-sample grade of the R2 AGREEMENT
+non-modal NO-fade under v18+, **and** it is a direct read on (ii‴): my sources centred JUL27 near 108.6
+and the market is settling 109–110, so if that holds, the cell's cold bias just reproduced itself a
+sixth straight day on the exact quantity (ii‴) measures. That would be the strongest evidence yet that
+blocking the JUL28 twin was right, and it arrives from an outcome rather than from my reasoning about
+my own process.
 
 ## 2026-07-27 22:15 UTC — fourth fully-covered JUL28 sweep. Two genuinely NEW candidates cleared the source and price gates, and BOTH are BRACKETs — the shape has now blocked three candidates in two hours. Zero trades, no rule change.
 
