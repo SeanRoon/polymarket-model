@@ -9,6 +9,92 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 06:15 UTC — nothing settled, but the cron RESUMED and the fresh cycle produced a candidate that cleared every gate I own and then died on R5(b). Strategy → **v23** (R12→R12′, R15′ tail fix, new R18).
+
+`agent-settle settled=0 still_open=1`. **No grading step** (nothing settled ⇒ no outcome to grade),
+but three rule changes on measured evidence, so the version bumps per editing rule 1.
+
+**The cron is alive.** `data/snapshots/2026-07-27/0525.parquet` landed — the first new modeled
+snapshot in ~4h, after four consecutive sessions re-reading `0120.parquet`. So the freeze was a late
+cron, not a dead one, and the answer to last session's open question is: **infrastructure recovered
+on its own.** New inputs ⇒ full sweep, not the fast path.
+
+**A rule told me not to look, and the rule was wrong.** R12 says "before 14:00 UTC → fast path only,"
+on the premise that the only board visible pre-14:00 is a settlement-day board that is *partly
+observed*. At 06:18 UTC the JUL27 board had **closes_h = 24** and Dallas local time was **01:18 CDT**
+— nothing observed, a full day to settlement. R12 conflated *"before 14:00 UTC"* with *"partly
+observed,"* which is true for the **10:15–13:15 UTC** cadence that produced it and **false overnight**,
+a window I only cover because I now run hourly. **R12 → R12′: gate on board state (≥18h to close AND
+extreme not yet in progress), not the wall clock.** R12's actual measurement — next-day boards first
+list at 14:00–15:10 UTC — stands untouched, and no trading bar was relaxed.
+
+**Why I trust myself on that loosening: the sweep it authorized ended in a refusal.** If I were
+widening the window to manufacture permission to trade — R16's failure mode run in the loosening
+direction — this section would end in a fill. It doesn't.
+
+**The candidate: `KXHIGHTDAL-26JUL27-T101` (Dallas high ≤100°F), and it got further than anything in
+four sessions.** Clean **AGREEMENT** geometry — model mode B103.5 @0.769, NBM mode B101.5 @0.483,
+both *above* the faded open-low bin, d_model 2 / d_nbm 1 ⇒ **(i″) ✓**. Both columns non-degenerate
+(real distributions, no Laplace floors) ⇒ **R8/R10 ✓**. Bias **−1.24°F**, smallest on the board ⇒
+**(ii′) ✓**. Mid 0.455 ≥ 0.30 so no emptiness test, NO entry **0.55** ≪ 0.85 ⇒ **(iii′) ✓**. Live
+book at 06:18 **0.45 / 0.46**, spread 0.01, **vol24h 2028 / OI 1023** — deepest book on the board and
+*identical* to the snapshot, so **R14 ✓** (its first pass on a candidate rather than a kill).
+**R17 ✓ twice over** vs my open LV: Texas ≠ desert Southwest (clause c fails) *and* LV fades one bin
+**above** its mode while DAL fades **below** its (clause d fails) — a warm bust would help DAL while
+hurting LV. **R5a ✓** as written: modal bin is B101.5 @0.480, T101 second at 0.455.
+
+**Then I read the tape and it was disqualifying.** T101 across every committed cycle: **0.420 →
+0.215 → 0.210 → 0.245 → 0.375 → 0.385 → 0.455** — a **monotone +0.245 climb over ~9 overnight hours,
+on the board's deepest book**, straight toward the outcome both my sources reject. My sources did not
+move: NBM binned p 0.254 / 0.303 / 0.303 / 0.244, **q50 pinned at 102.05–102.15 throughout**. That is
+**R5(b)** — adverse repricing is information, not an entry discount — and the damning part is that
+**the entire edge was the repricing**: at 20:30 the NO entry was 0.79 against NBM's 0.254 (nothing
+worth having); at 06:18 it was 0.55 against NBM's 0.244 (an apparent 0.175 edge). *Nothing about the
+forecast improved. Only the price moved, against me.* This is the Jul-13 DEN/AUS/SATX overnight
+collapse that predicted all three of those losses, reproduced exactly, and it is **R5(b)'s first clean
+sole-blocker firing** — logged as veto #1 against its own kill clause. One corroborating detail, and
+it cuts against the trade: on the newest cycle NBM finally moved cooler too (q10 99.67 → 98.80,
+reconstruction 0.199 → 0.264), i.e. **NBM followed the market**, not the reverse.
+
+**Two findings I'd have missed if the tape hadn't stopped me first.**
+
+1. **R15′ has a tail bug (fixed in v23).** Its formula uses q90, which is right for open-*high* bins.
+   Applied mechanically to this open-*low* bin it gives P(≤100.5) = **0.093** against a binned
+   `nbm_p` of **0.244** — a spurious 2.6× "artifact." NBM here is strongly left-skewed (left σ 2.61
+   vs right σ 1.25); the correct mirror off **q10** gives **0.264**, matching the binned value within
+   8% and correctly calling the input **valid**. Unfixed, R15′ would have fired phantom vetoes on
+   essentially every lower-tail candidate I screen.
+2. **New R18 (shape-support limit).** The one thing that looked off was the faded bin priced 0.455
+   against a modal bin at 0.480, so I measured faded-mid / modal-mid across my whole AGREEMENT
+   record: **0.331 (L), 0.429 (W), 0.537 (W), 0.600 (W), 0.625 (open), 0.759 (W)** — support
+   **0.33–0.76**. DAL sits at **0.948**, outside everything, 4× outside on the absolute gap. Every
+   trade I've won faded a *distinctly secondary* bin; a ratio near 1.0 means the market is a genuine
+   coin flip and I'd be taking one side of it. It also shows **R5a is arbitrary at the boundary** —
+   T101 *was* the modal bin at 0.42 yesterday and is second at 0.455 today on a **2.5-cent** tick, so
+   a ban that flips on 3 cents isn't protecting me and sizing has to. **R18 caps ratio ≥0.80 fades at
+   R4 explore size.** I'm explicit that it has **zero discriminating power** — my only loss has the
+   *lowest* ratio — so it's a statement about the support of my evidence, not a prediction. That
+   labeling is the lesson of v18's retraction of (i), and I'm not repeating it.
+
+**Full adjudication, 6 candidates / 6 different blockers:** DAL high T101 → **R5(b)** (sole blocker;
+would also have been R18 explore-size-only); LAX high B81.5 → **BRACKET** (model ≥87°F @0.935 vs NBM
+≤78°F @0.995, faded 81–82 is the shoulder) — **eighth** refusal of the SFO B61.5 shape that lost
+−$28.59; DEN B97.5 + B93.5 → **R9** + bias +13.39 + model at the floor; PHX high B113.5 → **R17**
+(still correlated with open LV), and its NO entry has *worsened* to 0.82 as the mid slid 0.205 →
+0.185; CHI high B90.5 → **(iii′)** (mid 0.285 < 0.30 triggers the emptiness test; sources 0.102 /
+0.158, 2–3× over the 0.05 floor — cheap is not empty), plus a 50% / −2.9% cell. **R17 tripwire stays
+at 1 board (JUL27)** — PHX is the same candidate on the same board, zero new information.
+
+**Position mark.** LV B111.5 NO @0.70 quotes **0.21 / 0.23** yes ⇒ NO worth 0.77, **+$2.10 MTM** —
+it gave back about half of last hour's +$3.9 as the yes side ticked up from 0.16/0.17. Marks aren't
+evidence; the settle is, and it still carries R15′'s retro-flag (frac>0.05 = 0.88) to be graded as a
+trade whose NBM leg was an artifact, win or lose.
+
+**Trades opened: none.** **What I want to learn by next session:** whether R12′ pays for itself —
+i.e. whether overnight sweeps keep surfacing real candidates (this one was real, just adversely
+priced) or whether the 00:00–08:00 board is systematically sharp for some reason other than
+observation, which is R12′'s own kill condition. And LV settles today: I owe it an honest grade.
+
 ## 2026-07-27 05:15 UTC — nothing settled, snapshot cron ~4h frozen, no qualifying edge; holding 1 (now +$3.9 MTM). Strategy stays v22.
 
 `agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
