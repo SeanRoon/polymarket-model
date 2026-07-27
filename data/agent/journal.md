@@ -9,6 +9,92 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 13:15 UTC — the cron un-froze AND NBM rolled to 00Z: first fully-fresh sweep in five sessions. It reproduced every stale-source refusal, confirmed R20(b) out-of-sample one hour after adoption, resolved the retro-flag on my open position, and produced R13′ — the edge/mode coupling is lead-INDEPENDENT. v26 → v27. No trade, holding 1.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1` — the LV B111.5 NO is my only
+position and closes tonight. Nothing to grade, so no by-version or by-category re-read.
+
+**Why this was not a fast-path session.** Both stale things ended at once: the newest snapshot is
+`1230.parquet` (**43 min old**, versus four straight sessions on the same `0855.parquet`), and
+`nbm_cycle_utc` rolled to **2026-07-27 00:00** at 21–24h lead (versus 2026-07-26 18:00, which had reached
+18h stale). Board: **16 high events + 20 low events, all JUL27.** Note `agent-model-view`'s 6h lead floor
+hid the eastern/central cities entirely — the view showed only LV/LAX/SFO/SEA/PHX/DEN. **The board was
+never that small; the view's filter was.** I only found the other 26 events by querying the snapshot
+directly, and I should not have trusted the view's coverage as the board's coverage.
+
+**R12 gating, both halves fired.** R12′ (highs sweepable until ~09:00 local): at 12:50 UTC that is 08:50
+EDT / 07:50 CDT / 06:50 MDT / 05:50 PDT — **no high anywhere has begun forming**, so all 16 high events
+are sweepable and I swept them. R12″ (lows unscreenable local-midnight→10:00): **all 20 low events are
+inside the blackout**, removed wholesale without adjudication. That is the single largest thing R12″ has
+ever cost me and I am recording it without flinching: the biggest apparent edges on the entire board were
+lows (LV low T89 mid 0.87 vs model 0.01; SEA low T58 0.77 vs 0.01; SFO low B58.5 0.77 vs 0.01) and R12″
+says those numbers measure my staleness, not the market's error.
+
+**Adjudication — 16 dual-source candidates, all refused, each on ≥2 independent grounds.**
+
+| candidate | mid | model | NBM | why refused |
+|:---|--:|--:|--:|:---|
+| AUS B98.5, DAL T101, SATX B96.5, NYC B83.5, PHIL B87.5, DEN B93.5, LV B109.5, DC B89.5, NOLA B95.5, HOU B96.5, OKC B101.5, MIN B95.5 | — | — | — | **R5a** — all 12 are the market's modal bin |
+| DEN B95.5 | 0.230 | 0.009 | 0.083 | **R9** blacklist (bias **+13.39**) + model column degenerate (0.954 on T93, Laplace floor on the other five) |
+| LV B111.5 | 0.235 | 0.009 | 0.005 | my own open position — duplicate guard |
+| DC B87.5 | 0.295 | 0.009 | 0.071 | **(iii′)**: mid <0.30 triggers the emptiness test and NBM 0.071 > 0.05. Also **BRACKET** (model mode B91.5 @0.435 above, NBM mode T87 @0.909 below, faded bin is the shoulder) |
+| PHIL B85.5 | 0.315 | 0.065 | 0.210 | **R2 live-edge <0.15**: at `yes_bid` 0.31 per R14 the NBM gap is 0.31−0.210 = **0.10**. Also **BRACKET** (model mode B89.5 @0.398 above, NBM mode T83 @0.543 below) — 0W–1L, −$28.59, min-size hypothesis-only |
+
+PHIL and DC are the same geometry that lost me SFO low B61.5: two forecasts disagreeing across a bin, and
+the truth lands in the disagreement. **R12's kill clause is explicitly tested here and did not trigger** —
+a pre-14:00 sweep produced no trade clearing all governing bars, so R12/R12′ stand.
+
+**Strategy changes (v26 → v27), three things, one of them a rule.**
+
+1. **NEW R13′ — the edge/mode coupling is LEAD-INDEPENDENT.** R13 claimed large edge ⇒ modal bin *at
+   ≥24h lead*, and explained it by the long-lead board being "wide and comparatively flat." That
+   mechanism makes a prediction — the coupling should **weaken** at short lead. Today's **6–7h** board
+   falsifies it: of the 16 bins clearing R2's dual-source bar, **12 (75%) are modal**, and **the seven
+   largest gaps are all modal** (AUS B98.5 0.626, DAL T101 0.546, SATX B96.5 0.511, NYC B83.5 0.439,
+   PHIL B87.5 0.398, DEN B93.5 0.356, LV B109.5 0.354). R13's founding long-lead measurement was "the
+   five largest"; at a quarter the lead it is the seven largest — the coupling got *stronger*, not
+   weaker. **The mechanism is a bound, not a lead effect: a bin's both-sources-below gap cannot exceed
+   the price the market put there**, so the biggest gaps only exist where the market placed its mass.
+   Operationally, R13's advice survives and widens — hunt 2nd/3rd-priced bins on *every* board — but its
+   scope note was actively misleading, because it invited me to read a settlement-day board's 0.5+ gap
+   as unusually good. It is not; at short lead the market is *also* holding observations I cannot see.
+   Accepted on one board's evidence because it is a **tightening**; I would not do that for a loosening.
+2. **R20(b) CONFIRMED out-of-sample, one hour after I shipped it labeled "untested and not
+   load-bearing."** At 12:15 I made R20 asymmetric because the live book showed DAL T101 had become the
+   market's modal bin (0.555) while the frozen 08:55 snapshot still had B101.5 modal (0.480 vs T101
+   0.355) — a symmetric reading would have aimed R5a's modal-fade ban at the stale snapshot and deleted
+   a protection. **The 12:30 snapshot agrees with the live book exactly: T101 0.555 modal, B101.5
+   0.405.** Live at 13:21: 0.56/0.57, still climbing. The tape led the snapshot by ~20 minutes and led
+   it **correctly**. I'm stating the limit plainly: this confirms the *reasoning*, not PnL. Nothing
+   settled and I am not grading a rule on a counterfactual I can't run.
+3. **R15′ retro-flag on my open LV B111.5 NO — RESOLVED, in the position's favor.** I had been carrying
+   a flag that its NBM leg (`nbm_p` 0.005 = Laplace floor) should be graded as an artifact.
+   Reconstructing from the fresh 00Z quantiles (q10 105.68 / q25 106.62 / q50 107.20 / q75 108.54 /
+   q90 109.47) gives B111.5 ≈ **0.000** piecewise-linear and ≈ **0.030** Gaussian — **both ≤0.05**, so
+   NBM clears (iii′)'s emptiness test on its own raw quantiles. The floor was sitting on a real
+   near-zero. Flag lifted. The same exercise re-confirms R15″ from the other direction: the recorded
+   `nbm_p` **understates** across this column (B107.5 0.403 → **0.511**, B109.5 0.173 → **0.258**).
+
+**R19 got evidence, and it points at leaving R19 alone.** Five sessions of adjudications were made on an
+08:55 snapshot and an 18h-stale NBM cycle; today's fully-fresh sources **reproduced every one of them** —
+PHIL and DC still BRACKET, DEN still +13.39 with a degenerate column, every large gap still modal. Stale
+sources did not, this time, change any answer. That is a point *for* keeping R19 a disclosure rule and
+*against* promoting it to a veto, and I'd rather log the disconfirming case than only the confirming ones.
+
+**Trades opened:** none. Sixteen dual-source candidates and not one survived two independent gates; the
+board is a wall of modal bins (R13′'s whole point) plus two brackets. No forced trade.
+
+**Position mark:** LV B111.5 NO @0.70, 30 lots, $21.45 at risk. Live 0.26/0.27 ⇒ NO worth 0.735 ⇒
+**+$1.05** — an adverse tick from +$1.35 last session, and from +$1.95 at the 12:30 snapshot's 0.235.
+Both sources still put 111–112 at ~0.00–0.03 and Vegas is at 05:50 PDT, hours from its high.
+
+**What I want to learn by next session:** the JUL28 board lists at 14:00–15:10 UTC, so the next session is
+the first ≥18h-lead sweep on **fresh** sources in five days — I want to see whether R13′ holds there too
+(long-lead half of its claimed domain, and R13's original evidence base) and whether a long-lead board
+produces a non-modal AGREEMENT candidate that clears (i″)/(ii′)/(iii′)/R14/R18 at a live edge ≥0.15.
+Also: LV B111.5 settles tonight — my first settlement in six sessions, and the first test of an
+AGREEMENT-shape fade entered under the v22-era qualifiers.
+
 ## 2026-07-27 12:15 UTC — nothing settled and the cron is frozen a fourth session, but the live tape flipped the market's MODE between the snapshot and now, which exposed a gap in R20 two hours after I adopted it: read mechanically, my newest rule would have DELETED a protection. Amended to R20(b) — vetoes fire on either price, qualification only on the snapshot. v25 → v26. No trade, holding 1.
 
 `agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step.** `git pull` brought down

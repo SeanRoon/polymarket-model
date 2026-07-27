@@ -1,6 +1,71 @@
 # Agent strategy playbook
 
-**Version: v26** (2026-07-27 12:15 UTC — **nothing settled, the cron is frozen a fourth consecutive
+**Version: v27** (2026-07-27 13:15 UTC — **nothing settled, but the cron UN-FROZE and NBM rolled to the
+00Z cycle, giving me the first fully-fresh full sweep in five sessions — and it produced one rule
+amendment, one out-of-sample confirmation of a rule I shipped an hour ago, one resolved retro-flag on my
+open position, and ZERO trades.**) `agent-settle settled=0 still_open=1`. Newest snapshot **1230.parquet
+(43 min old)**, `nbm_cycle_utc` **2026-07-27 00:00** at `nbm_lead_hours` 21–24 — versus the 08:55 /
+18h-stale pair the last four sessions ran on. Board: **16 high events + 20 low events, all JUL27.** The
+low half is removed wholesale by **R12″** (12:50 UTC = 08:50 EDT / 07:50 CDT / 06:50 MDT / 05:50 PDT, so
+every one of the 20 low events sits inside the local-midnight-to-10:00 blackout). The high half is
+sweepable under **R12′** (every city's local time is before ~09:00, so no high has begun forming), and I
+swept all 16.
+
+**1. NEW — R13′: the edge/mode coupling is LEAD-INDEPENDENT. R13's ≥24h scoping and its stated mechanism
+are both wrong, and today's board measures it.** R13 says large edge ⇒ the market's modal bin *at ≥24h
+lead*, and explains it by the long-lead distribution being "wide and comparatively flat." That mechanism
+predicts the coupling should **weaken** at short lead, where the market is sharp. Measured on today's
+**6–7h** settlement-day board: of 16 bins clearing R2's both-sources-≥0.10-below bar, **12 are the
+market's modal bin (75%)**, and **the seven largest gaps are all modal** — AUS B98.5 (gap 0.626), DAL
+T101 (0.546), SATX B96.5 (0.511), NYC B83.5 (0.439), PHIL B87.5 (0.398), DEN B93.5 (0.356), LV B109.5
+(0.354). R13's own founding measurement on the ≥24h JUL27 board was "every one of the five largest was
+modal"; at a quarter the lead it is the largest **seven**. **The real mechanism is simpler and has
+nothing to do with lead: the gap on a bin is bounded above by the price the market put there, so the
+biggest gaps can only live where the market put its mass.** R13′ therefore drops the lead qualifier —
+**hunt the 2nd/3rd-priced bins on EVERY board, and never read a short-lead board's huge edge as more
+trustworthy than a long-lead one's.** This is a **tightening** (it extends a skeptical rule to a domain
+it did not previously cover), which is why I accept it on one board's evidence.
+
+**2. R20(b) CONFIRMED out-of-sample, one hour after adoption — and I labeled it "untested" when I shipped
+it.** At 12:15 I amended R20 to be asymmetric because the **live** book showed `KXHIGHTDAL-26JUL27-T101`
+had become the market's modal bin (0.555) while the frozen 08:55 snapshot still had B101.5 modal
+(0.480 vs T101 0.355) — a mechanical symmetric reading would have pointed R5a's modal-fade ban at the
+stale snapshot and **deleted a protection**. **The 12:30 snapshot has now caught up and agrees with the
+live book exactly: T101 0.555 (modal), B101.5 0.405.** Live at 13:21 it is 0.56/0.57 and still climbing.
+**The live tape led the snapshot by ~20 minutes and it led it correctly** — for those 20 minutes a
+symmetric R20 would have had me carrying a false "T101 is non-modal." **Stated honestly: this confirms
+R20(b)'s *reasoning*, not that the fade would have lost money.** Nothing settled; no PnL claim is
+available and I am not manufacturing one.
+
+**3. R15′'s retro-flag on my open position RESOLVES IN ITS FAVOR — the NBM leg was NOT an artifact.** I
+have been carrying LV B111.5 NO @0.70 with a flag saying its NBM vote (`nbm_p` 0.005 = the Laplace floor)
+should be graded as a floor artifact. Reconstructing from the **fresh 00Z** cycle's own quantiles (q10
+105.68, q25 106.62, q50 107.20, q75 108.54, q90 109.47) — which is exactly what R15′ demands — gives
+B111.5 ≈ **0.000** piecewise-linear and ≈ **0.030** under a Gaussian fit to (q50, q90). Both are **≤0.05**,
+so NBM independently clears (iii′)'s emptiness test on its raw quantiles; the floor was a floor sitting on
+top of a genuine near-zero, not a fabrication. **Retro-flag lifted.** (The same reconstruction shows the
+recorded `nbm_p` understates elsewhere in this column — B107.5 0.403 recorded vs **0.511** reconstructed,
+B109.5 0.173 vs **0.258** — reinforcing R15″: reconstruct, don't read the column.)
+
+**4. R19 evidence, in the reassuring direction.** Five sessions of adjudications were made on an 08:55
+snapshot and an 18h-stale NBM cycle. Today's fully-fresh sources **reproduced every single refusal**:
+PHIL high B85.5 and DC high B87.5 are still **BRACKET** (PHIL — model mode B89.5 @0.398 *above*, NBM mode
+T83 @0.543 *below*, faded bin the 85–86 shoulder; DC — model mode B91.5 @0.435 above, NBM mode T87
+@0.909 below, faded bin the 87–88 shoulder), DEN still carries `model_bias_applied_f` **+13.39** with a
+degenerate model column (0.954 on T93, the 0.0093 floor on all five others), and every large gap is still
+modal. **The stale sources were not, this time, producing different answers than fresh ones** — which is
+a point *for* keeping R19 a disclosure rule rather than promoting it to a veto.
+
+**Adjudication of all 16 dual-source candidates — nothing survived.** 12 blocked by **R5a** (modal);
+DEN B95.5 by **R9** + a degenerate model column; LV B111.5 is my own open position (duplicate guard);
+**DC B87.5 fails (iii′)** (mid 0.295 < 0.30 triggers the emptiness test, and NBM 0.071 > 0.05) *and* is
+BRACKET; **PHIL B85.5 fails R2's ≥0.15 live-edge bar** (at `yes_bid` 0.31 per R14, the NBM gap is
+0.31 − 0.210 = **0.10**) *and* is BRACKET, which is min-size hypothesis-only at 0W–1L / −$28.59. Two
+independent refusals each. **No trade opened.** Holding 1.
+**Position mark:** LV B111.5 NO @0.70 (30 lots, $21.45 at risk) quotes 0.26/0.27 live ⇒ NO worth 0.735,
+**+$1.05** — an adverse tick from last session's +$1.35 (and from +$1.95 at the 12:30 snapshot's 0.235).
+
+**Superseded header (v26, 2026-07-27 12:15 UTC — **nothing settled, the cron is frozen a fourth consecutive
 session (newest cycle still `0855.parquet`, now 3h20m old), and the live tape produced a new
 structural fact that exposes a GAP in R20 — a rule I adopted two hours ago. One amendment, and it is
 a TIGHTENING that is cost-free today.** `agent-settle settled=0 still_open=1`. Sources are
@@ -491,6 +556,26 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   ~1-candidate-per-board event**, so the v14 de-scale to 1/session costs me nothing.
   *Kill if: over ≥5 long-lead boards, the largest-gap bin is NOT the market's modal bin a
   majority of the time (then the coupling is not structural and R13 is describing noise).*
+  **v27 AMENDMENT — R13′: the coupling is LEAD-INDEPENDENT. Drop the "≥24h" qualifier, and discard
+  R13's stated mechanism, which is wrong.** R13 explained the coupling by the long-lead market being
+  "wide and comparatively flat." That mechanism makes a testable prediction — the coupling should
+  **weaken** at short lead, where the market's distribution is sharp and observation-informed.
+  **It does not.** Measured on the **6–7h** JUL27 settlement-day board (16 high events, snapshot
+  1230.parquet, fresh 00Z NBM): of the 16 bins clearing R2's both-sources-≥0.10-below bar, **12 (75%)
+  are the market's modal bin**, and **the seven largest gaps are ALL modal** — AUS B98.5 0.626, DAL
+  T101 0.546, SATX B96.5 0.511, NYC B83.5 0.439, PHIL B87.5 0.398, DEN B93.5 0.356, LV B109.5 0.354.
+  R13's founding long-lead measurement was "the five largest"; at a quarter of the lead it is the
+  **seven** largest. **The correct mechanism has nothing to do with lead or flatness: on a 6-bin
+  board a bin's both-sources-below gap is bounded above by the price the market put there, so the
+  largest gaps can only exist where the market placed its mass.** That bound holds at every lead.
+  **R13′ operationally:** hunt the 2nd/3rd-priced bins on **every** board, long-lead or settlement-day,
+  and **never treat a short-lead board's huge edge as more trustworthy than a long-lead one's** — if
+  anything it is less, because at short lead the market is also holding observations I cannot see
+  (R12″'s channel). This is a **tightening**: it extends a skeptical rule into a domain R13 did not
+  cover, so I accept it on one board's evidence, which I would not do for a loosening.
+  *Kill R13′ if: over ≥5 SHORT-lead (<12h) boards the largest-gap bin is NOT the market's modal bin a
+  majority of the time — i.e. the coupling really is a long-lead artifact and R13's original scoping
+  was right. Same test as R13's, run on the newly-claimed domain.*
 
 - **R14 (fade the BID, not the mid; require a real book — NEW in v18):** Screen NO-fades on
   **`yes_bid`**, never on the snapshot's `mid`, and require the target bin to have a genuine
@@ -840,6 +925,16 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   instead of in the session where a candidate I want depends on it. Applies to every veto I own
   (R5a modality, (iii′)'s ≤0.85 entry cap and emptiness test, R14's book-quality test, R18's
   faded/modal price ratio), not just to R5a.
+  **CONFIRMED OUT-OF-SAMPLE (v27, 2026-07-27 13:15 UTC — one hour after adoption).** The cron un-froze
+  and the **12:30 snapshot caught up to the live book exactly**: `KXHIGHTDAL-26JUL27-T101` **0.555 and
+  modal**, B101.5 0.405 — precisely what the 12:16 live tape said and the 08:55 snapshot denied. Live at
+  13:21 it is 0.56/0.57, still climbing. **The live book led the snapshot by ~20 minutes and it led it
+  correctly**; a symmetric R20 would have had me carrying a false "T101 is non-modal" through that
+  window and, applied mechanically, would have handed R5a a stale premise. **What this does and does not
+  establish:** it confirms R20(b)'s *reasoning* — the live price is reliable evidence **against** a
+  candidate even while it is unreliable **for** one — because the fresher source vindicated the tape.
+  It establishes **nothing about PnL**: nothing settled, and I will not grade a rule by a counterfactual
+  I cannot run. R20(b) remains a tightening held to a tightening's evidentiary bar.
 
 - **R10 (column consistency — NEW in v3):** If I veto a column's YES longshot as model
   artifact (R7/R8), I may not trade the NO side of another bin in that same column when
@@ -966,6 +1061,45 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v27** (2026-07-27, 13:15 UTC): **Nothing settled (`settled=0 still_open=1`), but the cron UN-FROZE
+  and NBM rolled to the 00Z cycle — the first fully-fresh full sweep in five sessions (snapshot
+  `1230.parquet`, 43 min old; `nbm_cycle_utc` 2026-07-27 00:00 at 21–24h lead). One rule amendment, one
+  out-of-sample confirmation, one retro-flag resolved, ZERO trades.**
+  **NEW R13′ — the edge/mode coupling is LEAD-INDEPENDENT; R13's "≥24h" scoping and its
+  "wide/flat long-lead board" mechanism are both wrong.** R13's mechanism predicts the coupling weakens
+  at short lead. Measured on today's **6–7h** board (16 high events): of 16 bins clearing R2's
+  both-sources-≥0.10-below bar, **12 (75%) are the market's modal bin** and **the seven largest gaps are
+  all modal** (AUS B98.5 0.626, DAL T101 0.546, SATX B96.5 0.511, NYC B83.5 0.439, PHIL B87.5 0.398,
+  DEN B93.5 0.356, LV B109.5 0.354) — versus R13's founding long-lead "five largest." The real
+  mechanism is a bound, not a lead effect: **a bin's both-sources-below gap cannot exceed the price the
+  market put there**, so the biggest gaps live where the market placed its mass, at every lead.
+  Operationally: hunt 2nd/3rd-priced bins on *every* board, and never treat a short-lead board's huge
+  edge as more trustworthy — at short lead the market also holds observations I cannot see (R12″).
+  Accepted on one board because it is a **tightening**; kill clause mirrors R13's, run on <12h boards.
+  **R20(b) CONFIRMED out-of-sample one hour after I shipped it labeled "untested."** The 12:30 snapshot
+  caught up to the 12:16 live book exactly — `KXHIGHTDAL-26JUL27-T101` **0.555, now modal**, B101.5
+  0.405 (the 08:55 snapshot had B101.5 @0.480 modal, T101 @0.355); live 13:21 0.56/0.57. **The tape led
+  the snapshot by ~20 min and led it correctly**, so the veto R20(b) preserved was the right one.
+  Confirms the *reasoning*, not PnL — nothing settled.
+  **R15′ retro-flag on the open LV B111.5 NO RESOLVED in the position's favor.** Reconstructing NBM
+  from the fresh 00Z quantiles (q10 105.68 / q25 106.62 / q50 107.20 / q75 108.54 / q90 109.47) gives
+  B111.5 ≈ **0.000** piecewise-linear, ≈ **0.030** Gaussian — both ≤0.05, so NBM clears (iii′)'s
+  emptiness test on its own quantiles and the Laplace floor was sitting on a genuine near-zero. Flag
+  lifted. Same reconstruction re-confirms R15″ (recorded `nbm_p` understates: B107.5 0.403 → **0.511**,
+  B109.5 0.173 → **0.258**).
+  **R19 evidence, reassuring direction:** the fresh sources **reproduced every refusal** made on the
+  stale ones — PHIL B85.5 and DC B87.5 still BRACKET, DEN still bias **+13.39** with a degenerate model
+  column (0.954 on T93, floor on the other five), every large gap still modal. Argues for keeping R19 a
+  disclosure rule rather than promoting it to a veto.
+  **Sweep:** R12′ authorized all 16 high events (every city local-time before ~09:00, no high formed);
+  **R12″ removed all 20 low events wholesale** (08:50 EDT / 07:50 CDT / 06:50 MDT / 05:50 PDT — all
+  inside the local-midnight-to-10:00 blackout). All 16 dual-source candidates refused, each on ≥2
+  independent grounds: 12 by **R5a** (modal), DEN B95.5 by **R9** + degeneracy, LV B111.5 = my own open
+  position, **DC B87.5** by **(iii′)** (mid 0.295 < 0.30, NBM 0.071 > 0.05) + BRACKET, **PHIL B85.5** by
+  **R2's ≥0.15 live-edge bar** (NBM gap at `yes_bid` 0.31 is only 0.10) + BRACKET (0W–1L, −$28.59).
+  **R12's kill clause tested and not triggered: this pre-14:00 sweep produced no trade clearing all
+  governing bars, so R12/R12′ stand.** No trade; holding 1; LV mark **+$1.05** (adverse tick).
 
 - **v26** (2026-07-27, 12:15 UTC): **Nothing settled (`settled=0 still_open=1`), cron frozen a fourth
   consecutive session (newest cycle still `0855.parquet`, 3h20m old), so the modeled sources are
