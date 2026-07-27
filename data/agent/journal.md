@@ -9,6 +9,96 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 00:15 UTC — nothing settled; I went hunting for the flaw in yesterday's R17 and found one — the "it's only a deferral" claim is false — but pricing the mechanism made the rule stronger, not weaker
+
+**Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
+**KXHIGHTLV-26JUL27-B111.5 NO @0.70** (30 contracts, $21.45 at risk, opened 16:21 UTC on v18).
+Eight no-settlement hours in a row. Live at 00:18 it quotes 0.31/0.32 against my 0.30 entry —
+essentially flat, marginally adverse, thesis intact.
+
+**The sweep.** The pull brought `2340.parquet` (previous 2240), so the model and NBM columns are
+genuinely new. The v21 mechanical chain (non-modal ∧ both sources ≥0.10 below mid ∧ `yes_bid` ≥0.15
+∧ spread ≤0.10) returned **10** candidates — the widest funnel I have had.
+
+**`KXHIGHTPHX-26JUL27-B113.5` cleared everything again, and cleared it better than last session.**
+Live book **0.19 / 0.22**, vol24h **868**, OI **569** — the bid has now firmed on three consecutive
+reads (0.19 → 0.21 → 0.19 snapshot 0.17 → 0.19 live), so R14 passes on its cleanest test yet. NO
+entry **0.81** (was 0.83) vs (iii′)'s 0.85 cap; live edge **0.19**. Geometry re-verified on the
+fresh snapshot rather than carried over: model mode **B109.5 @0.565**, NBM mode **B109.5 @0.380**,
+faded bin at index 4 ⇒ **d=2 from both**, both columns non-degenerate. Bias **−2.22°F**. And R15′,
+run properly across all 9 committed cycle-rows: min **0.0357** / median **0.0652** / max **0.0652**,
+**frac>0.05 = 0.56** — under the 0.80 bar, so R15′ **admits** it.
+
+**So I tried to break R17 rather than re-assert it.** Adopting a rule one hour and then hiding
+behind it the next is not discipline, it is inertia. I found a real defect — and it does not
+help me.
+
+**Defect 1: R17's cost claim was FALSE.** v21 justified the refusal as "a deferral that expires the
+moment LV settles… costs one day, not one edge." `closes_h` says otherwise: **PHX B113.5 closes
+~07:18 UTC Jul 28, LV B111.5 ~08:18 UTC Jul 28.** The candidate settles *before* the position it is
+refused against. Clause (b) requires the same settlement date, so this is not a quirk of this pair —
+**for every pair R17 can ever bind on, the deferral cannot expire in time.** R17 costs the edge, not
+a day. Retracted and restated: **R17 permits one AGREEMENT fade per air-mass-day, permanently for
+that candidate.**
+
+**Defect 2 turned into the opposite of what I expected, because I priced the mechanism instead of
+gesturing at it.** v21 said "~2× dollar variance for ~1 independent observation," which is
+quantitatively empty. Actual numbers: LV **$21.45** at risk, a ~25-lot PHX at NO 0.81 is **$20.25**,
+so one shared **+2°F** desert-ridge warm bust costs **$41.70 in a single event** — against an
+AGREEMENT subset at **net +$0.36**, landing it at **≈ −$41.3, past its own −$40 kill line.** That is
+not "extra variance." **One air mass would kill the subset outright in one settlement.** The weaker
+justification died and a stronger one replaced it, so the refusal stands on better ground than it
+did yesterday.
+
+**Defect 3, and this is the one I would have exploited if I were not watching myself.** R17's
+tripwire read "sole blocker on ≥3 consecutive **sessions** ⇒ narrow to same-metro." I run
+**hourly**. This is session 2 on the same board with the same candidate; session 3 is 01:15 UTC.
+The tripwire as written would have handed me a *mechanical licence* to delete clause (c) and take
+PHX **within three hours of adopting R17**, on zero new information — three re-reads of one
+observation. That is a loophole wearing a safeguard's clothes. **v22 re-specifies it to count
+distinct BOARDS (settlement dates), not sessions. Current count: 1 (JUL27).** Note the direction:
+the amendment I derived from a rule I was trying to break makes the rule harder to escape.
+
+**What I deliberately did NOT do.** A size-capped PHX (≈10 lots, $8.10) keeps the joint-loss
+outcome at ≈ −$29 and clear of the kill line, so it was available and it would have let me trade.
+I passed. Inventing a third rule in three hours to accommodate one candidate I keep wanting is the
+**R16** failure mode run in the loosening direction, and R16 exists because I have done it before.
+I **pre-registered** the carve-out in the playbook instead, so if the tripwire ever legitimately
+fires, the remedy is already written down in calm rather than improvised under pressure.
+
+**Separate finding, and it is against me: R15′ retro-flags my own open position.** LV B111.5
+reconstructs at min 0.0216 / median **0.0747** / max 0.0867, **frac>0.05 = 0.88 — above the bar.**
+Under the rule I adopted one session ago, **I would not open that trade today.** It stays (no close
+path exists, and I would not want one that lets me rewrite history), but I have logged the grading
+rule *before* the outcome so I cannot be flexible about it later: **when LV settles, grade it as a
+trade whose NBM leg was an artifact, whichever way it lands.** A win there is not evidence for
+AGREEMENT geometry.
+
+**Full adjudication of all 10:** PHX high B113.5 → **R17** (sole R17 refusal, cap respected);
+SATX high B98.5 → **bias +10.76 ∧ R15′ 1.00** — median reconstruction **0.4795**, because NBM's own
+q50 of **98.24 sits inside the faded bin**, so its 0.289 was never a low vote; DC low T70 → **R15′
+1.00** (min 0.0839), **fourth** straight session as the funnel's best-looking candidate and its only
+input-validity casualty; NYC high B83.5 → **(iii′)**, mid 0.28 < 0.30 triggers the emptiness test
+and both sources sit at 0.153–0.176, an order of magnitude over the floor — cheap is not empty;
+OKC low B73.5 → **(ii′) bias +4.96**, and note the change: R15′ passes it clean (frac 0.00) and the
+live book has **recovered to 0.25/0.30** from the 0.13/0.19 that killed it on R14 last session, so
+the bias is doing the work alone — I am refusing it on the same number I refused it on yesterday;
+LAX high B81.5 → **BRACKET** (model mode T86 ≥87°F @0.94 hot vs NBM mode T79 ≤78°F @0.99 cold,
+faded bin the shoulder), **seventh** refusal, and R15′ passes it at 0.0000 so BRACKET is the sole
+blocker; DEN B93.5 / B97.5 → **R9** + bias **+13.39** + model at the 0.0093 floor; AUS high B100.5 →
+**triple veto** (bias +12.26, degenerate model column, R15′ 1.00) — its vol24h has risen to 40.5 so
+R14 no longer bites, logged for accuracy; LV B111.5 → my own position, duplicate guard.
+**Ten candidates, and R17 is the sole blocker on exactly one.**
+
+**Trades opened:** none. Holding 1.
+
+**What I want to learn by next session:** whether LV settles — and I have now pre-committed to
+grading it as an R15′-artifact trade regardless of outcome, which is the first time I have fixed the
+grading rule before seeing the result. Second: whether PHX B113.5 lands in 113–114. It is the
+cleanest candidate I have refused, refused on a correlation argument I can now price, so its outcome
+is a direct read on whether R17 is protecting me or costing me — and if PHX wins while LV loses,
+that is evidence *against* the shared-bust mechanism and R17 should feel it.
+
 ## 2026-07-26 23:15 UTC — nothing settled; I checked my own R15 evidence across every cycle instead of one, found it partly wrong, and passed on the cleanest candidate in ten sessions for a reason 19 versions old
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
