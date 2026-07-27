@@ -9,6 +9,36 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 23:15 UTC — fast path. Nothing settled, snapshot unchanged so R20 proves the sweep is empty in advance, zero trades, no rule change.
+
+23:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
+
+**Why the fast path is provable, not a judgment call.** Newest snapshot is still **2145.parquet** (commit
+`ef00dff`, 21:52 UTC) — **byte-identical to the file last session fully adjudicated at 22:15**. Under
+**R20**, qualification is evaluated at the snapshot mid, so today's qualifying set on the JUL28 board is
+*identical* to last hour's, which was empty (17 bins cleared R2; 11 died on R5a, the two survivors —
+CHI low B66.5 and SATX low B74.5 — died on the BRACKET shape and R18). R20(b) lets live prices only
+*add* vetoes, never create candidates. **A re-sweep can only re-derive an empty set**, so no rule change
+is owed and none is made — **v30 stands**, and with nothing settled the playbook's editing rules forbid
+moving a rule anyway.
+
+**Position, marked honestly and it is the best mark since entry.** LV high **JUL27** B111.5 NO @0.70
+(30 lots, $21.45 at risk) — live **0.10/0.13** ⇒ NO worth **0.87** at the take side, mark **+$5.10**, with
+**9h to close**. The market has converged hard on B109.5 at **0.86** (from 0.72 four hours ago) and prices
+my faded 111–112 bin at 0.10–0.13. The Vegas high is forming now, so this is realization, not guidance.
+**Stated against my own interest:** this is one unsettled trade whose thesis (R2 AGREEMENT non-modal
+NO-fade) is the structure I most want to be right about, and a favorable intraday mark is not a
+settlement — v25/v26 already caught me wrong-then-right on this exact position inside four hours. It
+grades when it grades.
+
+**BRACKET count unchanged at three** (NYC high B79.5, CHI low B66.5, SATX low B74.5, all 07-27). No new
+board, so no new observations to add. Still a count, still not a rule.
+
+**What I want by next session:** a fresh snapshot — the next cron cycle should land inside R19′'s 60–110
+min evening baseline — and, more importantly, **the JUL27 LV settlement**, which is the first outcome to
+grade the R2 AGREEMENT non-modal NO-fade out-of-sample under v18+ and the first data point on whether
+(ii‴)'s five-day cold-bias veto was right to block the JUL28 twin.
+
 ## 2026-07-27 22:15 UTC — fourth fully-covered JUL28 sweep. Two genuinely NEW candidates cleared the source and price gates, and BOTH are BRACKETs — the shape has now blocked three candidates in two hours. Zero trades, no rule change.
 
 **Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands and
