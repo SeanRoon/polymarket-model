@@ -9,6 +9,82 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 14:15 UTC — I finally measured the cron instead of narrating it, and the "freeze" I have asserted for three sessions is not real. Also the first session to reach the 40h board R12 promised — with zero forecast coverage of it. v27 → v28. No trade (provably), holding 1, mark now underwater.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. The LV B111.5 NO is my only
+position and closes tonight; nothing to grade, so no by-version or by-category re-read.
+
+**The retraction, which is the session.** For three consecutive headers I have written that the
+snapshot cron was frozen — "re-froze" (v25), "frozen a fourth consecutive session" (v26), "the cron
+UN-FROZE" (v27). Today I checked what its normal cadence actually is, which I had never done. Counting
+committed files, 07-22 → 07-26: **13, 12, 13, 15, 15 per day**, against a nominal 15-minute schedule
+that would give 96 — so the workflow delivers roughly **one run in seven** (GHA throttles scheduled
+workflows on public repos). And the delivery is not random, it is the same diurnal shape every single
+day: a **3h20m–4h05m** gap after ~01:00 UTC, **2h10m–3h35m** gaps through the morning, then **60–110
+min** from ~11:00 UTC to midnight.
+
+Every "freeze" I flagged is inside that distribution. The worst was v25: at 10:15 I called the cron
+re-frozen over a snapshot that was **80 minutes old**, when the normal morning gap is 2h10m–2h50m. It
+wasn't slow, it was *early*. And v27's "the cron UN-FROZE" describes nothing at all — the 12:30
+snapshot is the ordinary late-morning cycle that also landed at 12:15, 12:05, 12:45 and 12:00 on the
+four preceding days. What I called "the first fully-fresh sweep in five sessions" was a sweep run
+shortly after a cycle that arrives at that hour *daily*.
+
+I'll state the counter-evidence too, because today is genuinely slow: its three gaps (4h05m, 3h30m,
+3h35m) all sit at or above the top of their windows' ranges, and 4 files by 14:19 against a 6-day
+median of ~6–7. **"Slow end of normal" is right. "Frozen" never was, and "un-froze" was meaningless.**
+
+Why it matters beyond bookkeeping: "the cron is frozen" was doing rhetorical work. I cited it
+repeatedly next to R5(b) and R20 when refusing DAL T101, as if staleness were an additional count
+against the candidate. Those refusals stand on their own — R5(b), R20, R13′ — and I am revisiting
+none of them. But a premise I never verified should not have been carrying argumentative weight for
+five sessions. → **R19′**: judge model staleness against the measured per-window baseline, disclose
+only when a gap exceeds its window's range, and phrase it as "N minutes old against an X-hour normal
+for this hour." The NBM half of R19 is untouched and still correct: `nbm_cycle_utc` is a recorded
+field, the 16–18h cycle ages were real, and that argument never depended on the recorder at all.
+
+**The other thing that happened: I reached the good board and could not use it.** This is the first
+session my hourly schedule has landed inside R12's advertised 14:00–15:10 listing window with the
+next-day board genuinely live — `KXHIGHAUS-26JUL28` quotes a full six-bin book at **40h to close**,
+exactly the ≥18h-lead board R12 spent six sessions telling me I was missing. And I have **zero
+coverage of it**: the newest snapshot (1230) predates the listing, so
+`agent-model-view --min-lead-hours 20` returns `_none at this threshold_` — no `model_p`, no `nbm_p`,
+on any JUL28 bin. R1 and R2 both require sources. With none, the live book is the only input I have,
+and screening on it alone is R20's manufactured-edge failure in its purest possible form: there isn't
+even a stale forecast for the price to be measured against.
+
+→ **R12‴**: a board that has listed but that my newest snapshot doesn't cover is **not sweepable**.
+I want to name the pressure honestly, because it was real — this is the *good* board, the one I've
+been waiting six sessions for, which is precisely when the urge to substitute the tape for the missing
+model is strongest. That is R16's reverse-engineering failure mode with a countdown clock on it.
+The scheduling half is the actionable part: the first covering snapshot landed at **14:20 / 14:30 /
+15:00 / 14:00 / 14:10** across the five measured days. **My 14:15 session loses that race 4 days in 5;
+my 15:15 session has coverage 5 of 5.** R12's v17 advice — "git pull again a few minutes later" — was
+written for the nominal 15-min cron; the real wait is 5–45 minutes. So: check coverage once at 14:15,
+and if it's absent, fast path and treat **15:15 as the first real sweep** of the next-day board.
+
+**Trades opened: none — and today that is provable rather than a judgment call.** JUL28 has no
+coverage (R12‴). JUL27's snapshot is byte-identical to the one v27 fully adjudicated an hour ago, and
+**R20 evaluates qualification at the snapshot mid** — so the qualifying set is exactly last session's,
+which was empty, while R20(b) permits live prices only to *add* vetoes. The candidate set is a subset
+of an empty set. That's the first time one of my own rules has told me *in advance* that an hour of
+sweeping would be wasted, which is worth more than the hour. Scope shrank as well: at 14:16 UTC it's
+10:16 EDT / 09:16 CDT, so every Eastern and Central high is now past R12′'s ~09:00 local predicate,
+and all 20 low events remain inside R12″'s blackout.
+
+**Position, and it has gone underwater.** LV B111.5 NO @0.70 (30 lots, $21.45 at risk) quotes
+**0.32/0.33** live ⇒ NO worth 0.675, **−$0.75**. That's the fifth straight adverse tick (+$3.90 →
++$1.50 → +$1.05 → +$1.35 → +$1.05 → −$0.75) as B111.5 walked 0.23 → 0.235 → 0.26 → 0.325. It's 07:16
+PDT with 18h to close, so a Las Vegas high has not begun to form — this is guidance repricing, not
+R12″'s observation channel. R5(b) forbids adding; nothing requires or permits closing. I hold and mark
+it honestly. Market mode is B109.5 @0.555, so my faded bin is the 2nd-priced one — exactly where R13′
+says to hunt, and exactly where being wrong costs.
+
+**What I want to learn by next session:** whether the 15:15 session does in fact arrive with JUL28
+coverage — that's R12‴'s first live test, and the first genuine ≥18h-lead sweep I'd be able to run.
+And LV B111.5 settles tonight: the first settlement in six sessions, and the first real grade on an
+(iii′) deep-tail fade whose NBM leg I cleared by reconstruction rather than by the recorded column.
+
 ## 2026-07-27 13:15 UTC — the cron un-froze AND NBM rolled to 00Z: first fully-fresh sweep in five sessions. It reproduced every stale-source refusal, confirmed R20(b) out-of-sample one hour after adoption, resolved the retro-flag on my open position, and produced R13′ — the edge/mode coupling is lead-INDEPENDENT. v26 → v27. No trade, holding 1.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1` — the LV B111.5 NO is my only
