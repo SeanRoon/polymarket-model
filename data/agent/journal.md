@@ -9,6 +9,110 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 09:15 UTC — cron un-froze; first fresh cycle in four sessions gave a full 9-candidate sweep, three rule changes and ZERO trades. The board's second-biggest edge was the market reading a thermometer. Strategy v23 → v24.
+
+`agent-settle settled=0 still_open=1`. **Nothing settled ⇒ no grading step.** But the version moves
+anyway, because the fixed editing rule bumps on *any* rule change and I have three — all sourced
+from the live tape rather than from settlements. `git pull` finally brought a **new modeled
+snapshot (`0855.parquet`)**, ending the three-session freeze, so for the first time since 05:25 the
+funnel had genuinely new inputs and deserved the full treatment rather than the fast path.
+
+**The sweep, in full.** 216 bins → **9** clearing non-modal (R5a) + both sources ≥0.10 below the mid
++ mid ≥0.15 → **3** past the cell and geometry vetoes → **0** tradeable. Adjudications:
+
+| candidate | mid | model | NBM | verdict |
+|:---|--:|--:|--:|:---|
+| HOU low B76.5 | 0.445 | 0.194 | 0.339 | R2 (NBM only 0.106 below); R18 ratio 0.817 |
+| **OKC low T71** | 0.420 | 0.009 | 0.005 | **new R12″ — market is reading an observation** |
+| **PHIL high B85.5** | 0.385 | 0.065 | 0.099 | BRACKET shape (R2's 0W–1L subset) |
+| **DC high B87.5** | 0.355 | 0.028 | 0.051 | BRACKET shape |
+| DAL high T101 | 0.355 | 0.028 | 0.244 | **new R15″(b)** — NBM 0.091 below, under R2's 0.10 |
+| MIA high B93.5 | 0.315 | 0.139 | 0.005 | (ii′) — Miami/high disqualified outright |
+| DEN high B93.5 | 0.280 | 0.009 | 0.060 | R9 — bias **+13.39°F**, model at Laplace floor |
+| MIA low B74.5 | 0.270 | 0.139 | 0.048 | (iii′) — mid <0.30 needs BOTH ≤0.05; model 0.139 |
+| LV high B111.5 | 0.245 | 0.009 | 0.005 | my own open position |
+
+**The important one is OKC, and it is the most dangerous thing I have ever screened.** `T71`
+(OKC low ≤70°F) came **second on the whole board** by apparent edge and **passed every gate I
+own**: non-modal (market mode B71.5 @0.54), d_model=3 / d_nbm=4 clearing (i″) comfortably, both
+columns non-degenerate, R18 ratio 0.778, 1,687-lot book with a 0.10 spread inside R14, no R17
+conflict with my open LV *high*. Then I looked at the tape:
+
+| cycle (EDT) | T71 | B71.5 | B73.5 | B75.5 | B77.5 | T78 |
+|:---|--:|--:|--:|--:|--:|--:|
+| 07-26 21:20 | 0.035 | 0.060 | 0.325 | 0.335 | 0.135 | 0.055 |
+| 07-27 01:25 | 0.040 | 0.075 | 0.335 | 0.375 | 0.055 | 0.050 |
+| 07-27 04:55 | **0.420** | **0.540** | **0.005** | **0.005** | **0.005** | **0.005** |
+
+**In one cycle the market put 0.96 of its mass on ≤72°F and zeroed every bin at 73°F and above**,
+on roughly 4× the volume (B73.5 1,056 → 2,624; T78 → 6,058). Live at 09:21: 0.36/0.46 on T71,
+0.54/0.57 on B71.5, **0.00/0.01 on all four warmer bins**. Meanwhile both my sources say the
+minimum lands **75–78°F** (NBM q10 **77.08**, q50 78.34; model mode B75.5 @0.565), and NBM's
+reconstruction is **0.0000 on all twelve cycles** — a perfectly stable, perfectly confident,
+perfectly wrong second vote. At 03:55 CDT the overnight minimum is essentially on the thermometer.
+**The market wasn't mispricing ≤70; it was reporting it.** That is the ATL-low / R11
+obs-beats-sources shape, and my funnel handed it to me as a 0.41 edge at NO 0.63.
+
+**So R12″ (new):** R12′'s "extreme not yet in progress" predicate is written **for highs only**
+(~09:00 local) and I never wrote the low half — but a daily *minimum* is largely realized between
+local midnight and sunrise, which is exactly when my hourly sessions run. Low bins are now
+unscreenable from local midnight to ~10:00. When a source disagrees with the market by ≥3°F on a
+low inside that window, the size of the apparent edge measures **how stale I am**, not how wrong
+the market is.
+
+**R15″ (new) — and this one is a LOOSENING that I want on the record as such.** Applied literally,
+R15′ vetoed PHIL B85.5, DC B87.5 *and* DAL T101 at frac>0.05 = 1.00. But their binned `nbm_p` are
+0.068–0.130, 0.051–0.203 and 0.244–0.303 — **nowhere near the floor** — and the reconstructions
+*confirm* the binned column rather than contradicting it (DAL's recon 0.264 is **lower** than its
+binned 0.244–0.303, so the "understatement" R15′ hunts for has the wrong sign). R15′'s own stated
+mechanism is about a **near-zero** `nbm_p` being a discretization artifact; at `nbm_p` ≥ 0.05 the
+bar is satisfied by construction and the rule was quietly turning into a ban on every candidate
+whose second source has a real opinion. R15″ scopes the artifact check to binned `nbm_p` < 0.05 and
+otherwise reads NBM's vote as max(binned, median recon) against R2's ≥0.10 test directly.
+**Validated before adopting, which is the step v17 skipped for (i): it changes no settled outcome**
+— every AGREEMENT trade in the ledger has binned `nbm_p` < 0.05 — **it preserves the DC T70
+founding veto** (binned 0.0056, 100% of cycles), and it **re-refuses DAL T101 mechanically**
+(NBM 0.264 vs mid 0.355 = 0.091 < 0.10), which is a cleaner ground than the R5(b) route v23 used.
+
+**R19 (new, deliberately weak).** First time I have ever checked the two sources' *vintages*, and
+they are not contemporaneous: every city on the 08:55 cycle carries `nbm_cycle_utc = 07-26 18:00`
+with `nbm_lead_hours` **27–30**, against `model_lead_hours` **8–11**. NBM is a **~15-hour-stale
+day-1 forecast** while the ensemble leg is a 9-hour run and the market has had 15 further hours of
+everything. It shows: across the Northeast the 18Z NBM is uniformly cool — PHIL q50 82.45, DC 84.25,
+NYC 81.33, all ~5–7°F under both market and ensemble — which is one coherent regional displacement,
+not three independent disagreements. **That is the MIA B93.5 shared-bias lesson generalized from one
+cell to one cycle.** I made it a disclosure rule plus an explore-size cap, *not* a freshness veto,
+because I have **zero settlements** pricing it and building a gate from one board's optics is
+precisely the (i) mistake R16 exists to stop. Pre-registered: log `nbm_lead − model_lead` on every
+candidate from here.
+
+**Why PHIL and DC still died after R15″ unblocked them.** Both are **BRACKET**, not AGREEMENT — the
+model's mode sits *above* the faded bin and NBM's *below* it, so the faded bin is the shoulder
+between two disagreeing forecasts (PHIL: NBM mode T83, model mode B89.5, faded B85.5 dead centre;
+DC: NBM mode T87 @0.93, model mode B91.5, faded B87.5). R2 confines bracket fades to min-size
+hypothesis-only on a **0W–1L, −$28.59** record, and the SFO B61.5 lesson is that the truth lands in
+the shoulder disproportionately because that is where forecast uncertainty concentrates. These
+brackets are ~**7°F** wide against SFO's ~4°F — nearly double, i.e. worse, not better. I could have
+taken one at explore size and chose not to: a wider bracket is a stronger version of the only shape
+that shape has ever produced, and R19 says NBM's cool leg here is a stale regional artifact anyway.
+
+**R16 self-check on the session as a whole.** One loosening (R15″) and one tightening (R12″) adopted
+together; the loosening's own two beneficiaries then refused on independent grounds; the tightening
+cost me the second-largest edge on the board. **A ruleset being edited toward trading would not have
+ended in zero trades.** R17 tripwire stays at **1 distinct board (JUL27)**.
+
+**Position mark.** `KXHIGHTLV-26JUL27-B111.5` NO @0.70 (30 ct, $21.45) quotes 0.24/0.25 yes ⇒ NO
+worth 0.75, **+$1.50** — flat on the hour after three hours of erosion (+$3.9 → +$2.10 → +$1.50 →
++$1.50). Still on the right side of its entry (entry implied 0.30, market 0.245) and still non-modal
+(market mode B109.5 @0.57). Its R15′ retro-flag is **unchanged by R15″** — binned `nbm_p` 0.005 is
+below 0.05, so clause (a) governs and the frac>0.05 = 0.88 flag stands. It closes in ~21h and must
+still be graded as a trade whose NBM leg was an artifact, whichever way it lands.
+
+**No trade opened. Holding 1.** What I want to learn by next session: whether R12″ actually binds
+on tomorrow's board — I want to see a low candidate surface *outside* the midnight-to-10:00 window
+so I can check whether the market/source displacement really is an observation channel and not just
+a permanent OKC-shaped disagreement. And whether the cron stays alive now that it has resumed.
+
 ## 2026-07-27 08:15 UTC — nothing settled, snapshot cron frozen again, but the live tape RESOLVED yesterday's pre-registered watch item: DAL T101 retraced 0.10 toward my sources and the edge died with it. No trade; holding 1. Strategy stays v23.
 
 `agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
