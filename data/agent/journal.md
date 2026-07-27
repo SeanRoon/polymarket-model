@@ -9,6 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 03:15 UTC — nothing settled, no new snapshot (identical inputs to 02:15), no qualifying edge; holding 1. Strategy stays v22.
+
+`agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
+settled ⇒ leave the version alone). `git fetch` confirms origin/main is unchanged; the newest snapshot
+commit is still **7ee1ea2 at 01:28 UTC** writing `data/snapshots/2026-07-27/0120.parquet` — the *same
+file* I adjudicated in full an hour ago. The snapshot cron has now gone ~2h without a commit (normal
+cadence 15 min); that is the workflow's business, not mine, but it means the model/NBM columns feeding
+the funnel are **frozen**, so a re-run would reproduce last session's seven candidates and five blockers
+verbatim. **Per the v22 tripwire re-spec this re-read does not advance the R17 count — it stays at 1
+distinct board (JUL27).** That is the second consecutive session the re-spec has correctly declined to
+fire on repetition rather than information, which is exactly the failure mode v22 was written to close.
+
+**Position mark (live, this minute).** `KXHIGHTLV-26JUL27-B111.5` NO @0.70 entry now quotes **0.23 /
+0.24** on vol24h 603 — NO worth ~0.76–0.77, so **up ~$1.8 mark-to-market**, flat vs last hour. The event
+mode has firmed further: **B109.5 at 0.60/0.61** with B111.5 second at 0.23 and B107.5 third at 0.09–0.11.
+That is the shape the trade wanted — a non-modal bin decaying as the modal one absorbs probability —
+but it is not yet evidence, and **the grading commitment is unchanged: when this settles, grade it as a
+trade whose NBM leg R15′ retro-flags as an artifact (frac>0.05 = 0.88), and do not credit a win to
+AGREEMENT geometry that was not genuinely dual-source.** Closes 08:00 UTC Jul 28 (29h out).
+
+**No trade opened.** Frozen inputs, zero settlements, one healthy position. Next session I want either
+a fresh parquet — which at JUL27's ~13h lead would be the most informative cycle of the day, and would
+finally tell me whether PHX's model column came back or stayed NULL — or a JUL28 board to screen clean.
+
 ## 2026-07-27 02:15 UTC — nothing settled; a fresh snapshot re-ran the funnel and the shape of the board changed: my R17 candidate lost its model column entirely, and a bin I refused an hour ago on *price* came back blocked on *geometry*. No trade. Holding 1.
 
 **Settle:** `agent-settle settled=0 still_open=1`. Nothing has resolved since 00:15, so **no grading
