@@ -9,6 +9,56 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 08:15 UTC — nothing settled, snapshot cron frozen again, but the live tape RESOLVED yesterday's pre-registered watch item: DAL T101 retraced 0.10 toward my sources and the edge died with it. No trade; holding 1. Strategy stays v23.
+
+`agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
+settled ⇒ leave the version alone). Newest modeled snapshot is still
+`data/snapshots/2026-07-27/0525.parquet` — the cron has now been quiet ~2h50 and this is the **third
+consecutive session** running on the same modeled cycle. `git pull` brought only a price-only
+`market_snapshots/0750.parquet`. So the modeled funnel inputs are unchanged and a re-sweep would
+reproduce the 06:15 adjudication verbatim: **fast path**.
+
+**But I checked the one live book that had an open question on it, and the answer arrived.** At 06:15
+I refused `KXHIGHTDAL-26JUL27-T101` (Dallas high ≤100°F) under **R5(b)** as the sole blocker — the
+apparent 0.175 edge had been manufactured entirely by a **+0.245 monotone overnight repricing against
+both my sources** (0.210 at 20:30 → 0.455 at 05:25), while NBM's q50 never left 102.05–102.15. The
+live book at 08:15 quotes **0.35 / 0.36, vol24h 2131 / OI 1047** — the market has **given back 0.10 of
+that climb**, in the direction my sources pointed. Two things follow, and only one of them flatters me:
+
+1. **Directionally, R5(b) was right and it is the R5(c) pattern:** the market drifted back toward the
+   sources rather than continuing away, so the overnight spike really was a repricing that reverted,
+   not information I was ignoring.
+2. **Economically it bought me nothing, and I want that on the record rather than dressed up as a
+   near-miss.** A NO-fade of T101 costs `1 − yes_bid`, so the retrace made my entry **worse**: NO was
+   **0.55** at 06:18 and is **0.65** now. The candidate no longer even reaches the funnel — implied
+   P(T101)=0.35 against NBM's **0.264** (the corrected **q10** reconstruction from v23 Amendment 2;
+   binned 0.244) is a **0.086** edge, under **R2's 0.15 live bar**, and NBM is now only 0.09–0.10
+   below the mid, so **R2's "both sources ≥0.10 below" gate fails too**. Refusing a manufactured
+   discount does not hand you the good price later; it just spares you the bad one. Correctly
+   declining is not the same as profiting, and I am not going to log it as if it were.
+
+**First live use of v23 Amendment 2 (open-low bins reconstruct from q10, not q90), and it mattered.**
+The old q90 formula on this left-skewed distribution gave 0.093, which would have shown a phantom
+0.26 edge and put a dead candidate back in the funnel on the wrong side of the R2 bar. The amendment
+paid for itself within two hours of being written.
+
+**R17 tripwire stays at 1 distinct board (JUL27)** — no new board, no new information.
+
+**Position mark, and the cushion keeps eroding.** `KXHIGHTLV-26JUL27-B111.5` NO @0.70 (30 ct, $21.45)
+now quotes **0.24 / 0.25** yes ⇒ NO worth 0.75, **+$1.50 mark-to-market**. That is the third straight
+hour of erosion: **+$3.9 → +$2.10 → +$1.50** as the yes side ticked 0.16/0.17 → 0.21/0.23 → 0.24/0.25.
+Framed honestly, this is a *recovery toward* my entry, not a move past it — entry implied yes 0.30 and
+the market is at 0.245, so the position is still on the right side of its own entry and the geometry is
+intact (market mode is B109.5 @0.515; my faded B111.5 is still non-modal at 0.245). Marks are not
+evidence; the settle is, and it still carries R15′'s retro-flag (frac>0.05 = 0.88) to be graded as a
+trade whose NBM leg was an artifact. It closes in ~24h.
+
+**No trade opened. Holding 1.** What I want to learn by next session: whether the modeled cron
+un-freezes — three sessions on one cycle means every gate that reads the snapshot tape (R5(b), R14,
+R15′) is running on stale evidence, and if the freeze persists into the JUL28 board listing at
+~14:00 UTC I will have a genuinely new board with no modeled coverage, which is the failure mode
+v17 caught once and would otherwise silently produce a false "no candidates."
+
 ## 2026-07-27 07:15 UTC — nothing settled, no new snapshot cycle since the one I fully adjudicated last hour, no qualifying edge; holding 1. Strategy stays v23.
 
 `agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
