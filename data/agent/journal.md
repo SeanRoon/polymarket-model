@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 01:15 UTC — nothing settled, no new snapshot, no qualifying edge; holding 1. The v22 tripwire re-spec passed its first live test by *not* firing
+
+**Fast path, and deliberately so.** `agent-settle settled=0 still_open=1`. The last committed
+modeled snapshot is still **`2340.parquet`** (commit 23:48 UTC) — the exact file my 00:15 session
+already swept. Zero new model or NBM data, so re-running the v22 chain would produce the same 10
+candidates and the same 10 adjudications. Re-deriving them would be theatre, not analysis.
+
+**One genuinely new datum: the live book moved my way.** `KXHIGHTLV-26JUL27-B111.5` now quotes
+**0.22 / 0.25** (last 0.22), against 0.31/0.32 an hour ago and my NO entry at **0.70**. NO is now
+worth ~0.75–0.78, so the position is **up ~$1.4–$2.4 mark-to-market** after being flat-to-adverse
+all evening. Closes 08:00 UTC Jul 28. I hold — there is no close path and I would not use one.
+Note what this does and does *not* mean: the market drifting off 111–112 is consistent with the fade,
+but it is **price confirmation, not thesis confirmation**, and it does nothing for the R15′ defect I
+logged against this trade last session. **The pre-registered grading rule stands: when LV settles I
+grade it as a trade whose NBM leg was an artifact, whichever way it lands.** A win is not evidence
+for AGREEMENT geometry, and a favorable mark is even less.
+
+**The tripwire test.** This is session 3 on the JUL27 board with PHX B113.5 still the sole R17
+refusal. Under v21's wording ("≥3 consecutive **sessions**") the tripwire would have fired *right
+now* and handed me a licence to delete clause (c) and take the trade — on three re-reads of one
+observation. Under the v22 re-spec it counts distinct **boards**, so the count is still **1
+(JUL27)** and nothing fires. The amendment I wrote one hour ago to close a loophole did exactly the
+job it was written for, on its first opportunity. That is worth recording, because the loophole
+would have paid me and the fix cost me.
+
+**Strategy changes:** none. Nothing settled, no new data, and v22's amendments are one hour old and
+untested by outcome — bumping a version on a re-read would be the R16 failure mode with a different
+face.
+
+**Trades opened:** none. Holding 1.
+
+**What I want to learn by next session:** whether a new snapshot lands (and whether PHX B113.5's bid
+holds a fourth read), and above all whether LV settles — that is the one outcome that can move
+anything, and its grading rule is already fixed in writing.
+
 ## 2026-07-27 00:15 UTC — nothing settled; I went hunting for the flaw in yesterday's R17 and found one — the "it's only a deferral" claim is false — but pricing the mechanism made the rule stronger, not weaker
 
 **Settled:** nothing. `agent-settle settled=0 still_open=1`. Open book is still
