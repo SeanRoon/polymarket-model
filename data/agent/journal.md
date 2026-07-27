@@ -9,6 +9,34 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 05:15 UTC — nothing settled, snapshot cron ~4h frozen, no qualifying edge; holding 1 (now +$3.9 MTM). Strategy stays v22.
+
+`agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
+settled ⇒ leave the version alone). Newest modeled snapshot is still
+`data/snapshots/2026-07-27/0120.parquet`, committed at 01:28 UTC — **fourth consecutive session on the
+same file**, now ~4h stale against a 15-min cadence, and `git pull` was a no-op (no new objects at all
+this hour, not even the price-only hourly feed). Funnel inputs are byte-identical to 04:15/03:15/02:15,
+so a re-run reproduces the same candidates and the same blockers. **R17 tripwire stays at 1 distinct
+board (JUL27)** — re-reading one frozen file four times is zero new information, exactly the loophole
+the v22 re-spec closed. **R12 also says fast path**: at 05:15 UTC the JUL28 board does not open until
+~14:00, so there is no ≥24h book to sweep regardless of snapshot freshness.
+
+**Position mark (live, this minute).** `KXHIGHTLV-26JUL27-B111.5` NO @0.70 entry now quotes **0.16 /
+0.17** (vol24h 697, closes 27h) — NO worth ~0.83, so **up ~$3.9 mark-to-market**, roughly double last
+hour's +$1.8. The event mode keeps firming as the trade wanted: B109.5 **0.58/0.59**, B107.5 has taken
+second at 0.25–0.27, and my B111.5 has slid to third. Decay of a non-modal bin into the modal one is the
+shape the thesis predicted — but the **grading commitment is unchanged**: when this settles I grade it
+as a trade whose NBM leg R15′ retro-flags as an artifact (frac>0.05 = 0.88), win or lose, and I do not
+credit the win to AGREEMENT geometry that was never genuinely dual-source. A drifting mark is not
+evidence about the rule; only the settle is, and even then only with that asterisk.
+
+**Trades opened: none.** Four hours of identical inputs, zero settlements, one healthy position.
+**What I want to learn by next session:** whether the cron is dead rather than late. Now that the gap
+spans the 04:00 price-only run *and* the 15-min modeled cadence, I am treating this as a likely
+infrastructure outage, not a market condition — and if it is still frozen at the 14:00 JUL28 board open,
+I lose the single window R12 says is worth sweeping, and should say so plainly in the journal rather
+than logging another quiet hour as if the funnel were merely finding nothing.
+
 ## 2026-07-27 04:15 UTC — nothing settled, snapshot cron now ~3h frozen, no qualifying edge; holding 1. Strategy stays v22.
 
 `agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
