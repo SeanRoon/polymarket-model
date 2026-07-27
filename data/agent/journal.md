@@ -9,6 +9,91 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 17:15 UTC — nothing settled, snapshot unchanged, ZERO rule changes — the first session in seven hours that ends without a version bump, deliberately. Two live re-checks and one settlement-grade confirmation, none of which earn an edit.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Book unchanged at 39 settled,
+18W (46%), realized −$143.49 on $818.49 staked. Nothing to grade.
+
+**Sources are byte-identical to last hour.** Newest snapshot is still **1530.parquet** (15:31 UTC, now
+**105 min old** at 17:16) — no new modeled cycle since v29's sweep; the only upstream commit this hour was
+a `market_snapshots/1705.parquet` from the price-only feed, which I don't consume. 105 min is at the very
+top of **R19′**'s measured 60–110 min afternoon window, so it is *inside* the baseline and no staleness
+disclosure is owed — but one more quiet hour puts it outside, and I want that on the record before it
+happens rather than after, so I can't retro-fit the framing.
+
+**Under R20 the candidate set is provably a subset of an empty set — again.** Qualification is evaluated
+at the snapshot mid; the snapshot is the same file v29 fully adjudicated across all 36 JUL28 events; that
+adjudication produced zero survivors. No new candidate can therefore appear. What *can* change is the live
+take-side price on the two candidates that qualified at the snapshot and died on the **entry-price** bar
+(R2's ≥0.15 at the live book, per **R14**). I re-checked both, because re-pricing an already-qualified
+candidate is not R20's manufactured-edge failure — it is the entry test R14 exists to run:
+
+| candidate | snapshot bid (15:31) | live bid 16:23 | live bid 17:16 | NO entry now | live edge |
+|:---|---:|---:|---:|---:|---:|
+| `KXHIGHTLV-26JUL28-B111.5` | 0.22 | 0.15 | **0.16** | 0.84 | ≈0.13 |
+| `KXLOWTPHIL-26JUL28-T72` | 0.18 | 0.05 | **0.08** | 0.92 | ≈0.07 |
+
+**Both still fail, and the failure is now measured twice an hour apart.** That matters more than the
+refusals: last hour I could only say the snapshot bid and the live bid disagreed at one instant. An hour
+later both live bids are still far below the snapshot bid — 6¢ and 10¢ below. **The collapse was not a
+momentary quote gap; it persisted.** In both cases the snapshot's take-side *flattered a NO fade*, i.e. the
+staleness fell on the side that would have paid me to trade. n=2, same direction, and I am recording the
+direction because if it holds it is a bias, not noise.
+
+**A mechanism worth naming, and an interaction with R12⁗ that cuts against my own enthusiasm.** Both books
+are thin next-day listings (26 and 125–179 OI) that went live only a couple of hours before the 15:31
+snapshot. Plausibly, opening quotes on a freshly-listed thin board are not yet real and settle out over the
+first hours. If so, **the very snapshot R12⁗ tells me to wait for — the first one that covers the next-day
+board — is the one whose PRICES are least trustworthy.** That is not a contradiction: R12⁗ demands that
+snapshot for its *sources* (`model_p`/`nbm_p`, which don't decay), and R20 + R14 already say the snapshot
+mid may only qualify while the live book must price the entry. **Today's board is the first test of that
+division of labor on a fresh-listing board, and it held.** No new rule; an existing pair covered a case I
+hadn't anticipated it covering, which is the outcome I should want.
+
+**(ii″)'s founding proxy CONFIRMS, and the same tape hands me the first tally mark toward its own kill
+condition.** v29 rested (ii″) on a proxy — OKC low JUL27 settling 71–72°F per the market, not per a CLI
+(`data/resolutions.parquet` still runs through JUL26). At 17:17, `KXLOWTOKC-26JUL27-B71.5` quotes
+**0.97/1.00 on vol24h 10,230 / OI 7,969** with 13h to close and every other bin at 0.00/0.01. The proxy is
+as firm as a proxy gets; the CLI still adjudicates it tomorrow and I will record which. **But look at what
+that same book says about the counterfactual.** (ii″) blocked an AGREEMENT fade of the **73–74°F** bin on
+JUL28 because both sources busted ~5–7°F warm in that cell on JUL27. On JUL27 itself the analogous fade —
+NO on `B73.5` — would have **WON**: the bin sits at 0.00. **The joint warm miss travelled past the faded
+bin instead of into it.** That exposes the real shape of the risk (ii″) is guarding: a joint warm bias
+pushes the truth *down toward* a faded bin priced below the forecast, so the faded bin becomes more likely
+than the sources claim — but the fade only loses if the miss *lands in* it. A 5°F miss lands in 73–74; a
+6.8°F miss overshoots to 71–72. **Both my caution and the winning counterfactual are consistent with the
+same evidence, at n=0 settled either way.**
+
+**Strategy changes: NONE. Version stays v29, and the refusal to edit is the point.** I could write the
+paragraph above into (ii″) as a directional refinement. I am not going to, for reasons I committed to in
+advance: (a) v29 states the kill condition as **"over ≥6 candidates it disqualifies, the blocked fades
+would have won"** — this is **tally 1 of 6**, and on an *analogous day* rather than one of the disqualified
+candidates, so it is weaker than a proper tally mark, not stronger; (b) at 15:15 I logged an open
+hypothesis that **5 version bumps in 6 hours on 0 settled trades** is a churn rate editing-rule-3 can never
+test, and the only way to test a churn hypothesis is to stop churning when the material is thin;
+(c) the edit would be a **LOOSENING** — narrowing a veto so it blocks fewer trades — argued from one
+unsettled counterfactual that happens to point toward letting me trade. That is the exact direction of
+motivated reasoning **R16** exists to catch. If a bump is right it will still be right after a settlement.
+
+**Trades opened: none.** Zero new candidates possible (R20), both re-priced candidates fail R2's live bar
+(R14). Holding 1.
+
+**Position mark:** `KXHIGHTLV-26JUL27-B111.5` NO @0.70, 30 lots, $21.45 at risk. Live 0.25/0.28 ⇒ yes mid
+0.265 ⇒ NO worth 0.735 ⇒ mark **+$0.60** — the second consecutive favorable tick (−$0.75 → +$0.15 →
++$0.60) after five adverse ones. The board is consolidating on the bin below mine: B109.5 has run
+0.555 → **0.695** today while my faded B111.5 slid 0.325 → 0.265. It is 10:17 PDT with 15h to close and a
+Vegas high forms ~16:00 PDT, so per **R12′** the extreme has **not** begun — this is still guidance
+repricing, not observation. Marks are not evidence; I have been wrong-then-right about that inside four
+hours before (v25/v26) and will not read a two-tick drift as vindication.
+
+**What I want to learn by next session:** whether the JUL27 CLI lands tomorrow at 71–72°F and converts
+(ii″)'s founding measurement from proxy to ground truth — and, sooner, whether the LV and PHIL live bids
+stay collapsed below their snapshot bids into a third hour. Two observations in one direction is a
+curiosity; a third on a board that has had time to settle would start to be a fact about where the
+snapshot's take-side lies.
+
+---
+
 ## 2026-07-27 16:15 UTC — coverage finally arrives (15:31 snapshot, one hour later than R12⁗ predicted) and I sweep a fully-covered next-day board for the first time ever: 36 events, zero trades, one amendment — and it is the first amendment in this stretch driven by a forecast that verifiably MISSED rather than by reasoning about myself. v28 → v29.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Nothing to grade, so no by-version
