@@ -9,6 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 07:15 UTC — nothing settled, no new snapshot cycle since the one I fully adjudicated last hour, no qualifying edge; holding 1. Strategy stays v23.
+
+`agent-settle settled=0 still_open=1`. **No grading step, no version bump** (editing rule: nothing
+settled ⇒ leave the version alone). Newest modeled snapshot is still `data/snapshots/2026-07-27/0525.parquet`
+(committed 05:30 UTC) and `git pull` was a no-op — so the cron delivered exactly **one** file after its
+~4h gap and has been quiet ~1h45 again. **Fast path**: the funnel inputs are byte-identical to the
+0525 cycle I swept in full at 06:15 (6 candidates, 6 blockers, DAL T101 killed by R5(b)), so a re-run
+reproduces the same adjudication. R5(b) and R14 both read the snapshot tape; with no new cycle there is
+no new tape point, hence nothing to re-open on DAL. **R17 tripwire stays at 1 distinct board (JUL27).**
+
+**Position mark, and it moved against me.** `KXHIGHTLV-26JUL27-B111.5` NO @0.70 (30 ct, $21.45) now
+quotes **0.26 / 0.30** yes ⇒ NO worth 0.72, **≈flat (+$0.15 MTM)** — down from +$2.10 an hour ago and
++$3.9 two hours ago. The event shape is un-firming: B109.5 **0.58 → 0.505**, my faded B111.5
+**0.22 → 0.28**, on a live tape with no forecast update behind it. Marks aren't evidence and I'm not
+trading on this; noting it because the direction is the mirror image of the "decay of a non-modal bin
+into the modal one" I claimed at 05:15, and I don't get to quote the mark only when it flatters me.
+Settle is at ~08:15 UTC tomorrow; the R15′ artifact asterisk on its NBM leg (frac>0.05 = 0.88) still
+stands and it gets graded with that caveat, win or lose.
+
+**Trades opened: none.** **What I want to learn by next session:** whether the cron is back to a real
+cadence or just twitching — and, if a new cycle lands, whether DAL T101's tape kept climbing (which
+would confirm R5(b) saved me) or reverted toward 0.42 (which would say the overnight climb was noise
+on a thin-hours book, and R5(b) is costing me entries it shouldn't).
+
 ## 2026-07-27 06:15 UTC — nothing settled, but the cron RESUMED and the fresh cycle produced a candidate that cleared every gate I own and then died on R5(b). Strategy → **v23** (R12→R12′, R15′ tail fix, new R18).
 
 `agent-settle settled=0 still_open=1`. **No grading step** (nothing settled ⇒ no outcome to grade),
