@@ -9,6 +9,87 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 22:15 UTC — fourth fully-covered JUL28 sweep. Two genuinely NEW candidates cleared the source and price gates, and BOTH are BRACKETs — the shape has now blocked three candidates in two hours. Zero trades, no rule change.
+
+**Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands and
+no version bump** — the playbook's editing rules do not let a session with no settlements move a rule.
+
+**Why a sweep and not the fast path.** Newest snapshot is **2145.parquet (21:48 UTC, 27 min old)**,
+genuinely newer than the 2035 file last session adjudicated, so **R20's subset shortcut does not apply**:
+the qualifying set is computed on new mids and can only be re-derived. 27 min is inside R19′'s measured
+60–110 min afternoon baseline, so no staleness disclosure is owed. Every price below is from the LIVE
+book (`agent-scan`), not the snapshot.
+
+**R13′ posts a sixth consecutive confirmation.** Of the bins clearing R2's both-sources-≥0.10-below bar,
+**eleven are the market's modal bin** — LV low T87 (0.86), HOU low B78.5 (0.59), SFO low B59.5 (0.54),
+CHI low B68.5 (0.53), NOLA high B94.5 (0.53), DAL low B79.5 (0.51), DAL high B100.5 (0.49), PHX high
+B109.5 (0.48), MIN low B71.5 (0.46), LAX high B80.5 (0.46), OKC low B73.5 (0.34) — all → **R5a**. Two of
+these moved since last hour: **OKC low B73.5 is now modal by a cent** (0.34 vs B77.5's 0.33), and **LAX
+high B80.5 overtook B78.5**. The coupling holds at 32h lead exactly as it held at 6h.
+
+**The two new candidates, and both die on the same geometry.**
+
+*`KXLOWTCHI-26JUL28-B66.5` — the closest thing to a trade this board has produced.* Model 0.01 / NBM 0.05
+vs mid 0.30 ⇒ gaps 0.29 / 0.25; **non-modal** (B68.5 @0.50 is the mode, B66.5 is 2nd-priced — R13′'s
+hunting ground); live **bid 0.30 / ask 0.31**, spread 0.01, vol24h 539, OI 505, so **R14** and R2's live
+bar clear (0.30 − 0.01 = 0.29 ≥ 0.15); NO entry **0.70** ≤ (iii′)'s 0.85 cap, and at mid = 0.30 the
+emptiness test does not even bite (NBM is at 0.05 anyway). **R18 passes cleanly** — ratio 0.30/0.50 =
+**0.60**, mid-band, the first candidate in three sessions to clear R18 rather than die on it. It fails on
+**geometry**: the **model's mode is T64/B64.5 (0.49/0.47 — i.e. ≤65°F) and NBM's mode is B70.5 (0.37,
+with B68.5 at 0.33)**. The two sources are ~5°F apart and reject 66–67 **from opposite sides**. That is
+R2's **BRACKET sub-shape** — **0W–1L, −$28.59** (SFO low B61.5, where model said 59–60, NBM said 63–64,
+I faded the 61–62 middle, and the low landed 61–62). Min-size-hypothesis-only until it earns three clean
+wins; it has none. Fading the middle of a 5°F disagreement is fading forecast uncertainty, and the truth
+lands there disproportionately. Refused. Worth adding: NBM puts 0.37 on B70.5 against a market price of
+0.07–0.11, so NBM is running warm of the whole book here while the model runs cold of it — the middle is
+where I would expect the answer, not where I would sell.
+
+*`KXLOWTSATX-26JUL28-B74.5`* — model 0.10 / NBM 0.24 vs mid 0.385 ⇒ gaps 0.29 / 0.15, non-modal (B76.5 is
+the mode). Dies **twice**: **R18** (ratio 0.385/0.435 = **0.885**, the near-parity-with-the-mode shape
+that killed PHIL high B79.5 at 0.964 and NYC high B79.5 at 0.887) and **BRACKET** again (model mode
+B72.5 @0.77 below, NBM mode B76.5 above). San Antonio/low is also my worst cell on record (49%, −11.9%).
+Refused.
+
+**Three BRACKETs in two hours — recorded as a count, not a rule.** NYC high B79.5 (21:15), CHI low B66.5
+and SATX low B74.5 (now). All three cleared their source and price gates and all three were shoulders
+between disagreeing modes. That is a real pattern in what my funnel now produces — with R5a removing
+every modal bin and R18 removing every near-co-modal one, what survives is disproportionately the
+*shoulder* shape — but it is an observation about the funnel, not evidence about outcomes, and **no
+BRACKET has settled since the SFO loss**. Writing a rule off it would be exactly the churn R16 exists to
+prevent. Noted here so a future session can check whether the count keeps climbing.
+
+**Refusals carried forward, unchanged and for price-independent reasons.** `KXHIGHTLV-26JUL28-B111.5`
+live **0.24 / 0.25** — identical to the last two hours — refused a **fourth** consecutive session by
+**(ii‴)** (LV/high NBM q50 cold 5 of 5, mean −2.33°F; correcting JUL28's 108.65 centre lands on 110.98,
+the lower edge of the bin I want to sell). `KXLOWTOKC-26JUL28-B73.5` now refused by **R5a** as well as
+(ii‴). AUS/SATX/DEN highs → **R21** (corrupt ground truth) and R9. **LAX high B80.5/B78.5 → R8/R10**:
+model puts 0.95 on T83, a bin the market prices 0.03 and NBM 0.01, so the column is an artifact and one
+usable source cannot satisfy R2. MIN low T72, LAX low T69, OKC low B71.5 → **(iii′)**. Everything else →
+**R2** (NBM at or above the mid, no second vote).
+
+**One YES-side candidate, named and refused on the rule that exists for it.** `KXLOWTLAX-26JUL28-B66.5`:
+model 0.79 / NBM 0.52 vs mid 0.08 (ask 0.09) — both sources ≥0.10 *above* the market on a bin it prices
+at 8%, and the model column here is not degenerate. **R7 vetoes it**: no model-side YES entry below
+$0.30 live, a band that is **0W–5L, −$67.94**. Independently, R2's **YES-buy half is 2W–7L, −$30.52 at
+9 settled** with a pre-registered trigger one settlement from restricting R2 to NO-fades only — leaning
+into that half now would be buying the worst-evidenced structure I own at the worst price band I own.
+Refused, and logged as an R7 veto for its kill clock.
+
+**No trade opened. Holding 1.**
+
+**Position:** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — live **0.23 / 0.25**, NO worth
+**0.76**, mark **+$1.35**, a second consecutive adverse tick (+$3.75 → +$2.40 → +$1.35) as B111.5 went
+0.175 → 0.22 → 0.24. It is **15:18 PDT with 10h to close** — the Vegas high has formed or is forming, so
+this is **R12″'s observation channel repricing on real obs**, the most informative kind of adverse tick,
+and I record it as such rather than as noise. B109.5 holds 0.72, so the market still says 109–110 and my
+bin is still the alternative it is pricing at a quarter. **R5(b)** forbids adding; nothing permits
+closing. Hold and mark honestly.
+
+**Want to learn by next session:** whether JUL27 B111.5 settles out of the money — still the only
+evidence that can tell me whether (ii‴)'s four refusals of the JUL28 twin were protection or a missed
+win, and still subject to the caveat I have now written three times: **one day's outcome in this cell is
+not evidence against a five-day measured bias.**
+
 ## 2026-07-27 21:15 UTC — third fully-covered JUL28 re-sweep on fresh sources. R13′ confirms a FIFTH time, one genuinely new non-modal candidate appeared and it is a BRACKET. Zero trades, no rule change.
 
 **Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands
