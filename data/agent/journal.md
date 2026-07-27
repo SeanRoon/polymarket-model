@@ -9,6 +9,95 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 19:15 UTC — the candidate I chased for three sessions finally cleared every gate, and I refused it on evidence I went and measured. Along the way I found that the ground truth itself is corrupt in exactly the three cells the model calls its best. v29 → v30, two rules, zero trades.
+
+**Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed. Snapshot
+**1855.parquet (18:57 UTC, 18 min old)** — genuinely newer than last session's 1720 file, so **R20's
+subset shortcut does not apply** and I re-swept all 36 JUL28 events on new mids. NBM cycle 06:00 UTC.
+
+**The candidate, and why this hour was different.** `KXHIGHTLV-26JUL28-B111.5` NO has been my best
+screen for three sessions and has died twice on price alone. This hour it cleared **everything**:
+R2 at the snapshot mid (model 0.028 / NBM 0.025 vs 0.245), R5a (2nd-priced under B109.5 @0.605),
+(i″) (d_nbm = 2, d_model = 1), (iii′) (both ≤0.05, NO entry 0.76), (ii′) (bias −1.82°F), R18 (ratio
+0.405), R8/R10, R9, R15′ (reconstruction 0.010) — **and the live bar that killed it twice**: bid
+**0.24**, spread **0.01**, vol24h **111**, OI 93, live edge **0.212 ≥ 0.15**. The 26-lot placeholder
+book from 18:15 had become a real one. With every gate green, any refusal had to come from somewhere
+I had not yet looked. So I went and looked.
+
+**(ii‴) — (ii″) passed it by 0.14°F.** (ii″) checks the single most recent settled day against a 3°F
+bar. JUL26 Las Vegas high **realized 111°F — inside the bin I wanted to sell** — against NBM q50
+108.09 (−2.9) and model mode B109.5 (−1.5): both cold, larger error **2.86**, bar **3.0**. Waved
+through. Measuring five days instead of one: NBM cold **5 of 5** (−1.8, −2.3, −3.7, −1.0, −2.9; mean
+**−2.33°F**), model mode cold 5 of 6. JUL28's centre is 108.65; correct by the measured bias and you
+get **110.98**, the lower edge of the 111–112 bin. And JUL26 already ran the experiment — the high
+landed 111, in that exact bin, with these exact sources at 0.065 and 0.005. (ii‴) replaces the
+one-day trigger with a 5-day mean (|mean| ≥ 1.5°F, sign consistent ≥4/5) **plus a direction clause**:
+the correction must move the estimate *toward* the faded bin. That clause is the mechanism (ii″)
+lacked — a cold-running source only endangers fades of bins *above* the forecast. It fired on 2 of 6
+survivors, one being (ii″)'s own OKC/low founding case reached independently, so it is not eating the
+funnel and it is internally consistent. **n=0 settled: no demonstrated discriminating power, and I say
+so in the rule.**
+
+**R21 — the finding, and it is the biggest thing here.** The per-cell bias table I built for (ii‴)
+returned **Denver/high +17.6°F, San Antonio/high +15.8°F, Austin/high +15.4°F**. No forecast bias is
+that large in July, so I cross-checked `data/resolutions.parquet` against **the market's own
+settlement**: for each settled event since JUL23, does the CLI value fall inside the bin the market
+settled at ≥0.90? **Every closed-bin settlement across 17 cities agrees — except three cells, which
+fail every single day by 11–25°F.** Denver JUL26: market settled 102–104°F, CLI says **79**. Austin
+JUL23: market 99–101, CLI **88**. San Antonio JUL25: market 93–95, CLI **78**. The **low** cells at
+those same three stations parse correctly on the same days — same station, same file, only the `high`
+value broken. That is a parser signature, not weather.
+
+Three consequences, all reaching backwards: **(a)** Austin/high (+27.5%), Denver/high (+26.1%) and
+San Antonio/high (+30.6%) are the only strongly-positive cells in the entire 40-cell track record, and
+all three are graded against a broken answer key — their ROI is an artifact, their record carries no
+information, and R1's piggyback premise is void for them. **(b)** `compute-bias` is
+mean(model_expected − actual) against these same values, so the +12.5 / +11.0 / +13.4°F "ensemble
+bias" corrections are manufactured from the corruption. **(c)** It retro-explains the degenerate model
+columns I have been vetoing under R8/R10 and R9 for weeks — the corrupt correction pushes those
+ensembles clean off the board. **R9 and R8/R10 were right for a mechanism I could not see**, which is
+the rare case of a symptom-driven rule turning out to have a real cause. Those three cells are now
+closed to me; re-test monthly via the same cross-check.
+
+**Method caveat, recorded so I do not over-read my own finding later.** The cross-check also flagged
+~35 **open-bin** (`T*`) rows. Those are my test's artifact, not corruption: an open bin has one NULL
+strike, so a `lo ≤ v < hi` comparison fails on NaN. Every one I inspected was actually consistent.
+**Only the closed-bin mismatches are real, and they are confined to exactly those three cells.**
+
+**→ Operator note (this is code, so it is not mine to touch and I have not):** the NWS CLI parser
+appears to read the wrong field for the daily **maximum** at the KAUS, KSAT and KDEN offices — `low`
+parses fine at all three, and the bad `high` values track a few degrees above the same day's low. It
+propagates into `data/station_biases.parquet` via `compute-bias` and into every evaluation number for
+those cells. Worth a look at `weather/nws.py` and a rebuild of the affected history.
+
+**Rest of the board — R13′ posts its strongest confirmation yet.** Seventeen bins cleared R2's
+dual-source bar. **Eleven are the market's modal bin, including all TEN of the ten largest gaps**
+(LV low T87, LAX low B68.5, HOU low B78.5, SFO low B59.5, AUS high B99.5, CHI low B68.5, SATX high
+B97.5, PHIL low B71.5, MIN low B71.5, DAL low B79.5) → R5a. Fourth consecutive confirmation, and the
+mechanism is now plainly the trivial one: a bin's gap is bounded above by the price the market put
+there. Of the six survivors — LV high B111.5 → (ii‴); OKC low B71.5 → (ii‴) and (ii″); MIA high B94.5
+→ (ii′) outright; **PHIL high B79.5 dies three times** (R18 ratio **0.964**, further outside the
+0.33–0.76 support than the DAL candidate that founded R18; R8/R10, since the model puts 0.787 on T84
+which the market prices 0.055 and NBM 0.005; and R5a-by-one-cent, which does no work at that ratio);
+MIA low B75.5 → R2's live bar (0.17 − 0.046 = 0.124); LAX low T69 → R2's live bar (0.101) and (iii′)
+(entry 0.89 > 0.85).
+
+**Trades opened: none.** Holding 1.
+
+**Position.** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — live 0.17/0.18 ⇒ NO worth
+0.825, mark **+$3.75**, best since entry and a fourth consecutive favorable tick, with B109.5 at 0.72
+and 13h to close. **Stated against my own interest: the JUL27 twin going my way is not evidence for
+the JUL28 fade.** One favorable unsettled intraday mark cannot outweigh a five-day measured bias, and
+I have already been wrong-then-right about exactly this within four hours (v25/v26). The
+consecutive-day correlation hypothesis parked at 16:15 **recurred** — this time the trade was live and
+only (ii‴) stopped it. Still parked, still not adopted, because it still was not the binding rule.
+
+**What I want to learn by next session.** (1) Whether JUL27 LV high settles below 111 — that is the
+first real test of the cold-bias measurement, since (ii‴) implies my *own* open position is fighting a
++2.33°F displacement I did not know about when I opened it. (2) Whether the JUL27 CLI, when it posts,
+confirms 111–112 was correctly avoided *and* whether KLAS keeps parsing correctly under R21's check.
+(3) Whether (ii‴) keeps firing at ~2-of-6 or starts eating boards.
+
 ## 2026-07-27 18:15 UTC — a genuinely fresh snapshot, a second fully-covered 36-event JUL28 sweep, and again ZERO trades and ZERO rule changes. The one candidate that survives every source, geometry and bias gate is refused by **one cent** for the third consecutive session, and naming that temptation is the whole entry.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Book unchanged at 39 settled,
