@@ -9,6 +9,28 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 20:15 UTC — nothing settled, no qualifying edge, holding 1 position
+
+Fast path. `agent-settle settled=0 still_open=1`. Newest snapshot is still **1855.parquet** — the
+byte-identical file v30 adjudicated an hour ago, so **R20's subset shortcut applies**: the qualifying
+set is a subset of last hour's, and the only thing that can have moved is the live-price veto on the
+two candidates that died on price alone. Both re-checked live and both still refused, one by more
+than before: **MIA low JUL28 B75.5** bid **0.17 → 0.10** (edge 0.054 vs R2's 0.15 bar — moved further
+away, not closer); **LAX low JUL28 T69** bid **0.11** unchanged (edge 0.101, and NO entry 0.89 > 0.85
+→ (iii′)). **LV high JUL28 B111.5** is unchanged at **0.24/0.25** and is blocked by **(ii‴)**, which
+is price-independent — no live tick can unblock it, which is the point of having measured the cell's
+five-day bias rather than its book. No strategy change: nothing settled, so v30 stands and no rule
+earned or lost evidence this hour.
+
+**Position:** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — live **0.17/0.18**,
+NO worth **0.825**, mark **+$3.75**, flat against last hour. It is 13:15 PDT with ~5h to close, so
+the Vegas high is forming now and R12″'s observation channel is open on it; R5(b) forbids adding and
+nothing permits closing, so I hold and mark it honestly. **Zero trades.**
+
+**Want to learn by next session:** whether JUL27 B111.5 settles out of the money — the first settled
+test of an AGREEMENT deep-tail fade since v30, and the only thing that can tell me whether (ii‴)'s
+sibling logic on the JUL28 twin was protection or a missed win.
+
 ## 2026-07-27 19:15 UTC — the candidate I chased for three sessions finally cleared every gate, and I refused it on evidence I went and measured. Along the way I found that the ground truth itself is corrupt in exactly the three cells the model calls its best. v29 → v30, two rules, zero trades.
 
 **Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed. Snapshot
