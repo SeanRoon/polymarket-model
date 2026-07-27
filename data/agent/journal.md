@@ -9,6 +9,104 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-27 16:15 UTC — coverage finally arrives (15:31 snapshot, one hour later than R12⁗ predicted) and I sweep a fully-covered next-day board for the first time ever: 36 events, zero trades, one amendment — and it is the first amendment in this stretch driven by a forecast that verifiably MISSED rather than by reasoning about myself. v28 → v29.
+
+**Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Nothing to grade, so no by-version
+or by-category re-read. Book stands at 39 settled, 18W (46%), realized −$143.49.
+
+**R12⁗'s scheduling estimate: off by ~16 minutes, on the tail day I had already flagged.** Last hour I
+predicted 15:15 would have coverage 5/5 and it had zero. The covering snapshot landed at **15:31 UTC** —
+between my 15:15 and 16:15 sessions. So the estimate was directionally right and an hour coarse. **I am
+still not touching R12⁗'s version**, for the reason I gave at 15:15: this is N=1 on a day whose every gap
+sat at or above the top of its window, which is what the measured distribution predicts. Today's file
+count recovered to 5 and the 15:31 snapshot was **52 minutes old** at sweep time — inside R19′'s 60–110
+min baseline, so **no staleness disclosure is owed this hour**. The predicate half of R12⁗ (coverage gates
+sweepability) is the part that mattered, and today it flipped from "not sweepable" to "sweepable" exactly
+as designed. **This is the first time in the playbook's history that R12's board and my sources have both
+been live at once.** Six sessions of R12 telling me I was sweeping the wrong hour, and here is the hour.
+
+**What the covered board actually gave me: a candidate that beat every gate I own, and a reason it was
+still wrong.** `KXLOWTOKC-26JUL28-B73.5` — the market's 2nd-priced bin at mid 0.30, which is precisely
+where **R13′** says to hunt. It cleared R5a (mode is B75.5 @0.355), (i″) (d_model = 2 from the model's
+B77.5 mode), (ii′) (bias only +4.96°F), (iii′) (both sources on the Laplace floor — a genuinely empty
+tail — NO entry 0.75 ≤ 0.85), **R14 live** (bid 0.25, spread 0.07, vol24h 175 — a real book, unlike
+everything else today), R15′ (lower-tail σ = 1.539 ⇒ P(72.5 ≤ X ≤ 74.5) = **0.0022**, so NBM's 0.005 is a
+real vote and not a discretization artifact), R8/R10, R9, R17. **Nothing I had written stopped it.**
+
+Then I asked the question (ii′) cannot ask: *what did these same two sources say about yesterday?*
+
+| | JUL27 (low fully realized) | JUL28 (the candidate) |
+|:---|:---|:---|
+| NBM q50 | **78.53** | **78.88** |
+| model mode | B73.5 @0.491 / B75.5 @0.435 | B77.5 @0.694 |
+| realization | **71–72°F** — B71.5 quoted 0.98/1.00 at 11:20 CDT | — |
+| joint error | NBM **+6.8°F**, model **≈+2°F** — *both warm* | forecast essentially unchanged |
+
+**Both sources busted warm together in this cell yesterday, and today they are repeating the identical
+distribution.** The trade would have been "fade 73–74°F because both sources say 77–79°F" — betting on
+exactly the forecast that just failed by 5–7°F. That is the **MIA B93.5** loss with the evidence handed to
+me a day in advance instead of a day late. R2's whole premise is two *independent* votes; here it is one
+warm vote counted twice, and `model_bias_applied_f` (+4.96°F) is structurally blind to NBM's half of it.
+
+**Strategy change — (ii″), added to R2's AGREEMENT qualifiers (v29).** Before any AGREEMENT fade, check the
+cell's most recent settled day: if both sources' central estimates fall on the same side of the
+realization, the larger error is ≥3°F, and the current cycle has not moved, the cell is disqualified for
+today's board. **Caveats I put in the rule rather than in a footnote:** JUL27's CLI has not posted (I used
+the market's settlement-grade price as a labeled proxy — the CLI confirms or refutes tomorrow and I will
+record which); **R12″ already documented this exact bust from the intraday tape**, so only the cross-day
+*scope* is new; and it has **zero demonstrated discriminating power** at n=0 settled. R16 self-check: it is
+a tightening that refuses a trade I wanted, measured before the decision, from data indifferent to my
+wanting it, and referencing nothing about this bin's geometry. It fired on **1 of 36** events — logged so a
+future session can see if it starts eating the funnel.
+
+**Trades opened: none. Every refusal names a rule and a number:**
+- **OKC low B73.5** → **(ii″)**, above.
+- **PHIL low T72** → cleared (i″) (d = 2/2), (iii′) (both at floor), R18 (ratio 0.465) — then **R14**:
+  snapshot bid **0.18 → live 0.05**, NO entry **0.95**, live edge **0.04** vs R2's 0.15 bar.
+- **LV high JUL28 B111.5** → the cleanest thing I have screened in weeks: (i″) passes (d_nbm = 2,
+  d_model = 1, not adjacent to both), (iii′) passes (both ≤0.05), bias only −1.12°F, **R18 ratio 0.381**
+  squarely inside the 0.33–0.76 support. **R14 killed it too**: snapshot bid **0.22 → live 0.15**, NO entry
+  **0.85**, live edge ≈**0.12 < 0.15**, on a **26-lot** book.
+- **MIN low T72** → (iii′) at the live mid (0.28 < 0.30 with nbm 0.102 > 0.05); R18 ratio 0.918 caps it to
+  explore size regardless.
+- **AUS high B99.5** (my best cell, 91%/+27.5%) → refused three times: **R5a** (it IS the mode @0.455),
+  **(ii′)** (bias **+12.26°F**, larger than the −7°F that broke MIA), **R8/R10** (model degenerate — 0.954
+  on T97, 0.009 on all five others).
+- **LAX high B80.5** → **R8/R10**: model 0.954 on T83, a bin the market prices 0.025 and NBM prices 0.005,
+  so the model column is an artifact and only one usable source remains.
+- **DC low T72, CHI low B68.5, AUS low B73.5, DAL low B79.5, ATL low B75.5, LV low T87** → all the
+  market's modal bin, **R5a**. Denver → **R9**.
+
+**The finding I did not expect, and it is the useful one: R14 is what binds this playbook, not the source
+gates.** Two candidates that beat every geometry, source, bias and liquidity test died on a **5–7¢
+collapse** between a 50-minute-old snapshot bid and the live bid. I had assumed the snapshot's price side
+decayed slowly on a **long-lead** board — it does not. Six sessions of blaming my funnel on the source
+qualifiers, and the actual bottleneck was the half-spread on a stale bid.
+
+**Parked, not adopted — an R17 consecutive-day clause.** I came one live-price check from opening
+`KXHIGHTLV-26JUL28-B111.5` NO while holding `KXHIGHTLV-26JUL27-B111.5` NO: same city, same bin, same
+direction, one day apart, one persistent ridge. **R17 does not catch it** — clause (b) requires the same
+settlement date. Its stated mechanism ("one identifiable event costs me twice") arguably applies harder
+across adjacent days than across two cities on one board. **I did not adopt it, because R14 refused the
+trade on its own**, and inventing a second gate in the same hour I adopted one is the churn pattern I
+flagged at 15:15. Logged as an open hypothesis with a **pre-registered size-cap remedy** (≤24 lots, from
+R17's own remedy language) so a future session under pressure does not improvise one.
+
+**Churn hypothesis, updated honestly:** this is **6 bumps in 7 hours on 0 settled trades**. But it is the
+first one driven by an outcome **external to my own process** — a forecast that verifiably missed — where
+the previous five were all measurements of my own pipeline (cron cadence, listing times, snapshot-vs-live
+asymmetry). That distinction is now the hypothesis's sharpened test: if the outcome-grounded edits survive
+settlements while the process-grounded ones get retracted, the fix is a source-of-evidence gate on edits,
+not a rate limit.
+
+**Position:** LV high JUL27 B111.5 NO @0.70 (30 lots, $21.45 at risk); the JUL27 book quotes the bin near
+0.30, so the mark is roughly flat and it closes tonight.
+
+**What I want to learn by next session:** whether the JUL27 OKC CLI confirms 71–72°F — that upgrades
+(ii″)'s founding realization from a market proxy to ground truth, or retracts it. And whether my own LV
+JUL27 position settles, which would finally give the AGREEMENT subset its 6th datapoint and put a settled
+outcome behind a stretch of pure rule-writing.
+
 ## 2026-07-27 15:15 UTC — R19′ fires for real one hour after adoption (165-min gap vs a 60–110 min baseline), and R12‴'s "15:15 is the sweep hour" misses on its first live test. No version bump — deliberately. Zero trades, provably, for the second straight hour. Position back above water.
 
 **Settlements reviewed:** none. `agent-settle settled=0 still_open=1`. Nothing to grade, so no

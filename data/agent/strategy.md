@@ -1,6 +1,90 @@
 # Agent strategy playbook
 
-**Version: v28** (2026-07-27 14:15 UTC — **nothing settled, no trade was mechanically possible on either
+**Version: v29** (2026-07-27 16:15 UTC — **the first fully-covered next-day sweep in the history of this
+playbook: R12's board finally listed AND my snapshot covered it, so all 36 JUL28 events were adjudicated
+on real sources. It produced ZERO trades and ONE amendment — and the amendment is the first in this
+stretch grounded in a VERIFIED FORECAST MISS rather than in reasoning about my own process.**)
+`agent-settle settled=0 still_open=1`. Newest snapshot **1530.parquet (15:31 UTC, 52 min old at 16:23)** —
+inside R19′'s 60–110 min baseline for this window, so **no staleness disclosure is owed this hour**;
+today's file count recovered to 5. NBM cycle **06:00 UTC** (~10h), the freshest I have run on.
+
+**1. NEW — (ii″): (ii′)'s bias veto is BLIND TO NBM, and today a settled outcome shows what that costs.**
+(ii′) disqualifies an AGREEMENT fade when the cell has a large known bias, and it checks exactly one
+number: `model_bias_applied_f`, the *model's* rolling error. **It says nothing whatsoever about NBM.**
+That is a hole in the rule's own stated mechanism — the subset's only loss (MIA B93.5) failed *because
+both sources missed the same way*, and a model-only bias column cannot detect that by construction.
+**Founding measurement, and it is an outcome, not an argument.** Today's best-looking candidate on the
+whole board was **`KXLOWTOKC-26JUL28-B73.5`** (73–74°F, snapshot mid 0.30, the 2nd-priced bin — exactly
+where **R13′** says to hunt). It clears **R5a** (market mode is B75.5 @0.355), **(i″)** (d_model = 2 from
+the model's B77.5 mode), **(iii′)** (both sources at the Laplace floor — a genuinely empty tail — and NO
+entry 0.75 ≤ 0.85), **R14** live (bid 0.25, spread 0.07, vol24h 175), **R15′** (B73.5 is closed, near tail
+is lower: σ = (78.881 − 76.908)/1.2816 = 1.539 ⇒ P(72.5 ≤ X ≤ 74.5) = **0.0022**, so NBM's 0.005 is a real
+vote, not a discretization artifact), **R8/R10**, **R9**, and **R17**. It fails nothing I had written.
+**Then I checked what those same two sources said about YESTERDAY in this same cell:**
+
+| | JUL27 (low fully realized) | JUL28 (today's candidate) |
+|:---|:---|:---|
+| NBM q50 | **78.53** | **78.88** |
+| model mode | B73.5 @0.491 / B75.5 @0.435 | B77.5 @0.694 |
+| realization | **71–72°F** — market has B71.5 at **0.98/1.00** at 11:20 CDT | — |
+| joint error | NBM **+6.8°F warm**, model **≈+2°F warm** — *same direction* | forecast essentially unchanged |
+
+**Both sources busted warm on the same day in the same cell, and today they are repeating the identical
+distribution.** That is not two independent votes; it is one warm-biased vote counted twice — (ii′)'s own
+mechanism, firing on a cell (ii′) waves through, because `model_bias_applied_f` here is only +4.96°F and
+NBM's +6.8°F miss is invisible to it. Fading 73–74°F on the strength of "both sources say 77–79°F" would
+have been betting on precisely the forecast that just failed by 5–7°F.
+**(ii″) operationally, run before any AGREEMENT fade:** take the most recent settled day for that
+(station, kind); compare the realization against what `model_p` and `nbm_q50` said for that same day. **If
+both sources' central estimates fall on the SAME side of the realization and the larger error is ≥3°F,
+and the current cycle has not materially moved, the cell is DISQUALIFIED for AGREEMENT fades on today's
+board.** (ii′) is unchanged and still applies; (ii″) is an additional veto covering the source (ii′) cannot see.
+**Honest caveats, stated rather than buried.** *(a)* JUL27's CLI has not posted — `data/resolutions.parquet`
+runs through JUL26 — so the realization above is the **market's own settlement-grade price** (0.98/1.00 on
+B71.5 with the minimum long since formed), a proxy, not ground truth. The CLI confirms or refutes it
+tomorrow and I will record which. *(b)* This is not a brand-new discovery: **R12″** already documented this
+exact OKC-low bust from the intraday tape. What is new is the *scope* — R12″ blackouts a low during its
+own observation hours; (ii″) carries the lesson **across days** into the next board's fade decisions.
+*(c)* **Zero demonstrated discriminating power** — n=0 settled trades governed by it. Like R18, it says
+"outside what my sources have earned," not "likely to lose." Dressing it up further would repeat v17's
+retracted (i) overreach.
+**R16 self-check, applied honestly.** It is a **tightening**, and it refuses a candidate I was actively
+leaning toward — the opposite of reverse-engineering a gate to permit a trade. The quantity was measured
+from data that exists independently of my wanting the trade (`nbm_q50` and a settled market price), and
+it was measured **before** the decision. It is not fitted to this candidate's geometry: it references only
+(station, kind, previous day's realization), nothing about B73.5. **Anti-learning-blocker count: on today's
+36-event board (ii″) fired on exactly ONE cell.** If that count ever approaches "most cells," the rule is
+eating the funnel and must be narrowed.
+*Kill (ii″) if: over ≥6 candidates it disqualifies, the blocked fades would have won at or above their
+entry-implied rate — i.e. a joint miss yesterday does not predict a joint miss today.*
+
+**2. Zero trades, and every refusal names a rule and a number.** The board was 36 events, fully covered,
+and this is the complete adjudication: **OKC low B73.5 → (ii″)** (above). **PHIL low T72** cleared (i″)
+(d = 2/2), (iii′) (both sources at floor) and R18 (ratio 0.465) on the snapshot, then **R14** killed it —
+snapshot bid **0.18 → live 0.05**, i.e. a NO entry of **0.95** and a live edge of 0.04 against R2's 0.15
+bar. **LV high JUL28 B111.5** was the cleanest candidate I have screened in weeks — (i″) passes
+(d_nbm = 2, d_model = 1, not adjacent to both), (iii′) passes (both ≤0.05), bias only −1.12°F, **R18 ratio
+0.381** squarely inside the 0.33–0.76 support — and **R14 killed it too**: snapshot bid **0.22 → live
+0.15**, NO entry **0.85**, live edge ≈**0.12 < 0.15**, on a **26-lot** book. **MIN low T72** fails (iii′)
+at the live mid (0.28 < 0.30 with nbm 0.102 > 0.05) and R18 caps it to explore size anyway (ratio 0.918).
+**AUS high B99.5** — my best cell — is refused three times over: **R5a** (it IS the mode, 0.455),
+**(ii′)** (`model_bias_applied_f` = **+12.26°F**, larger than the −7°F that broke MIA), and **R8/R10**
+(the model column is degenerate: 0.954 on T97, 0.009 on all five others). **LAX high B80.5** dies on
+**R8/R10** — model 0.954 on T83, a bin the market prices 0.025 and NBM prices 0.005, so the whole model
+column is an artifact and only one usable source remains. **DC low T72, CHI low B68.5, AUS low B73.5,
+DAL low B79.5, ATL low B75.5, LV low T87** are all the market's modal bin → **R5a**. Denver → **R9**.
+**No trade opened. Holding 1.**
+**What this hour actually proves: R14 is the binding constraint on this playbook, not the source gates.**
+Two of the three candidates that cleared every geometry, source and bias test died on a 5–7¢ collapse
+between a 50-minute-old snapshot bid and the live bid. That is the same phantom-edge mechanism R14 was
+founded on, now confirmed on a **long-lead** board where I had assumed the snapshot decayed more slowly.
+**Position:** LV high JUL27 B111.5 NO @0.70 (30 lots, $21.45 at risk) — the JUL27 book quotes it near
+0.30, so the mark is roughly flat. Note the coincidence worth watching: I nearly opened the **identical**
+bin one day later, which R17 does **not** currently catch (its clause (b) requires the same settlement
+date). Logged as an open hypothesis rather than adopted — R14 refused the trade anyway, and inventing a
+rule I did not need is exactly the churn pattern I flagged an hour ago.
+
+**Superseded header (v28, 2026-07-27 14:15 UTC — **nothing settled, no trade was mechanically possible on either
 board, and the session's whole value is a RETRACTION: the "frozen cron" I have asserted in three
 consecutive session headers does not exist. I measured the snapshot recorder's actual cadence for the
 first time and it is a stable diurnal pattern I have been misreading as an incident since v25.**)
@@ -329,6 +413,23 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
       here I have a measurement against the gate, where v17 had none for (i).
       *Kill (restore (ii) as a hard gate) if: over the next ≥6 AGREEMENT settlements, the trades
       admitted in negative-record cells run below their entry-implied win rate.*
+      **(ii″) — ADDED in v29; an ADDITIONAL veto alongside (ii′), covering the source (ii′) is blind to.**
+      (ii′) checks `model_bias_applied_f` and therefore measures only the MODEL's error. Before any
+      AGREEMENT fade, also check the cell's **most recent settled day**: compare the realization against
+      what `model_p` and `nbm_q50` said for that same day. **If both sources' central estimates fall on
+      the SAME side of the realization and the larger error is ≥3°F, and the current cycle has not
+      materially moved, the cell is DISQUALIFIED for AGREEMENT fades on today's board.** Rationale: R2's
+      entire premise is two *independent* votes; a same-direction joint bust one day earlier is direct
+      evidence they are one biased vote counted twice — the mechanism that explains the subset's only
+      loss (MIA B93.5) and that (ii′) cannot detect. Founding case: **OKC/low, 2026-07-27** — NBM q50
+      **78.53** and model mode **73–74°F** against a realization of **71–72°F** (NBM +6.8°F warm, model
+      ≈+2°F warm), with the JUL28 cycle repeating q50 **78.88**; `model_bias_applied_f` was only +4.96°F,
+      so (ii′) would have waved it through. **Zero demonstrated discriminating power (n=0 settled);
+      it states "outside what my sources have earned," not "likely to lose."** Realization may be taken
+      from a settlement-grade market price when the CLI has not posted, **labeled as the proxy it is**.
+      *Kill if: over ≥6 candidates it disqualifies, the blocked fades would have won at or above their
+      entry-implied rate.* *Anti-learning-blocker: it fired on 1 of 36 events on its founding board;
+      if it ever approaches "most cells," narrow it.*
       (iii′) **downside cap + emptiness test,
       replacing v14's 0.30–0.45 band:** if the faded bin's mid is **< 0.30**, BOTH sources must
       put **≤0.05** on it (a genuinely empty tail, not a merely cheap one) AND the NO entry
@@ -1110,6 +1211,23 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Open hypotheses (not yet rules)
 
+- **R17's correlation classes may need a CONSECUTIVE-DAY clause for the same city+bin+direction
+  (added 2026-07-27 16:15 UTC — parked deliberately, NOT adopted).** R17 refuses a second AGREEMENT
+  fade when four clauses hold, one of which is **(b) same settlement date**. Today I came within one
+  live-price check of opening **`KXHIGHTLV-26JUL28-B111.5` NO** while already holding
+  **`KXHIGHTLV-26JUL27-B111.5` NO** — same city, same bin, same direction, one day apart, under one
+  persistent desert ridge — and **R17 does not catch it**, because clause (b) fails. R17's stated
+  mechanism ("one identifiable meteorological event costs me twice") arguably applies with *more* force
+  across adjacent days of a stable ridge than across two cities on one board, which is the case it was
+  written for. **Why this is a hypothesis and not a rule: I did not need it.** R14 refused the trade on
+  its own (live bid 0.15 ⇒ NO entry 0.85, edge 0.12 < 0.15, 26-lot book), and adopting a gate I did not
+  need, in the same hour I adopted another one, is exactly the churn pattern below. **Pre-registered
+  remedy so a future session does not improvise one under pressure:** if this recurs, extend R17 with a
+  **size cap**, not a refusal — R17's own remedy language — sized so the joint-loss outcome leaves the
+  AGREEMENT subset clear of its −$40 kill line. Worked example from today: subset at +$0.36, LV JUL27
+  risking $21.45 ⇒ the second position must risk < **$18.91**, i.e. ≤ 24 lots at a 0.78 entry.
+  *Confirm if: a same-city consecutive-day pair is ever open simultaneously and both settle the same way
+  on one shared forecast bust. Refute if: such pairs split, i.e. day-to-day errors decorrelate.*
 - **My rule-change rate is decoupled from my evidence rate, and that is a hazard (added
   2026-07-27 15:15 UTC, no version bump — this is a hypothesis, not a rule).** In the six
   hours v23→v28 I bumped the playbook **five times** while settling **zero** trades. Every
@@ -1125,6 +1243,18 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   rule actually changes, and prefer parking a new idea here over promoting it. Today I
   followed it — R12‴'s scheduling estimate missed and I left the version alone (see the
   15:15 journal entry).
+  **v29 UPDATE — the count is now SIX bumps in seven hours on zero settled trades, and I am
+  drawing the distinction the hypothesis needs rather than just incrementing it.** Every one of
+  the previous five was grounded in *reasoning about my own process* or in a measurement of my
+  own data pipeline (cron cadence, board listing times, snapshot-vs-live asymmetry). **(ii″) is
+  the first grounded in a VERIFIED FORECAST MISS** — NBM q50 78.53 against a realized 71–72°F in
+  a cell whose next-day forecast is unchanged. That is an outcome external to me, which is the
+  category of evidence editing rule 2 actually asks for, and it is the closest thing to a
+  settlement I can get while my book is empty. **I also declined a second, separately plausible
+  edit this same hour** (the R17 consecutive-day clause, parked above) precisely because R14 had
+  already made it unnecessary. *Sharpened test:* if the outcome-grounded edits survive contact
+  with settlements while the process-grounded ones get retracted, the hazard is real and the fix
+  is a source-of-evidence gate on edits, not a rate limit.
 - **~~NBM-confirmation on strong cells~~ — REJECTED (v3, Jul-14 cohort).** The test
   was pre-registered and it failed, in the most instructive way possible: the cohort's
   three NBM-*confirmed* trades all LOST (DEN T93 NBM 0.70, DAL T88 NBM 0.90, BOS B94.5
@@ -1211,6 +1341,34 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v29** (2026-07-27, 16:15 UTC): **Nothing settled (`settled=0 still_open=1`). The first next-day
+  board I have ever swept with actual source coverage — 36 JUL28 events, model_p + nbm_p on every bin,
+  NBM cycle 06:00 UTC — fully adjudicated, ZERO trades, ONE amendment.** *Evidence for (ii″):* the
+  board's best candidate, `KXLOWTOKC-26JUL28-B73.5` (2nd-priced bin, snapshot mid 0.30), cleared **every
+  gate I own** — R5a (mode is B75.5 @0.355), (i″) (d_model = 2), (ii′) (`model_bias_applied_f` +4.96°F),
+  (iii′) (both sources at the Laplace floor, NO entry 0.75), R14 live (bid 0.25, spread 0.07, vol24h 175),
+  R15′ (lower-tail reconstruction P = 0.0022, so NBM's 0.005 is a genuine vote), R8/R10, R9, R17. Then the
+  cross-day check: **on JUL27 in this same cell NBM said q50 = 78.53 and the model's mode was 73–74°F,
+  and the minimum realized at 71–72°F** (market has B71.5 at 0.98/1.00 with the low long since formed) —
+  **NBM +6.8°F warm, model ≈+2°F warm, same direction** — and the JUL28 cycle repeats q50 = **78.88**.
+  So (ii′)'s model-only bias column waved through a cell whose two "independent" sources had just busted
+  together. **(ii″) adds the missing veto:** disqualify AGREEMENT fades where both sources fell on the
+  same side of the previous settled day's realization with the larger error ≥3°F and the cycle unmoved.
+  Caveats recorded in the rule: JUL27's CLI has not posted (market price used as a labeled proxy), R12″
+  already saw this bust intraday so only the cross-day *scope* is new, and n=0 settled ⇒ zero demonstrated
+  discriminating power. Fired on **1 of 36** events. *Other refusals, each with a number:* **PHIL low T72**
+  and **LV high JUL28 B111.5** both cleared the full source/geometry funnel — LV with an R18 ratio of
+  **0.381**, squarely inside the 0.33–0.76 support — and **both died on R14**, bid 0.18→0.05 and 0.22→0.15
+  between a 50-minute-old snapshot and the live book (NO entries 0.95 and 0.85; live edges 0.04 and 0.12
+  against R2's 0.15 bar). **MIN low T72** → (iii′) at the live mid + R18 ratio 0.918. **AUS high B99.5**
+  → R5a + (ii′) (bias **+12.26°F**) + R8/R10 (model degenerate). **LAX high B80.5** → R8/R10 (model 0.954
+  on a bin priced 0.025). Six more modal bins → R5a; Denver → R9. **Standing finding: R14, not the source
+  gates, is what actually binds this playbook** — and it binds on long-lead boards too, which I had
+  assumed decayed more slowly. *Parked, not adopted:* an R17 consecutive-day clause (I nearly opened the
+  identical LV B111.5 bin one day after the one I hold; R17 clause (b) does not catch it), with a
+  pre-registered size-cap remedy of ≤24 lots. *No version bump was spent on it because R14 refused the
+  trade anyway.* Churn hypothesis updated: 6 bumps / 7 hours / 0 settlements, but this is the first one
+  driven by an **outcome external to my own process**, and that distinction is now the hypothesis's test.
 - **v28** (2026-07-27, 14:15 UTC): **Nothing settled (`settled=0 still_open=1`); no trade was
   mechanically possible on either board; the session's value is a RETRACTION and two rules.**
   **RETRACTION — the "frozen cron" does not exist, and I asserted it in three consecutive headers.**
