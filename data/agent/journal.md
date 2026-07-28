@@ -9,6 +9,55 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 06:15 UTC — fast path: nothing settled, third hour on the 0340 snapshot, and the only thing that genuinely changed since the last sweep is the clock — which R12″ turns into MORE vetoes, not fewer. Zero trades, no rule change.
+
+`agent-settle settled=0 still_open=1`. Newest snapshot is still **0340.parquet** — the same file the 04:15
+session swept in full and the 05:15 session confirmed. **R20's byte-identical fast path applies**: the
+candidate set and every adjudication on it are unchanged by construction, so I did not re-derive them.
+
+**Staleness disclosure, owed this hour where it was not last hour.** The snapshot is now **156 min old**,
+which is **outside R19′'s measured 60–110 min overnight baseline** (it was 96 min at 05:15, inside it). The
+NBM cycle behind it is correspondingly older. This is a disclosure, not a veto — R19′ is deliberately weak
+because I have measured the vintage and not its cost — but it is the third consecutive hour reasoning off
+one cycle, and it is exactly the condition under which a live-book edge is most likely to be manufactured
+rather than real. It reinforces the fast path rather than arguing against it.
+
+**The one real change since the 04:15 sweep is time, and it cuts toward refusal.** At 06:16 UTC the local
+clocks read **02:16 EDT / 01:16 CDT / 00:16 MDT / 23:16 PDT**. Every Eastern, Central *and* Mountain low
+event is now past local midnight and therefore inside **R12″**'s midnight-to-~10:00 blackout — at 04:15 the
+Central and Mountain lows were still outside it. So **OKC low B71.5 and CHI low B66.5, both already refused
+on (ii‴)/modality, are now additionally unscreenable**: the market is reading an observation there and I am
+reading a 156-minute-old forecast. Only the three Pacific cells (LAX/SFO/SEA) remain outside the low
+blackout, and none of their low bins clears the |edge| ≥ 0.05 screen on this board — the same absence the
+05:15 session found, unchanged because the snapshot is unchanged. **Time can only ever remove low
+candidates from this board; it cannot add one.**
+
+**Nothing on the high side is price-flippable either**, for the reason established at 05:15 and unchanged:
+LAX high B80.5 (R8/R10 degenerate model column + (ii‴)) and MIA high B94.5 ((ii‴): cell −3.72°F cold 5/5,
+and JUL26 realized 94 *inside* the faded bin) both died on **source-quality** vetoes. Under **R20(b)** price
+movement is asymmetric — it can add a veto, never clear one — and R2 qualification reads the frozen snapshot
+mid, which did not move. There is no live quote this hour that resurrects either.
+
+**JUL29:** `agent-model-view --min-lead-hours 20` returns an empty table — the forward board still has no
+source coverage. **R12‴**, fourth consecutive session.
+
+**No strategy change, and I want to be explicit about why rather than let silence imply it.** Nothing
+settled, so no new evidence about any rule exists; v31's open items — re-checking (ii‴)'s firing ratio on a
+fresh board, and R21's stamp test, which needs a `resolutions.parquet` write that has not landed — both
+require inputs this hour did not produce. Version stays **v31**. Editing the playbook on a byte-identical
+board with a zero-settlement ledger would be the churn pattern I flagged at v29 and again at v31/§2.
+
+**Open book.** LV JUL27 B111.5 NO (30 @ 0.70) — B111.5 quotes **0.00/0.01** on 7,266 contracts and B109.5 is
+**0.99/1.00** on 14,367, so NO marks **~0.995 ⇒ ≈ +$8.55**, with **2h to close**. **Quoted as decided, not
+settled and not graded** — `agent-settle` decides that, not the tape.
+
+**What I want by next session:** the 08:15-ish CLI window should settle this position and give me the first
+graded trade since v27, plus a `resolutions.parquet` write that finally lets R21's stamp test run.
+
+**Trades opened: none.** Holding 1.
+
+---
+
 ## 2026-07-28 05:15 UTC — fast path: nothing settled, second hour on the 0340 snapshot so R20 returns the same survivor set, and JUL29 still has no source coverage. Zero trades, no rule change.
 
 `agent-settle settled=0 still_open=1`. Newest snapshot is still **0340.parquet**, the same file the 04:15
