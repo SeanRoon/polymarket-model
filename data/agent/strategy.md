@@ -1,6 +1,103 @@
 # Agent strategy playbook
 
-**Version: v31** (2026-07-28 04:15 UTC — **no paper trade settled, but NEW GROUND TRUTH arrived and it
+**Version: v32** (2026-07-28 08:15 UTC — **nothing settled, and the snapshot is byte-identical to the one
+I swept "in full" two hours ago — so by R20 this hour should have been a fast path. It was not. I ran the
+funnel as a QUERY instead of reading the top of the edge-sorted view, and found FOUR qualifying candidates
+that two prior "full sweeps" had enumerated away, including a whole DIRECTION I had never screened. One new
+rule (R22), one tripwire counting convention fixed, one misreading of my own R19′ table corrected. All four
+candidates refused on rules that already existed. Zero trades.**)
+`agent-settle settled=0 still_open=1`. Newest snapshot **0610.parquet (06:17 UTC, 121 min old)** — the same
+file the 06:20 and 07:15 sessions used; re-checked mtime **after** the pull per the 06:20 addendum, nothing
+new came down. LV JUL27 B111.5 is **closed** (08:00 UTC) with `result` still empty — awaiting settlement.
+
+**1. NEW — R22: my "full sweep" was reading the top of a sorted list, and the top of that list is the one
+place R13′ guarantees candidates cannot be.** The 06:20 addendum called itself a full re-sweep of 0610 and
+concluded: one high-side survivor (MIA B94.5), "everything else" being a blacked-out low, an R21 cell, or an
+already-modal bin. **That enumeration is false, and I proved it by writing the funnel as SQL against the same
+file.** Four qualifying bins on that board are none of those three things:
+
+| candidate | shape | model_p | nbm_p | snapshot mid | R18 ratio | why it was missed |
+|:---|:---|--:|--:|--:|--:|:---|
+| DAL high B102.5 | **YES-buy** | 0.806 | 0.427 | 0.295 | — | wrong *direction* — never screened |
+| LV high B111.5 (JUL28) | NO-fade | 0.009 | 0.029 | 0.290 | 0.423 | below the read-off point |
+| PHIL high B81.5 | NO-fade | 0.083 | 0.095 | 0.325 | 0.890 | below the read-off point |
+| OKC high B102.5 | NO-fade | 0.139 | 0.224 | 0.370 | 0.961 | below the read-off point |
+
+**The mechanism is R13′ turned against me.** R13′ says a bin's both-sources-below gap is bounded above by
+the price the market put there, so the largest gaps only exist where the market placed its mass — i.e. **the
+top of an edge-sorted view is structurally the modal bins**, the exact set R5a bans. I have been reading the
+first ~15 rows of `agent-model-view`, adjudicating the modal bins I found there, and calling the funnel
+empty. **R13′ was telling me for five sessions that my candidates live in the middle of that list, and I
+kept reading the top.** The DAL row is the worse half: `agent-model-view` sorts by **signed** edge, so a
+YES-side candidate and a NO-side candidate never appear near each other, and **I had never once enumerated
+the YES direction** — R2 explicitly has a YES-buy half (2W–7L, −$30.52) that I have not screened for in
+weeks. A losing sub-rule I never look for is not evidence that the shape does not occur.
+**R22 operationally:** the funnel is a **query over the newest snapshot**, run in both directions
+(`model_p − mid ≥ 0.10 AND nbm_p − mid ≥ 0.10`, and the same with the signs reversed), with modality and the
+R18 ratio computed per event — never a read of the sorted view's top rows. The sorted view is for orientation
+only. **R16 self-check:** R22 is a procedure, not a gate; it *increases* candidate supply; and every one of
+the four candidates it surfaced today was then refused on pre-existing rules. A rule adopted in the loosening
+direction that produced zero trades on adoption day is not one I reverse-engineered to let myself trade.
+*Kill if: over ≥5 boards the query surfaces nothing the sorted-view read did not already contain — then the
+truncation was costing me nothing and R22 is ceremony.*
+
+**2. All four refused, each on a rule that already existed — no bar was moved to accommodate any of them.**
+**DAL high B102.5 (YES @0.30) → R5(b), and it is the DAL T101 shape verbatim.** The tape across nine
+committed cycles: B102.5 mid **0.375 → 0.445 → 0.305 → 0.320 → 0.295 → 0.255 → 0.255 → 0.275 → 0.295**
+while B100.5 ran **0.285 → 0.345 → 0.395 → 0.445 → 0.495 → 0.510 → 0.485 → 0.515 → 0.545** — a monotone
+**+0.26** climb into the bin my sources reject and a **−0.15** slide out of the bin they like, over ~15h.
+Meanwhile `model_p` went 0.25 → 0.71 → 0.82 → 0.806. **The edge grew from 0.27 to 0.51 and roughly half of
+that growth is pure adverse price movement**, which is R5(b)'s definition of a trade not to take. NBM
+corroborates the market, not me: q50 drifted **102.50 → 102.46 → 102.35**, cooler each cycle — NBM
+*followed* the market, the same detail that strengthened the DAL T101 refusal in v23.
+**LV high B111.5 JUL28 → (ii‴), re-confirmed on a fresh cycle.** This is (ii‴)'s own founding case and it
+still fires: Las Vegas/high NBM signed error over JUL22–26 is **−1.77, −2.29, −3.73, −0.97, −2.91, mean
+−2.33°F, cold 5 of 5**; today's q50 **108.56 + 2.33 = 110.89** lands **inside** the faded 111–112 bin's
+support [110.5, 112.5) — and **JUL26 realized 111**, in that exact bin. Everything else about it is clean
+(non-modal, R18 ratio 0.423 mid-support, both sources ≤0.05, NO entry 0.72, 2¢ spread), which is precisely
+why (ii‴) exists.
+**PHIL high B81.5 → BRACKET *and* (ii‴), two independent kills.** The sources are not agreeing: model's mode
+is **T84 @0.454** (≥85°F) and NBM's is **T77 @0.578** (≤76°F) — they reject the 81–82 bin **from opposite
+sides**, 8°F apart, with the market sitting between them. That is the SFO low B61.5 shape (0W–1L, −$28.59):
+fading a bracket shoulder is fading forecast *disagreement*, and the truth lands there disproportionately.
+Independently, Philadelphia/high NBM runs **−2.20°F cold, 5 of 5** (−4.41, −1.43, −2.39, −2.22, −0.54), so
+correcting q50 76.28 → 78.48 moves it **toward** the bin I would be selling. Also worth naming: PHIL q50
+**76.28** against a market mode of 83–84 is the **v24 Northeast stale-18Z cold displacement** reappearing at
+`nbm_lead_hours` **27**, not an edge.
+**OKC high B102.5 → BRACKET + R18 at the worst ratio I have ever screened.** Model's mode is **B104.5
+@0.750**, NBM's is **B100.5 @0.457**; the faded 102–103 bin is the shoulder between them. And the market
+prices B104.5 @0.385 vs B102.5 @0.370 — an **R18 ratio of 0.961**, outside my observed support of 0.33–0.76
+and worse than the 0.948 that R18 was written to refuse. This is a genuine two-way coin flip, not a tail the
+market overprices. *Noted for the record:* (ii‴) does **not** fire here — OKC/high's NBM error is +2.10,
++2.24, −0.31, −1.84, −1.60, **mean +0.12, signs mixed 3/2** — so the rule is discriminating between cells
+rather than blanket-vetoing, which is the anti-learning-blocker evidence v31 asked for.
+
+**3. (ii‴)'s firing ratio, re-checked as v31 promised — and the counting convention fixed.** v31 flagged
+that (ii‴) fired on 3 of 4 non-modal survivors and worried it was "eating the funnel." On today's properly
+enumerated board it fires on **3 of 4 NO-fades again** (LV, PHIL, MIA) — but that raw ratio is the wrong
+statistic, and I was about to narrow a rule on it. **(ii‴) is the SOLE blocker on exactly 1 of 4** (LV
+B111.5): MIA is disqualified independently by (ii′), PHIL is independently a BRACKET, OKC it does not touch.
+**Convention, adopted here and applied to every anti-learning-blocker tripwire I own (R17's, (ii″)'s,
+(ii‴)'s): count SOLE-blocker firings, not firings.** A veto that co-fires with an independent kill costs me
+nothing and cannot be "eating the funnel"; only a sole blocker removes a candidate I would otherwise have
+taken. This is how R5(b)'s veto log has always been counted ("R5(b)'s FIRST clean **sole-blocker** firing")
+— I simply never generalized it. **(ii‴) sole-blocker count: 1.** Not narrowing.
+
+**4. CORRECTION — I have been misreading R19′'s own staleness table for four consecutive sessions.**
+Sessions at 04:15, 05:15, 06:15 and 07:15 all quoted "R19′'s 60–110 min overnight baseline." **That row is
+the 11:00–23:45 UTC row.** R19′'s table reads: 01:00→05:00 = **3h20m–4h05m**; 05:00→10:00 = **2h10m–3h35m**;
+11:00→23:45 = 60–110 min. So the 06:15 session's disclosure ("156 min, **outside** the 60–110 baseline") was
+owed under a misreading — 156 min at 06:15 UTC is *inside* the 2h10m–3h35m morning band and disclosure-free.
+Today's 121-min snapshot at 08:15 UTC is likewise **normal, in fact fresher than baseline**, and I owe no
+disclosure. This is the exact error R19′ was written to stop ("say N minutes old against an X-hour normal
+**for this hour**") and I reintroduced it by quoting the wrong row from memory. No refusal in those sessions
+rested on it — they stood on (ii‴), R5a and R21 — but a premise carrying rhetorical weight should be right.
+
+**Position:** LV high **JUL27** B111.5 NO (30 @ 0.70, $21.45 at risk) — market **closed** at 08:00 UTC,
+`status=closed`, `result` empty, book gone. Marks ~+$8.55 on the last two-sided quotes. **Not settled, not
+graded** — `agent-settle` decides, and it returned `settled=0` this hour.
+
+**Superseded header (v31, 2026-07-28 04:15 UTC — **no paper trade settled, but NEW GROUND TRUTH arrived and it
 closed the biggest open question in this playbook: I now know exactly WHY the Austin/San Antonio/Denver
 high resolutions are wrong, and v30's stated mechanism — "a parser signature" — was WRONG. One rule
 amended (R21), no new rules, zero trades.**)
@@ -661,6 +758,15 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
       own founding case reached independently. **Zero demonstrated discriminating power (n=0 settled).**
       *Kill if: over ≥6 candidates it disqualifies, the blocked fades would have won at or above their
       entry-implied rate. Narrow it if it ever fires on most of a board.*
+      **v32 — COUNTING CONVENTION, and it applies to every anti-learning-blocker tripwire in this playbook
+      ((ii″)'s, (ii‴)'s, R17's): count SOLE-BLOCKER firings, not firings.** On the 2026-07-28 08:15 board
+      (ii‴) fired on **3 of 4** NO-fade candidates — LV B111.5, PHIL B81.5, MIA B94.5 — and v31 had already
+      flagged 3-of-4 as approaching "eating the funnel," so I was one session from narrowing it. But **MIA is
+      independently disqualified by (ii′) and PHIL is independently a BRACKET**: (ii‴) is the sole blocker on
+      **1 of 4**. A veto that co-fires with an independent kill costs nothing and cannot narrow the funnel;
+      only a sole blocker removes a candidate I would otherwise have taken. This is how R5(b)'s log has always
+      been kept ("R5(b)'s FIRST clean **sole-blocker** firing") — v32 generalizes it rather than inventing it.
+      **(ii‴) sole-blocker count: 1 (LV B111.5 JUL28).** Not narrowing.
       (iii′) **downside cap + emptiness test,
       replacing v14's 0.30–0.45 band:** if the faded bin's mid is **< 0.30**, BOTH sources must
       put **≤0.05** on it (a genuinely empty tail, not a merely cheap one) AND the NO entry
@@ -1452,6 +1558,39 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   it and has no such artifact. *Kill if: the stamp disappears from these stations' CLI text (then reopen as
   above), or if a stamped station's `high` values are ever shown to match market settlement anyway.*
 
+- **R22 (enumerate the funnel as a QUERY, in BOTH directions — NEW in v32; a procedure rule, and it exists
+  because R13′ makes the sorted view systematically misleading):** The candidate set is produced by running
+  the funnel **as a query over the newest snapshot**, never by reading the top rows of
+  `agent-model-view`'s edge-sorted table. Two passes, both required:
+  **(a) NO-fade pass:** `midpoint − model_p ≥ 0.10 AND midpoint − nbm_p ≥ 0.10`.
+  **(b) YES-buy pass:** `model_p − midpoint ≥ 0.10 AND nbm_p − midpoint ≥ 0.10`.
+  Compute modality (`midpoint = max(midpoint) over event`) and the **R18 ratio** in the same query, so R5a
+  and R18 are evaluated on the whole set rather than on whichever rows I happened to read.
+  **Why this is a rule and not a note — I caught myself getting it wrong on a board I had already called
+  swept.** The 06:20 addendum on `0610.parquet` declared a full re-sweep and reported exactly one high-side
+  survivor (MIA B94.5), classifying everything else as a blacked-out low, an R21 cell, or an already-modal
+  bin. Re-run as SQL against the identical file, that same board carries **four** qualifying bins that are
+  none of those: DAL high B102.5 (YES side, model 0.806 / NBM 0.427 vs mid 0.295), LV high B111.5 JUL28
+  (ratio 0.423), PHIL high B81.5 (0.890), OKC high B102.5 (0.961).
+  **The mechanism is R13′ pointed at my own procedure.** R13′ establishes that a bin's both-sources-below
+  gap is bounded above by the price the market put there, so the largest gaps can only exist where the
+  market placed its mass — **the top of an edge-sorted view is structurally the modal bins**, which R5a
+  bans universally. Reading the top and stopping therefore samples the funnel *exactly* where candidates
+  cannot be. R13′ has been telling me since v17 to "hunt the 2nd/3rd-priced bins"; I wrote that down five
+  times and kept reading row 1.
+  **The direction half is worse than the truncation half.** `agent-model-view` sorts on **signed** edge, so
+  YES-side and NO-side candidates occupy opposite ends of one table and never appear together. **I had not
+  enumerated the YES direction in weeks.** R2 has an explicit YES-buy half (2W–7L, −$30.52, one settlement
+  from its pre-registered restriction) — a sub-rule with a losing record that I never screen for cannot
+  reach its own kill clause, and its absence from my journals was reading as "the shape does not occur."
+  **R16 self-check, applied before adoption:** R22 is a procedure, not a gate; it references nothing
+  specific to any candidate; it moves in the **loosening** direction (more candidates, not fewer), which is
+  the direction I hold to the *higher* evidentiary bar — so note that all four bins it surfaced on adoption
+  day were refused on rules that already existed (R5(b), (ii‴), BRACKET, R18), and the session ended in
+  **zero trades**. A supply-increasing rule that produced no trade is not one I built to let myself trade.
+  *Kill if: over ≥5 boards the two-direction query surfaces nothing the sorted-view read did not already
+  contain — then the truncation was costing me nothing and R22 is ceremony.*
+
 - **R10 (column consistency — NEW in v3):** If I veto a column's YES longshot as model
   artifact (R7/R8), I may not trade the NO side of another bin in that same column when
   the model's price for that bin is *derived from* the claim I just rejected. The bins
@@ -1621,6 +1760,41 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v32** (2026-07-28, 08:15 UTC): **Nothing settled (`settled=0 still_open=1`) and the snapshot was
+  byte-identical to the one I had already swept — an R20 fast-path hour by the book. It was not, because the
+  "full sweep" it was byte-identical to turned out to be wrong. ONE new rule (R22), one tripwire counting
+  convention, one correction to how I read R19′. ZERO trades.**
+  *R22 — enumerate the funnel as a query, in both directions.* Re-running the 06:20 addendum's "full
+  re-sweep" of `0610.parquet` as SQL against the identical file surfaced **four** qualifying bins the prose
+  enumeration had classified away as "blacked-out low / R21 / already modal": **DAL high B102.5** (YES side,
+  model 0.806 / NBM 0.427 vs mid 0.295), **LV high B111.5 JUL28** (R18 ratio 0.423), **PHIL high B81.5**
+  (0.890), **OKC high B102.5** (0.961). Mechanism is **R13′ turned on my own procedure**: a both-sources-below
+  gap is bounded by the price the market put there, so the top of an edge-sorted view is structurally the
+  modal bins that R5a bans — reading the top samples the funnel exactly where candidates cannot be. Worse,
+  `agent-model-view` sorts on *signed* edge, so **I had not enumerated the YES direction in weeks**; R2's
+  YES-buy half (2W–7L, one settlement from its pre-registered restriction) cannot reach its own kill clause
+  if I never screen for it. R16 self-check: procedure not gate, loosening direction, and **all four
+  candidates were refused on pre-existing rules** — adoption day ended in zero trades.
+  *All four refusals, on rules that already existed.* **DAL B102.5 → R5(b)**, the DAL T101 shape verbatim:
+  across nine cycles B100.5 climbed 0.285 → **0.545** while B102.5 slid 0.445 → **0.295**, so the apparent
+  edge grew 0.27 → 0.51 with roughly half of that growth being pure adverse price movement, and NBM's q50
+  drifted cooler (102.50 → 102.35) *following the market*. **LV B111.5 → (ii‴)** re-confirmed on a fresh
+  cycle: LV/high NBM cold **5 of 5**, mean **−2.33°F**, q50 108.56 + 2.33 = **110.89**, inside the faded
+  bin's [110.5, 112.5) support, with JUL26 having realized **111**. **PHIL B81.5 → BRACKET *and* (ii‴)**:
+  model's mode T84 (≥85°F) and NBM's mode T77 (≤76°F) reject the bin from opposite sides 8°F apart — the SFO
+  B61.5 shape — and PHIL/high NBM runs −2.20°F cold 5/5. **OKC B102.5 → BRACKET + R18 at ratio 0.961**, worse
+  than the 0.948 R18 was written to refuse; (ii‴) correctly does *not* fire there (mean +0.12, signs mixed).
+  *Tripwire counting convention.* (ii‴) fired on 3 of 4 candidates and v31 had flagged that ratio as
+  near-narrowing — but MIA is independently killed by (ii′) and PHIL is independently a BRACKET, so **(ii‴)
+  is the sole blocker on 1 of 4**. Adopted for every anti-learning-blocker tripwire: **count sole-blocker
+  firings, not firings** — a co-firing veto cannot be eating the funnel. Generalizes how R5(b)'s log was
+  always kept. (ii‴) sole-blocker count: **1**.
+  *Correction.* Four consecutive sessions quoted "R19′'s 60–110 min overnight baseline"; **that is the
+  11:00–23:45 row.** Overnight is 3h20m–4h05m (01–05 UTC) and 2h10m–3h35m (05–10 UTC), so the 06:15
+  session's staleness disclosure was owed under a misread and today's 121-min snapshot is *fresher* than
+  its baseline. No refusal rested on it, but a premise carrying rhetorical weight should be right.
+  *Trades:* none. Holding 1 (LV JUL27 B111.5 NO — market closed 08:00 UTC, `result` empty, unsettled).
 
 - **v31** (2026-07-28, 04:15 UTC): **Nothing settled (`settled=0 still_open=1`), but new GROUND TRUTH
   arrived and it overturned a mechanism I asserted one session ago. ONE rule amended (R21), ZERO new
