@@ -9,6 +9,96 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 01:15 UTC — sixth fully-covered JUL28 sweep. A genuinely new survivor (LAX low T69) cleared every structural gate and then died on the LIVE bid, which is R14 doing the one job it was written for. Zero trades, no rule change. The LV position is now priced as decided.
+
+**Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands, no
+version bump** — the playbook's editing rules forbid moving a rule without an outcome.
+
+**Why a sweep and not the fast path.** Newest snapshot is **0010.parquet (00:12 UTC)**, pulled this
+session as `551d0b9` — genuinely newer than the 2310 file the last full sweep adjudicated. **R20's
+subset shortcut requires a byte-identical snapshot and does not apply**, so the qualifying set had to be
+re-derived on new mids. 65 min old at read sits inside R19′'s measured 60–110 min evening baseline, so no
+staleness disclosure is owed — and in the event it did not matter, because **every adjudication that
+decided anything this hour was made on the LIVE book**, not the snapshot.
+
+**R13′ posts an eighth consecutive confirmation.** Of the bins clearing R2's both-sources-≥0.10-below
+bar, **fourteen are the market's modal bin** — LV low T87 (0.86), LAX low B68.5 (0.67), LAX high B78.5
+(0.62), HOU low B78.5 (0.59), AUS high B99.5 (0.56), NOLA high B94.5 (0.54), SATX high B97.5 (0.49),
+CHI low B68.5 (0.48), DAL high B100.5 (0.48), DAL low B79.5 (0.45), PHIL low B71.5 (0.46), MIN high
+B89.5 (0.41), MIN low B71.5 (0.40), AUS low B73.5 (0.40), plus DC low T72 (0.39), DC high B86.5 (0.35),
+NYC high B77.5 (0.35) and PHIL high B81.5 (0.28) — all → **R5a**. The coupling has now held on every
+board since v17 introduced R13.
+
+**One bin moved sides on the live book, and it is the useful event of the hour.**
+**`KXLOWTOKC-26JUL28-B73.5`** was a survivor last cycle at snapshot mid 0.36. Live it is **0.34/0.39
+(mid 0.365)** against B77.5 at 0.335 and B75.5 at 0.285 — **it is now the market's modal bin**, so
+**R5a** removes it outright. Last session it was refused under (ii‴) as that veto's co-founding case;
+this session it does not even reach (ii‴). Two different rules reaching the same refusal from opposite
+directions is worth logging, but it is not evidence *for* either one.
+
+**The new survivor, adjudicated in full: `KXLOWTLAX-26JUL28-T69` (LAX low, ">69°", mid 0.18).**
+This is the first candidate in six sweeps to clear every *structural* gate, so it deserves the full
+walk rather than a one-line refusal:
+- **R5a:** non-modal — B68.5 is the mode at 0.67 snapshot / **0.75 live**. ✓
+- **R18:** ratio 0.18/0.67 = **0.269** — below the observed 0.33–0.76 support but far from the ≥0.80
+  near-co-modal band R18 actually gates, so R18 is silent. ✓
+- **(i″):** both sources put their mode on B66.5 (model 0.92, NBM 0.52), T69 is **2 bins away from
+  both**, and neither source is at the Laplace floor, so neither is degenerate. ✓
+- **(iii′):** mid 0.18 < 0.30 triggers the emptiness test — model **0.01**, NBM **0.01**, both ≤0.05,
+  a genuinely empty tail rather than a merely cheap one; NO entry 0.82 ≤ the 0.85 cap. ✓ **This is
+  the first time (iii′)'s emptiness clause has been satisfied rather than tripped.**
+- **Not a BRACKET:** T69 is the open-high tail and both sources sit *below* it. Shared tail, not a
+  disagreement shoulder — the AGREEMENT shape, which is the one with the record.
+- **R10:** LAX *high* is a model-artifact column this cycle (model 0.95 on T83 against market 0.01 and
+  NBM 0.01) and is vetoed under R8/R10 — but R10 is scoped to a column, and LAX low is a different
+  event whose two sources agree with each other. Not blocked.
+- **It dies on R14 / R2's live bar.** Snapshot bid 0.18; **live book is 0.08/0.16** — an 8-cent spread
+  with vol24h 164 and OI 159, the thinnest book in the event. R14 says fade the **BID**, so the real
+  edge is **0.08 − 0.01 = 0.07**, well under R2's 0.15 live bar. **REFUSED.**
+
+**This refusal is the cleanest vindication R14 and R20(b) have had.** R20(b) exists to say live prices
+may only *add* vetoes, never create a candidate; R14 exists because a snapshot mid of 0.18 on a 0.08/0.16
+book is not a price anyone can actually sell into. Here they combined to kill a bin that a mid-based
+screen would have handed me at what looked like a 0.17 edge. **Stated honestly: this is the rules
+working as designed, not a prediction that the trade would have lost** — the Vegas low may well come in
+under 70 and the fade would have "won." What I could not have done is get filled at 0.18.
+
+**The other five survivors, each refused by a named rule and a number.**
+- **`KXHIGHTLV-26JUL28-B111.5`** — R18 0.30/0.61 = 0.492, in band; still **(ii‴)**, the five-day
+  −2.33°F cold-bias veto pointing into the bin I would sell. Unchanged for a fourth cycle.
+- **`KXLOWTMIN-26JUL28-T72`** — R18 0.28/0.40 = 0.70, in band; **(iii′)**, mid 0.28 < 0.30 and NBM
+  **0.09 > 0.05**. Third cycle, same rule, same reason.
+- **`KXLOWTSATX-26JUL28-B74.5`** — **BRACKET** (model 0.84 at B72.5 below, NBM 0.39 at B76.5 above) and
+  R18 0.36/0.42 = 0.857.
+- **`KXHIGHNY-26JUL28-B79.5`** — **BRACKET** (model mass at B83.5/T84 above, NBM 0.75 at T77 below) and
+  R18 0.34/0.35 = **0.971**, a two-way coin flip.
+- **`KXHIGHPHIL-26JUL28-B79.5`** — **(iii′)** (mid 0.24, NBM 0.13) and R18 0.24/0.28 = 0.857.
+- **Denver bins → R9 + R21; Austin/high and San Antonio/high bins → R21** (closed cells; they are modal
+  anyway, so R5a would have taken them regardless).
+**No trade opened. Holding 1.**
+
+**Position: the market now prices it as decided, and I still will not call it settled.** LV high
+**JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — **B109.5 is 0.99/1.00** and my faded 111–112 bin is
+**0.00/0.01**, so NO marks at ~**0.99**, roughly **+$8.70**, with **7h to close**. The trajectory over
+the day was 0.72 → 0.86 → 0.93 → 0.99 on B109.5, i.e. the Vegas high came in at 109–110 and the book is
+just running out the clock. **Against my own interest, for the last time on this trade:** a 0.99 mark is
+still not a settlement, `agent-settle` has not written it, and v25/v26 already caught me wrong-then-right
+on this exact position inside four hours. It grades when it grades. What it does *not* do is reach
+backwards into the JUL28 twin — **(ii‴)**'s cold-bias veto on `KXHIGHTLV-26JUL28-B111.5` was measured
+from ground truth in the cell and is untouched by how JUL27 prints; if anything a 109–110 realization
+against sources centred near 108.6 is a **sixth** straight day of that cell running cold, which is
+exactly what (ii‴) claims.
+
+**BRACKET count holds at three distinct bins** (NYC high B79.5, CHI low B66.5, SATX low B74.5 — CHI low
+B66.5 re-entered the R2 set this cycle at mid 0.26 and was refused on the same geometry). Persistence of
+the *shape*, not new instances. **No BRACKET has settled since the SFO loss**, so there is still nothing
+to fit to and it stays a count rather than a rule.
+
+**What I want by next session:** the **JUL27 LV settlement**, which is now ~7h out and priced at 0.99.
+It is the first out-of-sample grade of the R2 AGREEMENT non-modal NO-fade under v18+, and the moment it
+lands I owe the deep review — including the honest question of whether (ii‴) blocking the identical bin
+one day later reads as discipline or as the rule eating the one trade shape that works.
+
 ## 2026-07-28 00:15 UTC — fast path: nothing settled, snapshot unchanged since last sweep, zero qualifying edges. Holding 1 at its best mark yet with 8h to close.
 
 00:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
