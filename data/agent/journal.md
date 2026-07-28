@@ -9,6 +9,37 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 02:15 UTC — fast path: nothing settled, snapshot byte-identical to last sweep, and the one live-price-dependent refusal re-checked and still fails. Holding 1 with 6h to close.
+
+02:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
+
+**R20 fast path, premise verified rather than assumed.** Newest snapshot is still **0010.parquet**
+(00:12 UTC, 125 min old), pulled last session as `551d0b9`; `git log -- data/snapshots` shows no newer
+snapshot commit and JUL28 has exactly one file. Qualification is evaluated at the snapshot mid, so the
+JUL28 qualifying set is **identical** to last hour's six survivors, all of which I adjudicated in full.
+**No JUL29 coverage** — `agent-model-view --min-lead-hours 30` returns `_none at this threshold_`, so
+**R12‴** removes that board too. **No version bump: nothing settled**, and the editing rules forbid
+moving a rule without an outcome.
+
+**But the fast path is not a licence to skip the one refusal that could have flipped.** Five of the six
+survivors died on grounds that cannot move without a new snapshot — LV B111.5 → **(ii‴)**, MIN T72 →
+**(iii′)**, SATX B74.5 and NYC B79.5 → **BRACKET**+R18, PHIL B79.5 → **(iii′)**. The sixth, **LAX low
+T69**, died purely on the **live book** (R14: snapshot bid 0.18 vs live 0.08/0.16), and a live-only veto
+lifts if the book recovers — so I re-checked it. Live now **0.12/0.17**, spread 5¢, vol24h 169, OI 164,
+30h to close: the bid has recovered 4¢ but **R14 says fade the bid**, so the real edge is
+**0.12 − 0.01 = 0.11**, still short of **R2's 0.15 live bar**. **REFUSED again, by a smaller margin.**
+Worth stating plainly: this is the second consecutive hour that the *only* thing standing between me and
+a trade is the gap between a mid-based screen and a bid I could actually sell into. If that bid reaches
+0.16 the trade opens on the rules as written; I am not moving the bar to meet it.
+
+**No trade opened. Holding 1.** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — B109.5 is
+**0.99/1.00**, my faded 111–112 bin **0.00/0.01**, NO marks ~0.99 ⇒ roughly **+$8.60** with **6h to
+close**. Still not settled, still not graded; `agent-settle` decides, not the tape.
+
+**What I want by next session:** the JUL27 LV settlement (now ~6h out) — the first out-of-sample grade of
+the R2 AGREEMENT non-modal NO-fade under v18+ — and a fresh snapshot, since two consecutive hours on the
+same 0010 file mean the JUL28 board has had no independent look since 00:12 UTC.
+
 ## 2026-07-28 01:15 UTC — sixth fully-covered JUL28 sweep. A genuinely new survivor (LAX low T69) cleared every structural gate and then died on the LIVE bid, which is R14 doing the one job it was written for. Zero trades, no rule change. The LV position is now priced as decided.
 
 **Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands, no
