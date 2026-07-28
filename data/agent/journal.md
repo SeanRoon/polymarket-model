@@ -9,6 +9,112 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 11:15 UTC — LV settled +$8.55 after four sessions of waiting, and grading it honestly meant asking whether my entry shape works at all. It mostly doesn't: the emptiness clause carries the entire edge and (iii′)'s price exemption admits a 47%-hit bucket. (iii′)→(iii″), universal. (ii‴) logged its first blocked winner. Strategy → v34. Zero trades, flat book.
+
+**Settled: `KXHIGHTLV-26JUL27-B111.5` NO @0.70 → WIN +$8.55.** `agent-settle settled=1 still_open=0` — my
+first flat book since JUL26. Kalshi finalized `B109.5` **YES**, so the realized Las Vegas high on JUL27 was
+**109–110**: the truth landed **one bin below** the bin I sold.
+
+**Grade: right for the right reason, and the right reason is not the one R2 credits.**
+- **The model called it exactly.** At entry `model_p` was **0.787 on B109.5** — the bin that hit — and the
+  Laplace floor on the faded 111–112. The market's mode was the same bin at 0.440.
+- **NBM was wrong in precisely the way the thesis pre-registered.** NBM's mode was 107–108, q50 **108.19**,
+  against a truth of 109–110: **1.3–1.8°F cold**. The entry thesis said, two days before settlement,
+  *"NBM is NOT an independent second vote here; it is a co-biased cold source… That is single-source in
+  substance, so I am sizing SMALL."* Both halves graded correct. Writing the caveat down in advance is the
+  only reason I can say that today instead of retrofitting a story.
+- **So I am not counting it as an AGREEMENT win.** v22 pre-registered the R15″(a) retro-flag on this exact
+  position (NBM leg reconstructs above 0.05 on 88% of cycles ⇒ artifact ⇒ *"grade it as a trade whose NBM leg
+  was an artifact, whichever way it lands"*). It landed a winner, and the pre-registration binds anyway.
+  **Quarantined out of the clean AGREEMENT subset, which stays 4W–1L +$0.36**; logged as a **single-source
+  (model-only) win**. Today's independent confirmation: the JUL28 twin reconstructs above 0.05 on **9 of 9**
+  cycles.
+
+**(ii‴) would have vetoed this winner — its first blocked winner, logged against its own kill clause.**
+Measured rather than assumed: LV/high `nbm_q50 − realization` over the five days settled at entry (JUL21–25)
+is **+0.39, −2.55, −3.54, −5.68, −1.70 ⇒ mean −2.62°F, cold 4 of 5**, and correcting q50 108.19 + 2.62 =
+**110.81**, inside the faded bin's [110.5, 112.5). All three clauses fire. **Count 1; the kill clause needs
+≥6, so the rule stands.** But I am recording the crack now rather than when it suits me: (ii‴)'s correction
+**overshot the truth**, which came in at 109–110. LV/high's per-day errors span +0.4 to −5.7 (σ ≈ 2.3°F), so
+the *mean* it corrects by is about as large as its own dispersion — a blunt instrument written up as a sharp
+one. Pre-registered remedy at count 3: require the corrected estimate to clear the bin edge by ≥1σ before
+removing the rule outright.
+
+**Then I stopped grading and asked the harder question: does my entry shape work at all?** I backtested it
+over every committed snapshot (JUL20–26, R21-clean stations, one cycle per event at ~8h and ~26h lead),
+scoring each non-modal bin priced ≥0.15 that clears R2's dual-source bar against the actual CLI:
+
+| kind | bucket | n | avg price | hits | freq | edge @mid | edge @bid |
+|:---|:---|--:|--:|--:|--:|--:|--:|
+| high | **both sources ≤0.05** | 26 | 0.249 | 3 | **11.5%** | **+0.134** | **+0.125** |
+| high | not empty | 54 | 0.327 | 25 | **46.3%** | −0.136 | −0.147 |
+| low | **both sources ≤0.05** | 5 | 0.193 | 0 | **0%** | +0.193 | +0.178 |
+| low | not empty | 22 | 0.315 | 9 | 40.9% | −0.095 | −0.119 |
+
+**The emptiness clause is the entire edge, and (iii′) waives it exactly where the damage is.** (iii′) reads
+*"at mid ≥0.30 no emptiness test applies."* That exempted bucket — **high, mid ≥0.30, not empty — is n=36,
+17 hits (47%), −0.106/contract**, the worst cell I measured. I have been selling ~0.37 bins that land almost
+half the time and calling it a tail fade. **(iii′) → (iii″): emptiness is universal, at every price.**
+
+**Two things fell out of the same run that I did not go looking for.**
+- **R2's headline ≥0.10 dual-source bar does no independent work.** Drop it entirely and the empty-tail set is
+  *identical* (high 26→26, low 5→5) — at mid ≥0.15, both-sources-≤0.05 already implies a ≥0.10 gap. The bar I
+  have quoted in every thesis for twenty versions is a redundant restatement of the clause I treated as a
+  footnote. I am keeping it (deleting it would be a loosening with nothing behind it) but it is no longer the
+  thing I think is doing the work.
+- **Emptiness has to be BOTH sources**: model ≤0.05 alone → −0.034, NBM ≤0.05 alone → −0.092. R2's
+  dual-source *premise* survives intact; only its *threshold* was wrong. That is a better outcome than either
+  "R2 works" or "R2 is broken."
+
+**The counterweight, which points the other way and which I am not going to bury.** Split my own 23 settled
+NO-fades by the same test: **EMPTY 6 trades, 4W–2L, −$21.69** vs **not empty 17 trades, 10W–7L, −$38.60** —
+per trade **−$3.62 vs −$2.27**. On my ledger the bucket I am about to protect is my *worse* one. The
+reconciliation is that **both EMPTY losses sit in cells other active rules already ban** — SEA B80.5 (JUL13)
+was a **modal** fade, banned by R5a; MIA B93.5 is Miami/high, disqualified by (ii′) — and excluding those it
+is 4W–0L +$24.71. In the venue-wide backtest, **both** loss-generating markets were *also* Miami/high, which
+is a genuinely independent corroboration. But those are exclusions I chose, and choosing exclusions until the
+number behaves is exactly how (i) got adopted in v17. Stated in the rule body, not smoothed over.
+**And the caveat I owe next: the backtest scores binned `nbm_p`, so its "empty" population includes cases
+R15″(a) would veto as artifacts** — LV B111.5 is literally one of them. Re-run it with R15″(a) applied before
+sizing anything up on +0.134. Seven days, one heat wave, ~17 distinct high market-days.
+
+**R5a finally has a measurement under it.** Mode-hit rate at ~26h lead over 201 R21-clean event-days —
+highs: **market 39.4%**, model 23.2%, NBM 19.2%; mean bin distance **0.72** vs **1.51 / 1.51**. The market's
+modal bin is roughly twice as accurate as either of my sources on highs. R5a has cost me trades for twenty
+versions on the strength of an 8-trade PnL record; it turns out to have been protecting me from a real skill
+gap. It also gives R13′ a second leg — the biggest gaps sit on the modal bin, which is where I am worst.
+What it does *not* say: being bad at *picking* the winner is consistent with being useful at *ruling out* a
+tail, which is the only skill a NO-fade needs. That asymmetry is (ii′)'s v19 demotion restated.
+
+**Board (JUL28 settlement-day, 7–10h lead): zero trades, every candidate refused on a rule that already
+existed.** The snapshot is still 0905 — unchanged since 09:15 — so this is the board v33 swept, but I
+re-adjudicated because I changed a rule.
+- **All 6 low candidates → R12″.** 11:16 UTC is 07:16 EDT / 04:16 PDT; every US zone is still inside the
+  local midnight-to-10:00 blackout. Fourth consecutive session. Eastern clears at 14:00 UTC.
+- **All 10 YES candidates → R23.** Asks 0.01–0.31; the highest (SFO low B57.5 @0.31) is not close to the 0.40
+  floor.
+- **BOS B81.5, NOLA B94.5, PHIL B81.5, DC B88.5 → (iii″) NOT EMPTY.** Each also dies where it died before
+  (R18 ratio 0.853 / 0.939 on BOS/NOLA, R5(b) on DC, BRACKET on PHIL) — **so the rule I adopted today changed
+  no outcome today**, which is the R16 evidence I want for a rule this consequential.
+- **DEN B92.5 → R9 + R21.**
+- **LV B111.5 (JUL28) → R15″(a), a better refusal than v33's.** Reconstructed across all **9** committed
+  cycles: min 0.0826 / median 0.1076 / max 0.1103, **frac>0.05 = 1.00**. NBM's real opinion on 111–112 is
+  **~10%**, not 0.005 — so it is not casting an independent vote, the candidate fails R2's dual-source premise
+  outright, and its apparent emptiness under (iii″) is an artifact. That matters on the day I log (ii‴)'s
+  first blocked winner: I should not lean on (ii‴) where a cleaner mechanical kill exists.
+- **LAX B80.5 → R8/R10.** The model column is **degenerate** — 0.0093 (Laplace floor) on five of six bins and
+  **0.9537 on T83**. v33 called this a BRACKET; that was generous, it is one real source and one broken
+  column. Independently **(ii‴)**: LAX/high NBM verified cold **6 of 6** (−6.78, −3.25, −3.07, −1.54, −2.44,
+  −4.28; last-5 mean −2.92°F), and **JUL21 realized 81 — inside the exact bin I would be selling — against an
+  NBM q50 of 74.22**. The market's 0.30 there looks well-founded.
+
+**Trades opened: none.** Flat book, full capacity, and no candidate within reach of a bar.
+
+**What I want by next session:** the re-run of the empty-tail backtest with R15″(a) applied — that is the one
+number standing between (iii″) being a real edge and being an artifact of counting artifacts. Second: 14:00
+UTC is when Eastern clears the R12″ blackout and the low side becomes screenable for the first time in four
+sessions; that is where (iii″) gets its first live adjudication on candidates it can actually admit.
+
 ## 2026-07-28 10:15 UTC — fast path, provable rather than judged: same 0905 board I swept in full an hour ago, so the candidate set is a subset of an empty set. Nothing settled (LV unsettled 4th session). No qualifying edge, holding 1 position, v33 unchanged.
 
 **10:15 UTC — nothing settled, no qualifying edge, holding 1 position.**

@@ -1,6 +1,116 @@
 # Agent strategy playbook
 
-**Version: v33** (2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
+**Version: v34** (2026-07-28 11:15 UTC — **the LV position finally settled (+$8.55, a WIN), and grading it sent
+me to backtest the fade shape itself over the whole committed history. The result retires (iii′)'s price-band
+exemption: the emptiness test is where ALL of the edge lives, and R2's headline ≥0.10 dual-source bar does no
+independent work at all. One rule replaced ((iii′)→(iii″)), one counterfactual logged against (ii‴), and the
+first quantitative floor under R5a. Zero trades.**)
+`agent-settle settled=1 still_open=0` — first empty book in weeks. Newest snapshot **0905.parquet**, unchanged
+since 09:15 UTC, so the *board* is the one v33 swept; I re-adjudicated it anyway because I changed a rule.
+R19′: 126 min at 11:16 UTC straddles the 05:00–10:00 morning band (2h10m–3h35m) it was generated in and the
+11:00–23:45 band (60–110 min). Marginal, disclosed, and carrying no argumentative weight.
+
+**1. THE SETTLEMENT: LV high JUL27 B111.5 NO @0.70 → WIN +$8.55, and it was right for the reason the thesis
+pre-registered — which is NOT the reason the rule that authorized it claims.** Kalshi finalized
+`KXHIGHTLV-26JUL27-B109.5` **YES**: the realized high was **109–110**, one bin below the bin I sold.
+- **The model called it exactly.** At entry `model_p` was **0.787 on B109.5** — the bin that hit — and the
+  Laplace floor on the bin I faded. The market's mode was the same bin (0.440).
+- **NBM was wrong, exactly as the thesis said it would be.** NBM's mode was B107.5 @0.547, q50 **108.19**,
+  against a truth of 109–110: **1.3–1.8°F cold.** The entry thesis stated in advance: *"NBM is NOT an
+  independent second vote here; it is a co-biased cold source… That is single-source in substance, so I am
+  sizing SMALL."* Graded two days later: correct on both counts.
+- **v22's retro-flag is honored, not quietly dropped.** v22 pre-registered that this position's NBM leg
+  reconstructs above 0.05 on 88% of cycles ⇒ **R15″(a) artifact** ⇒ *"grade it as a trade whose NBM leg was an
+  artifact, whichever way it lands."* It landed a winner. **So it is quarantined out of the clean AGREEMENT
+  subset, which stays 4W–1L, +$0.36.** Logged instead as a **single-source (model-only) win.** Independent
+  confirmation arrived today: the JUL28 twin reconstructs **above 0.05 on 9 of 9 cycles (frac 1.00)**.
+
+**2. (ii‴) WOULD HAVE VETOED THIS WINNER — first entry in its kill ledger.** Measured, not asserted: LV/high
+`nbm_q50 − realization` over the five days settled at entry (JUL21–25) is **+0.39, −2.55, −3.54, −5.68, −1.70
+⇒ mean −2.62°F, cold on 4 of 5**. Correcting q50 108.19 + 2.62 = **110.81**, which lands **inside** the faded
+bin's [110.5, 112.5) support. All three (ii‴) clauses fire. **Blocked-winner count: 1** (kill clause needs ≥6),
+so the rule stands. **But record the methodological crack:** (ii‴)'s corrected estimate **overshot the truth**
+— 110.81 against a realization of 109–110 — because it applies a *mean* correction to a quantity whose
+day-to-day spread here (+0.4 to −5.7, σ ≈ 2.3°F) is as large as the correction itself. A mean is a blunt
+instrument at n=5, and (ii‴) currently pretends otherwise.
+
+**3. THE BACKTEST, and it moves a rule: (iii′)'s price-band exemption is BACKWARDS.** I stopped grading and
+measured the fade shape itself across every committed snapshot (JUL20–26, R21-clean stations, one cycle per
+event at each of ~8h and ~26h lead), scoring each non-modal bin priced ≥0.15 that clears R2's dual-source bar
+against the actual CLI:
+
+| kind | bucket | n | avg price | hits | freq | edge @mid | edge @bid |
+|:---|:---|--:|--:|--:|--:|--:|--:|
+| high | **both sources ≤0.05 (EMPTY)** | 26 | 0.249 | 3 | **11.5%** | **+0.134** | **+0.125** |
+| high | not empty | 54 | 0.327 | 25 | **46.3%** | −0.136 | −0.147 |
+| low | **EMPTY** | 5 | 0.193 | 0 | **0%** | +0.193 | +0.178 |
+| low | not empty | 22 | 0.315 | 9 | 40.9% | −0.095 | −0.119 |
+
+Split against (iii′)'s own 0.30 line, the exempted cell is the worst thing on the board:
+**high, mid ≥0.30, NOT empty — the bucket (iii′) explicitly waives the emptiness test for — is n=36, 17 hits
+(47%), −0.106/contract.** (iii′) says *"at mid ≥0.30 no emptiness test applies."* That exemption is where the
+losses are.
+**Two further findings from the same run.** *(a)* **R2's ≥0.10 dual-source bar does no independent work.**
+Dropping it entirely leaves the empty-tail set **identical** (high 26→26, low 5→5) — at mid ≥0.15, both
+sources ≤0.05 already implies a ≥0.10 gap. The bar is a redundant restatement of a test I was treating as the
+main event. *(b)* **Emptiness must be BOTH sources.** model ≤0.05 alone → −0.034; nbm ≤0.05 alone → −0.092.
+The dual-source *premise* survives; the ≥0.10 *threshold* was never the operative thing.
+
+**4. NEW — (iii″) REPLACES (iii′): the emptiness test is UNIVERSAL, at every price.** See R2's body. **R16
+self-check, and the counterweight is stated rather than buried.** For the rule: it is a **tightening**;
+it is backtested over 201 event-days rather than today's board; and it changed **zero decisions on the board
+where I adopted it** — all four not-empty candidates today were already refused on other rules.
+**Against it: my own ledger points the other way.** Split my 23 settled NO-fades by the same test —
+**EMPTY: 6 trades, 4W–2L, −$21.69** vs **not empty: 17 trades, 10W–7L, −$38.60.** Per trade that is **−$3.62
+vs −$2.27**: the bucket I am about to protect is my *worse* one. The reconciliation is that **both EMPTY
+losses sit in cells other active rules already ban** — SEA B80.5 (JUL13) was a **modal** fade, banned by R5a;
+MIA B93.5 is Miami/high, disqualified outright by (ii′). Excluding those two, EMPTY is **4W–0L, +$24.71**.
+And in the venue-wide backtest **both** loss-generating markets were *also* Miami/high. Two independent
+datasets telling the same story is real support — but it rests on exclusions I chose, and choosing exclusions
+until a number behaves is how (i) got adopted in v17. Stated, not hidden.
+**Pre-registered caveat, and it is the next measurement I owe.** The backtest scores **binned** `nbm_p`, so its
+"empty" population *includes* cases R15″(a) would veto as artifacts — LV B111.5 is exactly one. **Re-run the
+empty-tail backtest with R15″(a) applied before leaning on +0.134 any harder.** Also: seven days inside one
+late-July heat wave, and rows at two leads on one market are not independent (~17 distinct high market-days,
+of which the only losers were the two Miami ones).
+
+**5. The first quantitative floor under R5a, which until now rested on an 8-trade record.** Mode-accuracy at
+~26h lead across 201 R21-clean event-days:
+
+| kind | market mode hits | model mode hits | NBM mode hits | mean bin distance (mkt / model / NBM) |
+|:---|--:|--:|--:|:---|
+| high | **39.4%** | 23.2% | 19.2% | **0.72** / 1.51 / 1.51 |
+| low | **46.1%** | 15.7% | 43.1% | **0.61** / 1.26 / 0.79 |
+
+**The market's modal bin is roughly twice as accurate as either of my sources on highs, and half as far off in
+bin distance.** That is the mechanism R5a asserted from PnL and never demonstrated. It also explains R13′ from
+the other side: the biggest gaps live on the modal bin, and the modal bin is the thing I am worst at beating.
+Note honestly what it does *not* say — my sources being worse at *picking* the winner is fully consistent with
+them being useful at *ruling out* a tail, which is the whole asymmetry (ii′)'s v19 demotion rests on.
+
+**6. Board: JUL28 settlement-day, 7–10h lead. Zero trades, every candidate refused on a pre-existing rule.**
+All **6 low** candidates → **R12″** (11:16 UTC = 07:16 EDT / 04:16 PDT; every US zone inside the local
+midnight-to-10:00 blackout — fourth consecutive session). All **10 YES** candidates → **R23**, asks 0.01–0.31,
+none within 0.09 of the floor. Seven high NO candidates:
+- **BOS B81.5, NOLA B94.5, PHIL B81.5, DC B88.5 → (iii″) NOT EMPTY** (0.157/0.143, 0.306/0.290, 0.083/0.106,
+  0.102/0.005). Each also dies on what killed it before — R18 ratio **0.853** and **0.939** on BOS/NOLA,
+  R5(b) on DC, BRACKET on PHIL. **The new rule changed no outcome today**, which is the point.
+- **DEN B92.5 → R9 + R21**, twice dead.
+- **LV B111.5 (JUL28) → R15″(a), and this is a BETTER refusal than the one v33 used.** Reconstructed on all
+  **9** committed cycles: min 0.0826 / median 0.1076 / max 0.1103, **frac>0.05 = 1.00**. NBM's real opinion on
+  111–112 is **~10%**, not the 0.005 in the binned column. So NBM is not casting an independent vote, the
+  candidate **fails R2's dual-source premise outright**, and its apparent "emptiness" under (iii″) is an
+  artifact. v33 refused this on (ii‴); refusing it mechanically on R15″(a) matters because I have just logged
+  (ii‴)'s first blocked winner and should not be leaning on it where a cleaner kill exists.
+- **LAX B80.5 → R8/R10.** The model column is **degenerate**: 0.0093 (the Laplace floor) on five of six bins
+  and **0.9537 on T83**. That is not a second vote, so v33's "BRACKET" label was generous — this is
+  one real source and one broken column. Independently **(ii‴)**: LAX/high NBM verified **cold 6 of 6**
+  (−6.78, −3.25, −3.07, −1.54, −2.44, −4.28; last-5 mean **−2.92°F**), and **JUL21 realized 81 — inside the
+  exact bin I would be selling — against an NBM q50 of 74.22.**
+
+**Position: none.** First flat book since JUL26.
+
+**Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
 Every low on the board died to one blackout; all four NO survivors refused on four different pre-existing rules;
@@ -838,16 +948,72 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
       only a sole blocker removes a candidate I would otherwise have taken. This is how R5(b)'s log has always
       been kept ("R5(b)'s FIRST clean **sole-blocker** firing") — v32 generalizes it rather than inventing it.
       **(ii‴) sole-blocker count: 1 (LV B111.5 JUL28).** Not narrowing.
-      (iii′) **downside cap + emptiness test,
-      replacing v14's 0.30–0.45 band:** if the faded bin's mid is **< 0.30**, BOTH sources must
-      put **≤0.05** on it (a genuinely empty tail, not a merely cheap one) AND the NO entry
-      price must be **≤0.85**; at mid ≥0.30 no emptiness test applies. **Why the band died:**
+      **v34 — (ii‴)'s FIRST BLOCKED WINNER, counted against its own kill clause.** The settled
+      **LV high JUL27 B111.5 NO @0.70 (+$8.55 WIN)** would have been vetoed by (ii‴) had the rule
+      existed at entry. Measured over the five days settled at entry (JUL21–25): LV/high
+      `nbm_q50 − realization` = **+0.39, −2.55, −3.54, −5.68, −1.70 ⇒ mean −2.62°F, cold on 4 of 5**;
+      correcting q50 108.19 + 2.62 = **110.81**, **inside** the faded bin's [110.5, 112.5). All three
+      clauses fire. **Blocked-winner count: 1** — the kill clause needs ≥6, so the rule stands.
+      **The methodological crack, recorded now rather than when it is convenient:** (ii‴)'s corrected
+      estimate **overshot the truth**, which realized at **109–110**. LV/high's per-day errors span
+      +0.4 to −5.7 (σ ≈ 2.3°F), so the *mean* correction is roughly the size of its own dispersion —
+      at n=5 that is a blunt instrument being used as a point estimate, and (ii‴) currently writes as
+      though it were sharp. If the blocked-winner count reaches 3, replace the mean with a
+      dispersion-aware test (e.g. require the corrected estimate to clear the bin edge by ≥1σ) before
+      considering outright removal.
+      **(iii″) — REPLACES (iii′) in v34; the emptiness test is UNIVERSAL and the price-band exemption
+      is DELETED.** Every AGREEMENT NO-fade requires **BOTH sources ≤0.05 on the faded bin, at any
+      price** (a genuinely empty tail, not a merely cheap one), AND a NO entry price **≤0.85**.
+      *(iii′) said "if the faded bin's mid is <0.30, both sources must put ≤0.05 on it; at mid ≥0.30
+      no emptiness test applies." That exemption is exactly backwards.* Backtested across every
+      committed snapshot JUL20–26 (R21-clean stations, one cycle per event at ~8h and ~26h lead),
+      scoring each non-modal bin priced ≥0.15 clearing R2's dual-source bar against the CLI:
+
+      | kind | bucket | n | avg price | hits | freq | edge @mid | edge @bid |
+      |:---|:---|--:|--:|--:|--:|--:|--:|
+      | high | **EMPTY (both ≤0.05)** | 26 | 0.249 | 3 | **11.5%** | **+0.134** | **+0.125** |
+      | high | not empty | 54 | 0.327 | 25 | **46.3%** | −0.136 | −0.147 |
+      | low | **EMPTY** | 5 | 0.193 | 0 | **0%** | +0.193 | +0.178 |
+      | low | not empty | 22 | 0.315 | 9 | 40.9% | −0.095 | −0.119 |
+
+      Split on (iii′)'s own 0.30 line, **the exempted cell is the worst bucket measured: high,
+      mid ≥0.30, not empty — n=36, 17 hits (47%), −0.106/contract.** A bin the market prices at
+      ~0.37 that lands 47% of the time is not an overpriced tail; it is a fair coin I was selling.
+      **Two corollaries from the same run.** *(a)* **R2's ≥0.10 dual-source bar does no independent
+      work**: dropping it leaves the empty-tail set identical (high 26→26, low 5→5), because at
+      mid ≥0.15 both-sources-≤0.05 already implies a ≥0.10 gap. I keep the bar (deleting it is a
+      loosening with no demonstrated benefit) but I stop treating it as the discriminator — **(iii″)
+      is the discriminator.** *(b)* **Emptiness must be BOTH sources**: model ≤0.05 alone → −0.034;
+      nbm ≤0.05 alone → −0.092. The dual-source *premise* is vindicated; only its *threshold* was wrong.
+      **R16 self-check, with the counterweight stated.** It is a **tightening**, backtested over 201
+      event-days rather than the board in front of me, and it changed **zero decisions on adoption
+      day** (all four not-empty candidates were already refused on other rules). **Against it: my own
+      ledger disagrees.** My 23 settled NO-fades split **EMPTY 6 trades, 4W–2L, −$21.69** vs **not
+      empty 17 trades, 10W–7L, −$38.60** — per trade **−$3.62 vs −$2.27**, i.e. the bucket I am
+      protecting is my worse one. Reconciliation: **both EMPTY losses are in cells other rules already
+      ban** (SEA B80.5 was a **modal** fade → R5a; MIA B93.5 is Miami/high → (ii′)); excluding them,
+      EMPTY is **4W–0L, +$24.71** — and in the venue-wide backtest **both** loss-generating markets
+      were *also* Miami/high. Two datasets, one story. But those are exclusions I chose, and choosing
+      exclusions until the number behaves is how (i) got adopted in v17, so it is stated, not buried.
+      **Pre-registered next measurement (owed before this edge is sized up):** the backtest scores
+      **binned** `nbm_p`, so its "empty" population includes cases **R15″(a)** would veto as artifacts
+      — LV B111.5 is exactly one. **Re-run the empty-tail backtest with R15″(a) applied.** Further
+      caveats: seven days inside one late-July heat wave; rows at two leads on one market are not
+      independent (~17 distinct high market-days, whose only losers were the two Miami ones).
+      *Kill (iii″) if: over ≥6 settled fades admitted by it, the empty-tail subset runs below its
+      entry-implied win rate — then emptiness is not the discriminator either and the whole
+      both-sources framing needs rebuilding. Separately, restore the ≥0.30 exemption only if ≥5
+      not-empty fades at mid ≥0.30 would have won, contradicting the 17-of-36 measured here.*
+      **Why v14's 0.30–0.45 band died (retained from (iii′)):**
       it never discriminated — the one loss (MIA, mid 0.20) and the one win (DEN, mid 0.225)
       were BOTH outside it, and the loss is fully explained by (i)+(ii); meanwhile the band
       blocked six candidates across three sessions and double-counted R2's ≥0.15 live-edge bar
       (for a NO-fade, max edge = the market's own price, so 0.15 already floors the price).
-      **(ii) is the load-bearing qualifier; (iii′) bounds the downside. (i) is GONE — here is
-      the measurement that killed it (v18, 2026-07-26 15:15 UTC).**
+      **v34 revises this ranking on measurement rather than intuition: (iii″) is now the
+      load-bearing qualifier — it is the only clause with a demonstrated edge attached (+0.134/contract
+      on highs) — while (ii′)/(ii‴) remain vetoes with zero demonstrated discriminating power and
+      (ii′)'s Miami disqualification is doing visible work inside (iii″)'s own evidence. (i) is GONE
+      — here is the measurement that killed it (v18, 2026-07-26 15:15 UTC).**
       **v17 claimed "(i) OUT-OF-SAMPLE CONFIRMED." That claim is RETRACTED.** v17 tested (i)
       against the subset's one *loss* and never against its four *wins*. Measuring the faded bin's
       bin-distance to both sources' modes in the snapshot nearest each entry gives:
@@ -952,7 +1118,24 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   mode is the single hardest thing to beat regardless of lead. Wins for the record (all
   variance): PHX B97.5 +$7.07, HOU B97.5 +$24.17, PHX B104.5 +$19.91, SATX low B78.5
   +$11.52, PHIL B81.5 +$11.20. **No modal-bin NO-fades, period — do not resurrect this
-  carve-out.** **(b)** sharp adverse repricing against the model side since
+  carve-out.**
+  **v34 — R5a finally has a MEASUREMENT under it instead of an 8-trade record.** Across 201
+  R21-clean event-days at ~26h lead, how often each source's modal bin is the bin that actually
+  contained the CLI value:
+
+  | kind | market mode | model mode | NBM mode | mean bin distance (mkt / model / NBM) |
+  |:---|--:|--:|--:|:---|
+  | high | **39.4%** | 23.2% | 19.2% | **0.72** / 1.51 / 1.51 |
+  | low | **46.1%** | 15.7% | 43.1% | **0.61** / 1.26 / 0.79 |
+
+  **On highs the market's modal bin is ~1.7–2× as accurate as either of my sources, and less than
+  half as far off in bin distance.** Every dollar R5a has cost me was buying protection against a
+  measurable skill gap, not against a run of bad luck. It also gives R13′ its second leg: the
+  largest gaps live on the modal bin, and the modal bin is precisely where I am worst.
+  **What this does NOT say, and the distinction is (ii′)'s v19 demotion restated:** being worse at
+  *picking* the winning bin is entirely consistent with being useful at *ruling out* a tail — a
+  NO-fade needs only the second skill. The table is an argument for R5a and for (iii″)'s emptiness
+  framing; it is **not** an argument that my sources are useless. **(b)** sharp adverse repricing against the model side since
   the prior session is information, not an entry discount — do not open or add to
   the model's side after the market has moved ≥ 0.10 away from it (Jul-13: the
   overnight collapse of DEN T93 / AUS T89 / SATX T90 predicted all three losses);
@@ -1863,6 +2046,46 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v34** (2026-07-28, 11:15 UTC): **The LV position settled (+$8.55 WIN, `settled=1 still_open=0`), and
+  grading it turned into a backtest of the fade shape itself. ONE rule replaced ((iii′)→(iii″)), one
+  counterfactual logged against (ii‴), R5a given a quantitative floor. ZERO trades.**
+  *The settlement.* `KXHIGHTLV-26JUL27-B111.5` NO @0.70 won; the realized LV high was **109–110**, one bin
+  below the bin I sold. The **model** put **0.787 on the bin that hit** and the Laplace floor on the faded bin;
+  **NBM's mode was 107–108, q50 108.19 — 1.3–1.8°F cold**, exactly as the entry thesis pre-registered
+  ("NBM is NOT an independent second vote here… single-source in substance, so I am sizing SMALL"). Per v22's
+  standing retro-flag (NBM leg reconstructs >0.05 on 88% of cycles ⇒ **R15″(a) artifact**), it is **quarantined
+  out of the clean AGREEMENT subset, which stays 4W–1L +$0.36**, and recorded as a **single-source win**.
+  *(ii‴)'s first blocked winner.* Measured over JUL21–25, LV/high `nbm_q50 − realization` = +0.39, −2.55,
+  −3.54, −5.68, −1.70 ⇒ **mean −2.62°F, cold 4 of 5**; corrected q50 **110.81**, inside [110.5, 112.5). All
+  three clauses fire ⇒ **(ii‴) would have vetoed this winner. Count 1 of the ≥6 its kill clause needs.**
+  Recorded crack: the correction **overshot** (truth 109–110) because a mean is applied to a quantity whose
+  spread (σ ≈ 2.3°F) equals the correction. Remedy pre-registered at count 3.
+  *(iii′) → (iii″): the emptiness test is UNIVERSAL; the ≥0.30 exemption is deleted.* Backtested over
+  JUL20–26, R21-clean, ~8h and ~26h leads: R2-qualifying non-modal fades with **both sources ≤0.05** run
+  **high n=26, 11.5% hit, +0.134/contract (+0.125 at the bid)** and **low n=5, 0% hit, +0.193**; **not empty**
+  runs **high n=54, 46.3% hit, −0.136** and **low n=22, 40.9%, −0.095**. The bucket (iii′) exempted —
+  **high, mid ≥0.30, not empty — is n=36, 17 hits (47%), −0.106**, the worst cell measured.
+  Corollaries: **R2's ≥0.10 bar does no independent work** (dropping it leaves the empty set identical,
+  26→26 / 5→5), and **emptiness must be both sources** (model-only −0.034, NBM-only −0.092).
+  *R16 self-check with the counterweight stated.* Tightening; 201 event-days of evidence; **changed zero
+  decisions on adoption day.** Against it: **my own ledger runs the other way** — EMPTY 6 trades 4W–2L
+  −$21.69 vs not-empty 17 trades 10W–7L −$38.60 (−$3.62 vs −$2.27 per trade). Reconciliation: **both EMPTY
+  losses are in cells other rules already ban** (SEA B80.5 modal → R5a; MIA B93.5 → (ii′)), leaving 4W–0L
+  +$24.71 — and **both** loss-generating markets in the venue-wide backtest were *also* Miami/high. Stated as
+  chosen exclusions, because choosing exclusions until a number behaves is how (i) got adopted in v17.
+  Pre-registered next measurement: **re-run the empty-tail backtest with R15″(a) applied**, since the sample
+  scores binned `nbm_p` and therefore includes artifacts.
+  *R5a gets a measurement.* Mode-hit rate at ~26h lead over 201 event-days — highs: **market 39.4%** vs model
+  23.2% vs NBM 19.2%; mean bin distance **0.72** vs 1.51/1.51. The market's mode is ~2× as accurate as either
+  source. R5a stops resting on an 8-trade PnL record.
+  *Board.* JUL28 settlement-day, 7–10h lead, zero trades: all 6 lows → **R12″** (every US zone inside the
+  midnight-to-10:00 blackout, 4th straight session); all 10 YES → **R23** (asks 0.01–0.31); BOS/NOLA/PHIL/DC
+  → **(iii″) not empty** (each also dying on R18/R5(b)/BRACKET as before); DEN → **R9 + R21**; **LV B111.5
+  → R15″(a)**, frac>0.05 = **1.00 on 9/9 cycles**, NBM's real P ≈ 0.10 not 0.005 — a cleaner kill than the
+  (ii‴) v33 used, which matters on the day I log (ii‴)'s first blocked winner; **LAX B80.5 → R8/R10**, model
+  column degenerate (0.0093 on five bins, **0.9537 on T83**), plus (ii‴) with LAX/high cold **6 of 6** and
+  **JUL21 realizing 81 — inside the exact bin — against an NBM q50 of 74.22**.
 
 - **v33** (2026-07-28, 09:15 UTC): **Nothing settled (`settled=0 still_open=1`), but the first genuinely FRESH
   board since R22 existed — 0905.parquet, ~10 min old. ONE new rule (R23). ZERO trades.**
