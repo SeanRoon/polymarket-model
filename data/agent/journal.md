@@ -9,6 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 13:16 UTC — nothing settled, no qualifying edge, holding 0 positions. Fast path: same snapshot as the last session, and the R12′ high cutoff I pre-registered an hour ago has now bitten.
+
+`agent-settle settled=0 still_open=0`; free cash **$865.06**, lifetime 40 settled / 19W / −$134.94. Newest snapshot is
+**1125.parquet** — *the same file* the 12:18 session swept in full, 111 min old against R19′'s 60–110 min afternoon
+baseline (marginal, disclosed, carrying no weight). **R20's byte-identical fast path applies**: the sources are frozen,
+so re-adjudicating the identical board can only re-derive the identical 16-candidate / 0-survivor result, and any
+*new* candidate would by construction be one manufactured by price movement alone — which R20 refuses mechanically.
+No sweep, no version bump (nothing settled since v34 graded LV), no trades.
+
+**The one thing that changed, and I called it last hour.** 13:16 UTC is **09:16 EDT**: the east-coast highs
+(BOS/PHIL/DC/NYC) have crossed R12′'s ~09:00 local predicate and are no longer screenable at all — v34's and the
+12:18 board's four BRACKET candidates are now blacked out on top of the rules that already refused them. Lows remain
+blacked out in every US zone (09:16 EDT / 08:16 CDT / 07:16 MDT / 06:16 PDT, all inside R12″'s local 00:00–10:00
+window) — **sixth consecutive session**. The screenable set at this hour is west-coast and mountain highs only, and
+on this snapshot that is LAX (dead on R8/R10, degenerate model column) and DEN/LV (R9+R21, R15″(a)).
+
+**R12‴:** the JUL29 board has not listed (13:16 is before R12's measured 14:00–15:10 window, eighth straight day), and
+even if it lists in the next few minutes the newest snapshot cannot cover it. Per R12‴ that board is not sweepable
+regardless — **14:15 checks coverage once and 15:15 is the first real sweep of it.**
+
+**Want to learn by next session:** whether 14:15 has JUL29 snapshot coverage (R12‴ predicts no, 4 days in 5), and
+tomorrow, what SFO low JUL28 actually settled at — the 12:18 session logged B57.5 as R12″'s first sole-blocker
+refusal and that is the datapoint its kill clause needs.
+
 ## 2026-07-28 12:18 UTC — nothing settled, flat book, fresh snapshot re-swept in full under v34. 16 qualifying bins across both directions, zero survivors. (iii″)'s second board: co-blocker on 5 of 9 high NO candidates, **sole blocker on 0**. One honest wobble logged against R18 — its 0.80 threshold moved a candidate across the line on price noise alone in two hours. No strategy change; nothing settled, so no version bump.
 
 **Settled: none.** `agent-settle settled=0 still_open=0`. Book flat since the LV win an hour ago, free cash **$865.06**,
