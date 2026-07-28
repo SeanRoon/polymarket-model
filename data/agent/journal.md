@@ -9,6 +9,118 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 04:15 UTC — no trade settled, but new ground truth landed and it proved my own v30 diagnosis wrong. R21's mechanism is now established from the raw CLI text; strategy → v31. Zero trades.
+
+**Sync and settle.** `agent-settle settled=0 still_open=1`. Newest snapshot **0340.parquet (04:17 UTC,
+35 min old)** — the first new file in **~3.5 hours**, so **R20's byte-identical fast path does not apply**
+and I owed the JUL28 board a full re-sweep on fresh sources. Age is inside R19′'s measured 60–110 min
+evening baseline, so no staleness disclosure this hour.
+
+**The session's real event: `data/resolutions.parquet` now runs through JUL27, and it posted for exactly
+three stations — KAUS, KSAT, KDEN. The three R21 cells.** That is a direct test of the claim I made one
+session ago, handed to me for free.
+
+**R21 was right to distrust the numbers and WRONG about why.** v30 asserted "a parser signature, not
+weather." I pulled the `raw_text` this time instead of reasoning about the values, and the parser is fine —
+**the document is the wrong document.** Every one of those three files is an **intermediate morning CLI**:
+
+| station | issued | stamp | MAXIMUM | normal | CLI's own departure |
+|:---|:---|:---|:---|---:|---:|
+| KAUS | 746 AM CDT | `VALID AS OF 0700 AM LOCAL TIME` | **80 at 12:05 AM** | 98 | **−18** |
+| KSAT | 746 AM CDT | `VALID AS OF 0700 AM LOCAL TIME` | **80 at 12:45 AM** | 96 | **−16** |
+| KDEN | 632 AM MDT | `VALID AS OF 0600 AM LOCAL TIME` | **83 at 1:16 AM** | 90 | **−7** |
+
+The report covers **midnight → dawn only**, so its `MAXIMUM` is the previous evening's carryover warmth
+logged in the small hours — not the daily high, which hasn't happened yet when the file is issued.
+
+**Three predictions of that mechanism, all confirmed — which is why I believe it rather than just prefer
+it.** *(i)* It predicts only `high` breaks, because the daily **minimum** genuinely does fall inside the
+window (`MINIMUM 74 5:40 AM` Austin, `76 4:59 AM` Denver, `75 5:59 AM` San Antonio) — and high-only
+corruption is exactly what v30 observed. *(ii)* It predicts an error of (afternoon high − overnight max),
+i.e. 11–25°F in a July heat wave — the observed magnitude. *(iii)* It predicts confinement to the offices
+that publish the intermediate product. I scanned `raw_text` for the stamp across **all 20 stations:
+KAUS, KSAT and KDEN carry it; the other 17 carry none. Zero false positives, zero false negatives.** A
+clean partition is about as close to proof as this gets.
+
+**Why this changed a rule rather than just a footnote.** v30's reopening test was "re-run the
+market-settlement cross-check monthly; reopen when the cells agree." **That test can never fire** — this
+is a structural fact about which product KEWX and KBOU publish, not an intermittent fault, so those three
+cells would have stayed closed forever on a criterion incapable of clearing. v31 replaces it with the
+**stamp test**, which *can* fire the day the fetcher moves to the end-of-day product. Same closure today,
+but now with an exit that exists.
+
+**I also retracted an overreach of my own.** v30 claimed the corruption "retro-explains the degenerate
+model columns I have been vetoing under R8/R10 for weeks." It explains AUS/SATX/DEN — and there the chain
+is fully derivable: corrupt actual → `compute-bias` manufactures a +12°F correction → recorder subtracts it
+→ ensemble pushed off the bottom of the board → `model_p` 0.95 on T97. It does **not** explain **LAX/high
+(model 0.95 on T83)** or **Chicago/low (model 0.84 on T64)**, both degenerate on *this* board at stations
+with clean, unstamped resolutions. **R8/R10 keeps independent work and a second degeneracy mechanism is
+still unidentified.** Tidier to claim one root cause; not true.
+
+**FOR THE OPERATOR:** `weather/nws.py` / `fetch-resolution` is capturing **KEWX's and KBOU's intermediate
+morning CLI** (stamped `VALID AS OF 0600/0700 AM LOCAL TIME`) rather than the end-of-day report, so
+`high` is wrong by 11–25°F for **Austin, San Antonio and Denver** — and that feeds `compute-bias`, the
+production track record, and `model_p` for three cells the production trader has LIVE. **Read-only finding:
+I have not touched the parser, the parquet, or any code, and will not.** Flagging it is the whole of my
+remit here.
+
+**A rule I measured, drafted, and then killed — recording it because the killing is the useful part.**
+Chasing whether the bias picture generalizes, I computed NBM's signed error (`nbm_q50 − realization`) over
+JUL22–26 across every valid cell — 183 pairs, 20 cities: **highs run −0.73°F cold (70% of days), lows run
++1.40°F warm (only 27% cold).** NBM under-forecasts the diurnal range, and the low-side warm bias is about
+double the high-side and much more consistent (16 of 20 low cells warm: Austin +4.03, SATX +3.42, Houston
++3.07, Seattle +3.03, Denver +2.79, OKC +2.63). The high side splits **geographically** — coastal/southwest
+cold (Miami −3.72, Atlanta −3.11, Boston −2.86, LAX −2.43), Plains warm (Dallas +2.22, OKC +1.97) — so
+"highs run cold" is *not* a venue-wide truth and I did not write one. The natural R22 ("raise R2's live bar
+to 0.20 for fades of a low bin below the forecast") **would have changed exactly zero decisions on this
+board**, because (ii‴) had already killed every such candidate. A rule with no bite, off one 5-day window
+inside a single synoptic regime, is the churn pattern I flagged at v29 and would repeat v17's retracted (i).
+**Kept as evidence for (ii‴) instead.** It earns its keep there: (ii‴) fired on **3 of today's 4** non-modal
+survivors (vs 2 of 6 in v30), which brushes its own "narrow it if it eats the funnel" kill-clause — and this
+measurement says that is a **widespread real bias producing widespread firing**, not miscalibration,
+especially since R13′ sends me hunting the 2nd-priced bin, which in a heat wave sits on the dangerous side.
+Threshold left alone; I re-check the ratio next session. *Caveat I am not burying: 5 consecutive days in
+one heat-wave regime is not an independent sample.*
+
+**Scan and adjudication — zero trades, and R13′ posts a fifth straight confirmation.** Every largest gap on
+the board was the market's **modal** bin → **R5a** (LAX high B78.5, SFO low B59.5, CHI low B68.5, DAL low
+B79.5 and high B100.5, NYC low B69.5, PHIL low B71.5, PHX low T92, ATL low B75.5, AUS low B73.5, OKC low
+B73.5 and high B102.5, NOLA high B94.5, PHIL high B81.5, NYC high B79.5). Four non-modal AGREEMENT
+candidates reached real adjudication; **all four refused, three by (ii‴) measured fresh this session:**
+
+- **LAX high B80.5** — both sources 0.01 vs mid 0.325, R18 ratio 0.589 ✓, live **0.32/0.33** on 6,035 vol,
+  edge 0.31 ✓, (iii′) ✓ (NO entry 0.68). Killed by **R8/R10**: model puts 0.95 on T83, which the market
+  prices 0.05 and NBM 0.01 — the column is an artifact, leaving one usable source, so R2's dual-source
+  premise fails. **And independently by (ii‴)**: cell −2.43°F cold, 5/5, so correcting q50 ~76.5 upward
+  moves *toward* the 80–81 bin I'd be selling.
+- **MIA high B94.5** — 0.05/0.01 vs mid 0.255, ratio 0.622 ✓, live 0.25/0.26, edge 0.20 ✓, (iii′) ✓.
+  Killed by **(ii‴)**, its cleanest firing yet: Miami/high is **−3.72°F cold on 5 of 5 days**, and
+  **JUL26 already ran this exact experiment — the high realized 94, inside the very bin, against NBM's
+  86.11, a −7.89°F miss.** Selling 94–95 here is selling the outcome that just happened. (ii′) disqualifies
+  the cell anyway.
+- **OKC low B71.5** — this one hurt. It cleared **R5a** (mode B73.5), **R18** (0.514), **(iii′)** (both at
+  the floor, NO entry 0.83 ≤ 0.85), **(i″)** (d=3 from both modes), and **R2's live bar by a single cent**
+  (bid 0.17 − 0.01 = **0.16** vs the 0.15 floor). Killed by **(ii‴)**: OKC/low is **+2.63°F warm, 5 of 5**,
+  and the faded 71–72 bin sits *below* q50 78.88 — the bias points straight at it. **Refused.**
+- **CHI low B66.5** — **R8/R10** (model 0.84 on T64, which the market prices 0.015), **(ii‴)** (+1.50°F
+  warm, 5/5, faded bin below q50), and an **8¢ spread** (0.28/0.36) on 575 vol that R14 discounts anyway.
+
+Everything else non-modal failed **R18** on price ratio: NYC high B77.5 (0.878), PHIL high B79.5 (0.829),
+BOS high B81.5 (0.938), SATX low B74.5 (0.976) — all well outside the 0.33–0.76 support. AUS/SATX/DEN high
+→ **R21**. Denver → **R9**. Note the LAX low T69 candidate I chased for three sessions has **dropped off
+the board entirely** — its edge is now under 0.05 on the fresh snapshot, so the market came to the model
+rather than the reverse. R14 was right to hold me out at 0.111.
+
+**No trade opened. Holding 1.** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — B109.5 quotes
+**0.99/1.00**, my faded 111–112 bin **0.00/0.01** on 7,413 contracts of 24h volume, so NO marks ~0.995 ⇒
+**≈ +$8.85** with **4h to close**. **Quoted as decided; not settled, not graded** — `agent-settle` decides,
+not the tape, and I am not writing a win into the record before it is one.
+
+**What I want by next session:** the JUL27 LV settlement (~4h out) — the first out-of-sample grade of the
+R2 AGREEMENT non-modal NO-fade under v18+, and my first learnable outcome since JUL26. Second: whether
+(ii‴)'s firing ratio stays near 3-of-4 or reverts toward v30's 2-of-6 once the heat wave breaks — that is
+the number that decides whether its threshold needs narrowing.
+
 ## 2026-07-28 03:15 UTC — fast path, third consecutive hour on the same snapshot. Nothing settled, the LAX refusal re-checked on a book that did not move, and the LV position is now quoted as decided with 5h to close.
 
 03:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
