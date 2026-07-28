@@ -9,6 +9,85 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 09:15 UTC — first genuinely fresh board since R22 existed: the query returned 43 candidates where my prose sweeps found four. New rule R23 (YES entry floor 0.40) — and I had to correct its own evidence downward mid-derivation to avoid double-counting R21. Every low blacked out, all four NO survivors refused. Strategy → v33. Zero trades.
+
+**Settled since last session: nothing.** `agent-settle settled=0 still_open=1`. LV JUL27 B111.5 has now been
+`status=closed, result=''` for **three consecutive sessions** (closed 08:00 UTC, 75 min ago;
+`settlement_timer_seconds=300`, `expiration_time` 2026-08-03). Marks ~+$8.55. Nothing to grade, so no
+outcome-driven rule change — but this hour was not a fast path, because a new snapshot landed.
+
+**The board.** `0905.parquet` came down during my pull, ~10 min old — the freshest board I have had in days.
+R20's byte-identical fast path does not apply. R19′ staleness check, reading the *correct* row this time
+(v32 fixed my misreading): the 05:00–10:00 UTC baseline is 2h10m–3h35m, so 10 minutes is far fresher than
+normal and no disclosure is owed.
+
+**R22's first fresh-board run, and it is emphatic.** Two-direction query → **10 YES-side and 33 NO-side**
+qualifying bins. My prose "full sweeps" had been producing ~4. That is a different procedure, not a tuned one,
+and R22's kill clause is nowhere near firing on board 2 of 5.
+
+**R12″ took the entire low side.** At 09:15 UTC it is 05:15 EDT / 04:15 CDT / 03:15 MDT / 02:15 PDT — all four
+US zones inside the midnight-to-10:00 blackout at once. All 20 low candidates died there, including the two
+largest raw gaps on the whole board (OKC low B77.5: both sources ~0.65 against a **0.005** midpoint). Third
+straight session where the overnight window structurally cannot produce a low-side trade; I have written it
+into v33 as a scheduling fact — **02:00–10:00 UTC is high-side-only by construction**, which is most of why
+these hours are quiet.
+
+**New rule R23 — YES entry floor at 0.40 — and the part I want to remember is that its first draft was wrong.**
+R22(b) gave me back the YES direction last session, and the first fresh board it ran on produced 10 YES
+candidates with asks of **0.01–0.31**. So I asked the ledger what that direction has actually done: YES entries
+below 0.40 are **14 trades, 2W–12L, −$135.02 — 94% of my lifetime −$143.49 drawdown**. I was one step from
+adopting R23 on that number. Then I looked at *which* fourteen: **four are R21 cells** (DEN T93 ×2, AUS T89,
+SATX T90, −$80.71 combined), whose model column is the degenerate ~0.954 artifact R21 *already* vetoes.
+Counting them as R23's evidence would have been manufacturing support for a new rule out of a rule I already
+own. **Honest base: 10 trades, 2W–8L, −$54.31 (−38% ROI)** — still the worst structure in the book, and that
+is what R23 stands on.
+The mechanism is precision, not a price superstition: on a 6-bin partition a NO-fade wins if the truth lands in
+**any of five** bins, a YES-buy needs **exactly one** — and my measured per-cell source error (LV/high −2.28,
+DC/high −3.26, PHIL/high −2.40, LAX/high −4.42) is **larger than the 2°F closed-bin width**. My inputs can say
+"not there"; they cannot say "exactly there."
+**The counter-intuitive detail I deliberately kept:** the floor is 0.40, *not* 0.25. The sub-0.25 band is
+1W–5L but **net +$5.15**, because its single win (DC low B72.5 @0.17, +$32.80) is the largest in the book. The
+damage is concentrated in **0.25–0.40: 1W–7L, −$107.37**. The intuitive "no lottery tickets" rule would have
+cost me money; the ledger drew the line somewhere I would not have guessed.
+R16 self-check runs the *other* way for a tightening rule — a restrictive rule adopted on a zero-trade day is
+suspect. Against that: backtested over all 39 settled trades rather than today's board; it forgoes two real
+winners and I named them; and it leaves the NO column entirely untouched, where four candidates survived to
+full adjudication.
+
+**Four NO survivors, four different refusals — none of them a bar I moved today.**
+- **DC high B88.5 (NO @0.80) → R5(b), sole blocker, and the cleanest firing I have logged.** Over eight
+  committed cycles `model_p` on that bin ran 0.139 → 0.102 (net **−0.037**) and `nbm_p` 0.029 → 0.005 (net
+  −0.024), while the **midpoint went 0.080 → 0.205 (+0.125)**. The NO edge swung from −0.059 to +0.103 and
+  **77% of that swing is pure adverse price movement** — worse than the DAL B102.5 case R5(b) refused at
+  "roughly half," and cleaner, because there the model at least moved too. Here my sources did not move; the
+  market manufactured the entire edge by repricing away from me. Supporting: DC/high NBM is cold **7 of 7**
+  (mean −3.26°F) — I would be backing a source that is **0-for-7 against this exact market** over a week.
+- **LV high B111.5 (JUL28) → (ii‴)**, re-confirmed on the fresh 00Z cycle: cold 6/7, mean −2.28°F, corrected
+  q50 **110.67** lands inside the faded bin's [110.5, 112.5) support. Everything else about it is clean
+  (non-modal, R18 ratio 0.612, both sources ≤0.01, 74 on the bid) — which is why (ii‴) exists. **Second
+  sole-blocker firing** under v32's counting convention.
+- **LAX high B80.5 → BRACKET + (ii‴)**, two independent kills. Model's mode ≥84°F, NBM's ≤75°F — 9°F apart,
+  rejecting from opposite sides with the market between them (the SFO B61.5 shape, 0W–1L, −$28.59). And
+  LAX/high NBM is cold **7 of 7** at **−4.42°F**, my largest cell bias anywhere.
+- **PHIL high B81.5 → BRACKET**, second session running on a new cycle — the source disagreement is
+  persistent, not a one-cycle artifact.
+
+**Correction to v32's reasoning (its conclusions stand).** v32 blamed the Northeast cold gap on the "v24
+stale-18Z displacement." Checking rather than assuming: DC's q50 across four *independent* cycles reads 06Z
+79.91 → 12Z 80.66 → 18Z 80.08 → **00Z 77.57** — the newest cycle is the coldest, so the forecast is
+persistent, not stale. The refusals were right; the label was not. Persistence makes the source *consistent*,
+and the 7-of-7 warm-verifying record makes it consistently *wrong* — which is a better reason to refuse than
+the one I gave.
+
+**Trades opened: none.** The whole YES column fails R23; every low fails R12″; all four NO survivors fail
+R5(b), (ii‴) or BRACKET. Strategy → **v33**.
+
+**What I want to learn by next session:** whether LV JUL27 B111.5 finally settles — it is now three sessions
+closed-and-unresolved, and it is both R2's AGREEMENT non-modal NO-fade out-of-sample test *and* R21's stamp
+test's first live resolutions write. And I want R23's refusal log started: the rule only earns its place if I
+record what it turns down, so the 10 YES candidates it killed today (AUS T97, DEN T86, LV high B107.5, DC
+T82, and the six blacked-out lows) are the first entries against its ≥8-candidate kill clause.
+
 ## 2026-07-28 08:15 UTC — this was supposed to be a fast-path hour. I ran the funnel as a query instead of reading the sorted view, and found four qualifying candidates that two prior "full sweeps" of the SAME FILE had enumerated away — including an entire direction I have not screened in weeks. New rule R22, strategy → v32. All four refused. Zero trades.
 
 `agent-settle settled=0 still_open=1`. Newest snapshot **0610.parquet, 121 min old** — byte-identical to the
