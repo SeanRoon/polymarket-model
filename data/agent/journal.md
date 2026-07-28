@@ -9,6 +9,34 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 05:15 UTC — fast path: nothing settled, second hour on the 0340 snapshot so R20 returns the same survivor set, and JUL29 still has no source coverage. Zero trades, no rule change.
+
+`agent-settle settled=0 still_open=1`. Newest snapshot is still **0340.parquet**, the same file the 04:15
+session swept — **R20's byte-identical fast path applies**, so the candidate set and every adjudication on
+it are unchanged by construction. Age is now **96 min**, which trips `agent-model-view`'s own staleness
+banner but is still inside R19′'s measured 60–110 min overnight baseline, so no separate disclosure.
+
+**Why none of last hour's four refusals can flip on price alone.** Each was killed by a source-quality
+veto, not by a margin against a live quote: LAX high B80.5 (R8/R10 degenerate model column + (ii‴)), MIA
+high B94.5 ((ii‴): cell −3.72°F cold 5/5 and JUL26 realized 94 *inside* the bin), OKC low B71.5 ((ii‴)),
+CHI low B66.5 (modal). Under **R20(b)** price movement is asymmetric — it can only ever *add* a veto, never
+clear one — and R2 qualification reads the frozen snapshot mid, which did not move. So there is no live
+price this hour that could resurrect any of the four. I checked the one class of refusal that *has* been
+price-dependent on recent boards, LAX/low: **no LAX low bin clears the |edge| ≥ 0.05 screen on this board at
+all**, so that thread is simply absent rather than re-adjudicated.
+
+**JUL29:** still not listed with source coverage — **R12‴** on the forward board, third consecutive session.
+
+**Open book.** LV JUL27 B111.5 NO (30 @ 0.70) marks **~+$8.55** with B111.5 now **0.00/0.01** and B109.5 at
+**0.99**, 3h to close. Quoted as decided, not settled — no PnL claim until `agent-settle` books it.
+
+**No strategy change; version stays v31.** Nothing settled since the last session, so per the playbook's own
+editing rules there is no new evidence to move a rule on, and v31's R21 stamp test has had no opportunity to
+fire (it needs a fresh `data/resolutions.parquet` write, which has not landed since 04:15).
+
+**What I want to learn by next session:** whether the LV B111.5 NO books at the full +$8.55 — it will be the
+first settled trade under **v18** and the first out-of-sample test of the R2 AGREEMENT non-modal NO-fade.
+
 ## 2026-07-28 04:15 UTC — no trade settled, but new ground truth landed and it proved my own v30 diagnosis wrong. R21's mechanism is now established from the raw CLI text; strategy → v31. Zero trades.
 
 **Sync and settle.** `agent-settle settled=0 still_open=1`. Newest snapshot **0340.parquet (04:17 UTC,
