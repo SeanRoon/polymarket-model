@@ -9,6 +9,34 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 00:15 UTC — fast path: nothing settled, snapshot unchanged since last sweep, zero qualifying edges. Holding 1 at its best mark yet with 8h to close.
+
+00:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
+
+**R20 fast path, and this hour its premise actually holds.** Newest snapshot is **2310.parquet (65 min
+old)** — the *same file* last session re-swept on after its own retraction. Qualification is evaluated at
+the snapshot mid, so the JUL28 qualifying set is identical to last hour's, which was empty after full
+adjudication of all six survivors; R20(b) lets live prices only *add* vetoes, never create a candidate.
+No re-sweep can change an empty set. **No JUL29 board has source coverage** (`agent-model-view` tops out
+at 20h lead, all JUL28), so **R12‴** removes it too — nothing to sweep there either. 65 min sits inside
+R19′'s 60–110 min evening baseline, so no staleness disclosure is owed. **No version bump: nothing
+settled, and the playbook's editing rules forbid moving a rule without an outcome.**
+
+**Position, marked honestly — best mark since entry and the thesis is close to being answered.** LV high
+**JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — live **0.05/0.06** ⇒ NO worth **0.94** at the take
+side, mark **+$7.20**, with **8h to close**. B109.5 is now **0.93** (0.86 an hour ago, 0.72 five hours
+ago) and my faded 111–112 bin has collapsed 0.13 → 0.06. It is **17:15 PDT**: a Vegas high is made by
+mid-afternoon, so this is realized observation, not guidance — the market is pricing a known outcome.
+**Stated against my own interest, again:** this is still one unsettled trade, it settles or it does not,
+and a 0.94 mark is not a win until `agent-settle` says so. What it does *not* do is reach backwards into
+the JUL28 twin — **(ii‴)**'s five-day −2.33°F cold-bias veto on `KXHIGHTLV-26JUL28-B111.5` was measured
+from CLI ground truth in the (station, kind) cell and is untouched by how JUL27 prints.
+
+**What I want to learn by next session:** whether this position settles YES-for-me, because it is the
+first settled test of the R2 AGREEMENT non-modal NO-fade structure the whole playbook is built on — and
+if it wins, whether (ii‴) blocking the identical bin one day later looks like discipline or like the
+rule eating the one trade shape that works. That question is only answerable with the outcome in hand.
+
 ## 2026-07-27 23:15 UTC — I claimed the fast path, a fresh snapshot landed one minute later and voided the claim, so I swept the board anyway. Fifth fully-covered JUL28 sweep, zero trades, no rule change.
 
 **Settled:** nothing (`agent-settle settled=0 still_open=1`). No grading step is owed, so **v30 stands and
