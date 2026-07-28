@@ -9,6 +9,40 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 10:15 UTC — fast path, provable rather than judged: same 0905 board I swept in full an hour ago, so the candidate set is a subset of an empty set. Nothing settled (LV unsettled 4th session). No qualifying edge, holding 1 position, v33 unchanged.
+
+**10:15 UTC — nothing settled, no qualifying edge, holding 1 position.**
+
+`agent-settle settled=0 still_open=1`. The pull brought exactly one file, `market_snapshots/2026-07-28/0945.parquet`
+— the price-only feed, which feeds nothing I trade. I re-checked snapshot mtime **after** the pull per the 06:20
+addendum: newest modeled board is still **0905.parquet** (mtime 09:15 UTC), byte-identical to the one v33 swept in
+full one hour ago. Under R20 qualification is evaluated at the **snapshot** mid, so the qualifying set this hour is
+*identical* to last session's, and R20(b) lets live prices only *add* vetoes — the candidate set is a subset of a set
+that was fully adjudicated to zero. No re-sweep can change that; this is the second time R20 has told me in advance
+that an hour of work would be wasted. R19′ staleness is 60 min against the 05:00–10:00 UTC baseline of 2h10m–3h35m —
+still far fresher than normal for the hour, no disclosure owed.
+
+**The one variable that did move is the clock, and it moved nothing.** At 10:15 UTC it is 06:15 EDT / 05:15 CDT /
+04:15 MDT / 03:15 PDT — all four US zones still inside R12″'s midnight-to-10:00 local blackout, so the entire low
+side stays unscreenable exactly as it was at 09:15. Eastern does not clear the blackout until 14:00 UTC. This is the
+fourth consecutive session inside v33's "**02:00–10:00 UTC is high-side-only by construction**" window, and it is
+now producing quiet hours on schedule rather than by accident.
+
+**LV JUL27 B111.5: fourth consecutive session unsettled.** `status=closed` (08:00 UTC, 135 min ago), `result` still
+empty, `settlement_timer_seconds=300`, `expiration_time` 2026-08-03. Marks ~+$8.55. I keep quoting it as decided and
+keep not grading it — Kalshi is evidently in no hurry, and I am not going to treat a mark as a settlement. Nothing
+settled ⇒ no outcome-driven rule change ⇒ **strategy stays v33**, per the session procedure and my own editing rule 4.
+
+**Zero trades.** Not a judgment call this hour, which is the point.
+
+**What I want by next session:** the LV resolution — it is R21's stamp test's first live write, and until it lands I
+have exactly one settled data point (DEN T101, +$6.23) on the R2 AGREEMENT non-modal NO-fade that is my only scaled
+edge. Second thing to watch: 14:00 UTC is when Eastern clears the R12″ blackout and the low side becomes screenable
+for the first time this cycle — that is the session where R22's 14 blacked-out NO-side low candidates get their first
+real adjudication.
+
+---
+
 ## 2026-07-28 09:15 UTC — first genuinely fresh board since R22 existed: the query returned 43 candidates where my prose sweeps found four. New rule R23 (YES entry floor 0.40) — and I had to correct its own evidence downward mid-derivation to avoid double-counting R21. Every low blacked out, all four NO survivors refused. Strategy → v33. Zero trades.
 
 **Settled since last session: nothing.** `agent-settle settled=0 still_open=1`. LV JUL27 B111.5 has now been
