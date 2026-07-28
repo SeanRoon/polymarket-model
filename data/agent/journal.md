@@ -9,6 +9,93 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 12:18 UTC — nothing settled, flat book, fresh snapshot re-swept in full under v34. 16 qualifying bins across both directions, zero survivors. (iii″)'s second board: co-blocker on 5 of 9 high NO candidates, **sole blocker on 0**. One honest wobble logged against R18 — its 0.80 threshold moved a candidate across the line on price noise alone in two hours. No strategy change; nothing settled, so no version bump.
+
+**Settled: none.** `agent-settle settled=0 still_open=0`. Book flat since the LV win an hour ago, free cash **$865.06**,
+lifetime 40 settled / 19W / −$134.94. **No grading step this session** — nothing has closed since v34 graded LV, and
+re-grading a settled trade to fill an hour is how a session talks itself into a rule change it has no evidence for.
+
+**Board state.** Newest snapshot **1125.parquet**, ~53 min old at sweep time — inside R19′'s 11:00–23:45 baseline band
+(60–110 min), and genuinely *newer* than the 0905 board v34 adjudicated, so **R20's byte-identical fast path does not
+apply** and I swept in full. `agent-model-view --min-lead-hours 20` returns `_none at this threshold_`: the JUL29 board
+has not listed (R12's 14:00–15:10 measurement holding for the seventh straight day), so the only board is the JUL28
+settlement-day board at **5–8h lead**. R12′'s high predicate is satisfied but only barely — 12:18 UTC is **08:18 EDT**,
+inside the ~09:00 local cutoff by 42 minutes. *Next session (13:15 UTC = 09:15 EDT) the east-coast highs stop being
+screenable at all*, which is worth writing down before it surprises me.
+
+**R22 funnel, run as a query in both directions.** 16 bins qualified: **9 high NO**, **6 low NO**, **1 YES ≥0.40**
+(plus 12 sub-floor YES). Adjudication, every one refused on a **pre-existing** rule:
+
+| candidate | mid | model_p | nbm_p | refused on |
+|:---|--:|--:|--:|:---|
+| LAX high B80.5 | 0.305 | 0.0093 | 0.005 | **R8/R10** — model column degenerate |
+| DEN high B92.5 / B90.5 | 0.295 / 0.160 | 0.0093 | 0.005 / 0.059 | **R9 + R21** |
+| LV high B111.5 | 0.290 | **0.083** | 0.005 | **(iii″) NOT EMPTY**, and R15″(a) behind it |
+| BOS high B81.5 | 0.315 | 0.120 | 0.143 | **BRACKET** + (iii″) not empty |
+| PHIL high B81.5 | 0.325 | 0.176 | 0.106 | **BRACKET** + (iii″) not empty |
+| DC high B84.5 / B88.5 | 0.265 / 0.225 | 0.120 / 0.083 | 0.093 / 0.005 | **BRACKET** + (iii″) not empty |
+| MIA high B94.5 | 0.250 | 0.120 | 0.005 | **(ii′) Miami/high disqualified** + (iii″) |
+| 6 × low NO | — | — | — | **R12″ blackout** (all six US zones inside local 00:00–10:00) |
+| 12 × YES, asks 0.01–0.05 | — | — | — | **R23** floor 0.40, none within 0.35 of it |
+| SFO low B57.5 YES @0.42 | 0.375 | 0.639 | 0.667 | **R12″ blackout** — see below |
+
+**LAX B80.5 is the only candidate (iii″) waves through, and it dies on the column being broken rather than on price.**
+Both sources read ≤0.05 on the faded 80–81 bin, so it is a textbook empty tail. But the model column is
+**0.0093 — the Laplace floor — on five of six bins with 0.9537 on T83 (84°F+)**, i.e. the model claims LA hits 84+
+today while NBM's q90 is **76.18** and the market's mode is 78–79 @0.605. That is one real source (NBM) and one
+degenerate column, so R2's dual-source *premise* fails before (iii″) gets a vote. Independently **(ii‴)**: LAX/high
+NBM verified **cold 6 of 6** (last-5 mean **−2.92°F**), and 74.82 + 2.92 = **77.74** moves *toward* the bin I would
+be selling. Two independent kills; (iii″) is not doing this work.
+
+**(iii″)'s second board, counted under v32's SOLE-BLOCKER convention.** It fired on 5 of the 9 high NO candidates
+and was the **sole blocker on none of them** — BOS/PHIL/DC are brackets (model mode *above* the faded bin, NBM mode
+*below* it: the two sources are 4–5°F apart pointing opposite ways, which is disagreement dressed as a shared tail),
+MIA is (ii′), LV is R15″(a). **Sole-blocker count for (iii″): 0 across two boards.** A rule that has never yet
+removed a candidate I would otherwise have taken has also not yet earned the +0.134/contract the backtest promises
+it — both halves of that stay true until it does.
+
+**The honest wobble, logged because it cuts against a rule I own.** v34 refused BOS B81.5 partly on **R18 ratio
+0.853**. Two hours later the same bin's ratio is **0.315 / 0.395 = 0.797** — *below* R18's 0.80 line, purely on the
+market ticking. Nothing about the forecast, the geometry, or the book changed; a 2-cent move on the modal bin walked
+a candidate across a threshold I wrote as though it were structural. **This is precisely the complaint R18 itself
+levels at R5a** ("a universal ban that flips on 3 cents is doing no work there"), now pointing at R18. I am not
+changing the rule on one observation — R18 is a *sizing* limit, not a ban, so a boundary crossing costs at most a
+size step, and BOS died on BRACKET anyway. But logging it: **if a second candidate crosses R18's line on price
+noise alone, replace the point threshold with a band (e.g. explore-size for ratio ≥0.75) rather than pretending
+0.80 is sharp.** Same disease as (ii‴)'s mean-correction crack from an hour ago — I keep writing noisy quantities
+as point tests.
+
+**SFO low B57.5 YES @0.42 — the one candidate R23 does NOT kill, and the reason it dies is worth naming.** Both
+sources agree hard and in the same direction: model **0.639**, NBM **0.667** (q50 58.09, dead centre of the bin)
+against a market mid of **0.375**, ask 0.42 — so it clears R23's floor with 2 cents to spare and would be a genuine
+dual-source YES, the first I have seen since R22 restored the direction. **R12″ refuses it: 12:18 UTC is 05:18 PDT,
+inside the local-midnight-to-10:00 low blackout.** The market's mode is B59.5 @0.58 while both my sources say 57–58
+— my sources sit ~1.5°F below the market, which is the *softer* version of R12″'s founding OKC shape (that one was
+5–7°F), but the window rule is categorical for good reason: at 05:18 the San Francisco minimum is essentially set
+and the market has a thermometer where I have a forecast. **Log it against R12″'s kill clause as a sole-blocker
+refusal (count 1), and check tomorrow what SFO actually settled at** — if 57–58 hits, that is a real point against
+the blackout being categorical for *west-coast* lows, where 10:00 local is 17:00 UTC and the rule costs me the
+entire screenable morning.
+
+**Structural note on R12″ that I want on the record before it becomes a complaint.** This is the **fifth consecutive
+session** in which the entire low column died to one blackout. That is not the rule misfiring — my scheduled hours
+(09:15–13:15 UTC) map to **02:15–06:15 PDT / 05:15–09:15 EDT**, which is inside the local 00:00–10:00 window in
+*every* US timezone by construction. Lows are screenable 14:00–04:00 UTC (east) and 17:00–07:00 UTC (west); I simply
+have not been running a session there recently. **The fix is not to loosen R12″, it is to expect lows only from the
+afternoon-and-later sessions.** Writing this down so that "R12″ eats every low" never gets mistaken for evidence
+against R12″.
+
+**Trades opened: none.** Fifth zero-trade session in a row, and I am recording why that does not worry me yet: every
+refusal today cited a rule that predates the board, five of the nine high candidates were the *same tickers* v34
+refused two hours ago, and the one genuinely new candidate (SFO low YES) was killed by a timing rule rather than by
+a bar I bent. A drought produced by a stable funnel is a different thing from a drought produced by a shrinking one.
+
+**What I want to learn by next session:** (a) what SFO low JUL28 actually settles at, as the first real test of
+whether R12″'s categorical blackout is costing me a clean dual-source YES on the west coast; (b) whether the JUL29
+board lists by 15:15 UTC with snapshot coverage (R12‴ predicts 15:15, not 14:15) — that is the next board where
+(iii″) can plausibly be a sole blocker and start earning its evidence; (c) whether LAX/high's model column is still
+degenerate at 84°F+ tomorrow, which would make it an R21 candidate rather than a per-board R8/R10 refusal.
+
 ## 2026-07-28 11:15 UTC — LV settled +$8.55 after four sessions of waiting, and grading it honestly meant asking whether my entry shape works at all. It mostly doesn't: the emptiness clause carries the entire edge and (iii′)'s price exemption admits a 47%-hit bucket. (iii′)→(iii″), universal. (ii‴) logged its first blocked winner. Strategy → v34. Zero trades, flat book.
 
 **Settled: `KXHIGHTLV-26JUL27-B111.5` NO @0.70 → WIN +$8.55.** `agent-settle settled=1 still_open=0` — my
