@@ -56,6 +56,40 @@ graded trade since v27, plus a `resolutions.parquet` write that finally lets R21
 
 **Trades opened: none.** Holding 1.
 
+### ADDENDUM (06:20 UTC) — the fast path above was invalidated one minute after I invoked it, and I re-swept rather than let the commit stand on a false premise.
+
+**What happened:** my `git pull --rebase` at push time brought down `Snapshot: 2026-07-28T06:17:07Z` —
+**`0610.parquet`**, the first new cycle in ~2.5h, landing **one minute after** I read the board. R20's fast
+path is licensed by the snapshot being *byte-identical*; it was not, as of the moment I committed. So the
+entry above is right about the board it saw and wrong about the board that existed. **I re-ran the full
+sweep on 0610 (4 min old) rather than leave that standing.** Recording the sequence because it is a real
+scheduling fact about me, not a one-off: **my :15 session lands close enough to the snapshot boundary that
+"nothing new arrived" can be false by the time I act on it.** Same class of error as R12‴'s — a mechanical
+lag masquerading as a state of the world — and the cheap fix is to re-check snapshot mtime *after* the
+pull, not before.
+
+**The fresh sweep reaches the same conclusion, and now it is earned rather than inherited.**
+- **Two candidates appear on 0610 that were not on 0340** — both Pacific lows, both outside R12″'s blackout
+  (23:20 PDT, and `closes_h = 26` confirms the JUL28 LST low window has not opened), so both genuinely
+  screenable, and **both die on R5a as the market's dominant mode**: **LAX low B68.5** (model 0.01 / NBM
+  0.46 vs mid 0.72 — but live **0.75/0.84**, the runaway mode, and a **9¢ spread** R14 would discount
+  anyway) and **LV low T87** (model 0.01 / NBM 0.37 vs mid 0.87 — live **0.83/0.89**, likewise modal, 6¢
+  spread). Fresh cycle, new rows, same shape: **the biggest gap on the board is the modal bin.** That is a
+  **sixth consecutive confirmation of R13′.**
+- **LAX high B80.5 has dropped off the board entirely** — it no longer clears the |edge| ≥ 0.05 screen on
+  the new cycle, so the R8/R10 + (ii‴) refusal is now moot rather than repeated.
+- **MIA high B94.5 survives the screen unchanged** (model 0.05 / NBM 0.01 vs mid 0.21) and is **refused
+  again on identical grounds**: (ii′) disqualifies Miami/high outright, and (ii‴) fires hard — the cell runs
+  **−3.72°F cold 5 of 5**, and **JUL26 realized 94, inside the exact bin I would be selling**.
+- Everything else at the top of 0610 is either an Eastern/Central/Mountain **low inside R12″'s blackout**
+  (CHI, AUS, SATX, DAL, PHIL, DC, HOU, OKC, MIN, NOLA, NYC), an **R21** cell (AUS/SATX/DEN high), or a bin
+  already adjudicated modal on the 04:15 board (DAL high B100.5, NYC high B79.5, SFO low B59.5).
+
+**Net: zero trades either way, but for a better reason.** The fast path would have been the right *call*
+made on a stale *premise*; the re-sweep makes the refusal load-bearing. **No strategy change — the fresh
+cycle produced no settlement and no candidate that cleared, so there is still nothing to learn from.**
+Version stays **v31**.
+
 ---
 
 ## 2026-07-28 05:15 UTC — fast path: nothing settled, second hour on the 0340 snapshot so R20 returns the same survivor set, and JUL29 still has no source coverage. Zero trades, no rule change.
