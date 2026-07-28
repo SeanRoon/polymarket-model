@@ -110,6 +110,25 @@ none within 0.09 of the floor. Seven high NO candidates:
 
 **Position: none.** First flat book since JUL26.
 
+**v34 ADDENDUM — 2026-07-28 21:15 UTC. NO VERSION BUMP: nothing settled, so no rule is added, removed or
+changed.** The 13:16 session was the last one to run; the 14:15–20:15 slots did not fire, so this is the
+first session to see the **JUL29 board**, live at **20–23h lead** on snapshot `2020.parquet` (30 min old
+against R19′'s 60–110 min afternoon baseline — genuinely fresh). Three things happened that are worth
+recording inside the playbook rather than only in the journal:
+1. **R12″'s low blackout lifted for the first time in seven sessions.** At 21:15 UTC the JUL29 *minimum*
+   is 8–10h from beginning to form in every US zone, so lows were screenable — and 11 of the 27 NO-pass
+   bins were lows. Every prior session since JUL26 refused the entire low column on R12″ alone.
+2. **R22's two-direction query returned 27 NO-pass and 12 YES-pass bins.** The **entire YES column died on
+   R23** (asks 0.01–0.29, the best of them 0.11 below the 0.40 floor) — second consecutive fresh board on
+   which R23 refuses every YES candidate — **12 forgone here**, to be tracked against its kill clause
+   (≥3 of the next ≥8 forgone sub-0.40 YES resolving YES would retire the floor). Of the 27
+   NO-pass bins, **17 were the market's modal bin (R5a)** — R13′'s coupling reproduced at 20–23h lead —
+   leaving 10 non-modal, of which **4 were EMPTY under (iii″)** and 6 were refused by (iii″) itself.
+3. **(ii‴) sole-blocker count 1 → 3**; see its body for the two firings and why I am not narrowing it.
+**One trade: `KXLOWTLAX-26JUL29-T68` NO ×20 @0.78.** It is the first AGREEMENT fade taken under v34, and
+the first taken partly on a **dispersion** argument rather than a location argument — logged as the founding
+datapoint of the σ-validation hypothesis below, to be graded against it either way.
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
@@ -947,7 +966,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
       **1 of 4**. A veto that co-fires with an independent kill costs nothing and cannot narrow the funnel;
       only a sole blocker removes a candidate I would otherwise have taken. This is how R5(b)'s log has always
       been kept ("R5(b)'s FIRST clean **sole-blocker** firing") — v32 generalizes it rather than inventing it.
-      **(ii‴) sole-blocker count: 1 (LV B111.5 JUL28).** Not narrowing.
+      **(ii‴) sole-blocker count: 3** — LV B111.5 JUL28; **+2 on the 2026-07-28 21:15 JUL29 board**:
+      **LV high B111.5 JUL29** (KLAS/high `nbm_q50 − realization` JUL23–27 = −2.29, −3.73, −0.97, −2.91,
+      −1.79 ⇒ mean **−2.34°F**, cold **9 of 9** days on record; corrected centre 107.97 + 2.34 = **110.31**,
+      0.19°F below the faded bin's [110.5, 112.5) edge — moves *toward* it, clause 3 fires) and
+      **OKC low B72.5 JUL29** (KOKC/low errors +0.34, +0.68, +3.10, +5.58, +7.53 ⇒ mean **+3.45°F**, warm
+      **5 of 5** and *accelerating*; corrected centre 79.80 − 3.45 = **76.35**, moving toward the faded
+      [71.5, 73.5)). Both were otherwise-clean EMPTY non-modal candidates clearing (i″), (iii″), R5a, R18,
+      R14, R21 and R8/R10 — so these are genuine sole-blocker firings, not co-fires.
+      **Not narrowing, and the board says why:** (ii‴) fired on **2 of the 4** EMPTY survivors and stayed
+      silent on the other two for *measured* reasons (LAX/low mean **+0.07°F**, signs mixed; LAX/high it
+      co-fired behind R8/R10). A veto that discriminates within a four-candidate set is not eating the
+      funnel. **Blocked-winner count still 1** (needs ≥6 to kill, ≥3 to force the dispersion-aware rewrite).
+      Note the LV JUL29 case is *stronger* on the merits than JUL28's: with σ ≈ 1.4–2.3°F, a corrected
+      centre 0.19°F from the bin edge implies P(landing in the faded bin) ≈ 40% against a market price of
+      0.17 — the mean-vs-dispersion crack v34 recorded does not bite when the correction lands *on* the edge.
       **v34 — (ii‴)'s FIRST BLOCKED WINNER, counted against its own kill clause.** The settled
       **LV high JUL27 B111.5 NO @0.70 (+$8.55 WIN)** would have been vetoed by (ii‴) had the rule
       existed at entry. Measured over the five days settled at entry (JUL21–25): LV/high
@@ -1916,6 +1949,25 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   logged ≥10 times.*
 
 ## Open hypotheses (not yet rules)
+
+- **A tail fade should require the source's stated dispersion to be VALIDATED against its own realized
+  error in that cell (added 2026-07-28 21:15 UTC — parked, NOT adopted).** (iii″) tests whether both
+  sources put ≤0.05 on the faded bin. But a binned/reconstructed tail probability is only as good as the
+  σ that generated it, and I have never checked whether NBM's stated spread matches how wrong it actually
+  is. **Measured today on the JUL29 board:** KLAX/low NBM stated **σ = (q90 − q50)/1.2816 = 0.78°F**
+  against a realized `q50 − actual` **σ ≈ 0.72°F** over 9 settled days (errors −0.96 … +1.10) — the two
+  agree, so its 0.027 tail probability is trustworthy. The same test elsewhere is ugly: KLAX/**high** is
+  cold by −1.61 … −8.81 on 9 of 9 days (mean −3.6°F) on a comparably tight quoted spread, i.e. a stated
+  σ that is a fiction; KOKC/low is warm by up to +7.53°F. **Why a hypothesis and not a rule: it is
+  redundant on today's evidence.** Every cell where the σ test would have failed was *already* refused —
+  KLAX/high on R8/R10, KOKC/low and KLAS/high on (ii‴) — so adopting it would have changed zero decisions,
+  and it is plausibly just (ii‴)'s bias measurement re-derived through the second moment rather than the
+  first. That is precisely the redundancy R22's kill clause and R16 exist to catch.
+  *Promote if: over ≥5 boards the σ-validation test refuses an EMPTY candidate that (ii‴) and R8/R10 both
+  wave through, AND those refusals beat their entry-implied odds. Discard if it never fires alone —
+  then it is (ii‴) in different clothes.* First live datapoint: **LAX low JUL29 T68 NO @0.78**, taken
+  today partly on the strength of the σ agreement; grade it explicitly against this hypothesis when it
+  settles, whichever way it lands.
 
 - **R17's correlation classes may need a CONSECUTIVE-DAY clause for the same city+bin+direction
   (added 2026-07-27 16:15 UTC — parked deliberately, NOT adopted).** R17 refuses a second AGREEMENT

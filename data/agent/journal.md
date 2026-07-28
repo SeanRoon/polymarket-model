@@ -9,6 +9,105 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 21:15 UTC — the JUL29 board, and the first genuinely full sweep in days: R12″'s low blackout lifted after seven sessions, R22 returned 39 qualifying bins across both directions, and exactly one survived. One trade opened — the first fade I have taken on a **dispersion** argument rather than a location one.
+
+**Settled: none.** `agent-settle settled=0 still_open=0`; book flat since the LV win. **No grading step** — nothing
+has closed since v34 graded LV JUL27, and re-grading a settled trade to fill a session is how a session talks
+itself into a rule change it has no evidence for. **No version bump for the same reason** (strategy stays **v34**);
+I updated two counters the rules themselves instruct me to keep, and parked one new hypothesis.
+
+**The scheduler skipped 14:15 through 20:15.** My last session was 13:16 UTC. So this is the first session to see
+the **JUL29 board** at all, and R12‴'s prediction from that session — "14:15 checks coverage once, 15:15 is the
+first real sweep" — went untested; I arrived seven hours late to a board that has been live since ~15:38 UTC
+(the first snapshot carrying JUL29 rows). Newest snapshot **2020.parquet**, 30 min old against R19′'s 60–110 min
+afternoon baseline: fresh, no disclosure owed. Lead **20–23h**.
+
+**R12″'s low blackout is OFF for the first time since JUL26.** The JUL29 *minimum* forms 8–10h from now in every
+US zone, so lows were screenable — and they mattered: **11 of the 27** NO-pass bins were lows, including the one
+trade I took. Six consecutive sessions had refused the entire low column on R12″ alone, and I had started reading
+that as the natural state of the board. It was an artifact of the hour I was running.
+
+**R22 funnel, run as SQL in both directions over `2020.parquet` (JUL29 rows only).**
+
+| pass | qualifying bins | disposition |
+|:---|--:|:---|
+| **(b) YES-buy** | 12 | **all 12 → R23** (asks 0.01–0.29; best is 0.29, still 0.11 under the floor) |
+| **(a) NO-fade** | 27 | 17 modal → **R5a**; 6 non-modal but **not empty → (iii″)**; 4 EMPTY → adjudicated below |
+
+Second consecutive fresh board on which **R23 refuses the entire YES column.** That is now 12 more forgone
+sub-0.40 candidates to track against its kill clause. And **17 of 27 NO-pass bins being modal** is R13′'s
+coupling reproducing cleanly at 20–23h lead — the third lead regime it now holds in.
+
+**The four EMPTY candidates, and the three refusals.**
+
+| candidate | mid | model_p | nbm_p | ratio | verdict |
+|:---|--:|--:|--:|--:|:---|
+| LAX high B77.5 | 0.365 | 0.0093 | 0.005 | 0.753 | **R8/R10** + (ii‴) |
+| LV high B111.5 | 0.170 | 0.0093 | 0.005 | 0.286 | **(ii‴) sole blocker** |
+| OKC low B72.5 | 0.180 | 0.0093 | 0.005 | 0.486 | **(ii‴) sole blocker** |
+| **LAX low T68** | 0.325 | 0.0093 | 0.005 | 0.591 | **TAKEN** — NO ×20 @0.78 |
+
+- **LAX high B77.5 → R8/R10, unchanged from the last three sessions.** The model column is degenerate:
+  0.0093 on five of six bins and **0.9537 on T82 (≥83°F)**. One real source and one broken column is not a
+  dual-source premise. Independently **(ii‴)**: KLAX/high `nbm_q50 − realization` is negative on **9 of 9**
+  days (−1.61 … −8.81, JUL23–27 mean **−3.17°F**), and correcting q50 74.82 + 3.17 = **77.99** lands *inside*
+  the faded [76.5, 78.5). Two independent kills.
+- **LV high B111.5 → (ii‴), and this firing is stronger than JUL28's.** KLAS/high cold on **9 of 9** days,
+  JUL23–27 mean **−2.34°F**; corrected centre 107.97 + 2.34 = **110.31**, which sits **0.19°F below** the faded
+  bin's [110.5, 112.5) edge. With σ ≈ 1.4–2.3°F that implies ~40% of landing in the bin I would be selling at
+  0.17. Worth noting what *changed*: unlike JUL28, R15″(a) does **not** veto this one — the NBM reconstruction
+  from q10/q50/q90 is **0.037–0.043**, genuinely ≤0.05, where yesterday's twin reconstructed at ~0.10. So the
+  emptiness is real today and (ii‴) is carrying the refusal alone. Third straight day this exact bin has
+  screened and been refused on a different ground each time.
+- **OKC low B72.5 → (ii‴), and the substance is worse than the mechanics.** KOKC/low is warm on **5 of 5**
+  and *accelerating*: +0.34, +0.68, +3.10, **+5.58, +7.53** ⇒ mean **+3.45°F**. The truth has been landing
+  5–8°F *below* NBM, and I would have been fading the **cold** tail. The market's mode is 74–75 while both my
+  sources say 78–80 — the market has already moved to where the realizations are and my sources have not.
+  This is (ii″)'s founding cell reached again, three weeks of evidence deeper.
+
+**(ii‴) sole-blocker count 1 → 3.** Both new firings are clean sole blockers: each candidate cleared (i″),
+(iii″), R5a, R18, R14, R20, R21 and R8/R10 and died on (ii‴) alone. **I am not narrowing it**, and the board
+gives the reason: it fired on 2 of 4 EMPTY survivors and stayed silent on the other two — LAX/high because
+R8/R10 got there first, LAX/low because its measured bias is **+0.07°F with mixed signs**. A veto that
+discriminates *within* a four-candidate set is doing work, not eating the funnel. Blocked-winner count remains
+**1** of the 6 its kill clause needs.
+
+**TRADE — `KXLOWTLAX-26JUL29-T68` NO ×20 @ $0.78 (fee $0.25, cost $15.85), strategy v34.**
+Fading "LAX minimum ≥69°F on JUL29". Market implied P(YES) **0.22** at the live bid; my estimate **0.15–0.19**.
+- **Sources:** model_p 0.0093 (Laplace floor), nbm_p 0.005 binned; **R15′ reconstruction** from NBM's own
+  quantiles (q10 66.18 / q50 67.00 / q90 68.00 ⇒ σ 0.78) gives P(≥68.5) = **0.0273, identical on all four
+  committed cycles** of this board — robust, not one draw.
+- **Why this one and not the others — the new argument.** Every rule I own tests *where* a source puts its
+  centre. None tests whether its **spread** is honest, and a tail fade is a bet on the spread. So I measured it:
+  KLAX/low's stated **σ = 0.78°F** against a realized `q50 − actual` **σ ≈ 0.72°F** over 9 settled days
+  (errors −0.96 … +1.10). They agree. That is the only cell in my six-cell sample where the quoted dispersion
+  survives contact with its own record — KLAX/**high** quotes a comparably tight spread and is cold by up to
+  8.8°F, KOKC/low by up to 7.5°F. Parked as an **open hypothesis, not adopted**: on today's board it changed
+  zero decisions (everything it would have refused was already dead on R8/R10 or (ii‴)), and it may simply be
+  (ii‴)'s first-moment test re-derived through the second. This trade is its founding datapoint.
+- **Rule stack:** (iii″) EMPTY at any price, NO entry 0.78 ≤ 0.85 ✓ · (ii‴) does not fire, measured ✓ ·
+  (ii′) no large bias (+2.83°F), KLAX unstamped so R21 is clean ✓ · (i″) d_model 2 / d_nbm 1, clears
+  "not adjacent to BOTH" ✓ · R5a non-modal (market mode B67.5 @0.595) ✓ · R18 ratio 0.591, mid-range of the
+  0.33–0.76 observed support ✓ · R20 qualified at the **snapshot** mid 0.325 ✓ · R14 live spread 0.04,
+  vol24h 255, OI 141 ✓ · R19 nbm_lead 31 vs model_lead 23, gap 8 < 12, NBM stays an independent vote ✓.
+- **R5(c), not R5(b):** the tape ran 0.295 → 0.325 → 0.320 → **0.24 live**, i.e. it moved **0.085 toward my
+  sources** in the last 50 minutes. That is confirmation — but it also cost me the price: the snapshot implied
+  a 0.69 entry and I paid **0.78**, which is most of the reason this is 20 lots and not full size.
+- **Stated against it, plainly.** (1) My *mechanical* R2 edge is 0.193 (0.22 − 0.027); my *honest blended*
+  edge is only ~0.04 once I inflate σ to 1.3°F for 23h lead and weight 20% onto climatology. Those are very
+  different numbers and I am sizing off the smaller one. (2) NBM's q50 of **67.0 sits 0.87°F below its own
+  9-day range** (67.87–69.76) — this is an extrapolation past what I have verified, and LAX lows realized
+  ≥69 on **4 of the last 9 days (44%)**, so plain climatology alone justifies the market's 0.325.
+  (3) There is a **coherent Pacific-coast cold displacement** — LAX, SFO and SEA lows *all* have both sources
+  under the market — which is exactly R19's shared-displacement shape (two sources becoming one vote) even
+  though its 12-hour freshness threshold is not met. (4) LAX/low is a **−5.0% ROI** production cell;
+  since v19 that is a tiebreaker, not a gate, but it is not a point in favour.
+
+**What I want to learn by next session:** whether the 22:15 slot actually fires (six consecutive skipped
+sessions is now a bigger constraint on this book than any rule in it), and whether the JUL29 low column stays
+screenable long enough to sweep twice — R12″ shuts LAX at 07:00 UTC. Tomorrow: what LAX low JUL29 settles at,
+graded against the σ-validation hypothesis specifically, not just win/loss.
+
 ## 2026-07-28 13:16 UTC — nothing settled, no qualifying edge, holding 0 positions. Fast path: same snapshot as the last session, and the R12′ high cutoff I pre-registered an hour ago has now bitten.
 
 `agent-settle settled=0 still_open=0`; free cash **$865.06**, lifetime 40 settled / 19W / −$134.94. Newest snapshot is
