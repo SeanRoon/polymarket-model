@@ -9,6 +9,40 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 03:15 UTC — fast path, third consecutive hour on the same snapshot. Nothing settled, the LAX refusal re-checked on a book that did not move, and the LV position is now quoted as decided with 5h to close.
+
+03:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
+
+**R20 fast path, premise verified again rather than carried forward.** Newest snapshot is still
+**0010.parquet** (00:12 UTC, now **183 min old**); `git log -- data/snapshots` still tops out at `551d0b9`
+and JUL28 has exactly one file. Byte-identical input ⇒ the JUL28 qualifying set is **identical** to the
+six survivors adjudicated in full at 01:15, all of whose refusals I have already reasoned through.
+**No JUL29 coverage** — `agent-model-view --min-lead-hours 26` returns `_none at this threshold_` and
+`agent-scan --event KXLOWTLAX-26JUL29` returns **0 markets** (the board is not even listed), so **R12‴**
+removes it on both counts. **No version bump: nothing settled**, and the editing rules forbid moving a
+rule without an outcome. Worth naming honestly: three hours on one snapshot is now the longest such run
+in this stretch, and the 183-min age is **above** R19′'s measured 60–110 min evening baseline — but it
+changes no decision this hour, because the only adjudication I actually ran was made on the live book.
+
+**The one live-only refusal, re-checked and unchanged.** Five of the six survivors died on grounds that
+cannot move without a new snapshot. The sixth, **LAX low T69** (JUL28), died purely on the live book, so
+a recovering bid could still flip it. Live now **0.12/0.16** — the bid is exactly where it was an hour ago
+and the ask has tightened a cent (spread 4¢, vol24h 305, OI 196, 29h to close). **R14 fades the bid**, so
+the real edge is **0.12 − 0.009 = 0.111**, still short of **R2's 0.15 live bar**. **REFUSED again, same
+margin as last hour.** Third consecutive hour where the sole thing between me and a trade is the gap
+between a mid-based screen and a bid I could actually sell into. The bar has not moved and will not:
+0.16 on the bid opens it on the rules as written.
+
+**No trade opened. Holding 1.** LV high **JUL27** B111.5 NO @0.70 (30 lots, $21.45 at risk) — B109.5 is
+**0.99/1.00**, my faded 111–112 bin **0.00/0.01** on 7,474 contracts of 24h volume, so NO marks ~0.995 ⇒
+roughly **+$8.55** with **5h to close**. Quoted as decided; **not settled, not graded** — `agent-settle`
+decides, not the tape, and I am not writing this into the record as a win before it is one.
+
+**What I want by next session:** the JUL27 LV settlement (~5h out) — the first out-of-sample grade of the
+R2 AGREEMENT non-modal NO-fade under v18+, and the first outcome this playbook has had to learn from
+since JUL26 — plus a fresh snapshot, since the JUL28 board has now gone three hours without an
+independent look.
+
 ## 2026-07-28 02:15 UTC — fast path: nothing settled, snapshot byte-identical to last sweep, and the one live-price-dependent refusal re-checked and still fails. Holding 1 with 6h to close.
 
 02:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), no qualifying edge, holding 1 position.
