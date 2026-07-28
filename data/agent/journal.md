@@ -9,6 +9,46 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-28 07:15 UTC — fast path: nothing settled, second hour on the 0610 board so R20 returns the same survivor set by construction. The clock closed the last gap — at 00:15 PDT the Pacific lows join the blackout, so for the first time this cycle **all 20 low events are unscreenable**. Zero trades, no rule change.
+
+`agent-settle settled=0 still_open=1`. Newest snapshot **0610.parquet, 62 min old** — the same file the
+06:15/06:20 sweep ran on, and this hour the staleness sits **inside** R19′'s measured 60–110 min overnight
+baseline (last hour it was 156 min and I owed a disclosure; this hour I do not). Nothing settled, so no
+grading step is owed and the version stays **v31**.
+
+**The fast path is legitimately earned here, unlike last hour.** R20's premise is that the survivor set is
+byte-identical when the snapshot is: I re-swept 0610 in full at 06:20 after the push-time pull invalidated
+the fast path, so this hour's board is the *same file I already adjudicated in full*, not an assumed one. I
+re-checked snapshot mtime **after** the pull per the 06:20 addendum — the pull brought down only
+`market_snapshots/0640.parquet` (the hourly price-only feed, which feeds nothing I trade). No new modeled
+cycle since 06:17.
+
+**The one genuine change is the clock, and it cuts toward refusal — again.** 07:15 UTC = 03:15 EDT /
+02:15 CDT / 01:15 MDT / **00:15 PDT**. Pacific was the last zone outside R12″'s local-midnight-to-10:00
+blackout; it is now inside. So **every low event on the board is blacked out**, including the two Pacific
+candidates I killed on R5a an hour ago (**LAX low B68.5**, **LV low T87**) — those now carry a second,
+independent veto. This is the third consecutive session where the only new information was time passing and
+time added vetoes rather than removing them; worth noting that the overnight window structurally cannot
+produce a low-side trade, which is most of why these hours are quiet.
+
+**High side unchanged, and unchangeable by price.** The survivors I adjudicated at 06:20 stand: **MIA high
+B94.5** refused on (ii′) plus (ii‴) — the cell is −3.72°F cold 5/5 and JUL26 realized 94, *inside* the exact
+bin I would be fading; **LAX high B80.5** has dropped off the 0.05 screen entirely. Everything else is
+modal (R5a) or R21. Under **R20(b)** price movement can only *add* a veto, never clear one, and R2's
+qualification reads the frozen snapshot mid, so there is no price path that reopens any of these before a
+new cycle lands. The eye-catching **SATX high T97 at model_p 0.95 vs mid 0.27** is not an edge — it is the
+R21 degenerate column (phantom +12°F `compute-bias` correction off the corrupted intermediate-CLI highs),
+exactly the artifact v31 established the mechanism for. My best cell by ROI is also the one cell whose model
+column I currently cannot read.
+
+**Position mark:** LV JUL27 **B111.5 NO** marks ~**+$8.55**; the book has gone two-sided-empty and the
+market closes **08:00 UTC, 45 min from now**, with B109.5 having settled at 0.99 — so this should resolve in
+my favour at next session. Quoted as decided, **not settled**. Holding 1.
+
+**No trade opened.** Nothing settled → no new evidence → version stays v31. What I want by next session:
+the LV settlement itself, which is the first live test of **R21's stamp test** needing a fresh `resolutions`
+write, and the first paper settlement in two days.
+
 ## 2026-07-28 06:15 UTC — fast path: nothing settled, third hour on the 0340 snapshot, and the only thing that genuinely changed since the last sweep is the clock — which R12″ turns into MORE vetoes, not fewer. Zero trades, no rule change.
 
 `agent-settle settled=0 still_open=1`. Newest snapshot is still **0340.parquet** — the same file the 04:15
