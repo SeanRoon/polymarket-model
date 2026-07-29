@@ -9,6 +9,48 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-29 14:15 UTC — R12‴'s pre-registered coverage check, run on schedule and answered exactly as written: the JUL30 board IS listed, and I have zero coverage of it. Fast path, no trades, holding 1 — which is now deeply underwater.
+
+**Settled: none.** `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at
+risk). **No grading step and no version bump** (strategy stays **v34**): nothing has closed since v34 graded LV
+JUL27.
+
+**This is the session the last four entries pre-registered, and it produced two real datapoints.**
+
+**1. R12's listing window, bracketed tighter than I have ever managed.** `agent-scan --event KXHIGHLAX-26JUL30`
+returned **0 markets** at 13:07, 13:16 and 13:22 UTC, and returns a **full six-bin book (42h to close, T83
+0.02/0.04 … B78.5 0.46/0.51)** at 14:15 UTC. So the JUL30 board listed **between 13:22 and 14:15 UTC** — inside
+R12's measured 14:00–15:10 window, and the first time I have both sides of the transition on the same day. R12's
+kill clause ("a next-day board observed before 14:00 UTC") stays un-fired, now on a check taken 38 minutes before
+the boundary.
+
+**2. R12‴ fired, and the whole point of the rule is that the board being good is exactly when it bites.**
+Newest snapshot is **1230.parquet**, timestamped 12:31 UTC — it **predates the listing**, so
+`agent-model-view --min-lead-hours 20` returns `_none at this threshold_`: no `model_p`, no `nbm_p`, on any JUL30
+bin. A board that has listed but that my newest snapshot does not cover is **not sweepable**. The live tape is the
+only input available and trading off it alone is R20's manufactured-edge failure in its purest form — the same
+argument v29 wrote for `KXHIGHAUS-26JUL28` at 14:16, now repeated at 14:15 on JUL30. **Day 2 of the R12‴ measure
+where the 14:15 session lacks coverage; the kill clause needs ≥5 days *with* coverage, so this confirms.**
+Per the rule: check coverage once, take the fast path, treat **15:15 as the first real sweep** of the JUL30 board.
+
+**Staleness:** 104 min against R19′'s 60–110 min 11:00–23:45 UTC baseline — inside, so **no disclosure owed**,
+though `agent-model-view` emitted its own automatic 104-min warning and I am noting the near-edge reading rather
+than hiding behind the band.
+
+**JUL29 is not an alternative.** Highs close in ~7–11h, well under R12′'s ≥18h predicate. Lows: 14:15 UTC =
+10:15 EDT / 09:15 CDT / 08:15 MDT / **07:15 PDT** — Mountain and Pacific still inside R12″'s midnight-to-10:00
+blackout, Eastern and Central minima already set. **No trades.**
+
+**Position mark, and it is bad.** LAX low **T68**, which I sold at NO 0.78 (market then ~0.22 that the minimum
+exceeds 68°), now quotes **0.88/0.90** ⇒ my NO is worth ~**0.11**, i.e. **−$13.40** unrealized on 20 lots. At
+07:15 PDT the LAX minimum is essentially formed, so this is not guidance repricing I can wait out — it is the
+market telling me the overnight low came in above 68 and my dispersion fade was wrong. I am recording that now,
+before the CLI lands, so the grading next session cannot be retrofitted.
+
+**What I want by next session:** the 15:15 sweep with actual JUL30 coverage — R12‴'s own prediction that 15:15
+has coverage 5 of 5 gets its next test — and then the T68 settlement, graded explicitly and unsparingly against
+v34's parked σ-validation hypothesis, which right now looks like it is about to take its first real loss.
+
 ## 2026-07-29 13:22 UTC — fast path, third run of the hour (13:07 → 13:15 → 13:22): board bit-identical, nothing settled, holding 1.
 
 13:22 UTC — nothing settled, no qualifying edge, holding 1 position. Third scheduler firing this hour, 7 min after
