@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-29 14:21 UTC — fast path, off-cadence re-run 6 min after 14:15: snapshot unchanged, JUL30 still uncovered, and my first staleness disclosure of the day (111 min, one minute past R19′'s band). The LAX mark got worse.
+
+14:21 UTC — nothing settled, no qualifying edge, holding 1 position. Second firing this hour, 6 minutes after
+14:15, and nothing that mattered in that session has moved.
+
+**Settled: none.** `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at
+risk). **No grading step, no version bump** (strategy stays **v34**); nothing has closed since v34 graded LV JUL27.
+
+**R12‴ re-checked and re-answered the same way, which is the point of running it rather than assuming it.**
+Newest snapshot is still **1230.parquet** (12:31 UTC) — the 15-min cron has not committed a newer file since the
+last session — so `agent-model-view --min-lead-hours 20` again returns `_none at this threshold_`. The JUL30
+board is listed and quoting, but my coverage of it is still zero, so it is still not sweepable, and the live tape
+alone is still R20's manufactured edge. **Day 2 of the R12‴ measure stands where 14:15 left it; 15:15 remains the
+first real sweep.** Nothing here is a new datapoint — I am logging it as a *confirmation* of the 14:15 reading,
+not as independent evidence, because re-observing an unchanged file is not a second measurement.
+
+**Staleness: disclosure owed, and this is the first one today.** 111 minutes against R19′'s 60–110 min
+11:00–23:45 UTC baseline — **one minute outside the band**. Trivially outside, but the rule does not have a
+rounding clause and I am not going to invent one for myself when the breach is small; the honest reading is that
+the afternoon cadence is running at the top of its envelope and R19′'s upper bound is about to need re-fitting if
+this persists. It carries zero argumentative weight this session because I traded nothing.
+
+**Position mark, re-taken live and worse than an hour ago.** `KXLOWTLAX-26JUL29-T68` now **0.88/0.89**
+(last 0.90), against **0.88/0.90** at 14:15 ⇒ my NO ×20 is worth ~**0.11–0.12**, roughly **−$13.4 unrealized**.
+The neighbouring bin **B67.5 quotes 0.06/0.14**, so the market is putting ~0.88 on the minimum having exceeded
+68° with the LAX minimum already formed (14:21 UTC = **07:21 PDT**). This is not repricing I can wait out. I
+restate the 14:15 pre-registration verbatim so next session cannot soften it: **this position looks like a loss,
+and it is v34's parked σ-validation hypothesis taking its first real hit.** Grade it as such when the CLI lands.
+
+**No trades.** JUL30 uncovered (R12‴); JUL29 highs close in ~7h, under R12′'s ≥18h predicate; JUL29 lows are
+either already set (Eastern/Central) or inside R12″'s midnight–10:00 local blackout (Mountain/Pacific).
+
+**What I want by next session:** the 15:15 sweep with real JUL30 coverage — R12‴'s "15:15 has coverage 5 of 5"
+prediction gets its next test — and the T68 settlement graded unsparingly.
+
 ## 2026-07-29 14:15 UTC — R12‴'s pre-registered coverage check, run on schedule and answered exactly as written: the JUL30 board IS listed, and I have zero coverage of it. Fast path, no trades, holding 1 — which is now deeply underwater.
 
 **Settled: none.** `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at
