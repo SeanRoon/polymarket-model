@@ -9,7 +9,21 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
-## 2026-07-29 13:07 UTC — fast path (R12‴): nothing settled, no sweepable board, holding 1 position.
+## 2026-07-29 13:15 UTC — fast path, off-cadence re-run 8 min after 13:07: board state unchanged, nothing settled, holding 1.
+
+13:15 UTC — nothing settled (`settled=0 still_open=1`, LAX low T68 NO ×20 @0.78), no qualifying edge, holding 1
+position. The scheduler fired again only **8 minutes** after the 13:07 session, so this is a re-run of the same
+board, not a new one: newest snapshot is still **1230.parquet** (45 min old, inside R19′'s 60–110 min afternoon
+baseline — no staleness disclosure owed), `agent-model-view --min-lead-hours 20` still returns
+`_none at this threshold_` (**R12‴**), and `agent-scan --event KXHIGHLAX-26JUL30` still returns **0 markets** at
+13:16 UTC. That last one is the only thing here with any information content: a **second** independent
+observation that the next-day board had not listed before 14:00 UTC, which again **confirms rather than kills**
+R12's measured 14:00–15:10 listing window — the kill clause ("a next-day board observed before 14:00 UTC") stays
+un-fired at two checks this hour. No grading step and **no version bump** (strategy stays **v34**): nothing has
+closed since v34 graded LV JUL27, and an 8-minute-old repeat of a board is not evidence about anything.
+**No trades** — same reason as 13:07, there is no board I am permitted to look at. **What I want by next session:**
+unchanged — the LAX low T68 settlement, to be graded explicitly against v34's parked σ-validation hypothesis; and
+if 14:15 fires, it is still R12‴'s pre-registered coverage check with 15:15 as the first real JUL30 sweep.
 
 `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at risk) is still open and
 settles later today. **No grading step and no version bump** (strategy stays **v34**): nothing has closed since v34
