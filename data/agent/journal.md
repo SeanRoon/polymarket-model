@@ -9,6 +9,32 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-29 13:07 UTC — fast path (R12‴): nothing settled, no sweepable board, holding 1 position.
+
+`agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at risk) is still open and
+settles later today. **No grading step and no version bump** (strategy stays **v34**): nothing has closed since v34
+graded LV JUL27.
+
+**Why fast path, on the board-state predicate rather than the clock.** Newest snapshot **1230.parquet**, 35 min old
+— inside R19′'s 60–110 min afternoon baseline, so no staleness disclosure owed.
+- **JUL30 is not coverable and not even listed.** `agent-model-view --min-lead-hours 20` → `_none at this
+  threshold_`, i.e. **R12‴** (a board the newest snapshot does not cover is not sweepable). Checked the venue side
+  too: `agent-scan --event KXHIGHLAX-26JUL30` returned **0 markets** at 13:07 UTC. **New datapoint for R12's
+  listing measurement, and it confirms rather than kills it** — the next-day board still had not listed at 13:07,
+  consistent with the measured 14:00–15:10 window. R12's kill clause ("a next-day board observed before 14:00
+  UTC") does **not** fire.
+- **JUL29 is settlement day and fails R12′ on lead alone.** Highs close in ~8–12h, well under R12′'s ≥18h
+  predicate, so no full sweep regardless of local-clock observation status.
+- **Lows are inside R12″'s blackout in every US zone**: 13:07 UTC = 09:07 EDT / 08:07 CDT / 07:07 MDT / 06:07 PDT,
+  all between local midnight and 10:00. Eighth session in the recent run where the low column is unscreenable —
+  and per the JUL28 21:15 entry, that is a fact about the hour I run, not about the board.
+
+**No trades.** Not a drought and not a rule problem: there was no board I am permitted to look at. **Next session
+(14:15 UTC) is R12‴'s pre-registered coverage check** — if `agent-model-view --min-lead-hours 20` is still empty
+there, take the fast path again and treat 15:15 as the first real sweep of the JUL30 board. **What I want by next
+session:** the LAX low T68 settlement, which is the first live test of the σ-validation hypothesis parked in
+v34's open-hypotheses list — grade it explicitly against that hypothesis whichever way it lands.
+
 ## 2026-07-28 21:15 UTC — the JUL29 board, and the first genuinely full sweep in days: R12″'s low blackout lifted after seven sessions, R22 returned 39 qualifying bins across both directions, and exactly one survived. One trade opened — the first fade I have taken on a **dispersion** argument rather than a location one.
 
 **Settled: none.** `agent-settle settled=0 still_open=0`; book flat since the LV win. **No grading step** — nothing

@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-28 20:49 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-29 13:05 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $865.06 |
-| open positions | 0 ($0.00 at risk) |
+| free cash | $849.21 |
+| open positions | 1 ($15.85 at risk) |
 | settled | 40 (19 wins, 48%) |
 | realized PnL | $-134.94 on $839.94 staked (-16.1%) |
 
@@ -23,6 +23,7 @@ _Generated 2026-07-28 20:49 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v18 | 1 | 1 | 100% | 21.45 | +8.55 | +39.9% |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
+| v34 | 0 | 0 | - | 0.00 | +0.00 | - |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
 | v6 | 2 | 2 | 100% | 23.51 | +11.49 | +48.9% |
 | v7 | 1 | 1 | 100% | 12.51 | +17.49 | +139.8% |
@@ -38,6 +39,7 @@ _Generated 2026-07-28 20:49 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
+| 07-28 21:10 | KXLOWTLAX-26JUL29-T68 | no | 20 | 0.78 | 15.85 | v34 | R2 AGREEMENT NO-fade of an EMPTY tail, small size. Faded bin: LAX low >=69F on J |
 
 ## Last 20 settled
 
