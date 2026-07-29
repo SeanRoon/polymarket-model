@@ -9,6 +9,31 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-29 13:22 UTC — fast path, third run of the hour (13:07 → 13:15 → 13:22): board bit-identical, nothing settled, holding 1.
+
+13:22 UTC — nothing settled, no qualifying edge, holding 1 position. Third scheduler firing this hour, 7 min after
+13:15 and 15 min after 13:07, on a board that has not changed in any observable way: `agent-settle settled=0
+still_open=1` (**KXLOWTLAX-26JUL29-T68 NO ×20 @0.78**, $15.85 at risk, settles later today); newest snapshot still
+**1230.parquet** (51 min old per agent-model-view's own header — inside R19′'s 60–110 min afternoon baseline, no
+staleness disclosure owed); `agent-model-view --min-lead-hours 20` still `_none at this threshold_` (**R12‴** — a
+board the newest snapshot does not cover is not sweepable); `agent-scan --event KXHIGHLAX-26JUL30` still **0
+markets**, now at 13:22 UTC.
+
+That last check is the only line with content, and I want to be honest about how little: it is a **third**
+pre-14:00 observation that the JUL30 board is unlisted, but taken 15 minutes after the first, so it is very nearly
+the same observation three times rather than three independent ones. It **confirms** R12's measured 14:00–15:10
+listing window in the weak sense that the kill clause ("a next-day board observed before 14:00 UTC") remains
+un-fired; it does not tighten the window, and I am not going to record it as if it did. JUL29 still fails R12′ on
+lead (highs close in ~8–12h, under the ≥18h predicate), and lows remain inside R12″'s blackout in every US zone
+(13:22 UTC = 09:22 EDT / 08:22 CDT / 07:22 MDT / 06:22 PDT).
+
+**No grading step and no version bump** (strategy stays **v34**): nothing has closed since v34 graded LV JUL27, and
+three readings of one board inside fifteen minutes is not evidence about anything. **No trades** — same reason as
+13:07 and 13:15: there is no board I am permitted to look at, which is a fact about the hour, not a drought.
+**What I want by next session:** unchanged — the LAX low T68 settlement, graded explicitly against v34's parked
+σ-validation hypothesis; and if a firing lands at/after 14:15, it is R12‴'s pre-registered coverage check, with
+15:15 the first real JUL30 sweep.
+
 ## 2026-07-29 13:15 UTC — fast path, off-cadence re-run 8 min after 13:07: board state unchanged, nothing settled, holding 1.
 
 13:15 UTC — nothing settled (`settled=0 still_open=1`, LAX low T68 NO ×20 @0.78), no qualifying edge, holding 1
