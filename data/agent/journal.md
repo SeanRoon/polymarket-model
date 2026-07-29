@@ -9,6 +9,132 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-29 15:21 UTC — the sweep four sessions have been pointing at: JUL30 covered at 26–29h, full R22 two-direction funnel run as SQL. 22 qualifying bins, ZERO trades — and the most useful thing on the board was the tape on my own open position.
+
+**Settled: none.** `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at
+risk). **No grading step, no version bump; strategy stays v34.** Nothing has closed since v34 graded LV JUL27,
+so per the editing rules I add, remove and change nothing today. Everything below is measurement.
+
+**R12‴'s pre-registration, answered as written.** Newest snapshot is **1455.parquet** (`snapshot_ts_utc`
+14:58 UTC), it **does** contain the JUL30 board, and `agent-model-view --min-lead-hours 20` returns 36 events
+at **26–29h lead**. The 14:15/14:21 sessions had zero coverage; 15:15 has it. That is **day 2 of the R12‴
+measure confirming the rule** (14:15 races the coverage snapshot and loses; 15:15 is the first real sweep) and
+the kill clause — "≥5 days the 14:15 session *does* have coverage" — remains at 0.
+**Staleness: none owed.** 23 minutes old against R19′'s 60–110 min afternoon baseline, i.e. *fresher* than
+normal. First session in several where I owe no disclosure at all.
+**R19 (NBM half), reported as required:** `nbm_cycle_utc` **2026-07-29 06:00** everywhere. On the JUL30 **low**
+board `nbm_lead_hours` 28–31 vs `model_lead_hours` 26–29 — a gap of ~2h, comfortably inside the +12 threshold,
+so NBM is a genuine independent vote there. On the JUL30 **high** board the gap is **13h** (42 vs 29), which
+downgrades NBM to a corroborator for highs — relevant to the LV candidate below, and it points the same way as
+the other three reasons I refused it.
+
+**R22 funnel, run as a query over 1455.parquet rather than off the top of the sorted view.** Both directions.
+
+**(b) YES pass — 11 qualifying bins, ALL 11 refused under R23, and every one by a wide margin.** Asks:
+DAL high B102.5 **0.33**, DC low B68.5 0.27, AUS high T98 0.16, DEN high T89 0.14, NYC high B79.5 0.12,
+OKC low B78.5 0.11, PHIL low B67.5 0.09, HOU high B100.5 0.08, LAX low B65.5 0.07, LV low B80.5 0.06,
+PHIL low B65.5 0.04. **The highest ask on the entire YES column is 0.33** — R23's floor is 0.40, so the board
+did not produce a single YES candidate within 7¢ of being takeable. **Logged for R23's kill clause** (it needs
+≥8 forgone sub-0.40 YES candidates with ≥3 resolving YES before it is in question); these 11 are the first
+batch I am tracking by name. Note two of them are R21 cells anyway (AUS high T98, DEN high T89 — the
+degenerate 0.954 model artifact), so the honest count of *clean* forgone YES candidates is **9**.
+
+**(a) NO pass — 11 non-modal qualifying bins; 4 survived (iii″)'s emptiness test; all 4 refused.**
+Seven died immediately: **AUS high B102.5** and **DEN high B91.5/B95.5** are R21-closed cells (and Denver is
+R9 besides); **MIA low B80.5** (nbm 0.099), **OKC low B74.5** (model 0.065), **PHX low B90.5** (0.176/0.223)
+and **DC low T71** (nbm 0.067) all fail **(iii″)** — not empty, merely cheap, which is the exact bucket v34's
+backtest priced at −0.10 to −0.14/contract. The four that reached full adjudication:
+
+| candidate | mid | model | nbm | R18 ratio | verdict |
+|:---|--:|--:|--:|--:|:---|
+| LV high B112.5 | 0.360 | 0.009 | 0.005 | 0.742 | **R8/R10 + (ii‴) + R14** |
+| OKC low B72.5 | 0.160 | 0.009 | 0.005 | 0.438 | **(ii‴) + (iii″) entry cap** |
+| SATX low T78 | 0.335 | 0.009 | 0.041 | 0.736 | **R15″(a) artifact** |
+| LAX low T68 | 0.400 | 0.009 | 0.005 | 0.879 | **discretionary — see below** |
+
+**1. LV high B112.5 → dead three ways, and R8/R10 is the cleanest.** The model column is **degenerate**:
+0.9537 on B110.5 and the 0.0093 Laplace floor on all five other bins. Its 0.0093 on the bin I would sell is
+not a second vote, it is the arithmetic complement of the one claim it makes — R10's laundering shape exactly.
+That leaves NBM alone, and NBM is a 13h-stale corroborator here under R19. **(ii‴) fires independently:**
+KLAS/high `nbm_q50 − realization` JUL24–28 = **−3.73, −0.97, −2.91, −1.79, −1.45 ⇒ mean −2.17°F, cold 5 of 5**;
+corrected centre 108.31 + 2.17 = **110.48**, moving from below straight *toward* the faded [111.5, 113.5)
+support. Clause 3 fires. **R14 kills it too** — snapshot volume **4.29** against the ≥25 floor. Co-fire, so
+this does **not** increment (ii‴)'s sole-blocker count (v32's convention).
+
+**2. OKC low B72.5 → (ii‴) again, and the bias it flagged has gotten materially worse.** KOKC/low errors
+JUL24–28 = **+0.68, +3.10, +5.58, +7.53, +7.86 ⇒ mean +4.95°F, warm 5 of 5 and still accelerating.** When v32
+logged this cell as a sole-blocker firing the mean was **+3.45**; six days later it is **+4.95**, with the two
+most recent days the two largest errors on record. Corrected centre 78.67 − 4.95 = **73.72**, which sits
+**0.22°F above** the faded bin's [71.5, 73.5) top edge — moving hard toward it. **Also dead on price:** the
+live book is **0.05 / 0.15**, so R14's bid rule puts my NO entry at **0.95**, blowing through (iii″)'s ≤0.85
+cap. The snapshot mid of 0.160 versus a live bid of 0.05 is R14's phantom-edge shape in miniature. Co-fire
+again — **(ii‴) sole-blocker count stays at 3.**
+
+**3. SATX low T78 → R15″(a), and the veto does not need the Gaussian.** This was the best-looking bin on the
+board: clean AGREEMENT geometry (model mode B73.5 @0.769, NBM mode B77.5 @0.755, both *below* the faded ≥79
+bin, so a shared upper tail rather than a BRACKET shoulder), d_model **3** and d_nbm 1 so (i″) passes, R18
+ratio 0.736, non-modal, a 221-lot book with a **0.01 spread**, and a NO entry of 0.67. R21 permits it — KSAT
+carries the `VALID AS OF` stamp but that corrupts `high` only, and the data agrees: KSAT/**low** errors run
+−0.55 to +5.25 while KSAT/**high** runs +12 to +20. (ii‴) is quiet too: KSAT/low JUL25–29 = +0.33, +1.12,
++3.02, +0.60, −0.55 ⇒ mean **+0.90°F**, under the 1.5 bar, and warm-running would push the centre *away* from
+a ≥79 fade anyway.
+**It dies on the input.** Binned `nbm_p` is **0.0409**, under 0.05, so R15″(a) governs. Reconstructing on the
+near tail (open-high ⇒ q90): q50 **77.94**, q90 **78.83** ⇒ σ **0.694** ⇒ **P(≥78.5) = 0.2100**, a **5×**
+understatement of the binned column — the DC-T70 founding shape (17×) in the same direction. And the
+model-free version is decisive on its own: **NBM's stated q90 is 78.83, which is *above* the bin's 78.5
+continuity edge**, so NBM's own quantiles cannot support a probability below 0.10 there. Even on the strict
+79.0 reading it reconstructs to **0.0635**, still above the bar. `q75` is **78.40** — the faded bin begins
+one tenth of a degree above NBM's upper quartile, which is "one ordinary forecast error away," i.e. MIA B93.5
+verbatim. **NBM is not casting an independent low vote; the candidate fails R2's dual-source premise.**
+*Honest limitation, disclosed:* JUL30 coverage began at 14:55, so **only one cycle exists** and I cannot run
+v21's ≥80%-of-cycles test — n=1 is the exact single-draw weakness that amendment was written to fix. I am
+refusing on it anyway because the q90-above-the-edge argument is structural rather than a noisy draw, but the
+refusal is weaker than a multi-cycle one and I am labelling it as such.
+
+**4. LAX low T68 (≥69°F) → survives every rule I own at explore size, and I am refusing it on judgment.
+Stating that plainly rather than reverse-engineering a gate.** It clears (i″) (d_model 2, d_nbm 2), (iii″)
+(both sources ≤0.05, live NO entry 1 − 0.39 = **0.61**), R5a (market mode is B67.5), R15″(a) (recon
+P(≥68.5) = **0.0055**, genuinely empty — no artifact), R14 (live **0.39/0.44**, spread 0.05, vol24h 41), and
+**(ii‴) does not fire**: KLAX/low JUL25–29 = −0.96, −0.87, +0.11, −1.79 and, taking JUL29 from the
+settlement-grade market price as the labelled proxy the rule permits (mid 0.865 on ≥69, minimum already formed
+at 08:21 PDT), −2.12 ⇒ mean **−1.13°F**, under the 1.5 bar. R18 caps it at explore size (ratio 0.879 on the
+snapshot, 0.806 live). So the funnel says: takeable, small.
+**I am not taking it, and here is the measurement that decides it.** LAX low realizations JUL25–28 were
+**70, 70, 69, 69**, with JUL29 heading the same way. NBM's q50 for JUL30 is **66.44** with σ ≈ 0.81 — it is
+putting every one of the last four realizations **3.2–4.4σ** into its own upper tail, and the model column
+(0.713 on 65–66, with a +2.83°F bias correction *already applied*) is ~3.5°F cold on the same run. A pair of
+sources that assigned ≈0 probability to what actually happened four days running are not two votes about
+tomorrow; they are one stale bias about to repeat for a fifth time. Against a market at 0.39/0.44 and a recent
+base rate of 4-of-4 at ≥69, **the fade is more likely −EV than +EV**, and (ii‴)'s fixed 5-day mean misses it
+only because three quiet days dilute two large, consecutive, accelerating cold misses.
+**Why this is a discretionary refusal and not a new rule.** The obvious move is to add a trend or persistence
+clause to (ii‴). I am not doing it today: nothing has settled, the editing rules say the version stands, and
+inventing a qualifier from the optics of one candidate is precisely the **R16** failure mode — the same one
+that produced (i) in v17 and had to be retracted in v18. **Pre-registered instead:** when the JUL29 twin
+settles, grade it, and *then* decide whether (ii‴)'s 5-day mean needs a dispersion- or trend-aware companion.
+v34 already owes a rewrite of that kind if the blocked-winner count hits 3; this would be the second
+independent reason to touch the same clause.
+
+**The most informative thing on the board was my own open position's tape.** `KXLOWTLAX-26JUL29-T68` across
+today's committed cycles: mid **0.205 → 0.355 → 0.665 → 0.865** (07:32 → 10:19 → 12:31 → 14:58 UTC) — a
+monotone **+0.66** climb over ~7.5 hours straight toward the outcome both my sources reject — while **NBM did
+not move at all** (q50 66.59 / 66.45 / 66.45 / 66.88, `nbm_p` pinned at **0.005**) and `model_p` sat at the
+**0.0093** floor the whole way. That is **R5(b)'s founding shape reproduced exactly**, and this time I am on
+the wrong side of it: the market read a thermometer overnight and my two "independent" sources sat frozen and
+identically wrong. Live now at **0.88/0.89**, so the NO ×20 marks around 0.11–0.12, roughly **−$13.4
+unrealized**. I restate the pre-registration a third time so it cannot be softened: **this position looks like
+a loss, it is v34's parked σ-validation hypothesis taking its first real hit, and it gets graded as such when
+the CLI lands.**
+
+**Board hygiene for the record.** JUL29 was not screened: the highs' extreme is in progress (15:21 UTC =
+11:21 EDT / 08:21 PDT), which fails R12′'s predicate, and the JUL29 lows are already realized under R12″.
+Only the JUL30 board was swept, which is the whole point of the 15:15 slot.
+
+**What I want by next session:** the JUL29 T68 CLI, graded unsparingly against v34's σ-validation
+hypothesis — and with it, the first real evidence on whether "both sources ≤0.05" means anything in a cell
+where both sources are systematically 3°F cold. Secondarily: whether the 16:15 board still shows the OKC/low
++4.95°F warm bias, since that cell is now my clearest live example of (ii‴) working as designed.
+
 ## 2026-07-29 14:21 UTC — fast path, off-cadence re-run 6 min after 14:15: snapshot unchanged, JUL30 still uncovered, and my first staleness disclosure of the day (111 min, one minute past R19′'s band). The LAX mark got worse.
 
 14:21 UTC — nothing settled, no qualifying edge, holding 1 position. Second firing this hour, 6 minutes after
