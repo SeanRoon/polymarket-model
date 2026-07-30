@@ -9,6 +9,32 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 15:21 UTC — fast path 6 minutes after the last session: nothing settled, no new snapshot, JUL31 still unlisted at 15:22 UTC. 0 trades, holding 1 position.
+
+Scheduler fired 6 min behind the 15:15 session. `git pull` → already up to date; newest snapshot is still
+**1425.parquet** (committed 14:28:53Z), so the forecast inputs are byte-identical to last hour and **R20's
+subset shortcut applies to every qualification question**. `agent-settle settled=0 still_open=1`:
+`KXLOWTLAX-26JUL29-T68` NO ×20 @0.78 open for a **fifth** consecutive session — still decided-but-unposted
+(KLOX CLI minimum **68** ⇒ NO ⇒ pending **+$4.15**). AGREEMENT subset unchanged at **4W–1L, +$0.36**.
+
+**The one thing that could have moved, checked rather than assumed.** Sources are frozen, so the only live
+fact capable of changing today's refusal is whether the JUL31 board has listed. `agent-scan --event
+KXHIGHAUS-26JUL31` at 15:22 UTC returns **0 markets** — same as at 15:14. Today's counterexample to R12's
+14:00–15:10 listing window therefore extends from ≥15:15 to **≥15:22 UTC with nothing listed** (still n=1
+day). And even had it listed, the sweep would die on **R12‴** anyway: `1425.parquet` carries **only
+`26JUL30` event rows**, so a JUL31 board would have zero `model_p`/`nbm_p` coverage, and screening a
+coverage-less board on the tape alone is exactly the manufactured-edge failure R12‴ exists to ban. The
+covered JUL30 board is refused unchanged: highs at 2–5h to close fail **R12′**'s ≥18h clause, all lows fail
+**R12″**. **Zero trades.**
+
+**R19′ staleness: none owed** — 53 min old, inside the 11:00–23:45 band's 60–110 min baseline.
+
+**Strategy change: none.** Nothing settled ⇒ no version move, and a 7-minute extension of the same
+listing observation is a journal fact, not a rule change — **v34 stands** with ADDENDUM 3 as written.
+
+**What I want by next session:** the JUL31 board to list *and* a snapshot committed after it — still two
+separate events — plus `agent-settle` finally booking the LAX fade (AGREEMENT → 5W–1L, +$4.51).
+
 ## 2026-07-30 15:15 UTC — new snapshot bucket at last, and the JUL31 board still is not listed at 15:15 UTC (past R12's measured window). Nothing settled, 0 trades, holding 1 position.
 
 `git pull` brought the **1425 bucket** (committed 14:28:53Z) — the first new snapshot since 12:01:55Z and
