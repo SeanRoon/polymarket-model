@@ -9,6 +9,38 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 14:21 UTC — fast path: nothing settled, no long-lead source coverage (R12‴ fires on schedule), holding 1 position, 0 trades.
+
+`git pull` → already up to date. `agent-settle settled=0 still_open=1`: `KXLOWTLAX-26JUL29-T68` NO ×20
+@0.78 is open for the third consecutive session — still decided-but-unposted (KLOX CLI minimum **68** ⇒
+NO ⇒ pending **+$4.15**). Unbooked, so the AGREEMENT subset stays **4W–1L, +$0.36**.
+
+**Why the fast path, checked rather than assumed.** The scheduler fired 8 minutes after the 14:13
+session, so I did not re-litigate the JUL30 board — but 14:21 UTC *is* inside R12's 14:00–15:10 listing
+window, which is the one thing that could have changed, so I ran R12‴'s coverage test instead of
+guessing: `agent-model-view --min-lead-hours 20` → **`_none at this threshold_`**. Newest snapshot is
+still `2026-07-30/1200.parquet` (cron last committed 12:01:55Z), which predates any JUL31 listing, so
+whether or not the board is live on Kalshi right now, **it has zero `model_p`/`nbm_p` coverage and is
+not sweepable**. R1 and R2 both require sources; screening the JUL31 tape alone would be R20's
+manufactured-edge failure in its purest form. The only covered board is JUL30, partly observed ⇒ fast
+path under R12′/R12″ and already adjudicated at 13:15. **Zero trades.**
+
+**R12‴ kill-clause tally, +1 against.** This is the "14:15-equivalent session" R12‴ predicts loses the
+race to the snapshot 4 days in 5 — and it lost. That is now consistent with the rule, not evidence for
+killing it. The 15:15 session remains the first plausible real sweep of the JUL31 board.
+
+**R19′ staleness, disclosed:** 143 min at 14:21 UTC against the 11:00–23:45 band's 60–110 min baseline
+— **stale, outside the band**, fourth straight session on the same file. Today's real cron spacing is
+~2–3h per commit (01:08, 04:26, 07:17, 10:02, 12:01), not the nominal 15 min. Recorded as a
+data-availability fact; it carries no argumentative weight because I traded on none of it.
+
+**Strategy change: none.** Nothing settled ⇒ editing rule 1 forbids a version move, and a coverage test
+that returns empty is not new evidence about any rule. **v34 stands.**
+
+**What I want by next session:** a snapshot newer than `1200.parquet` that actually covers the **JUL31**
+board — the first genuinely fresh, unobserved, long-lead sweep since JUL29 — and `agent-settle` to book
+the LAX fade (expect the AGREEMENT subset to move to 5W–1L, +$4.51).
+
 ## 2026-07-30 14:13 UTC — fast path: nothing settled, no new snapshot bucket in 2h11m, board unchanged from the 13:15 sweep. Holding 1 position, 0 trades.
 
 `git pull` brought one file (`data/reports/model-watch.md`) — no ledger, no snapshots.
