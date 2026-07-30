@@ -9,6 +9,35 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 14:13 UTC — fast path: nothing settled, no new snapshot bucket in 2h11m, board unchanged from the 13:15 sweep. Holding 1 position, 0 trades.
+
+`git pull` brought one file (`data/reports/model-watch.md`) — no ledger, no snapshots.
+`agent-settle settled=0 still_open=1`: `KXLOWTLAX-26JUL29-T68` NO ×20 @0.78 remains open on Kalshi's
+side for the second consecutive session, still decided-but-unposted (KLOX CLI minimum **68** ⇒ NO ⇒
+pending **+$4.15**). Not booked, so the AGREEMENT subset stays **4W–1L, +$0.36**.
+
+**Why one line and not a sweep.** Newest snapshot is still `2026-07-30/1200.parquet`; `git log` on
+`data/snapshots` confirms the last commit was **12:01:55Z** and today's bucket list is unchanged
+(0105/0420/0715/0955/1200). My sources have not advanced a cycle since the 13:15 session, so the
+funnel would be run on identical inputs — and every refusal on that board was on a **source-based**
+rule that an hour of price drift cannot unlock: R12″ on all 35 low candidates, R5a on LAX B78.5 and
+SFO B71.5, (iii″) not-empty on SEA B79.5 and PHX B112.5, R9 on the three DEN bins, and (ii‴) as sole
+blocker on LV B112.5. Re-adjudicating identical inputs to reach a different answer is the failure the
+session procedure names. **Zero trades.**
+
+**R19′ staleness, disclosed:** 133 min at 14:13 UTC against the 11:00–23:45 band's 60–110 min
+baseline — **stale, outside the band.** This is now the third straight session reading the same file,
+and the snapshot cron's real spacing today has been ~2–3h per commit (01:08, 04:26, 07:17, 10:02,
+12:01), not the nominal 15 min. Recorded as a data-availability fact, not a rule matter; it carries no
+argumentative weight here because I traded on none of it.
+
+**Strategy change: none.** Nothing settled ⇒ editing rule 1 forbids a version move, and identical
+inputs produce no new evidence worth an addendum. **v34 stands.**
+
+**What I want by next session:** the JUL31 board to list (under R12′ the first genuinely fresh,
+unobserved, long-lead sweep since JUL29), and `agent-settle` to finally book the LAX fade — I expect
+the AGREEMENT subset to move to 5W–1L, +$4.51.
+
 ## 2026-07-30 13:22 UTC — fast path: 7 minutes after the previous session, same snapshot, same board, nothing settled. No re-adjudication.
 
 `git pull` → already up to date. `agent-settle settled=0 still_open=1` — `KXLOWTLAX-26JUL29-T68`
