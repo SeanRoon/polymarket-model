@@ -9,6 +9,47 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 15:15 UTC — new snapshot bucket at last, and the JUL31 board still is not listed at 15:15 UTC (past R12's measured window). Nothing settled, 0 trades, holding 1 position.
+
+`git pull` brought the **1425 bucket** (committed 14:28:53Z) — the first new snapshot since 12:01:55Z and
+exactly what the last three sessions asked for. `agent-settle settled=0 still_open=1`:
+`KXLOWTLAX-26JUL29-T68` NO ×20 @0.78 is open for the **fourth** consecutive session, still
+decided-but-unposted (KLOX CLI minimum **68** ⇒ NO ⇒ pending **+$4.15**). Unbooked, so the AGREEMENT subset
+stays **4W–1L, +$0.36** and no rule count moves.
+
+**Why this was still a fast path, and why it took real work to establish.** Inputs advanced, so R20's
+byte-identical shortcut did not apply and I could not reuse the 14:21 refusal. I ran R12‴'s coverage test —
+and ran it **properly** this time. The 14:21 session inferred "no JUL31 coverage" from
+`agent-model-view --min-lead-hours 20` printing `_none at this threshold_`; that view filters to
+|edge| ≥ 0.05, so an empty table cannot distinguish *no rows* from *rows with no edges*. Queried against the
+parquet directly, `1425.parquet` holds **one event day only — `26JUL30`, 240 rows, all with `model_p` and
+`nbm_p`, lead 2–5h, zero JUL31 rows.** Same conclusion, sound reasoning instead of a lucky one.
+
+**The finding: the JUL31 board is not listed at all.** `agent-scan --event` returns **0 markets** for
+`KXHIGHAUS-26JUL31`, `KXHIGHLAX-26JUL31` and `KXHIGHDEN-26JUL31` at 15:14–15:15 UTC. R12 measured first
+listings at 15:10 / 14:20 / 14:30 / 15:00 / 14:00 — **today is past that 15:10 upper bound with nothing
+listed.** So the missing coverage is *downstream of a missing listing*, not the degraded cron losing a race
+(commits today: 01:08, 04:26, 07:17, 10:02, 12:01, 14:28). A snapshot cannot cover a board that does not
+exist. **This is the first counterexample to R12‴'s subsidiary "15:15 has coverage 5 of 5" claim (1 of 1
+today); neither R12's nor R12‴'s kill clause fires** — R12's points the other way (a board seen *before*
+14:00) and R12‴'s needs the *14:15* session to have coverage, which today it again did not.
+
+**The only covered board is refused on the lead clause alone.** JUL30 closes in **2–5h** ⇒ fails R12′'s
+**≥18h** clause in every zone. Pacific highs sit at 08:15 PDT, just inside the ~09:00 local predicate — and
+that changes nothing, because R12′ is a conjunction; reading it as a disjunction is the error I refused on
+the Central column two sessions ago. Every low dies on **R12″** regardless. **Zero trades.**
+
+**R19′ staleness: none owed** — 47 min old against the 11:00–23:45 band's 60–110 min baseline, genuinely
+fresh, and the first clean read after three straight stale-file disclosures.
+
+**Strategy change: none.** Nothing settled ⇒ no version move. Logged as **v34 ADDENDUM 3**: the corrected
+form of R12‴'s coverage test (query the snapshot's event-day column, not the edge table), and R12's listing
+window widened to "≥15:15 UTC at least once," n=1. **v34 stands.**
+
+**What I want by next session:** the JUL31 board to actually list, and a snapshot committed after it — that
+pairing is now two things, not one, and today is the first day I have had to tell them apart. Also
+`agent-settle` to finally book the LAX fade (expect the AGREEMENT subset → 5W–1L, +$4.51).
+
 ## 2026-07-30 14:21 UTC — fast path: nothing settled, no long-lead source coverage (R12‴ fires on schedule), holding 1 position, 0 trades.
 
 `git pull` → already up to date. `agent-settle settled=0 still_open=1`: `KXLOWTLAX-26JUL29-T68` NO ×20

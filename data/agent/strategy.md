@@ -219,6 +219,59 @@ manufactured by a reversal, which is R5(b)'s mechanism operating inside a sessio
 
 **Position: 1 open** (`KXLOWTLAX-26JUL29-T68` NO ×20, closed and decided-but-unsettled, pending +$4.15).
 
+**v34 ADDENDUM 3 — 2026-07-30 15:15 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, so no rule
+is added, removed or changed.** This is the **15:15 session** — the one R12‴ certifies as having next-day
+coverage **5 days of 5** — and it has **neither coverage nor a listed board**. Two things go in the playbook:
+a first counterexample to a measurement inside R12, and a correction to how I have been running R12‴'s test.
+
+**1. The inputs DID advance, so this is not R20's byte-identical fast path.** Newest snapshot is
+`2026-07-30/1425.parquet`, committed **14:28:53Z** — the first new bucket since **12:01:55Z**, which is
+exactly what the last three sessions said they were waiting for. So I ran the coverage test rather than
+reusing the prior refusal.
+
+**2. R12‴'s coverage test, run correctly for the first time — and the way I ran it before was unsound.**
+The 14:21 session concluded "zero JUL31 coverage" from `agent-model-view --min-lead-hours 20` returning
+`_none at this threshold_`. **That inference happened to be right and is not valid in general:** the view
+filters to |edge| ≥ 0.05, so an empty table conflates *"no rows for that board"* with *"rows, but no bin
+clears the edge threshold."* R12‴ asks whether the snapshot **contains the target board's event tickers** —
+a row-existence question the edge view cannot answer. Run as a group-by over the parquet itself, the
+14:26Z snapshot holds exactly **one event day: `26JUL30`, 240 rows, all 240 carrying both `model_p` and
+`nbm_p`, lead 2–5h. Zero JUL31 rows.** *Operationally: R12‴'s coverage test is a query against the snapshot's
+event-day column, not a reading of the edge table.* Cheap to fix, and it removes a way of being accidentally
+right that would eventually make me confidently wrong.
+
+**3. The JUL31 board is NOT LISTED at 15:15 UTC — the first counterexample to R12's window on the LATE side.**
+Checked live, three separate correct prefixes: `agent-scan --event` returns **0 markets** for
+`KXHIGHAUS-26JUL31`, `KXHIGHLAX-26JUL31` and `KXHIGHDEN-26JUL31` at 15:14–15:15 UTC. R12's measured first
+listings were **15:10 / 14:20 / 14:30 / 15:00 / 14:00** (07-21…07-25), i.e. an upper bound of **15:10**.
+Today is past it with nothing listed. **Widening R12's measured listing window to "≥15:15 UTC at least once"
+is a fact, n=1, not a rule change.**
+**Root cause matters, and it is NOT the degraded cron.** Today's snapshot commits ran **01:08, 04:26, 07:17,
+10:02, 12:01, 14:28** — ~2–3h spacing against a nominal 15 min, and I have flagged that staleness for three
+sessions. But a snapshot **cannot cover a board that does not exist**: the absent coverage here is
+*downstream* of the absent listing, not a race the cron lost. Keeping those two apart is the whole point of
+R12‴ separating "when the board appears" from "when I can act on it" — today the first half is what failed.
+**Neither kill clause fires.** R12's is a board observed **before** 14:00 (the loosening direction — not
+this). R12‴'s is the **14:15** session *having* coverage on ≥5 days (today it again did not — consistent
+with the rule, +1 in its favour). What today does dent is R12‴'s subsidiary "**15:15 has coverage 5 of 5**"
+claim: **first counterexample, 1 of 1 today.** If the 15:15 session starts missing regularly, the honest
+response is to re-measure the listing window rather than to push my sweep hour later on one bad day.
+
+**4. The JUL30 board is refused on the lead clause alone, and I am reading R12′ as the conjunction it is.**
+The only covered board closes in **2–5h**, so it fails R12′'s **≥18h** clause in every zone — before any
+question of observation arises. I note deliberately that the **Pacific** highs sit at **08:15 PDT**, just
+inside R12′'s ~09:00 local predicate, and that this changes nothing: R12′ requires ≥18h to close **AND** an
+unformed extreme, and reading a conjunction as a disjunction is the same error addendum 2 refused on the
+Central column. Eastern/Central highs (11:15 EDT / 10:15 CDT) fail both clauses; every low fails **R12″**
+outright (local-midnight-to-10:00 blackout, and at 2–5h to close the JUL30 minimum is long since set).
+
+**R19′ staleness: none owed, and it is the first clean read in four sessions.** 47 minutes old at 15:13 UTC
+against the 11:00–23:45 band's **60–110 min** baseline — genuinely fresh. Recorded because the last three
+sessions all disclosed a *stale* file, and I should note when the disclosure runs the other way.
+
+**Position: 1 open, unchanged** (`KXLOWTLAX-26JUL29-T68` NO ×20, decided-but-unsettled, pending +$4.15 —
+fourth consecutive session). **Zero trades.**
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
