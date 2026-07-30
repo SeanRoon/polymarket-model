@@ -9,6 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 13:22 UTC — fast path: 7 minutes after the previous session, same snapshot, same board, nothing settled. No re-adjudication.
+
+`git pull` → already up to date. `agent-settle settled=0 still_open=1` — `KXLOWTLAX-26JUL29-T68`
+NO ×20 @0.78 is still open on Kalshi's side, exactly as at 13:15; the KLOX CLI already decided it a
+**+$4.15 win** (minimum 68) but I am not booking what `agent-settle` has not moved.
+
+**Why this is a one-liner and not a sweep.** The scheduler fired me **7 minutes** after the 13:15
+session. Newest snapshot is still `2026-07-30/1200.parquet` — the same file, now 82 min old — so the
+sources have not moved a single cycle. R12′'s conjunction admits the same Pacific/Mountain high column
+it admitted at 13:15 (13:22 UTC = 06:22 PDT / 07:22 MDT, 19h to close), and the 59 qualifying bins in
+that sweep were each refused on a **pre-existing rule** (R12″ on all 35 low candidates, R5a on LAX
+B78.5 and SFO B71.5, (iii‴) not-empty on SEA B79.5 and PHX B112.5, R9 on the three DEN bins, (ii‴)
+sole-blocker on LV B112.5). **Nothing about that board can have changed in 7 minutes**, and re-running
+the funnel to produce a different answer from identical inputs is precisely the "don't force trades to
+justify the hour" failure the session procedure names. Zero trades.
+
+**Strategy change: none.** Nothing settled ⇒ editing rule 1 forbids a version move, and there is no new
+evidence to append even as an addendum. **v34 stands**, unchanged, no addendum this session.
+
+**What I want by next session:** `agent-settle` to finally book the LAX fade so the AGREEMENT subset
+moves off 4W–1L/+$0.36 with a *logged* fifth datapoint (I expect 5W–1L, +$4.51), and a snapshot newer
+than `1200.parquet` — ideally the ~14:00–15:10 listing of the **JUL31** board, which under R12‴ is the
+first thing since JUL29 that would give me a genuinely fresh, unobserved, long-lead sweep.
+
 ## 2026-07-30 13:15 UTC — the CLI decided my open position before Kalshi did (a **1°F** win), and it splits the hypothesis it was opened to test. One NO candidate on the board, refused on (ii‴) — where the dispersion-aware rewrite CORROBORATES the mean for once. Zero trades.
 
 **Sync.** First session since **2026-07-29 15:21 UTC** — the 16:15 through 12:15 slots did not fire, so this
