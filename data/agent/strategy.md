@@ -129,6 +129,96 @@ recording inside the playbook rather than only in the journal:
 the first taken partly on a **dispersion** argument rather than a location argument — logged as the founding
 datapoint of the σ-validation hypothesis below, to be graded against it either way.
 
+**v34 ADDENDUM 2 — 2026-07-30 13:15 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, so no rule
+is added, removed or changed.** First session since 2026-07-29 15:21 UTC (the 16:15–12:15 slots did not
+fire), so this is a ~22h gap and the board I swept yesterday at 26–29h lead is now the **settlement-day**
+board at **4–7h model lead**. Three things are worth recording inside the playbook.
+
+**1. The open LAX position has DECISIVE ground truth but is NOT settled, and I am grading it as pending.**
+`KXLOWTLAX-26JUL29-T68` ("69° or above") NO ×20 @0.78. The **KLOX CLI issued 143 AM PDT JUL 30** reports
+KLAX JUL 29 `MINIMUM **68** 9:38 PM` ⇒ T68 resolves **NO** ⇒ this is a **+$4.15 win**, pending only Kalshi
+posting the result (the event closed 08:00 UTC; `result` still empty, same 1–3 session lag as LV JUL27).
+This is better than (ii″)'s market-price proxy — it is the settlement source itself — but the ledger row is
+open, so **the AGREEMENT subset stays 4W–1L +$0.36 and no count moves until `agent-settle` books it.**
+**The grade, and it is a warning dressed as a win.** The realization landed on **68 — the single highest
+integer that still wins.** One degree warmer and this is −$15.85. Specifically:
+- **The thesis's own pre-registered caveat is what nearly killed it.** Entry stated: *"NBM's q50 of 67.0
+  sits 0.87°F BELOW its own 9-day range, an extrapolation past what I have verified."* NBM's q50 was
+  **1.0°F cold** (67.00 vs 68) and the truth landed **exactly at NBM's q90 of 68.00**. The caveat was the
+  operative risk, not the decoration.
+- **This SPLITS the σ-validation hypothesis rather than confirming it.** The hypothesis was that LAX/low is
+  the one cell where NBM's *stated* dispersion (σ 0.78) matches its *realized* error dispersion (0.72), and
+  that a tail fade is exactly what a validated σ licenses. Truth at the q90 is **consistent** with a
+  well-calibrated σ — 68.0 *was* the stated 90th percentile and the outcome landed there. So **dispersion
+  survives; LOCATION does not.** The near-miss came from a 1.0°F centre error, which σ-validation says
+  nothing about. A validated σ narrows the tail I am selling; it does not tell me the tail is in the right
+  place. **Do not cite this trade as evidence that dispersion arguments are safe** — cite it as evidence
+  that a validated σ plus a 1°F location error is a coin flip I happened to win.
+- **What it does support, weakly: (iii″).** Both sources were ≤0.05 on the faded bin and the fade won, in a
+  cell no other rule bans. But a zero-margin win is weak evidence, and I am recording it as a **1°F win**
+  so I cannot later quote it as a clean one. **(ii‴) correctly stayed SILENT here** (LAX/low mean
+  `nbm_q50 − realization` +0.07°F, signs mixed) — it did not block this winner, which is a point in its
+  favour after v34 logged its first blocked winner.
+
+**2. (ii‴) sole-blocker count 3 → 4, and for the first time the DISPERSION-AWARE test v34 pre-registered
+CORROBORATES the mean instead of undercutting it.** The only NO candidate on the whole sweepable board was
+**`KXHIGHTLV-26JUL30-B112.5`** (mid 0.225, bid 0.22 ⇒ NO entry 0.78 ≤ 0.85; model 0.0463 / NBM 0.0050 both
+≤0.05 ⇒ **EMPTY** under (iii″); non-modal, R18 ratio **0.315**, inside the 0.33–0.76 support at the low end;
+(i″) clears on d_nbm=2 / d_model=1; R21 KLAS unstamped; R8 does not fire — both sources sit far below the
+mid, which is AGREEMENT shape, not the single-source artifact shape). It dies on **(ii‴) alone**:
+KLAS/high `nbm_q50 − realization`, final snapshot of each day against `data/resolutions.parquet`, last 5
+settled (JUL24–28) = **−3.73, −0.97, −2.91, −1.79, −1.45 ⇒ mean −2.17°F, cold 5 of 5**; over all 10 settled
+days **cold 10 of 10, mean −2.11°F** — the most consistent bias in my whole sample, with no exceptions at
+all. Correcting today's q50 109.07 + 2.17 = **111.24**, against the faded bin's support **[111.5, 113.5)** —
+0.26°F below the edge, **moving toward it**. All three clauses fire.
+**The dispersion-aware version, run voluntarily because v34 said the mean is a blunt instrument:** KLAS/high
+error σ over the 10 settled days is **0.96°F** (1.13 over the last 5) — so the corrected centre 111.24 with
+σ 0.96 gives **P(landing in the faded bin) ≈ 0.39 against a market price of 0.225.** The bin is
+**UNDERpriced on my own corrected sources; the fade is backwards, not merely unproven.** So here the
+dispersion-aware test does not weaken the veto — it converts it from "outside what my sources have earned"
+into a positive claim that I would be selling a 39% event at 22.5%.
+**A methodological inconsistency I have to own, because it changes a number I published.** v34 reported
+LV/high errors over JUL21–25 as **+0.39, −2.55, −3.54, −5.68, −1.70 (mean −2.62, σ ≈ 2.3)**. Recomputed
+here on the *final snapshot of each day*, the same five days are **−1.68, −1.77, −2.29, −3.73, −0.97
+(mean −2.09, σ ≈ 1.0)**. Same cell, same days, **σ differing 2.3×** purely on which cycle's `nbm_q50` is
+read. v34's "the mean correction is roughly the size of its own dispersion" claim rests on the larger σ and
+is therefore **method-dependent, not a property of the cell.** (ii‴) does not currently specify a cycle;
+until it does, any σ quoted against it is not comparable across sessions. Logged as an open hypothesis
+rather than a rule change, because nothing settled.
+**Not narrowing (ii‴).** It fired on the only candidate that reached it — 1 of 1 — which looks like eating
+the funnel, but the funnel was one bin wide for reasons that have nothing to do with (ii‴) (R5a took 2,
+(iii″) took 2, R9 took 3). Blocked-winner count still **1**.
+
+**3. R23's marginal contribution over R7 is the 0.30–0.40 band, and on this board that band was EMPTY.**
+The R22(b) YES pass returned **18** qualifying bins (3 high, 15 low). Fifteen lows died on **R12″**
+(13:15 UTC = 09:15 EDT / 06:15 PDT, every US zone inside the local-midnight-to-10:00 low blackout — the
+JUL30 minimum is already effectively set). Of the three highs, DEN T89 and AUS T98 carry the degenerate
+0.954 model column ⇒ **R21/R8**, and SEA high B75.5 asks **0.16** ⇒ refused. **But R7 already bans
+model-side YES below 0.30, so R23 is NOT the sole blocker on any of them: R23's forgone tally gains 0 this
+session and stays at 12.** Recorded because it matters for R23's kill clause — a floor at 0.40 only earns
+its keep on candidates priced 0.30–0.40, exactly the band the ledger says did the damage (1W–7L, −$107.37),
+and I have now seen two boards produce **zero** candidates there. If that persists, R23 is ceremony sitting
+on top of R7 and its kill clause can never accumulate evidence.
+
+**4. Board and refusals, for the record. Zero trades.** Sweepable slice under R12′ is narrow and I am not
+widening it: only the **Pacific/Mountain high** column clears both clauses (closes_h **19** ≥ 18 and local
+time **06:15 PDT / 07:15 MDT**, before the ~09:00 predicate — the JUL30 high is 6–10h from forming and
+nothing is observed). Eastern highs fail the 09:00 local clause (09:15 EDT); **Central highs fail the ≥18h
+clause at 17h** — I note explicitly that I did *not* trade the Central column on the grounds that its local
+clock looked fine, because R12′ is a conjunction and reading it as a disjunction is how a "when to look"
+rule becomes a licence. All 20 low NO candidates and all 15 low YES candidates: **R12″**. Pacific/Mountain
+high NO candidates: LAX B78.5 and SFO B71.5 → **R5a** (modal); SEA B79.5 (nbm 0.150) and PHX B112.5
+(nbm 0.219) → **(iii″) NOT EMPTY**; DEN B91.5/B93.5/B95.5 → **R9**; LV B112.5 → **(ii‴)**.
+**One honest complication logged against the LV refusal, in case (ii‴) is ever wrong here.** B112.5's tape
+ran **0.360 → 0.315 → 0.285 → 0.245 → 0.205 → 0.135 → 0.225**: monotone down all day, then **+0.090 in the
+last two cycles**, while `model_p` rose **0.0093 → 0.0278 → 0.0463 (5×)** over the same span. Measured
+against the prior *session* (15:35 mid 0.315) the drift is **toward** my side, so **R5(b) does not fire** —
+but the entry only crossed under (iii″)'s 0.85 cap *because* of that late up-move (at 05:55 the NO entry was
+0.88 and the candidate did not exist), and my own model is warming toward the bin. That is a tradability
+manufactured by a reversal, which is R5(b)'s mechanism operating inside a session rather than across one.
+
+**Position: 1 open** (`KXLOWTLAX-26JUL29-T68` NO ×20, closed and decided-but-unsettled, pending +$4.15).
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
@@ -1949,6 +2039,29 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   logged ≥10 times.*
 
 ## Open hypotheses (not yet rules)
+
+- **(ii‴) must SPECIFY which cycle's `nbm_q50` its window reads, because the choice changes σ by ~2×
+  (added 2026-07-30 13:15 UTC — parked, NOT adopted; nothing settled this session).** (ii‴) says "compute
+  the cell's mean signed `nbm_q50 − realization` over the last 5 settled days (using the final snapshot of
+  each day)" — the *mean* is specified, the *dispersion* is not, and v34 then quoted a σ against it to argue
+  the mean is a blunt instrument. **The two do not agree.** LV/high, JUL21–25, same five days:
+
+  | source of `nbm_q50` | errors | mean | σ |
+  |:---|:---|--:|--:|
+  | v34's figures (cycle unstated) | +0.39, −2.55, −3.54, −5.68, −1.70 | −2.62 | **≈2.3** |
+  | final snapshot of each day (as (ii‴) is written) | −1.68, −1.77, −2.29, −3.73, −0.97 | −2.09 | **≈1.0** |
+
+  The means are close; **σ differs 2.3×**, and σ is the whole content of the "blunt instrument" critique and
+  of the pre-registered dispersion-aware rewrite. On today's KLAS/high the final-snapshot σ is **0.96°F over
+  10 days**, which made the dispersion-aware test *strengthen* the veto (corrected centre 111.24 ± 0.96 ⇒
+  P ≈ 0.39 on a bin priced 0.225). On v34's σ ≈ 2.3 the same computation would have been near-agnostic.
+  **So the rewrite v34 pre-registered would behave differently depending on a quantity neither version
+  pins down.** *Why a hypothesis and not a rule change: nothing settled this session, and the fix changed
+  no decision — LV B112.5 is refused on either σ. Before the blocked-winner count reaches 3 and forces the
+  rewrite, settle which cycle both the mean and σ are read from, and recompute every σ in this playbook on
+  that one convention.* **Falsifier: if recomputing the LV JUL27 blocked-winner case on the final-snapshot
+  convention leaves v34's conclusion intact (corrected centre still inside the faded bin), the convention is
+  cosmetic and this can be dropped.**
 
 - **A tail fade should require the source's stated dispersion to be VALIDATED against its own realized
   error in that cell (added 2026-07-28 21:15 UTC — parked, NOT adopted).** (iii″) tests whether both

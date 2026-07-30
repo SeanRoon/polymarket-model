@@ -9,6 +9,131 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 13:15 UTC — the CLI decided my open position before Kalshi did (a **1°F** win), and it splits the hypothesis it was opened to test. One NO candidate on the board, refused on (ii‴) — where the dispersion-aware rewrite CORROBORATES the mean for once. Zero trades.
+
+**Sync.** First session since **2026-07-29 15:21 UTC** — the 16:15 through 12:15 slots did not fire, so this
+is a ~22h gap. `git pull` brought 7 modeled + 8 price-only snapshot buckets. Newest snapshot
+**`2026-07-30/1200.parquet`**, 71 min old at session start; R19′'s 11:00–23:45 baseline is 60–110 min, so
+this is an **ordinary-freshness** board and no staleness disclosure is owed.
+
+**Settled: none.** `agent-settle settled=0 still_open=1`. But the *ground truth* arrived, and it is decisive.
+
+### 1. The open LAX fade is a WIN by the settlement source, pending only Kalshi posting it
+
+`KXLOWTLAX-26JUL29-T68` ("69° or above") NO ×20 @0.78, cost $15.85. The event **closed 08:00 UTC** today
+with `result` still empty (`settlement_timer_seconds` 300, expiration 2026-08-05) — the same 1–3 session lag
+LV JUL27 had. So I went to the source: the **KLOX CLI issued 143 AM PDT JUL 30** reports KLAX for JUL 29 as
+`MAXIMUM 80 9:58 AM` / `MINIMUM **68** 9:38 PM`. A minimum of 68 means "69° or above" is **NO** ⇒ my
+position is a **+$4.15 win**.
+
+I am **not** booking it. The ledger row is OPEN, `performance.md` still reads 40 settled / −$134.94, and the
+AGREEMENT subset stays **4W–1L +$0.36** until `agent-settle` moves it. v33 set this precedent with LV JUL27
+("quoted as decided, not graded") and I am keeping it — with the note that this is *stronger* than the
+market-price proxy (ii″) permits, because it is the actual document Kalshi settles against.
+
+**The grade, and it is a warning wearing a win's clothes.** The minimum landed on **68 — the single highest
+integer that still pays.** One degree warmer and this is −$15.85.
+
+- **The thesis's own pre-registered caveat turned out to be the operative risk.** Entry said, verbatim:
+  *"NBM's q50 of 67.0 sits 0.87°F BELOW its own 9-day range, an extrapolation past what I have verified."*
+  NBM's q50 was **1.0°F cold** (67.00 vs a realized 68), and the truth landed **exactly on NBM's q90 of
+  68.00**. I wrote down the thing that nearly beat me and then took the trade anyway at small size. Small
+  size was the right response; the caveat was not decoration.
+- **This SPLITS the σ-validation hypothesis instead of confirming it — which is the opposite of what I
+  expected to be writing.** The trade was opened as that hypothesis's founding datapoint: LAX/low is the one
+  cell where NBM's *stated* σ (0.78) matches its *realized* error σ (0.72), and I argued a validated σ is
+  what licenses selling a tail. Outcome: truth at the q90 is **consistent with a well-calibrated σ** — 68.0
+  *was* the stated 90th percentile and that is where it landed. **Dispersion survives. Location does not.**
+  The near-miss came entirely from a 1.0°F centre error, and σ-validation is silent about centres. A
+  validated σ tells me how wide the tail is, not where it starts. So the honest lesson is narrower than the
+  thesis: **a validated σ plus a 1°F location error is a coin flip, and I won this one.**
+- **Supports (iii″), weakly.** Both sources ≤0.05 on the faded bin, cell banned by nothing, fade won. But a
+  zero-margin win is weak evidence and I have logged it in the playbook as a **1°F win** specifically so I
+  cannot quote it later as a clean one.
+- **(ii‴) correctly stayed silent here** (LAX/low mean `nbm_q50 − realization` +0.07°F, signs mixed). After
+  v34 logged its first blocked winner, a case where it declined to block a winner is worth counting in its
+  favour.
+
+### 2. Strategy change: NONE — v34 stands, addendum only
+
+Nothing settled, so per my own editing rule 1 no rule is added, removed or changed and the version does not
+move. I appended **v34 ADDENDUM 2** to the header (the pending grade, (ii‴)'s 4th firing, R23's tally, the
+board) and **one new open hypothesis**: *(ii‴) must specify which cycle's `nbm_q50` its window reads.*
+
+That hypothesis is a correction to a number I published. v34 quoted LV/high JUL21–25 errors as
++0.39/−2.55/−3.54/−5.68/−1.70 (mean −2.62, **σ ≈ 2.3**) and built the "the mean is a blunt instrument, its
+correction is the size of its own dispersion" critique on that σ. Recomputed on the *final snapshot of each
+day* — which is how (ii‴) is actually written — the same five days are −1.68/−1.77/−2.29/−3.73/−0.97
+(mean −2.09, **σ ≈ 1.0**). Means agree; **σ differs 2.3× on cycle selection alone.** Since the pre-registered
+dispersion-aware rewrite of (ii‴) is triggered by the blocked-winner count reaching 3, I would rather fix
+the convention now than discover at trigger time that the rewrite's behaviour depends on an unpinned choice.
+Parked as a hypothesis, not a rule: nothing settled, and it changes no decision today.
+
+### 3. The board: 59 qualifying bins, one survivor, refused
+
+R22 two-direction SQL over `1200.parquet`: **41 NO-pass** (21 high, 20 low) and **18 YES-pass** (3 high,
+15 low), with modality and the R18 ratio computed in the same query.
+
+**Sweepable slice is narrow, and I want to be explicit that I did not widen it.** R12′ is a **conjunction**:
+≥18h to close **AND** the target extreme not yet in progress. At 13:15 UTC only the **Pacific/Mountain high**
+column clears both (closes_h **19**, local **06:15 PDT / 07:15 MDT**, the JUL30 high 6–10h from forming and
+nothing observed). Eastern highs fail the 09:00-local clause at 09:15 EDT. **Central highs fail the ≥18h
+clause at 17h** — their local clock (08:15 CDT) looks fine, and reading the conjunction as a disjunction to
+pick up AUS/SATX/HOU/DAL/OKC/MIN is exactly how a "when to look" rule turns into a licence to trade. I
+didn't.
+
+Refusals, all on pre-existing rules:
+- **All 20 low NO candidates and all 15 low YES candidates → R12″.** 09:15 EDT / 06:15 PDT puts every US
+  zone inside the local-midnight-to-10:00 low blackout; the JUL30 minimum is effectively already set.
+- **LAX B78.5 (0.665), SFO B71.5 (0.525) → R5a**, both the market's modal bin.
+- **SEA B79.5 (nbm 0.150), PHX B112.5 (nbm 0.219) → (iii″) NOT EMPTY.**
+- **DEN B91.5 / B93.5 / B95.5 → R9.**
+- **The 3 high YES candidates → R7 (not R23).** DEN T89 and AUS T98 also carry the degenerate 0.954 model
+  column (R21/R8); SEA high B75.5 asks 0.16. R7 already floors model-side YES at 0.30, so **R23 is the sole
+  blocker on none of them and its forgone tally stays at 12.** Noted for its kill clause: R23's only
+  independent territory is 0.30–0.40, and that band has now been **empty on two consecutive boards**. If
+  that keeps up, R23 is ceremony stacked on R7 and can never accumulate the evidence its own kill clause
+  demands.
+
+**The one survivor: `KXHIGHTLV-26JUL30-B112.5`** — mid 0.225, bid 0.22 ⇒ NO entry **0.78** ≤ 0.85; model
+**0.0463** / NBM **0.0050** both ≤0.05 ⇒ **EMPTY** under (iii″); non-modal (market mode B110.5 @0.715);
+R18 ratio **0.315**, inside the 0.33–0.76 support at its low edge; (i″) clears (d_nbm=2, d_model=1, not
+adjacent to both); R21 KLAS unstamped; R8 does not fire (both sources far below the mid — AGREEMENT shape,
+not the single-source artifact shape); R15″(a) does not fire either (binned nbm 0.005, but the bin sits
+above q50 so the near tail is the upper one, σ = (109.81−109.07)/1.2816 = **0.58**, reconstruction ≈ 0.000 —
+NBM genuinely votes zero here, unlike the B111.5 twin).
+
+**It dies on (ii‴) as SOLE BLOCKER — count 3 → 4.** KLAS/high `nbm_q50 − realization`, final snapshot of
+each day vs `resolutions.parquet`: last 5 settled (JUL24–28) **−3.73, −0.97, −2.91, −1.79, −1.45 ⇒ mean
+−2.17°F, cold 5 of 5**; over all 10 settled days **cold 10 of 10, mean −2.11°F** — the most consistent bias
+in my entire sample, zero exceptions. Corrected centre **109.07 + 2.17 = 111.24** against the faded bin's
+support **[111.5, 113.5)**: 0.26°F below the edge, moving **toward** it. All three clauses.
+
+**And here the dispersion-aware rewrite corroborates the mean for the first time.** KLAS/high error σ is
+**0.96°F** over 10 days (1.13 over 5). Corrected centre 111.24 ± 0.96 ⇒ **P(faded bin) ≈ 0.39 against a
+price of 0.225.** That is not "outside what my sources have earned" — it says I would be **selling a 39%
+event at 22.5%**. The fade is backwards, not merely unproven. Genuinely useful: v34 worried the mean was too
+blunt to trust, and on this cell the sharper test points the same way, harder.
+
+**One complication logged against my own refusal, in case (ii‴) is wrong here.** B112.5's tape ran
+**0.360 → 0.315 → 0.285 → 0.245 → 0.205 → 0.135 → 0.225** while `model_p` climbed **0.0093 → 0.0278 →
+0.0463 (5×)**. Measured against the prior *session* (15:35 mid 0.315) the drift is **toward** my side, so
+**R5(b) does not fire** — its predicate is cross-session. But the candidate only *existed* because of the
+last two cycles' +0.090 reversal: at 05:55 the NO entry was **0.88** and (iii″)'s 0.85 cap excluded it. So
+its tradability was manufactured by an adverse move, which is R5(b)'s exact mechanism operating **within** a
+session rather than across one. If (ii‴) is ever killed, this is the case to re-read first.
+
+**Trades opened: ZERO.** No forced trade; 24 slots free and nothing that clears the bar.
+
+**Position: 1 open** — `KXLOWTLAX-26JUL29-T68` NO ×20 @0.78, closed and decided-but-unposted, pending
+**+$4.15**.
+
+**What I want to learn by next session:** whether Kalshi posts the LAX result so the 1°F win actually books
+and the AGREEMENT subset moves to 5W–1L — and, on the JUL31 board (first listing 14:00–15:10 UTC, so the
+15:15 session is the first with coverage per R12‴), whether the empty-tail funnel produces a candidate whose
+(ii‴)-corrected centre sits **clear** of the faded bin edge rather than 0.26°F from it. Four consecutive
+sweeps have died on that margin.
+
 ## 2026-07-29 15:21 UTC — the sweep four sessions have been pointing at: JUL30 covered at 26–29h, full R22 two-direction funnel run as SQL. 22 qualifying bins, ZERO trades — and the most useful thing on the board was the tape on my own open position.
 
 **Settled: none.** `agent-settle settled=0 still_open=1` — **KXLOWTLAX-26JUL29-T68 NO ×20 @0.78** ($15.85 at
