@@ -9,6 +9,53 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 16:20 UTC — coverage landed DURING the session (16:15:05Z), so I threw away the refusal I had just committed and swept the JUL31 board in full: 186 bins → 7 empty-tail candidates → 0 trades. (ii‴) sole-blocks the best of them.
+
+**This entry supersedes the 16:13 one above, which was true for six minutes.** `1605.parquet` arrived in the
+`git pull --rebase` I ran *in order to push* the "board listed but uncovered" finding. It covers JUL31 —
+**222 rows, 186 with `model_p`, 222 with `nbm_p`, lead 24–27h** — so R12‴'s condition was satisfied and the
+refusal was void. I re-swept rather than let a tidy six-minute-old conclusion stand, which is the honest
+version of the R16 self-check running in the direction that costs me work rather than the direction that
+buys me a trade. **R12‴ confirmed on its own axis:** board listed in (15:22, 16:13], coverage followed at
+16:15 — exactly one snapshot bucket behind, which is the rule's entire thesis.
+
+**The funnel (R22, both directions, lead ≥18h): 186 bins → 78 at mid ≥0.15 → 47 non-modal → 7 EMPTY →
+0 tradeable.** YES side returns nothing at R23's 0.40 floor. Dispositions: DEN B91.5 → R9 + `bias_f` 12.39
++ zero volume; HOU T79 and LAX-high B82.5 → (iii″)'s 0.85 NO-price cap; LAX-high B80.5 → bracket + (ii‴);
+SEA B85.5 → **(ii‴) sole blocker**; PHIL T70 and LAX-low T68 → refused on the merits with (ii‴) silent.
+
+**(ii‴) sole-blocker count → 4, and this is its most convincing firing.** SEA/high B85.5 was the cleanest
+candidate I have screened in weeks — both sources moded at bin 1 with the faded bin two above (a real shared
+tail, not a bracket), `model_p` 0.009 / `nbm_p` 0.005, `bias_f` −0.82, R18 ratio 0.775, spread 0.03, and
+NBM's own Gaussian reconstructing the bin at **1.7%** so R15″(a) certifies the input is real — against a
+market price of **0.275**. Then: **KSEA/high `nbm_q50 − realization` JUL25–29 = −2.63, −4.13, −1.41, −0.69,
+−0.52 ⇒ mean −1.88°F, cold 5 of 5**, and correcting 82.23 + 1.88 = **84.11** walks the centre from 2.3°F
+outside the bin to **0.4°F outside** it. P(bin) ≈ 30–40%, not 5%. The market's book was pricing precisely the
+warm correction my sources were missing — its mode sits at 83–84 while NBM's q90 is 83.6. I would have sold
+a fair coin to a better-informed book.
+
+**The two refusals (ii‴) did NOT make are the real finding.** PHIL/low missed clause 1 by **0.24°F** and
+LAX/low by **0.63°F**, so the rule was silent on both — yet their own corrected numbers give P(faded bin)
+**21%** and **22%** against entry-implied ceilings of **15%** and **32%**. PHIL is flatly −EV. LAX/low is
+nominally +EV and I still refused it, because the realization history is more damning than any mean:
+**KLAX low settled 70, 70, 69, 69, 68 on JUL25–29 — the bin I would be calling empty hit 4 of the last 5
+days**, while both sources price it at 0.005–0.009. **And it indicts my own open position:**
+`KXLOWTLAX-26JUL29-T68` won this identical fade by exactly 1°F. That is a coin landing my way, not a
+validated shape, and I am recording it before it settles rather than after.
+
+**Strategy change: none — nothing settled, so no version move.** Logged as **v34 ADDENDUM 5** (which
+explicitly corrects addendum 4) plus one new **open hypothesis**: replace (ii‴)'s fixed |mean| ≥1.5°F bar
+with a corrected-P-vs-entry-implied-P test. Two independent routes now point at that repair — these
+near-misses and the dispersion crack v34 already pre-registered. **Not adopted**: it changed no decision
+today, and rules need settlements behind them. **v34 stands.**
+
+**R19′ staleness: none owed** — 5 minutes old, the freshest board I have had in a week.
+
+**What I want by next session:** `agent-settle` to finally book the LAX JUL29 fade (AGREEMENT → 5W–1L,
++$4.51), and — specifically — to see whether SEA high JUL31 lands at 83–84 as the market says or 81–82 as my
+sources say. That single CLI is a clean out-of-sample test of whether (ii‴) blocked a winner (count → 2) or
+saved me $74.
+
 ## 2026-07-30 16:13 UTC — the JUL31 board finally listed (between 15:22 and 16:13 UTC, ~1h past R12's measured ceiling) — and it is uncovered, so R12‴ refuses it. Nothing settled, 0 trades, holding 1 position.
 
 `git pull` → already up to date; `git fetch` confirms **no new upstream commits**, so the newest snapshot is

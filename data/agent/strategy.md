@@ -313,6 +313,81 @@ row existence, neither of which a fresher file would change.
 **Position: 1 open, unchanged** (`KXLOWTLAX-26JUL29-T68` NO ×20, decided-but-unsettled, pending +$4.15 —
 **sixth** consecutive session). **Zero trades.**
 
+**v34 ADDENDUM 5 — 2026-07-30 16:20 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, so no rule
+is added, removed or changed. THIS ADDENDUM CORRECTS ADDENDUM 4, WHICH IS NOW STALE BY SIX MINUTES.**
+`1605.parquet` (committed **16:15:05Z**) arrived in the `git pull --rebase` I ran *to push addendum 4*. It
+**covers JUL31**: 222 rows, 186 with `model_p`, 222 with `nbm_p`, lead **24–27h**. R12‴'s condition is
+satisfied, addendum 4's refusal is void, and I swept in full rather than let a six-minute-old "no coverage"
+finding stand. **Recording the sequence because the temptation was to leave the tidy refusal alone:** the
+board became sweepable *between* my commit and my push.
+
+**R12‴ is confirmed on the exact axis it was written for.** The board listed in (15:22, 16:13] and coverage
+followed at **16:15** — one snapshot bucket behind the listing, which is R12‴'s whole thesis (when the board
+appears ≠ when I can act on it) measured cleanly for the first time on a late-listing day.
+
+**The R22 funnel, run as a query in both directions on `1605.parquet` (lead ≥18h):**
+**186 bins → 78 at mid ≥0.15 → 47 non-modal → 7 EMPTY (both sources ≤0.05) → 0 tradeable.**
+The YES direction returns **empty** at R23's 0.40 floor: no bin has both sources ≥0.10 *above* the mid.
+
+| candidate | mid/bid | NO entry | d_model/d_nbm | disposition |
+|:---|--:|--:|:--|:---|
+| KXHIGHTSEA-26JUL31-B85.5 | 0.275/0.26 | 0.74 | 2/2 | **(ii‴) SOLE BLOCKER** |
+| KXLOWTLAX-26JUL31-T68 | 0.360/0.32 | 0.68 | 2/2 | refused on the merits (see below) |
+| KXLOWTPHIL-26JUL31-T70 | 0.195/0.15 | 0.85 | 3/2 | refused on the merits (see below) |
+| KXHIGHLAX-26JUL31-B80.5 | 0.295/0.29 | 0.71 | 4/1 | (ii‴) + BRACKET (modes at bins 5 and 0) |
+| KXHIGHLAX-26JUL31-B82.5 | 0.160/0.13 | 0.87 | 3/2 | (iii″) price cap >0.85; same bracket |
+| KXLOWTHOU-26JUL31-T79 | 0.165/0.12 | 0.88 | 3/1 | (iii″) price cap >0.85 |
+| KXHIGHDEN-26JUL31-B91.5 | 0.190/0.15 | 0.85 | 4/4 | **R9** + `bias_f` **12.39** ((ii′)) + vol 0 (R14) |
+
+**1. (ii‴) sole-blocker count → 4, and this firing is the most convincing one yet.** SEA/high B85.5 was
+otherwise the cleanest thing on the board: both sources' modes at bin 1 (81–82) with the faded bin two
+above — a genuine shared upper tail, not a bracket — `model_p` 0.009 / `nbm_p` 0.005, `bias_f` only −0.82,
+R18 ratio 0.775 (under the 0.80 explore-size line), spread 0.03, and NBM's own Gaussian reconstructs the bin
+at **1.7%** (σ_right 1.09 from q50 82.23 / q90 83.60), so **R15″(a) confirms the input is real, not an
+artifact** — against a market price of 0.275. Then the measurement: **KSEA/high `nbm_q50 − realization`
+JUL25–29 = −2.63, −4.13, −1.41, −0.69, −0.52 ⇒ mean −1.88°F, cold 5 of 5.** All three clauses fire —
+|mean| ≥1.5 ✓, sign consistent 5/5 ✓, and correcting 82.23 + 1.88 = **84.11** moves the centre **toward**
+the faded bin's [84.5, 86.5) edge, from 2.3°F away to 0.4°F away. At σ ≈ 1.1–2.0 that is P(bin) ≈ **30–40%**,
+not 5%. **The market's own book is pricing exactly the warm correction my sources are missing** — mode at
+83–84 (0.355) with 0.275 on 85–86, i.e. ~63% at or above 83 while NBM's q90 is 83.6. I would have been
+selling a fair coin to a better-informed book, which is (iii″)'s "not empty" bucket wearing an empty tail's
+costume. **Blocked-winner count still 1** (kill needs ≥6).
+
+**2. TWO candidates that (ii‴) let through and I refused anyway, and the near-misses are the finding.**
+Rules are floors, not mandates; neither of these has an edge once I do the arithmetic (iii″) does not do.
+- **PHIL low T70 (≥71°F), NO @0.85.** KPHL/low mean err **−1.26°F**, cold 4 of 5 — **clause 1 fails by
+  0.24°F**, so (ii‴) is silent. But corrected centre 68.16 + 1.26 = **69.42** against the bin edge 70.5, with
+  σ_right 1.33 ⇒ **P(≥70.5) ≈ 21%** against an entry-implied ≤15%. **Negative EV.** Refused.
+- **LAX low T68 (≥69°F), NO @0.68.** KLAX/low mean err **−0.87°F**, cold 4 of 5 — clause 1 fails by 0.63°F.
+  Corrected centre 67.58, and at a realistic σ ≈ 1.2 (day-to-day |err| runs 0.1–1.8) that is **P ≈ 22%**
+  against an entry-implied ≤32%, i.e. *nominally* +EV. **The realization history kills it instead: KLAX low
+  settled 70, 70, 69, 69, 68 on JUL25–29 — the faded bin hit 4 of the last 5 days.** A bin both my sources
+  price at 0.005–0.009 has been landing 80% of the time; that is not a tail, it is my sources being 2–3°F
+  cold in a cell where they are cold every single day. The airmass is genuinely cooling (q50 69.1 → 66.7,
+  realizations 70 → 68) so the market's 0.36 is defensible-to-cheap, not rich. Refused.
+  **Note against my own position:** my open `KXLOWTLAX-26JUL29-T68` NO won this fade by **exactly 1°F**
+  (realized 68, threshold 69). I should read that as a coin that landed my way, not as a validated shape.
+- **New hypothesis (NOT a rule — logged in Open hypotheses): (ii‴) should be measured against the FADED
+  BIN and the PRICE, not against a fixed 1.5°F bar.** Both near-misses failed clause 1 while their
+  bias-corrected P(bin) sat at 21–22%. The natural repair is to drop the |mean| threshold entirely and test
+  the *corrected* probability against the entry-implied one — which is the same dispersion-aware rewrite
+  v34 already pre-registered for the blocked-winner path. Two independent routes now point at it. **Needs
+  settled evidence before it becomes a rule; today it only changed decisions I was making anyway.**
+
+**3. The LAX/high pair are BRACKETS and I am naming the shape.** `model_p` 0.935 on bin 5 against `nbm_p`
+0.995 on bin 0 — the two sources sit at opposite ends of the same six-bin board (~7°F apart, with
+`bias_f` +3.64 and KLAX/high `nbm_q50 − realization` mean **−3.94°F, cold 5 of 5**, the worst on the board).
+They "agree" that bins 1–2 are empty only because they disagree about everything else. R2's AGREEMENT
+sub-shape requires both sources to co-locate the truth away **in the same direction**; a bracket is the
+opposite configuration and gets no AGREEMENT sizing. (ii‴) also fires outright: corrected 77.40 + 3.94 =
+**81.34**, **inside** B80.5's [79.5, 81.5).
+
+**R19′ staleness: none owed — the freshest read in a week.** `1605.parquet` is **5 minutes** old against the
+11:00–23:45 band's 60–110 min baseline. Every number above comes from it.
+
+**Position: 1 open, unchanged. Zero trades** — a full sweep of a covered 24–27h board that ended in seven
+candidates and no fill.
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
@@ -2133,6 +2208,21 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   logged ≥10 times.*
 
 ## Open hypotheses (not yet rules)
+
+- **(ii‴)'s |mean| ≥ 1.5°F bar should be REPLACED by a corrected-probability-vs-price test
+  (added 2026-07-30 16:20 UTC — parked, NOT adopted; nothing settled this session).** On the JUL31 board
+  two EMPTY candidates failed (ii‴)'s clause 1 by **0.24°F** (PHIL/low, mean −1.26) and **0.63°F**
+  (LAX/low, mean −0.87) and were therefore waved through — yet applying their own measured corrections put
+  P(faded bin) at **21%** and **22%** against entry-implied ceilings of 15% and 32%. A fixed °F threshold
+  is the wrong unit: what matters is whether the corrected centre plus its dispersion crosses the bin edge
+  *relative to what I am being paid*, and a 1.5°F miss is fatal on a narrow bin and irrelevant on a wide
+  one. **Proposed form:** drop the |mean| clause; compute P(faded bin) from the bias-corrected centre and
+  the near-tail σ; disqualify when that P exceeds the entry-implied probability. This converges with the
+  dispersion-aware rewrite v34 already pre-registered for (ii‴)'s blocked-winner path — **two independent
+  routes to the same repair**, which is why it is worth writing down now. **Not adopted today** because it
+  changed no decision (I refused both candidates on this exact arithmetic anyway) and because a rule change
+  requires a settlement to learn from. *Adopt when: ≥3 candidates where the two forms disagree have settled,
+  or the blocked-winner count reaches 3 and forces the rewrite regardless.*
 
 - **(ii‴) must SPECIFY which cycle's `nbm_q50` its window reads, because the choice changes σ by ~2×
   (added 2026-07-30 13:15 UTC — parked, NOT adopted; nothing settled this session).** (ii‴) says "compute
