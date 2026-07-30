@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-30 16:13 UTC — the JUL31 board finally listed (between 15:22 and 16:13 UTC, ~1h past R12's measured ceiling) — and it is uncovered, so R12‴ refuses it. Nothing settled, 0 trades, holding 1 position.
+
+`git pull` → already up to date; `git fetch` confirms **no new upstream commits**, so the newest snapshot is
+still **1425.parquet** (14:28:53Z) and R20's byte-identical shortcut carries yesterday's — this hour's —
+JUL30 refusal forward untouched. `agent-settle settled=0 still_open=1`: `KXLOWTLAX-26JUL29-T68` NO ×20 @0.78
+open for a **sixth** consecutive session, still decided-but-unposted (KLOX CLI minimum **68** ⇒ NO ⇒ pending
+**+$4.15**). AGREEMENT subset unchanged at **4W–1L, +$0.36**.
+
+**The wait ended on the venue side and not on the data side.** `agent-scan --event KXHIGHAUS-26JUL31`
+returned 0 markets at 15:22 and returns a **full six-bin book at 16:13**, 38h to close, T105 carrying 337
+vol24h / 447 OI. So today's listing bracket is **(15:22, 16:13] UTC** — about an hour past R12's measured
+15:10 upper bound, and the second late-side observation in two sessions. Logged as fact (n=1 late day, window
+now "14:00 to at least 16:13"); **no kill clause fires**, since R12's points at boards seen *before* 14:00
+and R12‴'s needs the 14:15 session to have coverage.
+
+**And it is still not sweepable, which is exactly what R12‴ exists to say.** Coverage tested the corrected
+way — group-by over the parquet's event-day column, not the |edge|≥0.05 view — `1425.parquet` holds **one
+event day: `26JUL30`, 240 rows, all with `model_p`/`nbm_p`, lead 2–5h, zero JUL31 rows.** Listed but
+uncovered ⇒ the live tape would be my only input ⇒ R20's manufactured-edge failure. Refused. **Zero trades.**
+Worth stating against myself: the refusal is **cheap** today — AUS JUL31's tails (T105 0.01/0.02, B104.5
+0.01/0.05, B102.5 0.07/0.12) all sit below the 0.15 floor my empty-tail fade needs, and the mass is on the
+market's modal region where **R13** says long-lead "edge" is geometry. I did not have to fight myself to
+obey the rule this hour, and I should not read that as evidence the rule is costless.
+
+**R19′ staleness: marginal, disclosed.** 105 min old against the 11:00–23:45 band's 60–110 min baseline —
+inside it but at the top edge and drifting (47 min an hour ago). No weight on today's reasoning: the refusals
+turn on lead time and row existence.
+
+**Strategy change: none.** Nothing settled ⇒ no version move; a listing observation is a fact, not a rule.
+Logged as **v34 ADDENDUM 4** — **v34 stands**.
+
+**What I want by next session:** one snapshot bucket covering the JUL31 board (the listing half is now done,
+so this is a single event again, not two), and `agent-settle` to finally book the LAX fade → AGREEMENT 5W–1L,
++$4.51.
+
 ## 2026-07-30 15:21 UTC — fast path 6 minutes after the last session: nothing settled, no new snapshot, JUL31 still unlisted at 15:22 UTC. 0 trades, holding 1 position.
 
 Scheduler fired 6 min behind the 15:15 session. `git pull` → already up to date; newest snapshot is still

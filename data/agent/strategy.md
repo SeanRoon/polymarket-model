@@ -272,6 +272,47 @@ sessions all disclosed a *stale* file, and I should note when the disclosure run
 **Position: 1 open, unchanged** (`KXLOWTLAX-26JUL29-T68` NO ×20, decided-but-unsettled, pending +$4.15 —
 fourth consecutive session). **Zero trades.**
 
+**v34 ADDENDUM 4 — 2026-07-30 16:13 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, so no rule
+is added, removed or changed.** The thing three sessions have been waiting for happened — **the JUL31 board
+listed** — and it changes nothing today, for the reason R12‴ was written to name.
+
+**1. The board listed between 15:22 and 16:13 UTC, roughly an hour past R12's measured upper bound.**
+`agent-scan --event KXHIGHAUS-26JUL31` returned **0 markets at 15:22** (addendum 3's observation) and
+returns a **full six-bin book at 16:13**, 38h to close, with real interest (T105 vol24h 337 / OI 447).
+R12's measured first listings were 15:10 / 14:20 / 14:30 / 15:00 / 14:00 ⇒ upper bound **15:10**; today's
+bracket is **(15:22, 16:13]**. Combined with addendum 3, the honest statement of the window is now
+**"14:00 to at least 16:13 UTC, n=1 late day."** **No kill clause fires** — R12's is a board seen *before*
+14:00 (the other direction), and R12‴'s needs the *14:15* session to have coverage. But two consecutive
+observations on the late side is enough that I should stop treating 15:10 as a ceiling: if the 15:15 session
+keeps missing, the response is to **re-measure the listing window**, not to quietly slide my sweep hour.
+
+**2. Sources are FROZEN, so R20's subset shortcut carries the JUL30 refusal forward unchanged.** Newest
+snapshot is still `1425.parquet` (committed 14:28:53Z); `git fetch` shows **no new upstream commits** since
+my 15:21 session. Byte-identical inputs ⇒ the covered JUL30 board is refused exactly as before: highs at
+**2–5h to close** fail R12′'s **≥18h** clause in every zone, and every low fails **R12″**.
+
+**3. R12‴ fires on its designed case, and this is the version of it with the most pressure behind it.**
+Coverage tested addendum-3-style — a group-by over the parquet's event-day column, not a reading of the edge
+table — `1425.parquet` holds **one event day only: `26JUL30`, 240 rows, all with `model_p` and `nbm_p`, lead
+2–5h. Zero JUL31 rows.** So the JUL31 board is **listed but uncovered**: the exact state R12‴ declares
+**not sweepable**, because the live tape would be my only input and screening a board on price alone is R20's
+manufactured-edge failure in its purest form. The listing is now *upstream*-complete — the gap is the cron,
+not the venue — which makes this the first time the wait is genuinely one snapshot long.
+**Stated against my own interest, because it is the check on motivated reasoning:** the refused board does
+not obviously hide a trade. AUS JUL31 quotes T105 0.01/0.02, B104.5 0.01/0.05, B102.5 0.07/0.12 — all below
+the **0.15** floor my empty-tail fade needs — with the mass on B100.5 (0.44/0.47) and B98.5 (0.31/0.36),
+i.e. the market's modal region, where **R13** says a long-lead "large edge" is geometry rather than signal.
+Recording that the refusal is cheap today is not an argument that the rule is cheap; it is a note that I did
+not have to fight myself to obey it, and that I should not read future compliance as costless by default.
+
+**R19′ staleness: marginal, disclosed.** `1425.parquet` is **105 minutes** old at 16:13 UTC against the
+11:00–23:45 band's **60–110 min** baseline — inside the band but at its top edge, and drifting the wrong way
+(it was 47 min at 15:13). It carries no argumentative weight here: the refusals above turn on lead time and
+row existence, neither of which a fresher file would change.
+
+**Position: 1 open, unchanged** (`KXLOWTLAX-26JUL29-T68` NO ×20, decided-but-unsettled, pending +$4.15 —
+**sixth** consecutive session). **Zero trades.**
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
