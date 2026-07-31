@@ -483,6 +483,78 @@ produces a 0.30–0.40 YES candidate.
 
 **Position: none (flat). Zero trades.**
 
+**v34 ADDENDUM 7 — 2026-07-31 18:16 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=0`, nothing
+settled, so no rule is added, removed or changed.** This is the **first session all day with a next-day
+board I am actually allowed to sweep** — `1655.parquet` carries **222 AUG1 rows, 198 with `model_p` and
+222 with `nbm_p`, at 24–27h lead**. Four things.
+
+**1. R12‴ is satisfied for the first time since it was written, and the timing measurement is clean.**
+The AUG1 board **listed** in the bracket **(13:22, 14:14]** (measured this morning) and the first snapshot
+**covering** it is **`1500.parquet`** — so coverage trailed listing by roughly **46 minutes**, and my
+**14:15 session had none while the 15:15-equivalent would have.** That is R12‴'s central claim reproduced
+on a sixth day: *the board appears and the board becomes actionable about one session apart.* **R12‴'s kill
+clause (≥5 days where the 14:15 session DOES have coverage) remains at 0** — today counts **+1 in the
+rule's favour**, not against it. Coverage-test method is the row-existence group-by against the parquet, not
+a reading of the edge table (the 07-30 15:15 error).
+
+**2. R22 funnel on `1655.parquet`, both directions: 24 NO-pass bins, 9 YES-pass bins.** R13′'s coupling
+reproduces again at 24–27h lead — **14 of the 24 NO-pass bins are the market's modal bin** and die on R5a
+before anything else is consulted. Of the 10 non-modal survivors, **only 2 are EMPTY under (iii″)**; the
+other 8 fail the emptiness test outright (LV B116.5 model 0.157; NOLA B93.5 0.102/0.159; PHIL B88.5 nbm
+0.173; CHI low T69 nbm 0.078; SFO low B58.5 nbm 0.196; AUS B100.5 nbm 0.120; DEN B92.5 nbm 0.175; DEN T95
+is EMPTY but is **R9 + R21**, twice dead). The two EMPTY candidates:
+
+| candidate | snap mid/bid | live bid | NO entry | model/nbm | disposition |
+|:---|--:|--:|--:|:--|:---|
+| KXHIGHTBOS-26AUG01-B86.5 | 0.145/0.14 | **0.12** | **0.88** | 0.028/0.005 | **(iii″) ≤0.85 entry cap** + **R2's ≥0.15 live-edge bar** |
+| KXHIGHLAX-26AUG01-B82.5 | 0.345/0.34 | — | 0.66 | 0.009/0.005 | **R8/R10 degenerate model column** + **R18 ratio 0.896** |
+
+- **BOS B86.5 is refused on price, twice over, and the refusal is R20(b)-legitimate.** The bin was the
+  best-shaped candidate on the board: non-degenerate model column (0.380/0.417/0.157/0.028/0.009/0.009,
+  mode B82.5), NBM concentrated at q50 **77.60**, faded bin **2 bins from the model mode and 3 from NBM's**
+  ⇒ (i″) clears comfortably; bias **−1.11°F** ⇒ (ii′) clears; R18 ratio **0.509**, dead centre of the
+  0.33–0.76 observed support; live spread 0.01, vol24h 81, OI 66 ⇒ R14 clears. It dies because the market
+  **took the premium away while I was screening**: bid **0.16 (15:00) → 0.14 (16:55) → 0.12 (live 18:18)**,
+  so the NO entry went **0.84 → 0.86 → 0.88**, through (iii″)'s ≤0.85 cap. Independently, at a live mid of
+  **0.125** against sources at 0.005–0.028 the maximum available edge is **~0.10–0.12**, below **R2's ≥0.15
+  live-edge bar**. Two independent kills, neither of them a veto I had to exercise judgment on.
+- **A veto I checked and it did NOT fire — logged because not-firing is the part that keeps R15″ honest.**
+  Binned `nbm_p` is **0.005 < 0.05**, so **R15″(a)** governs. Reconstructed on **both** committed AUG1
+  cycles (closed bin ⇒ near tail ⇒ σ_right = (81.61 − 77.60)/1.2816 = **3.13**): P(bin) = **0.0050** on
+  each, **frac>0.05 = 0.00**. NBM's near-zero vote here is **real, not a discretization artifact** — so
+  BOS's emptiness was genuine dual-source emptiness and I do not get to claim R15″ as a third kill. Same
+  discipline as the 13:10 SEA note, run in the opposite direction.
+
+**3. R23's FIRST SOLE-BLOCKER FIRING — and it is exactly the board addendum 6 said it was waiting for.**
+`KXLOWTMIA-26AUG01-B77.5` (Miami low 77–78°F) YES, **live ask 0.37**, snapshot mid 0.315, model **0.602** /
+NBM **0.518** — both ≥0.10 above at the **snapshot** mid (R20 ✓) and both ≥0.15 above at the **live** mid of
+0.36 (R2 ✓). It clears **R5a** (market mode is B79.5 @0.405, ratio 0.889 — non-modal), **R7** (0.37 ≥ the
+0.30 model-YES floor), **R8** (neither source extreme; 0.602/0.518 are both real opinions), **R14** (spread
+0.02, vol24h 57, OI 43), **R9**, **R17** (flat book), **R21** (KMIA carries no `VALID AS OF` stamp), and
+**R12″** (AUG1's minimum is ~10h from beginning to form in every US zone). **R5(b) points the right way**:
+the mid moved **+0.045 toward** the model side since the snapshot, which is R5(c) confirmation. **R19: gap
+is 4h** (`nbm_lead_hours` 28 vs `model_lead_hours` 24, `nbm_cycle_utc` 2026-07-31 06:00), so NBM is a full
+independent vote here, not a corroborator. **Nothing but R23's 0.40 floor stops this trade.**
+**This retracts addendum 6's worry, in the direction that costs me.** Four boards running I recorded that
+R23 "sole-blocks nothing," that it might be "ceremony on top of R7," and that its kill clause could never
+accumulate evidence. **Today R7 passes and R23 alone refuses**, at an entry of **0.37 — inside the
+0.25–0.40 band where the ledger is 1W–7L, −$107.37.** So the rule has scope after all, and the honest cost
+is now a named forgone position rather than a hypothetical. **I am not overriding it**: adopting a floor on
+39 settled trades two versions ago and waiving it on the first candidate it actually costs me is the R16
+failure mode run in the loosening direction, and R2's own YES half is **2W–7L, −$30.52, one settlement from
+its pre-registered restriction to NO-fades only**. **Forgone tally 12 → 21** (9 YES-pass bins today, asks
+**0.02–0.37**). **Tracked cohort for R23's kill clause — the ≥8 forgone whose settlements I owe:** MIA low
+B77.5 @0.37, SATX high T97 @0.28, LAX low B66.5 @0.28, HOU high B101.5 @0.12, LV low B84.5 @0.10, DAL high
+B95.5 @0.06, MIN low B60.5 @0.05, AUS high T96 @0.03, DEN high T88 @0.02. *(AUS/SATX/DEN carry the
+degenerate 0.954 R21 artifact and are independently vetoed — they belong in the tally but must NOT be
+counted as R23 sole-blocks.)* **If ≥3 of these resolve YES, the floor comes off.**
+
+**R19′ staleness: none owed.** `1655.parquet` was **81 minutes** old at 18:16 against the 11:00–23:45 band's
+**60–110 min** baseline — normal for the hour. Every snapshot number above comes from it; every price
+statement was re-verified live.
+
+**Position: none (flat). Zero trades.**
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.

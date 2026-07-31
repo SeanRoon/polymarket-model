@@ -9,6 +9,58 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-31 18:16 UTC — the AUG1 board finally has SNAPSHOT COVERAGE, so this is the first real sweep of the day: 24 NO-pass + 9 YES-pass bins, 2 EMPTY candidates both refused on price, and **R23's first-ever sole-blocker firing**. 0 trades.
+
+18:16 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. Nothing has
+settled since the LAX fade booked at 13:10, so **no rule is added, removed or changed; v34 stands**
+(addendum 7 records the board, no version bump).
+
+**1. R12‴ satisfied for the first time — and the timing measurement is the cleanest I have.** `git pull`
+brought `1500.parquet` and `1655.parquet`. The newest holds **222 AUG1 rows, 198 with `model_p`, 222 with
+`nbm_p`, lead 24–27h** (row-existence group-by against the parquet, not a reading of the edge table). The
+AUG1 board **listed** in (13:22, 14:14] and first became **covered** at **15:00 UTC** — coverage trails
+listing by ~46 min, so the 14:15 session had none and a 15:15 session would have. Sixth day supporting
+R12‴; its kill clause stays at 0.
+
+**2. R22 funnel, both directions: 24 NO-pass, 9 YES-pass.** R13′ again — **14 of 24 NO-pass bins are the
+market's modal bin** (R5a, dead on arrival). Of the 10 non-modal, **only 2 are EMPTY under (iii″)**:
+
+- **BOS high B86.5 — the best-shaped candidate on the board, refused on price twice over.** Non-degenerate
+  model column (mode B82.5 @0.417), NBM q50 **77.60**, faded bin 2 bins from the model mode and 3 from
+  NBM's ⇒ (i″) ✓; bias −1.11°F ⇒ (ii′) ✓; R18 ratio **0.509**, mid-support ✓; live spread 0.01, vol24h 81
+  ⇒ R14 ✓. But the bid walked **0.16 → 0.14 → 0.12** across the day, putting the NO entry at **0.88**,
+  through **(iii″)'s ≤0.85 cap**; and at a live mid of 0.125 the maximum edge is ~0.10–0.12, under **R2's
+  ≥0.15 live-edge bar**. Two independent kills. I also ran **R15″(a)** (binned `nbm_p` 0.005 < 0.05) on
+  both AUG1 cycles: reconstruction **0.0050 / 0.0050, frac>0.05 = 0.00** — NBM's near-zero vote is *real*,
+  so the emptiness was genuine and **R15″ does not fire**. Recording a veto that did *not* fire matters as
+  much as one that did; quoting it would have manufactured a third kill I did not earn.
+- **LAX high B82.5 — R8/R10.** Model column is the Laplace floor **0.0093 on five of six bins with 0.9537
+  on T85 (≥86°F)**, against NBM's q50 of **77.96**. That is one broken column, not a second vote, so the
+  emptiness is single-source. R18 ratio **0.896** ≥ 0.80 independently caps it at explore size.
+
+**3. R23 sole-blocks for the first time ever, and it costs me a real position.** `KXLOWTMIA-26AUG01-B77.5`
+YES at a **live ask of 0.37**: model **0.602** / NBM **0.518** vs snapshot mid 0.315 and live mid 0.36, so
+it clears R2 at both mids, plus R5a (non-modal), **R7 (0.37 ≥ 0.30)**, R8, R14, R9, R17, R21 (KMIA
+unstamped), R12″ (AUG1's min is ~10h from forming), and R5(b) points the *right* way (+0.045 toward my
+sources). **Only R23's 0.40 floor stops it.** For four boards I wrote that R23 sole-blocks nothing and
+might be "ceremony on top of R7" — today R7 passes and R23 alone refuses, at an entry inside the
+**0.25–0.40 band the ledger lost 1W–7L / −$107.37 in**. So the rule has scope, and I am paying a named
+price rather than a hypothetical one. **I did not override it**: waiving a floor built on 39 settled
+trades the first time it costs me is R16's failure mode run toward loosening, and R2's YES half is
+**2W–7L, −$30.52**, one settlement from its own restriction. **Forgone tally 12 → 21**; the tracked cohort
+(MIA B77.5 @0.37, SATX T97 @0.28, LAX low B66.5 @0.28, HOU B101.5 @0.12, LV low B84.5 @0.10, DAL B95.5
+@0.06, MIN low B60.5 @0.05, AUS T96 @0.03, DEN T88 @0.02) is written into the playbook so a future session
+can score it — **≥3 resolving YES retires the floor.** AUS/SATX/DEN carry the degenerate 0.954 R21
+artifact and count in the tally but not as sole-blocks.
+
+**4. Staleness: none owed.** `1655.parquet` was 81 min old against the afternoon 60–110 min baseline
+(R19′). Every price above was re-verified on the live book before being used against a rule.
+
+**What I want to learn by next session:** whether **MIA low AUG1 settles in 77–78°F** — the first entry in
+R23's kill-clause cohort, and the first time I can find out what the floor is actually costing me. Second:
+whether the AUG1 low column stays screenable through the evening (R12″ blacks it out at Eastern local
+midnight, ~04:00 UTC), since the lows are where today's two-source disagreements were largest.
+
 ## 2026-07-31 14:21 UTC — fast path: re-invoked 6 minutes after the 14:15 session; nothing settled, no new snapshot, board byte-identical. 0 trades.
 
 14:21 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. This session
