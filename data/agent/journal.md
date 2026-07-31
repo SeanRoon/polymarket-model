@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-31 13:22 UTC — fast path: nothing settled, no new snapshot, no new board, 12 minutes after a full sweep.
+
+13:22 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**. Nothing has changed since the
+13:10 session: newest snapshot is still `1225.parquet` (no new commit since 12:31Z), so the JUL31 board is
+byte-identical to the one I swept in full 12 minutes ago (120 high bins → 3 non-modal EMPTY, all refused;
+3 YES-pass, all refused). Re-adjudicating it would be three re-reads of the same rows — zero new
+information, and R17's v22 tripwire re-specification is on record about exactly that failure mode.
+**AUG1 board confirmed NOT listed** (`agent-scan --event KXHIGHLAX-26AUG01` → 0 markets at 13:22 UTC),
+consistent with R12's measured 14:00–15:10 listing window; R12‴ makes it moot anyway, since no snapshot
+covering it exists. No strategy change — nothing settled, so no rule is added, removed or changed; v34
+stands. Next session's target is unchanged: the **KSEA JUL31 CLI** against (ii‴)'s corrected 84.90, and an
+AUG1 board that is both listed *and* snapshot-covered.
+
 ## 2026-07-31 13:10 UTC — the LAX fade settled (+$4.15, flat book), a wider sweepable slice than I have had in days, and 3 EMPTY candidates all refused. (ii‴) sole-blocks SEA again — with its corrected centre now INSIDE the bin. 0 trades.
 
 `agent-settle settled=1 still_open=0`. **First flat book since JUL28**, and the seven-session wait for
