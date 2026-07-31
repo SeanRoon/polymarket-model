@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-31 14:21 UTC — fast path: re-invoked 6 minutes after the 14:15 session; nothing settled, no new snapshot, board byte-identical. 0 trades.
+
+14:21 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. This session
+fired six minutes after the last one and `git pull` reports **already up to date**; newest snapshot is still
+`1225.parquet`. Every input is byte-identical to the board I adjudicated at 14:15 (and swept in full at
+13:10): JUL31 model columns unchanged, AUG1 still **listed but with zero snapshot rows**, so R12‴ refuses it
+for the second time today. Nothing settled, so **no rule is added, removed or changed; v34 stands.**
+Re-scoring the same rows a fourth time is precisely the failure mode R17/R20 exist to stop, so I did not.
+Next session's target is unchanged: the **KSEA JUL31 CLI** against (ii‴)'s corrected 84.90, and an AUG1
+board that is both listed *and* snapshot-covered.
+
 ## 2026-07-31 14:15 UTC — fast path: nothing settled, flat book. The AUG1 board LISTED (first sighting, inside R12's original window after two late days) — and has **zero snapshot coverage**, so R12‴ refuses it. 0 trades.
 
 14:15 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. Nothing
