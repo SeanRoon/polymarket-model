@@ -1,16 +1,16 @@
 # Agent paper-trading performance
 
-_Generated 2026-07-30 16:13 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-07-31 13:09 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $849.21 |
-| open positions | 1 ($15.85 at risk) |
-| settled | 40 (19 wins, 48%) |
-| realized PnL | $-134.94 on $839.94 staked (-16.1%) |
+| free cash | $869.21 |
+| open positions | 0 ($0.00 at risk) |
+| settled | 41 (20 wins, 49%) |
+| realized PnL | $-130.79 on $855.79 staked (-15.3%) |
 
 ## By strategy version
 
@@ -23,7 +23,7 @@ _Generated 2026-07-30 16:13 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v18 | 1 | 1 | 100% | 21.45 | +8.55 | +39.9% |
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
-| v34 | 0 | 0 | - | 0.00 | +0.00 | - |
+| v34 | 1 | 1 | 100% | 15.85 | +4.15 | +26.2% |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
 | v6 | 2 | 2 | 100% | 23.51 | +11.49 | +48.9% |
 | v7 | 1 | 1 | 100% | 12.51 | +17.49 | +139.8% |
@@ -33,18 +33,18 @@ _Generated 2026-07-30 16:13 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | category | n | wins | win_rate | staked$ | pnl$ | roi |
 |:---------|--:|-----:|---------:|--------:|-----:|----:|
-| Climate and Weather | 40 | 19 | 48% | 839.94 | -134.94 | -16.1% |
+| Climate and Weather | 41 | 20 | 49% | 855.79 | -130.79 | -15.3% |
 
 ## Open positions
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
-| 07-28 21:10 | KXLOWTLAX-26JUL29-T68 | no | 20 | 0.78 | 15.85 | v34 | R2 AGREEMENT NO-fade of an EMPTY tail, small size. Faded bin: LAX low >=69F on J |
 
 ## Last 20 settled
 
 | settled | ticker | side | entry$ | pnl$ | strategy | thesis |
 |:--------|:-------|:-----|-------:|-----:|:---------|:-------|
+| 07-31 | KXLOWTLAX-26JUL29-T68 | no | 0.78 | +4.15 | v34 | R2 AGREEMENT NO-fade of an EMPTY tail, small size. Faded bin: LAX low >=69F on J |
 | 07-28 | KXHIGHTLV-26JUL27-B111.5 | no | 0.70 | +8.55 | v18 | R2 AGREEMENT non-modal NO-fade, first trade under v18 and a direct out-of-sample |
 | 07-26 | KXHIGHDEN-26JUL25-T101 | no | 0.78 | +6.23 | v13 | R2 AGREEMENT non-modal NO-fade (my ONLY scaled edge, 3W-0L +$17.90) -- and the F |
 | 07-25 | KXHIGHMIA-26JUL24-B93.5 | no | 0.78 | -23.77 | v12 | R2 AGREEMENT NO-fade (v12, my ONLY scaled edge, 3W-0L +$17.90). Both sources co- |
@@ -64,4 +64,3 @@ _Generated 2026-07-30 16:13 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | 07-19 | KXHIGHLAX-26JUL17-B79.5 | no | 0.69 | +4.42 | v6 | v6 R2 NO-fade of overpriced non-modal bin: market mid 0.325 on LAX high 79-80 ex |
 | 07-17 | KXLOWTATL-26JUL16-B72.5 | yes | 0.37 | -9.66 | v3 | My p(ATL low 72-73F Jul16) ~0.45 vs live ask 0.37 (implied 0.37). Sources: NBM 0 |
 | 07-16 | KXLOWTSFO-26JUL15-B59.5 | no | 0.30 | +27.41 | v2 | p(SF low 59-60) ~0.41 by NBM, ~0.01 by model+biascorr, vs live mid 0.735 - both  |
-| 07-16 | KXHIGHTSATX-26JUL15-T81 | yes | 0.71 | +13.77 | v2 | P(SATX high <=80F Jul15) ~0.70 vs market 0.55. Model+biascorr 0.95 on the system |

@@ -9,6 +9,71 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-31 13:10 UTC — the LAX fade settled (+$4.15, flat book), a wider sweepable slice than I have had in days, and 3 EMPTY candidates all refused. (ii‴) sole-blocks SEA again — with its corrected centre now INSIDE the bin. 0 trades.
+
+`agent-settle settled=1 still_open=0`. **First flat book since JUL28**, and the seven-session wait for
+`KXLOWTLAX-26JUL29-T68` is over: **WIN +$4.15**, exactly the result the KLOX CLI decided on JUL30.
+
+**1. The settlement, graded — and the grade does not move.** I graded this trade *before* it settled (v34
+addendum 2): a **1°F win**. KLAX JUL 29 minimum was **68**, the single highest integer that still wins;
+NBM's q50 was **1.0°F cold** and the truth landed exactly on NBM's **q90**. Settlement added no information,
+so I am not re-grading it more favourably now that the money is booked. **Dispersion survived, location did
+not.** Counts move as pre-registered: clean **AGREEMENT 4W–1L +$0.36 → 5W–1L +$4.51**; ledger **41 settled,
+20W, −$130.79**.
+
+**2. The one thing the settlement genuinely changes: v34 §4's tension against (iii″) narrows.** v34 adopted
+the universal emptiness test while admitting my own ledger said EMPTY was my *worse* bucket. Recomputed:
+**EMPTY 6→7 trades, 4W–2L −$21.69 → 5W–2L −$17.54 (−$3.62 → −$2.51/trade)** against not-empty's unchanged
+**−$2.27/trade**. The embarrassment shrinks from **1.6× to 1.10×**. The two buckets sum to the ledger's 24
+NO-fades / 15W–9L / −$56.14 exactly, so the split is checked rather than asserted. Against myself: one trade
+moving a per-trade average by $1.11 is a small sample behaving like one, and the clean 5W–0L subset still
+rests on exclusions I chose. **No rule change — v34 stands, logged as ADDENDUM 6.**
+
+**3. The sweepable slice was wider today and I swept all of it.** R12′ is a conjunction and today
+**Pacific + Mountain + Central** highs clear both clauses (closes_h 20.8–22.8 ≥18; local 06:10 PDT /
+07:10 MDT / 08:10 CDT, all before the ~09:00 predicate, high 6–7h from forming). **Eastern fails** at
+09:10 EDT; **every low fails R12″**. Worth naming: this is the *opposite* disposition to yesterday's session,
+where Central failed the ≥18h clause at 17h and I refused it. Same conjunction, read the same way when it
+opens the board as when it closes it. The AUG1 board is **not listed** at 13:11 UTC, consistent with R12.
+**Funnel: 120 high bins → 3 non-modal EMPTY, 3 YES-pass → 0 trades.**
+- **SEA B85.5 (mid 0.235) → (ii‴) SOLE BLOCKER, count 4 → 5.** KSEA/high err JUL25–29 mean **−1.88°F, cold
+  5 of 5**; today's q50 **83.02** (NBM warmed +0.79°F since yesterday, *toward* the market's 83–84 mode);
+  corrected **84.90** is now **INSIDE** [84.5, 86.5) where yesterday's 84.11 was 0.4°F outside. Dispersion-
+  aware at σ 1.13: **P(bin) ≈ 0.56 vs a market price of 0.235.** The fade is backwards, not just unproven.
+- **LAX B80.5 → (ii‴) (corrected 80.91, inside the bin) + a degenerate model column (0.9167 on ≥88°F against
+  NBM's q50 of 76.97) + the realization history: KLAX high settled 79, 80, 79, 79, 80 on JUL25–29, so the
+  bin both columns price at ≤0.01 hit 2 of the last 5 days.**
+- **AUS B102.5 → (ii′) bias veto, `model_bias_applied_f` +12.89°F** — bigger than the −7°F that broke MIA —
+  plus the same degenerate column (0.9537 on ≤97°F). **Austin/high being the model's best cell (92%, +27.9%)
+  changes nothing**; that is exactly why v19 demoted (ii′)'s record half to a tiebreaker.
+
+**4. A veto I nearly claimed, and the rule's own clause stopped me.** I started to add **R15′(a)** as a
+second, independent-looking kill on SEA B85.5 — the two most recent cycles reconstruct the bin at **0.0944**,
+well above the 0.05 bar. But R15′ requires **every** cycle available today and vetoes only at **≥80%**
+exceedance: across all 11 cycles it is min 0.0091 / median 0.0162 / max 0.0944, **frac>0.05 = 0.18**. That is
+a straddle, which the rule explicitly calls ordinary uncertainty. **R15′ does not fire**, and quoting the two
+convenient cycles would have manufactured corroboration for a candidate I already wanted dead. This is the
+v21 amendment doing the job it was written for, on me.
+
+**5. R23 sole-blocks nothing for the fourth consecutive board.** The YES query returns 3 bins venue-wide
+(asks 0.22 / 0.02 / 0.01), all already banned by R7 and two of them by R9/(ii′) as well. Forgone tally stays
+**12**. R23 protects the 0.30–0.40 band (ledger: 1W–7L, −$107.37) and four boards running have produced zero
+candidates there — if that persists it is ceremony on top of R7 whose kill clause can never accumulate
+evidence. Flagged, not acted on: retiring a rule for lack of scope is still a rule change and needs a board
+that actually produces such a candidate.
+
+**R19′ staleness: none owed** — `1225.parquet` is 45 min old against the 11:00–23:45 band's 60–110 min
+baseline.
+
+**Strategy change: none.** A settlement occurred, so I owed the grading step and did it — but the grade was
+pre-registered, confirms (iii″) and (ii‴) rather than contradicting them, and changes no rule. **v34 stands.**
+
+**What I want by next session:** the **KSEA JUL31 CLI**. Both my sources say 81–82, the market says 83–84,
+and (ii‴)'s correction says **84.90**. That single number is a three-way out-of-sample test of the rule that
+has now sole-blocked five candidates on zero settled evidence — and the first real chance for its
+blocked-winner count to move off 1. Also: the AUG1 board listed *and* covered by a snapshot, so a flat book
+has somewhere to go.
+
 ## 2026-07-30 16:20 UTC — coverage landed DURING the session (16:15:05Z), so I threw away the refusal I had just committed and swept the JUL31 board in full: 186 bins → 7 empty-tail candidates → 0 trades. (ii‴) sole-blocks the best of them.
 
 **This entry supersedes the 16:13 one above, which was true for six minutes.** `1605.parquet` arrived in the

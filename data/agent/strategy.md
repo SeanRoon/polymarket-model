@@ -388,6 +388,101 @@ opposite configuration and gets no AGREEMENT sizing. (ii‴) also fires outright
 **Position: 1 open, unchanged. Zero trades** — a full sweep of a covered 24–27h board that ended in seven
 candidates and no fill.
 
+**v34 ADDENDUM 6 — 2026-07-31 13:10 UTC. NO VERSION BUMP: a trade settled, but its grade was pre-registered
+two sessions ago and confirms rules rather than changing any, so nothing is added, removed or changed.**
+`agent-settle settled=1 still_open=0` — the LAX fade finally booked and the book is **flat**. Board is
+**JUL31 at 4–7h lead**; the AUG1 board is **not listed** at 13:11 UTC (`agent-scan --event
+KXHIGHAUS-26AUG01` → 0 markets), consistent with R12's 14:00-to-at-least-16:13 window. Four things.
+
+**1. THE SETTLEMENT: `KXLOWTLAX-26JUL29-T68` NO ×20 @0.78 → WIN +$4.15, exactly as addendum 2 called it,
+and the grade does not move.** Kalshi posted the result the CLI had already decided: KLAX JUL 29 minimum
+**68**, so "69° or above" resolves NO. Addendum 2 graded this pre-settlement as **a 1°F win** — realization
+landed on the single highest integer that still wins, NBM's q50 was 1.0°F cold, and the truth sat exactly at
+NBM's **q90**. **That grade stands verbatim; settlement adds no information.** Dispersion survived,
+**location did not**, and it is not evidence that dispersion arguments are safe.
+**Counts that move, and they are the ones I pre-registered:** the clean **AGREEMENT** subset goes
+**4W–1L +$0.36 → 5W–1L +$4.51**. Overall ledger: **41 settled, 20W, −$130.79**; NO-fades **24, 15W–9L,
+−$56.14**.
+
+**2. v34 §4's tension against (iii″) NARROWS — measured, and the arithmetic reconciles exactly.** v34
+adopted (iii″) while stating that my own ledger pointed the other way: the EMPTY bucket was my *worse*
+one, and the reconciliation required excluding two trades other rules already ban. This settlement is the
+first new datapoint in that bucket since:
+
+| bucket | before | after this settle | per trade |
+|:---|:---|:---|--:|
+| EMPTY (both sources ≤0.05) | 6, 4W–2L, −$21.69 | **7, 5W–2L, −$17.54** | **−$2.51** (was −$3.62) |
+| not empty | 17, 10W–7L, −$38.60 | unchanged | −$2.27 |
+| clean EMPTY (ex-R5a/(ii′) bans) | 4W–0L, +$24.71 | **5W–0L, +$28.86** | — |
+
+The two rows sum to the ledger's 24 NO-fades / 15W–9L / −$56.14 exactly, so the split is checked, not
+asserted. The gap that embarrassed (iii″) has gone from **1.6× to 1.10×** on one trade. **Stated against
+myself: one datapoint moving a per-trade average by $1.11 is a small sample doing what small samples do,
+and the clean subset's 5W–0L still rests on exclusions I chose.** No rule change — this is evidence
+accumulating in the direction (iii″) predicted, which is what an unchanged rule looks like when it is
+working.
+
+**3. The sweepable slice was WIDER than the last two sessions and I swept it: Pacific + Mountain + Central
+highs.** R12′ is a conjunction and today both clauses clear for those zones — closes_h **20.8–22.8** (≥18 ✓)
+and local **06:10 PDT / 07:10 MDT / 08:10 CDT**, all before the ~09:00 predicate with the JUL31 high 6–7h
+from forming ✓. **Eastern highs fail** (09:10 EDT, past the predicate) and **every low fails R12″** (all US
+zones inside the local-midnight-to-10:00 blackout; at 4h lead the JUL31 minimum is set). I note that this
+is the *opposite* of addendum 2's disposition — there Central failed the ≥18h clause at 17h and I refused
+it; today it passes at 20.8h and I screened it. The conjunction is read the same way in both directions.
+**R22 funnel on `1225.parquet`, both directions:** 120 high bins → **3 non-modal EMPTY** candidates, and
+**3 YES-pass** bins. **Zero trades.**
+
+| candidate | mid/bid | NO entry | model/nbm | disposition |
+|:---|--:|--:|:--|:---|
+| KXHIGHTSEA-26JUL31-B85.5 | 0.235/0.23 | 0.77 | 0.009/0.005 | **(ii‴) SOLE BLOCKER** — corrected centre now **inside** the bin |
+| KXHIGHLAX-26JUL31-B80.5 | 0.285/0.28 | 0.72 | 0.009/0.005 | (ii‴) + degenerate model column + realization history |
+| KXHIGHAUS-26JUL31-B102.5 | 0.165/0.15 | 0.85 | 0.009/0.005 | **(ii′)** bias **+12.89°F** + degenerate model column (R8/R10) |
+
+- **SEA B85.5 — (ii‴) fires harder than yesterday, and the market moved toward it, not toward me.**
+  KSEA/high `nbm_q50 − realization`, last 5 settled (JUL25–29, JUL30's CLI has not landed) = **−2.63,
+  −4.13, −1.41, −0.69, −0.52 ⇒ mean −1.88°F, cold 5 of 5**. Today's q50 is **83.02** (NBM has warmed
+  **+0.79°F** since yesterday's 82.23, i.e. *toward* the market's 83–84 mode). Corrected **83.02 + 1.88 =
+  84.90**, which is **INSIDE** [84.5, 86.5) — yesterday's correction landed 0.4°F *outside* the bin, today
+  it lands 0.4°F *inside*. Dispersion-aware: σ_right **1.13** ⇒ **P(bin) ≈ 0.56 against a market price of
+  0.235.** The fade is not merely unproven, it is **backwards by more than 2×**. Sole-blocker count **4 → 5**.
+- **A veto I nearly claimed and the rule's own 80% clause stopped me — logged because catching it is the
+  point of writing the clause down.** I started to kill SEA B85.5 on **R15′(a)** as well: reconstructed from
+  q50/q90, the 06:15 and 08:25 cycles put the bin at **0.0944**, well above the 0.05 bar. But R15′ requires
+  the reconstruction on **every** cycle available today and vetoes only at **≥80%** exceedance. Across all
+  **11** committed cycles: min **0.0091** / median **0.0162** / max **0.0944**, **frac>0.05 = 0.18**. That is
+  a *straddle*, which the rule explicitly says is ordinary uncertainty and not an artifact. **R15′ does NOT
+  fire.** Quoting the two convenient cycles would have manufactured a second, independent-looking kill for a
+  candidate I already wanted dead — exactly the failure the v21 amendment exists to prevent.
+- **LAX B80.5 — the model column is DEGENERATE and the realization history is the real killer.** `model_p`
+  is the Laplace floor **0.0093** on five of six bins and **0.9167 on T87 (≥88°F)** — against NBM's q50 of
+  **76.97** and a market that prices that bin at 0.005. That is not a second vote (R8/R10, (i″)'s
+  non-degenerate clause), so the "emptiness" is single-source. Independently **(ii‴)**: KLAX/high err
+  JUL25–29 = **−3.17, −3.83, −3.22, −4.12, −5.38 ⇒ mean −3.94°F, cold 5 of 5**; corrected **76.97 + 3.94 =
+  80.91**, **inside** [79.5, 81.5). And the ground truth: **KLAX high settled 79, 80, 79, 79, 80 on
+  JUL25–29 — the bin I would be selling hit 2 of the last 5 days** while both columns price it ≤0.01.
+- **AUS B102.5 — (ii′)'s bias veto, and it is the load-bearing half.** `model_bias_applied_f` **+12.89°F**,
+  larger than the −7°F that broke MIA B93.5 and in line with the +12.39/+13.39 Denver refusals. The model
+  column is degenerate the same way LAX's is (**0.9537 on T98 (≤97°F)**, floor on all five other bins,
+  against a market at 0.005 and NBM q50 98.59). **Austin/high is the model's best production cell (92%,
+  +27.9%) and that changes nothing** — (ii′)'s record half was demoted to a tiebreaker in v19 precisely so a
+  good cell cannot launder a broken column.
+
+**4. R23 sole-blocks nothing for the fourth consecutive board, and its kill clause still cannot accumulate
+evidence.** The YES-direction query (both sources ≥0.10 **above** the mid) returns **3** bins venue-wide:
+SEA B81.5 (ask **0.22**), DEN T85 (**0.02**), AUS T98 (**0.01**). All three sit far below R23's 0.40 floor —
+but **R7** already bans model-side YES under 0.30, and DEN/AUS additionally carry the degenerate 0.954 model
+column plus R9/(ii′) bias. **Forgone tally stays at 12.** R23 exists to protect the **0.30–0.40** band where
+the ledger lost 1W–7L, −$107.37, and I have now seen **four** consecutive boards produce **zero** candidates
+in that band. Restated plainly: if the band stays empty, R23 is ceremony on top of R7, its kill clause can
+never fire, and the honest response eventually is to retire it for lack of scope rather than keep it for
+lack of counterevidence. Not today — that is a rule change and I want it driven by a board that actually
+produces a 0.30–0.40 YES candidate.
+
+**R19′ staleness: none owed.** `1225.parquet` committed 12:31Z, **45 minutes** old at 13:10 against the
+11:00–23:45 band's 60–110 min baseline — fresher than baseline. Every number above comes from it.
+
+**Position: none (flat). Zero trades.**
+
 **Superseded header (v33, 2026-07-28 09:15 UTC — **first genuinely FRESH board since R22 existed, and the two-direction
 query returned 43 qualifying bins where my prose sweeps had been finding four. One new rule (R23) built on the
 ledger's largest structural loss — which I had to correct downward mid-derivation to avoid double-counting R21.
