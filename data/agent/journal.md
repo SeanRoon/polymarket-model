@@ -9,6 +9,46 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-07-31 14:15 UTC — fast path: nothing settled, flat book. The AUG1 board LISTED (first sighting, inside R12's original window after two late days) — and has **zero snapshot coverage**, so R12‴ refuses it. 0 trades.
+
+14:15 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. Nothing
+settled since the LAX fade closed at 13:10, so **no rule is added, removed or changed; v34 stands.**
+
+**1. The one new fact: the AUG1 board is listed.** `agent-scan --event KXHIGHLAX-26AUG01` returns a **full
+six-bin book at 14:14 UTC**, 42h to close, with real interest (B78.5 vol24h 508 / OI 438). At 13:22 the same
+query returned 0 markets, so today's listing bracket is **(13:22, 14:14]** — back **inside R12's original
+measured 14:00–15:10 window**, after two consecutive late days (JUL30's board ≥15:15, JUL31's in
+(15:22, 16:13]). That is a datapoint against sliding my sweep hour later on the strength of those two: the
+window is noisy, not drifting. n=1, logged as a fact, not a rule change.
+
+**2. And it is untradable, for exactly the reason R12‴ exists.** Coverage test run the corrected way —
+a row-existence group-by against the parquet, **not** a reading of the edge table (the 07-30 15:15 session's
+error): `1225.parquet` holds **one event day, `26JUL31`, 240 rows, all 240 carrying both `model_p` and
+`nbm_p`, lead 4–7h. Zero AUG1 rows.** A listed board with no snapshot behind it gives me no `model_p` and no
+`nbm_p`, and every structure I have evidence for — R2 AGREEMENT dual-source fades, the (ii′)/(ii″)/(ii‴)
+vetoes — is defined on those two columns. Trading a 42h LAX board on bare intuition would not be my strategy
+being applied, it would be my strategy being bypassed. **R12‴'s kill clause does not fire** (it needs the
+14:15 session to *have* coverage on ≥5 days; today it again did not — +1 in the rule's favour).
+
+**3. The JUL31 board is frozen, so R20 carries the 13:10 refusals forward unchanged.** `git pull` brought
+one file, `data/reports/model-watch.md` — not an agent input. Newest snapshot is still `1225.parquet`, so the
+model columns are byte-identical to the board I **fully swept 65 minutes ago** (120 high bins → 3 non-modal
+EMPTY + 3 YES-pass, all refused). Live prices *have* moved (LAX B80.5 mid 0.285 → 0.215, T80 0.675 → 0.755),
+so I checked whether the drift could manufacture a candidate the 13:10 sweep did not see: it cannot, because
+every refusal that covers the still-sweepable cities is **price-independent** — LAX is a degenerate model
+column (0.9167 on ≥88°F against NBM's q50 of 76.97), AUS is the `model_bias_applied_f` +12.89°F veto, SEA is
+(ii‴). Re-adjudicating would be a third reading of the same rows.
+
+**4. The sweepable slice narrowed since 13:10, and one clause is now at its boundary.** Central highs
+(09:15 CDT) have aged **past** R12′'s ~09:00 predicate — they cleared it at 13:10 and do not now. Pacific
+highs sit at **closes_h 18**, the exact `≥18h` floor, with the extreme 4–5h from forming; Mountain is ~19h.
+Eastern (10:15 EDT) fails, and every low fails **R12″** outright. So even a board I was willing to re-sweep
+is down to two zones at the edge of the lead clause. **Zero trades is not a capacity constraint here** —
+flat book, 25 slots free.
+
+**Next session's target, unchanged from 13:10:** the **KSEA JUL31 CLI** against (ii‴)'s corrected 84.90, and
+an AUG1 board that is both listed *and* snapshot-covered. The first half arrived today; I want the second.
+
 ## 2026-07-31 13:22 UTC — fast path: nothing settled, no new snapshot, no new board, 12 minutes after a full sweep.
 
 13:22 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**. Nothing has changed since the
