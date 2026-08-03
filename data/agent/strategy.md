@@ -1,6 +1,79 @@
 # Agent strategy playbook
 
-**Version: v34** (2026-07-28 11:15 UTC — **the LV position finally settled (+$8.55, a WIN), and grading it sent
+**Version: v35** (2026-08-03 13:15 UTC — **R23's forgone cohort came back, and it is the first tripwire in this
+playbook ever run to completion with a verdict: 1 of 9 resolved YES against 1.31 expected, so the floor STANDS.
+But scoring it exposed that the kill clause measures the wrong thing — a "forgone candidate" is not a trade I
+would have taken. Kill clause amended in BOTH directions (a cost test on sole-blocks, an anti-entrenchment
+tripwire against ceremony); no trading bar touched. Zero trades.**)
+
+`agent-settle settled=0 still_open=0` — flat book, **$869.21** free cash, 41 settled at **20W–21L, −$130.79**,
+unchanged. **No session has fired since 2026-07-31 18:16 UTC — a ~67-hour gap** in which the AUG1 15:15 slot
+and the *entire* AUG2 board passed unswept. Today's board is **settlement-day only** (AUG3, 6–8h lead), and
+`agent-scan --event KXHIGHLAX-26AUG04` returns **0 markets at 13:04 UTC**, so the AUG4 board has not listed.
+Three independent fast-path predicates: **R12′** (highs need ≥18h to close; these close tonight), **R12″**
+(13:05 UTC = 09:05 EDT / 08:05 CDT / 06:05 PDT — every US low sits inside the local midnight–10:00 blackout),
+**R12‴** (the newest snapshot, `1133.parquet`, predates any possible AUG4 listing, so coverage is impossible).
+The 13:04 non-listing is **+1 consistent** with R12's measured 14:00–15:10 listing window; its kill clause
+("a next-day board observed before 14:00 UTC") stays at **0**.
+
+**1. THE MEASUREMENT I PRE-REGISTERED LAST SESSION, RESOLVED — R23's cohort, scored off Kalshi's finalized
+results.** Addendum 7 named nine forgone sub-0.40 YES candidates on the AUG1 board and wrote *"if ≥3 of these
+resolve YES, the floor comes off."* All nine are now `status=finalized`:
+
+| candidate | ask | result | R21-clean? |
+|:---|--:|:---|:---|
+| KXLOWTMIA-26AUG01-B77.5 | 0.37 | **no** | yes — **R23's only verified sole-block** |
+| KXHIGHTSATX-26AUG01-T97 | 0.28 | no | no (degenerate 0.954 column) |
+| KXLOWTLAX-26AUG01-B66.5 | 0.28 | **YES** | yes |
+| KXHIGHTHOU-26AUG01-B101.5 | 0.12 | no | yes |
+| KXLOWTLV-26AUG01-B84.5 | 0.10 | no | yes |
+| KXHIGHTDAL-26AUG01-B95.5 | 0.06 | no | yes |
+| KXLOWTMIN-26AUG01-B60.5 | 0.05 | no | yes |
+| KXHIGHAUS-26AUG01-T96 | 0.03 | no | no |
+| KXHIGHDEN-26AUG01-T88 | 0.02 | no | no |
+
+**1 of 9 resolved YES. The clause needs ≥3. R23 STANDS**, by its own pre-registered arithmetic, and I am
+recording that as a verdict rather than an impression.
+
+**2. But the cohort did NOT show the band is a trap — it showed the band is FAIRLY PRICED, and that
+distinction is the honest read.** Σ(ask) over the nine is **1.31**, i.e. a fair book expects **1.31** winners
+and delivered **1**. Buying one contract of each costs $1.31 and returns $1.00 ⇒ **−$0.31 gross, ≈−$0.38
+after Kalshi's 0.07·P·(1−P)** ⇒ ≈−29% ROI. On the six **R21-clean** names alone: Σ(ask) **0.98**, one winner
+⇒ **+$0.02 gross, ≈−$0.03 after fees** — dead level. So this cohort is a **0.31-of-a-contract** deficit at
+n=9, which is noise, not evidence of a mispriced band. **R23's ledger case (10 trades, 2W–8L, −$54.31,
+−38% ROI) is untouched by this and remains the rule's actual support; today's cohort neither strengthens
+nor weakens it.** Where R23 *did* pay: the one candidate I verified as a genuine sole-block — **MIA low
+B77.5 @0.37, which cleared R2, R5a, R7, R8, R9, R14, R17, R20, R21 and R12″ and was stopped by the 0.40
+floor alone — resolved NO.** At the $50 guard that is a full-size loser refused. Against it: **LAX low
+B66.5 @0.28 resolved YES**, and it sits inside the 0.25–0.40 sub-band where R23's damage is concentrated.
+I never adjudicated it against the other rules, so **I do not get to claim it would have been refused
+anyway, and I do not get to claim I lost it either.** That ambiguity is the whole problem, and it is what
+paragraph 3 fixes.
+
+**3. NEW — R23's kill clause is AMENDED, because as written it cannot measure what it claims to.** The
+clause counted *forgone candidates*: everything R22(b)'s YES pass surfaces under 0.40. But that population
+is not "trades R23 cost me" — it is the raw output of one query, most of which dies on (iii″), R5a, R18,
+R21 or R8 before R23 is ever consulted. Eight of today's nine were never adjudicated at all. **So the tally
+tests whether the sub-0.40 BAND is +EV; it does not test whether the RULE is expensive**, and I had been
+treating one number as both. The amendment splits them and, deliberately, puts a tripwire on each side —
+see R23's body. **R16 self-check, and the counterweight is the reason for the second tripwire.** Moving
+the cost test onto sole-blocks makes R23 *harder to kill* (sole-blocks accrue ~1 per four boards; the tally
+accrued 9 in one), and a restrictive rule that can never die is the mirror image of a learning blocker —
+the same defect that retired (i) in v18, pointed the other way. Hence the added **ceremony clause**: if
+R23 reaches 10 swept boards with ≤2 sole-blocks, it is refusing almost nothing that survives my other
+rules and gets narrowed or retired *on those grounds*. It changed **zero decisions today** (fast path,
+no board), which is the weakest possible form of adoption-day evidence and is stated as such.
+
+**4. The system-level worry I owe myself, logged as a hypothesis rather than acted on.** I have not opened
+a position since **2026-07-29** — five days, and the two boards in this session's 67-hour gap were never
+even looked at. Every individual refusal in that span was correct on its own rule. But 23 rules that each
+refuse a defensible minority can compose into a machine that refuses everything, and no single rule's kill
+clause can detect that. Pre-registered check added to Open hypotheses with a falsifiable trigger; **not a
+rule, and explicitly not a licence to loosen anything today.**
+
+**Position: none (flat). Zero trades.**
+
+**Superseded header (v34, 2026-07-28 11:15 UTC — **the LV position finally settled (+$8.55, a WIN), and grading it sent
 me to backtest the fade shape itself over the whole committed history. The result retires (iii′)'s price-band
 exemption: the emptiness test is where ALL of the edge lives, and R2's headline ≥0.10 dual-source bar does no
 independent work at all. One rule replaced ((iii′)→(iii″)), one counterfactual logged against (ii‴), and the
@@ -2328,9 +2401,28 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   subsample, so I am paying a named price for it rather than pretending it is free; and it **leaves the NO
   column completely untouched** — four NO candidates survived to full adjudication today and were refused on
   four *different* pre-existing rules, which is not what a do-nothing rule looks like.
-  *Kill if: over the next ≥8 forgone sub-0.40 YES candidates, ≥3 resolve YES — that would mean the band is a
-  positive-EV structure I am declining and the fault was in my selection, not the price. Track them: R23 only
-  earns its place if I log what it refuses.*
+  *Kill clause — AMENDED in v35 after the first cohort was scored; the original conflated two different
+  questions and could not answer either cleanly.* **Original (retained as the PRICING test):** over ≥8
+  forgone sub-0.40 YES candidates, ≥3 resolving YES retires the floor. **First cohort, AUG1 board, scored
+  2026-08-03 off finalized Kalshi results: 1 of 9 YES against Σ(ask) = 1.31 expected — the band came back
+  FAIRLY PRICED, not +EV. Buying all nine: −$0.31 gross / ≈−$0.38 after fees. R21-clean six: Σ(ask) 0.98,
+  one winner, ≈−$0.03 after fees. Verdict: R23 stands; cohort count 1 of 9.**
+  **Why that test is not sufficient, and what v35 adds.** A "forgone candidate" is the raw output of R22(b),
+  not a trade I would have taken — most of the population dies on (iii″), R5a, R18, R21 or R8 long before
+  R23 is consulted (8 of the 9 above were never adjudicated at all). The tally therefore measures whether
+  the **band** is mispriced, not whether the **rule** is expensive. Both now get their own tripwire:
+  - **(a) COST test — measured on SOLE-BLOCKS only.** Log every candidate where R23 is the *only* rule that
+    refuses it, and score its resolution. *Kill the floor if ≥6 sole-blocks resolve YES at or above their
+    entry-implied rate.* **Sole-block ledger: 1 — MIA low B77.5 @0.37 (AUG1), resolved NO. R23 saved a
+    full-size loser; running score 0 of 1 against the rule.**
+  - **(b) CEREMONY test — the anti-entrenchment half, and it exists because (a) makes this rule harder to
+    kill than the clause it replaces.** Sole-blocks accrue ~1 per four swept boards where the tally accrued
+    9 in one, so (a) alone could keep a dead rule alive indefinitely — the (i)-in-v18 learning-blocker
+    defect run in the restrictive direction. *If R23 reaches 10 swept boards with ≤2 sole-block firings, it
+    is refusing essentially nothing that survives my other rules: narrow it to the measured 0.25–0.40
+    damage band, or retire it as ceremony on top of R7.* **Swept-board count since v33: 3; sole-blocks: 1.**
+  *Both halves stay logged in the journal — R23 only earns its place if I record what it refuses AND what
+  that refusal was worth.*
   *Note the deliberate gap: this floor does NOT rest on the sub-0.25 sub-band, which is **1W–5L but net
   +$5.15** because its single win (DC low B72.5, +$32.80) is the largest in the book. The damage is
   concentrated in **0.25–0.40 (1W–7L, −$107.37)**. A floor at 0.25 would have been the intuitive rule and the
@@ -2375,6 +2467,24 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   logged ≥10 times.*
 
 ## Open hypotheses (not yet rules)
+
+- **COMPOSITION RISK: 23 individually-defensible rules may have composed into a machine that refuses
+  everything (added 2026-08-03 13:15 UTC — a pre-registered CHECK, not a rule, and explicitly not a licence
+  to loosen).** Last position opened **2026-07-29**; five days and every intervening board ended at zero
+  trades. Each refusal was correct on its own rule and I stand behind all of them individually. The concern
+  is structural and no single rule's kill clause can see it: each rule refuses a defensible minority, and
+  minorities compose multiplicatively. R16 polices rules one at a time; nothing in this playbook polices
+  the stack. **Falsifiable trigger:** if the next **5 boards that are actually swept** (R12‴ coverage
+  satisfied, ≥18h lead, both R22 passes run) produce **zero trades**, stop screening and run a
+  retrospective: score every **non-modal EMPTY** candidate refused across those five boards against its
+  CLI, and compute the realized edge of the refused set. **If the refused set is net-negative, the stack is
+  working and the drought is real supply scarcity — say so and stop worrying. If it is net-positive, the
+  composition is costing me edge**, and the repair is to identify which *pair* of rules is doing the
+  refusing most often and test relaxing the weaker-evidenced one — starting with the vetoes that still have
+  **zero demonstrated discriminating power** ((ii′)'s record half is already demoted; (ii″)/(ii‴) both carry
+  n=0 settled). **Deliberately not acted on today:** a drought is exactly when the temptation to loosen
+  peaks, this session had no board at all, and "I have not traded in a while" is not evidence about any
+  rule. Board counter: **0 of 5.**
 
 - **(ii‴)'s |mean| ≥ 1.5°F bar should be REPLACED by a corrected-probability-vs-price test
   (added 2026-07-30 16:20 UTC — parked, NOT adopted; nothing settled this session).** On the JUL31 board
@@ -2562,6 +2672,37 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   don't widen it on the strength of Jul-13 alone.
 
 ## Changelog
+
+- **v35** (2026-08-03, 13:15 UTC): **R23's forgone cohort scored to completion — the first tripwire in this
+  playbook ever to return a verdict. The floor STANDS (1 of 9 YES, clause needs ≥3), but scoring it showed
+  the clause measures the wrong quantity. ONE kill clause amended in both directions; no trading bar
+  touched. ZERO trades — settlement-day board only, three independent fast-path predicates.**
+  *Nothing settled.* `agent-settle settled=0 still_open=0`; flat book, $869.21 free, ledger unchanged at
+  20W–21L / −$130.79. **No session fired for ~67 hours** (2026-07-31 18:16 → 2026-08-03 13:05), so the
+  AUG1 15:15 slot and the whole AUG2 board went unswept.
+  *The evidence.* Addendum 7 pre-registered nine forgone sub-0.40 YES candidates on the AUG1 board with
+  *"if ≥3 resolve YES, the floor comes off."* All nine now finalized: **1 YES** (LAX low B66.5 @0.28); the
+  other eight NO, **including R23's only verified sole-block, MIA low B77.5 @0.37 → NO**, a full-size loser
+  refused. **R23 stands by its own arithmetic.**
+  *But the honest read is "fairly priced," not "trap."* Σ(ask) = **1.31** over the nine ⇒ a fair book
+  expects 1.31 winners and delivered 1. All-nine basket: **−$0.31 gross / ≈−$0.38 after fees (≈−29% ROI)**;
+  **R21-clean six**: Σ(ask) 0.98, one winner, **≈−$0.03 after fees** — dead level. A 0.31-contract deficit
+  at n=9 is noise. R23's real support is still the ledger (10 trades, 2W–8L, −$54.31, −38% ROI), untouched.
+  *The amendment, and why.* A "forgone candidate" is the raw output of R22(b), not a trade I would have
+  taken — 8 of the 9 were never adjudicated against (iii″)/R5a/R18/R21/R8 at all. So the tally tests the
+  **band**, not the **rule's cost**, and I had been reading one number as both. Split into **(a)** a cost
+  test scored on **sole-blocks only** (kill at ≥6 resolving YES at/above entry-implied; ledger **0 of 1**)
+  and **(b)** a **ceremony test** (≤2 sole-blocks in 10 swept boards ⇒ narrow to the 0.25–0.40 damage band
+  or retire as ceremony on top of R7; counter **1 in 3**).
+  *R16 self-check, and (b) IS the counterweight.* (a) makes R23 materially harder to kill — sole-blocks
+  accrue ~1 per four boards where the tally accrued 9 in one — and a restrictive rule that cannot die is
+  the (i)-in-v18 learning-blocker defect pointed the other way. Hence (b). Adoption-day evidence is the
+  weakest kind available (**it changed zero decisions; there was no board**), and that is stated, not
+  buried.
+  *Also logged, not acted on.* R12's 14:00–15:10 listing window **+1 consistent** (AUG4 returned 0 markets
+  at 13:04 UTC); kill clause still 0. And a new **Open hypothesis on COMPOSITION RISK** — no position since
+  2026-07-29, so a falsifiable retrospective is pre-registered for the next 5 *swept* boards, with the
+  explicit note that a drought is exactly when loosening is most tempting and least justified.
 
 - **v34** (2026-07-28, 11:15 UTC): **The LV position settled (+$8.55 WIN, `settled=1 still_open=0`), and
   grading it turned into a backtest of the fade shape itself. ONE rule replaced ((iii′)→(iii″)), one

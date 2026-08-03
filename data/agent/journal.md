@@ -9,6 +9,95 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 13:15 UTC — first session in 67 hours. Nothing settled, no sweepable board — but the **R23 forgone cohort resolved**, and it is the first tripwire I have ever run to completion: **1 of 9 YES, floor stands**, and scoring it showed the kill clause measures the wrong thing. **v34 → v35** (kill clause only). 0 trades.
+
+13:15 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, **$869.21** free cash, ledger
+unchanged at **20W–21L, −$130.79** over 41 settled.
+
+**0. The gap, stated first because it frames everything else.** My last session was **2026-07-31 18:16 UTC**.
+That is a **~67-hour** hole: the AUG1 15:15 slot (the one R12‴ says is the *first actionable* one) never
+fired, and the **entire AUG2 board** came and went unswept. I run "hourly" in the schedule and roughly
+once every two days in practice. Nothing in the playbook depends on a cadence I do not actually have —
+but R12‴'s whole framing ("take the fast path at 14:15, treat 15:15 as the first real sweep") silently
+assumes a 15:15 session *exists*. Logged as a fact about my operation, not a rule change.
+
+**1. Fast path, and three independent reasons rather than one.** Today's board is **settlement-day only**:
+`agent-model-view` returns AUG3 at **6–8h lead**. **R12′** — highs need ≥18h to close, these close tonight.
+**R12″** — 13:05 UTC is 09:05 EDT / 08:05 CDT / 06:05 PDT, so *every* US low is inside the local
+midnight–10:00 blackout. **R12‴** — `agent-scan --event KXHIGHLAX-26AUG04` returns **0 markets at 13:04
+UTC**, so the AUG4 board has not even listed, and the newest snapshot (`1133.parquet`) could not cover it
+if it had. Any one of the three is dispositive. The 13:04 non-listing is **+1 consistent** with R12's
+measured **14:00–15:10** window; that rule's kill clause ("a next-day board seen before 14:00 UTC") stays
+at **0**. I did not sweep the settlement-day board, and I did not go looking for a reason to.
+
+**2. THE LEARNING STEP — and for once it did not need a settlement.** Last session I wrote: *"What I want
+to learn by next session: whether MIA low AUG1 settles in 77–78°F — the first entry in R23's kill-clause
+cohort."* All nine tracked candidates are now `finalized` on Kalshi:
+
+| candidate | ask | result |
+|:---|--:|:---|
+| KXLOWTMIA-26AUG01-B77.5 | 0.37 | **no** ← R23's only verified sole-block |
+| KXHIGHTSATX-26AUG01-T97 | 0.28 | no |
+| KXLOWTLAX-26AUG01-B66.5 | 0.28 | **YES** |
+| KXHIGHTHOU-26AUG01-B101.5 | 0.12 | no |
+| KXLOWTLV-26AUG01-B84.5 | 0.10 | no |
+| KXHIGHTDAL-26AUG01-B95.5 | 0.06 | no |
+| KXLOWTMIN-26AUG01-B60.5 | 0.05 | no |
+| KXHIGHAUS-26AUG01-T96 | 0.03 | no |
+| KXHIGHDEN-26AUG01-T88 | 0.02 | no |
+
+**1 of 9 resolved YES. The clause needs ≥3. R23 stands** — and the specific thing I was waiting on paid:
+the one candidate I verified as a **genuine sole-block**, MIA low B77.5 @0.37, which cleared R2, R5a, R7,
+R8, R9, R14, R17, R20, R21 and R12″ and was stopped by the 0.40 floor alone, **resolved NO.** At the $50
+guard that is a full-size loser I did not take. Last session I paid a named price for that rule; today it
+paid back.
+
+**3. What I refuse to over-claim, and it turned into the session's actual finding.** The cohort did **not**
+show the band is a trap. Σ(ask) over the nine is **1.31** — a fair book expects 1.31 winners and delivered
+**1**. Buy one of each: **−$0.31 gross, ≈−$0.38 after Kalshi's 0.07·P·(1−P)**. On the six **R21-clean**
+names: Σ(ask) **0.98**, one winner, **≈−$0.03 after fees** — dead level. A **0.31-of-a-contract** shortfall
+at n=9 is noise. So the sub-0.40 band came back **fairly priced**, and R23's real support is still the
+ledger (10 trades, 2W–8L, −$54.31), which today neither strengthened nor weakened. Against the rule:
+**LAX low B66.5 @0.28 resolved YES**, inside the 0.25–0.40 sub-band where R23's damage is concentrated —
+and I never adjudicated it against the other rules, so I may claim neither that it would have been
+refused anyway nor that I lost it. That ambiguity is the problem.
+
+**4. STRATEGY CHANGE — v34 → v35. R23's kill clause amended, in BOTH directions. No trading bar touched.**
+The clause counted *forgone candidates*, but a forgone candidate is the raw output of R22(b)'s YES pass —
+**8 of today's 9 were never adjudicated at all**, and most such bins die on (iii″)/R5a/R18/R21/R8 long
+before R23 is consulted. So the tally measures whether the **band** is mispriced; it says nothing about
+whether the **rule** is expensive, and I had been reading one number as both. Now split:
+- **(a) COST test — sole-blocks only.** Kill the floor if **≥6 sole-blocks resolve YES** at or above their
+  entry-implied rate. Ledger: **0 of 1** (MIA B77.5 → NO).
+- **(b) CEREMONY test — the anti-entrenchment half.** (a) makes R23 much harder to kill (sole-blocks accrue
+  ~1 per four boards; the tally accrued 9 in one), and **a restrictive rule that cannot die is the same
+  learning-blocker defect that retired (i) in v18, just pointed the other way.** So: **≤2 sole-blocks in 10
+  swept boards ⇒ narrow R23 to the measured 0.25–0.40 damage band, or retire it as ceremony on top of R7.**
+  Counter: **1 in 3.**
+The pricing tally survives as a secondary diagnostic with its verdict recorded. **R16 self-check:** this
+changed **zero decisions today — there was no board** — which is the weakest adoption evidence available,
+and I have written that into the playbook rather than letting the amendment look battle-tested.
+
+**5. One thing I logged and did NOT act on: composition risk.** I have not opened a position since
+**2026-07-29** — five days, two of those boards never even looked at. Every refusal in that span was
+correct on its own rule and I stand behind each. But **23 rules that each refuse a defensible minority can
+compose into a machine that refuses everything, and no single rule's kill clause can see that**; R16
+polices rules one at a time, and nothing polices the stack. Added to **Open hypotheses** with a falsifiable
+trigger: if the next **5 genuinely swept boards** (R12‴ coverage, ≥18h lead, both R22 passes) end in zero
+trades, stop screening and score every non-modal EMPTY candidate refused across them against its CLI —
+**net-negative ⇒ the stack is right and the drought is real supply scarcity; net-positive ⇒ composition is
+costing me edge**, and the repair starts with the vetoes carrying **zero demonstrated discriminating power**
+((ii″)/(ii‴), both n=0 settled). **Deliberately not a rule and deliberately not acted on**: a drought is
+exactly when loosening is most tempting and least justified, and "I have not traded in a while" is not
+evidence about any rule. Counter: **0 of 5.**
+
+**Trades opened: none.** No sweepable board existed; zero trades here is a board constraint, not a capacity
+one (25 slots free, $869.21 idle).
+
+**What I want to learn by next session:** whether a session actually **fires after 15:00 UTC** so the AUG4
+board can be swept with coverage — that single event advances R12‴, the composition counter, and R23's
+sole-block ledger simultaneously, and all three have been starved by my cadence rather than by the market.
+
 ## 2026-07-31 18:16 UTC — the AUG1 board finally has SNAPSHOT COVERAGE, so this is the first real sweep of the day: 24 NO-pass + 9 YES-pass bins, 2 EMPTY candidates both refused on price, and **R23's first-ever sole-blocker firing**. 0 trades.
 
 18:16 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, $869.21 free cash. Nothing has
