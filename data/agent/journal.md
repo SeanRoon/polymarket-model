@@ -9,6 +9,49 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 14:05 UTC — the AUG4 board LISTED (14:02, the earliest observation on record and still inside R12's window), but the snapshot does not cover it — R12‴ fast path. Nothing settled, holding 0 positions. 0 trades, no strategy change.
+
+14:05 UTC — `agent-settle settled=0 still_open=0`. Flat book, **$869.21** free cash, 41 settled at
+**20W–21L, −$130.79**, unchanged. Strategy stays **v35**.
+
+**This is the first post-14:00 session since 2026-07-31, and the board flipped mid-window.** At 13:19
+`agent-scan --event KXHIGHLAX-26AUG04` returned 0 markets; at **14:02** the same call returns a full
+**six-bin book at 42h to close** (B77.5 0.46/0.51 on 101 lots vol24h, B75.5 0.28/0.33, the rest thin).
+So AUG4 listed somewhere in **13:19–14:02 UTC**.
+
+- **R12's kill clause stays at 0.** The clause fires on "a next-day board observed *before* 14:00 UTC."
+  14:02 is not before 14:00 — but it is the **tightest bracket I have ever put on the listing time**
+  (previous earliest first-containing-snapshot: 14:00 on 07-25), and the true listing instant is
+  unobserved anywhere in a 43-minute window that *includes* pre-14:00 minutes. I am recording that as a
+  near-miss rather than a confirmation: one more session that catches a board at 14:0x should be read as
+  pressure on the window's lower edge, not as more support for it.
+- **R12‴ is dispositive and it is why this is still a fast path.** Newest snapshot is **`1130.parquet`
+  (11:33 UTC, 150 min old)** and `agent-model-view --min-lead-hours 20` returns **`_none at this
+  threshold_`** — zero `model_p`, zero `nbm_p` on any AUG4 bin. A listed board with no source coverage is
+  not sweepable; screening the LAX AUG4 book on the tape alone is exactly R20's manufactured-edge failure.
+  I re-pulled mid-session per R12's v17 amendment; still 1130.
+- **The snapshot cron is degraded, and that changes which slot is actionable.** Today's tree holds only
+  **four** files — 0015, 0405, 0745, 1130 — i.e. ~3h45m spacing, not the nominal 15 min. R12‴/R19′ named
+  15:15 as the first reliably-covered slot off a *15-minute* cadence; at today's real cadence the next
+  write is due ~**15:15** anyway, so the target slot is unchanged by luck, not by design. If the next file
+  lands later than that, the first sweepable session of the AUG4 board slips with it.
+- **AUG3 remains untouchable on its own merits, re-verified not carried over.** `agent-model-view` shows
+  AUG3 only, at **6–8h lead**: R12′ (highs close tonight, well under 18h) and R12″ (14:05 UTC = 10:05 EDT
+  / 09:05 CDT / 07:05 PDT — every US low is at or inside the local midnight–10:00 blackout) both bite.
+
+Nothing settled, so per the playbook's editing rules I graded nothing and changed no version. The v35
+kill-clause amendment remains at **zero decisions influenced** — four sessions now.
+
+**What I want by next session:** the 15:15 slot with `1515.parquet` (or whatever the degraded cron
+produces) actually containing AUG4 event tickers. That is the first session in five days that could
+produce a real adjudication rather than a predicate check, and the §4 hypothesis from v35 — that 23
+composable refusals may add up to a machine that never trades — cannot be tested until a sweepable board
+exists.
+
+**Position: none (flat). Zero trades.**
+
+---
+
 ## 2026-08-03 13:19 UTC — fast path, third session inside four minutes. Nothing settled, no qualifying edge, holding 0 positions. 0 trades, no strategy change.
 
 13:19 UTC — `agent-settle settled=0 still_open=0`. Flat book, **$869.21** free cash, 41 settled at
