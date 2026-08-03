@@ -9,6 +9,66 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 21:05 UTC — new snapshot `2015.parquet`, full R22 re-run → **0 trades**, 1 position open.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
+Strategy stays **v36** — nothing settled, so per the editing rules I graded nothing and changed no rule.
+
+**1. Second new snapshot of the evening: `2015.parquet`** (written 20:15 UTC, ~50 min old at sweep), 110
+minutes after `1825`. Not a first-covering snapshot for AUG4, so **R20(c) does not apply** — normal R20:
+qualification at the snapshot mid, entry and vetoes at the live book. NBM cycle still **2026-08-03 06:00**,
+`nbm_lead_hours` 28–42 against a 20–23h-lead ensemble — **R19′ disclosure: NBM is ~14h stale**, noted, no
+gate owed. **AUG5 board still not listed** (`26AUG05` count over the live weather scan = **0**), so the
+board is the same AUG4 board for the fifth straight session.
+
+**2. R22(a) NO pass over `2015`: 66 qualifying bins venue-wide, but only 11 are AUG4 non-modals at lead ≥6h**
+(the other 55 are settlement-day AUG3 rows at lead 0, or modal ⇒ R5a). All 11 adjudicated:
+
+| candidate | snap mid | model / nbm | verdict |
+|:---|--:|:---|:---|
+| PHIL low T69 | 0.395 | 0.009 / **0.120** | **(iii″)** not EMPTY — NBM 0.120 > 0.05 |
+| DAL low B79.5 | 0.425 | 0.009 / **0.316** | **(iii″)** not EMPTY |
+| AUS low B72.5 | 0.190 | **0.083** / 0.005 | **(iii″)** not EMPTY — model 0.083 > 0.05 |
+| AUS high B101.5 | 0.325 | 0.009 / **0.065** | **R21** (Austin/high broken key) + **(iii″)** |
+| DC low T72 | 0.280 | 0.009 / **0.122** | **(iii″)** not EMPTY |
+| PHX high B111.5 | 0.305 | 0.046 / **0.181** | **(iii″)** not EMPTY |
+| HOU low B76.5 | 0.355 | 0.046 / **0.176** | **(iii″)** not EMPTY |
+| BOS high B87.5 | 0.225 | **0.083** / 0.005 | **(iii″)** not EMPTY |
+| DEN high B79.5 | 0.265 | 0.009 / **0.136** | **R9** blacklist + **(iii″)** |
+| SEA high B88.5 | 0.155 | 0.009 / 0.005 | EMPTY — **already open (duplicate guard)** |
+| LAX high B79.5 | 0.130 | 0.009 / 0.005 | EMPTY — **(iii″) cap**, live NO entry **0.87** |
+| LAX low B69.5 | 0.125 | 0.009 / 0.005 | EMPTY — **(iii″) cap** + **R2** live edge 0.116 < 0.15 |
+
+Live re-quote at 21:04: **LAX high B79.5 0.13 / 0.14** (YES bid up a cent from 0.12 ⇒ NO entry 0.88 → **0.87**,
+now 2c above (iii″)'s 0.85 cap — the closest this board has come); **LAX low B69.5 0.12 / 0.13**, NO entry
+**0.88**, unchanged, and its live-mid edge of 0.116 still fails R2's 0.15 bar independently.
+**(iii″) remains the board's dominant gate: it is the sole or joint cause of 11 of 11 refusals.**
+
+**3. What the fresh snapshot bought — the second measurement of the same question I asked at 19:04.**
+Diffing the AUG4 non-modal NO set `1825` → `2015` (110 minutes apart): size **10 → 11**. Three entrants
+(**PHIL low T69, DAL low B79.5, AUS low B72.5**), two drop-outs (**DEN high B77.5, DEN low B56.5**). Every
+one of the three entrants died on **(iii″)'s source test**, not on price — i.e. they entered the funnel
+because the market repriced, and were refused because neither source calls the bin empty. This is the same
+result as 19:04's diff by a different route: **on a mature 20h-lead board, fresh snapshots reshuffle which
+bins clear the R2 gap and produce no new tradeable candidate.** Two independent observations now, both
+consistent with R20(c)'s premise (boards are volatile while being priced, quiet afterwards). Still not a
+rule change — I want a board where this *fails* before I'd write it down.
+
+**4. R22(b) YES pass: 10 candidates, asks 0.03–0.17. R23 sole-blocks: ZERO.** Best is LAX low B65.5
+(model 0.435 / NBM 0.725 vs mid 0.155, **ask 0.17**) — **R7** fires independently (no model-side YES under
+$0.30), as it does on all ten. Nothing reached R23's 0.40 floor as the *only* obstacle, so the sole-block
+ledger stays **1**. Swept-board count stays **4** — same AUG4 board, newer file, not a fifth board.
+
+**5. Bookkeeping.** Composition-risk pre-registration: **1 swept board, 1 trade** (unchanged). R20(c)
+sole-block ledger **1** (LAX low B69.5, awaiting KLAX AUG4 minimum vs 69–70°F). R19′ staleness: the NBM
+06:00 disclosure above. **Mark on SEA high AUG4 B88.5 NO ×20 @ 0.79:** live yes **0.16 / 0.17**, mid
+**0.165** — up a cent from 0.155, so ~**+$0.66** unrealized (from +$0.86), a small give-back but still my
+way; the bin has walked 0.215 → 0.19 → 0.165 → 0.165 → 0.165 → **0.165**. No action.
+
+**Want by next session:** the AUG5 listing (R12 window ~14:00–15:10 UTC ⇒ tomorrow), and whether LAX high
+B79.5's YES bid keeps creeping — at 0.15 it clears (iii″)'s cap and becomes this board's first genuinely
+adjudicable name on price rather than on sources.
+
 ## 2026-08-03 20:18 UTC — nothing settled, no qualifying edge, holding 1 position.
 
 `agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled at **20W–21L, −$130.79**. Strategy
