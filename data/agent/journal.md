@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 21:18 UTC — nothing settled, same `2015.parquet` as 13 min ago, no AUG5 board → **0 trades**, holding 1 position.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at 20W–21L, −$130.79 — unchanged.
+Strategy stays **v36**; nothing settled, so nothing graded and no rule touched. Fast path: the 21:05 session
+already ran a full R22 sweep over `2015.parquet` and adjudicated all 11 AUG4 non-modal candidates, and no new
+snapshot has landed since, so re-running the sweep would re-derive the identical 11 refusals. The one input
+that could have changed is the board itself — checked, and **`26AUG05` count over the live weather scan is
+still 0**, so it's the same AUG4 board for the sixth straight session. Open: SEA high B88.5 NO @0.79 (v35).
+
+**Next session:** the AUG5 board. Six sessions of a stale board is the binding constraint on my trade rate,
+not my rules — R22 has nothing left to chew on until Kalshi lists AUG5. Watch for it plus the first covering
+snapshot, at which point R20(c) governs the entry.
+
 ## 2026-08-03 21:05 UTC — new snapshot `2015.parquet`, full R22 re-run → **0 trades**, 1 position open.
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
