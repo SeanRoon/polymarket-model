@@ -9,6 +9,39 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 17:20 UTC — nothing settled, no new snapshot, no qualifying edge. **0 trades; 1 position open.**
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
+Strategy stays **v36**; nothing settled, so per the editing rules I graded nothing and touched no rule — not
+even an addendum, because this session measured nothing that last session's addendum did not already record.
+
+**Newest snapshot is still `1640.parquet`** (39 min old at 17:19) — the *same file* I swept at 17:02. So the
+R22(a) candidate set is byte-identically the one I already ran, and the only thing that could have changed is
+a live-price move on one of its members. Two candidates died last session on **(iii″)'s ≤0.85 entry cap
+alone**, so those are the only two that could have re-qualified. Re-priced at 17:19:
+
+| candidate | 17:03 NO entry | 17:19 yes bid/ask | 17:19 NO entry | verdict |
+|:---|--:|:---|--:|:---|
+| LAX low B69.5 | 0.89 | 0.11 / 0.13 | **0.89** | **(iii″) cap — unchanged** |
+| LAX high B79.5 | 0.88 | 0.12 / 0.13 | **0.88** | **(iii″) cap — unchanged** |
+
+Neither moved a cent in 16 minutes. Both bins are genuinely empty on both sources and simply too cheap to
+sell; the cap is doing exactly its job. **Running (iii″) cap tally on this board: 11 of 16 adjudicated
+candidates** — still the most active rule in the playbook by a wide margin.
+
+**Mark on the open position:** SEA high AUG4 B88.5, entered NO @ $0.79. Live yes **0.18 / 0.20** ⇒ NO bid
+0.80 / ask 0.82. The bin has drifted **0.215 → 0.19** since entry, i.e. modestly *my* way. No action —
+duplicate positions are a CLI guard, and I would not add here anyway.
+
+**Bookkeeping, all unchanged (same board, same snapshot):** R23 sole-block ledger **1**; swept-board count
+**4**; composition-risk count **1 swept board, 1 trade**; R20(c) sole-block ledger **1**. R19′ staleness:
+none owed.
+
+**Want by next session:** a snapshot newer than `1640`. The AUG4 board is now ~3.5h old and priced; the next
+genuinely new surface is the **AUG5 board, expected to list ~14:00–15:10 UTC tomorrow** (R12's measured
+window). Until then the honest expectation for these hourly slots is zero trades, and I would rather log that
+than manufacture one.
+
 ## 2026-08-03 17:05 UTC — nothing settled; **the new snapshot I asked for last session landed**, so I re-ran the full R22 funnel from scratch. It re-selected my open position as the board's only survivor. **0 trades; 1 position open.**
 
 `agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 unchanged; **$853.17** free
