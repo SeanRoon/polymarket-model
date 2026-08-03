@@ -1,14 +1,14 @@
 # Agent paper-trading performance
 
-_Generated 2026-08-03 14:02 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-08-03 14:25 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
 | metric | value |
 |:-------|------:|
 | starting bankroll | $1000.00 |
-| free cash | $869.21 |
-| open positions | 0 ($0.00 at risk) |
+| free cash | $853.17 |
+| open positions | 1 ($16.04 at risk) |
 | settled | 41 (20 wins, 49%) |
 | realized PnL | $-130.79 on $855.79 staked (-15.3%) |
 
@@ -24,6 +24,7 @@ _Generated 2026-08-03 14:02 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 | v2 | 7 | 4 | 57% | 113.83 | +41.17 | +36.2% |
 | v3 | 1 | 0 | 0% | 9.66 | -9.66 | -100.0% |
 | v34 | 1 | 1 | 100% | 15.85 | +4.15 | +26.2% |
+| v35 | 0 | 0 | - | 0.00 | +0.00 | - |
 | v5 | 2 | 2 | 100% | 36.52 | +13.48 | +36.9% |
 | v6 | 2 | 2 | 100% | 23.51 | +11.49 | +48.9% |
 | v7 | 1 | 1 | 100% | 12.51 | +17.49 | +139.8% |
@@ -39,6 +40,7 @@ _Generated 2026-08-03 14:02 UTC by `polymarket agent-report`. PAPER ONLY. See `s
 
 | opened | ticker | side | count | entry$ | cost$ | strategy | thesis |
 |:-------|:-------|:-----|------:|-------:|------:|:---------|:-------|
+| 08-03 14:23 | KXHIGHTSEA-26AUG04-B88.5 | no | 20 | 0.79 | 16.04 | v35 | R2 AGREEMENT NO-fade, cautious size. My P(88-89F)=0.02 raw / 0.15 stressed (NBM  |
 
 ## Last 20 settled
 

@@ -1,6 +1,76 @@
 # Agent strategy playbook
 
-**Version: v35** (2026-08-03 13:15 UTC — **R23's forgone cohort came back, and it is the first tripwire in this
+**Version: v36** (2026-08-03 14:35 UTC — **THE FIRST SWEEPABLE BOARD IN FIVE DAYS, AND IT PRODUCED A TRADE.
+The AUG4 board listed at 14:02 and `1400.parquet` covers it, so R12‴ was satisfied for the first time since
+07-29. Both R22 passes run as SQL; one candidate survived all 23 rules — SEA high B88.5 NO @0.79, 20 lots.
+One rule amended: R20(c), because a board's FIRST covering snapshot is not yet a price.**)
+
+`agent-settle settled=0 still_open=0` at 14:15 — flat book, **$869.21** free cash, 41 settled at
+**20W–21L, −$130.79**. Nothing settled since last session, so **per the editing rules I graded nothing and
+the amendment below rests on a measurement, not on an outcome.** After the trade: 1 open, $16.04 at risk.
+
+**1. R12's machinery worked end to end for the first time.** The AUG4 board listed at 14:02 (bracketed to
+13:19–14:02 last session); `1400.parquet` was committed at 14:02 and `git pull` brought it in at 14:15.
+`agent-model-view` shows **222 rows / 37 events at 26–29h lead** with `model_p` on 216 and `nbm_p` on all
+222. R12′ (extreme not in progress — Seattle local 07:2x, 42h to close), R12″ (AUG4 lows form tonight, not
+inside any blackout), R12‴ (coverage confirmed) all pass. **This is the board R12 spent six sessions telling
+me I was missing, and it is the first one I have actually reached.**
+
+**2. The funnel, run as R22 SQL over `1400.parquet` — 30 NO-fade candidates, 13 YES.** After non-modal +
+(iii″) EMPTY + R18 ratio <0.80: **8 NO survivors**. Then, one at a time, against the live book:
+
+| candidate | snapshot mid | live | verdict |
+|:---|--:|:---|:---|
+| LAX low B69.5 | 0.120 | bid 0.13 | **(iii″)** NO entry 0.87 > 0.85; R2 edge 0.13 < 0.15 |
+| LV high B114.5 | 0.205 | bid 0.13, vol24h 14 | **(iii″)** 0.87 > 0.85; **R14** vol24h 14 < 25; R2 edge fail |
+| CHI high B87.5 | 0.165 | bid 0.13, vol24h 8 | **(iii″)** 0.87 > 0.85; **R14**; R2 edge fail |
+| OKC low B66.5 | 0.135 | — | **(iii″)** NO entry 0.88 > 0.85; R2 edge 0.12 < 0.15 |
+| DEN high B81.5 | 0.150 | — | **R9** blacklist + **R21** (KDEN/high closed) |
+| BOS high B87.5 | 0.205 | bid 0.22, **vol24h 0 / OI 0** | **R14** placeholder book; **(ii‴)** fires independently |
+| AUS high B101.5 | 0.325 | — | **R21** (KAUS/high closed) |
+| **SEA high B88.5** | 0.180 | bid 0.21, vol24h 404, OI 144 | **SURVIVES — traded** |
+
+**Six of the eight died on rules that fire at the live book, not at the screen.** R14 alone killed three
+books that looked tradeable in the snapshot (vol24h 0, 8, 14). **(iii″)'s ≤0.85 entry cap was the single
+most productive gate on this board** — it refused four candidates whose bins were simply too cheap to sell.
+
+**3. The YES pass produced nothing, and R23 was the sole blocker on NOTHING — which is the honest
+bookkeeping.** All 13 R22(b) candidates had asks of 0.02–0.30, so R23's 0.40 floor formally refuses all of
+them. But the best of them, **LAX low B65.5 (model 0.787 / NBM 0.644 vs mid 0.28)**, repriced to **ask 0.22**
+live with **vol24h 0 / OI 6** — so **R7** (no model-side YES under $0.30) and **R14** both fire independently.
+**R23 sole-block ledger stays at 1; swept-board count goes 3 → 4.** Under R23(b)'s ceremony tripwire that is
+4 boards with 1 sole-block, tracking toward "refusing almost nothing" — logged, not yet acted on.
+
+**4. NEW — R20(c): a board's FIRST covering snapshot is not yet a price, and I measured it.** R20 qualifies
+candidates at the **snapshot mid**, on the stated premise that it is *"the last price contemporaneous with
+the forecast inputs."* That premise assumes the snapshot mid is a real market price. On a board **12 minutes
+old** it is an opening quote. Measured, 14:02 snapshot → 14:18 live, 16 minutes:
+
+| bin | 14:02 | 14:18 | move |
+|:---|--:|--:|--:|
+| SEA high B90.5 | 0.290 | 0.075 | **−0.215** |
+| SEA high T84 | 0.055 | 0.135 | +0.080 |
+| LV high B114.5 | 0.205 | 0.135 | −0.070 |
+| LAX low B65.5 | 0.280 | 0.205 | −0.075 |
+
+**The Seattle board's modal bin moved 0.215 in sixteen minutes** — that is not drift, it is market makers
+arriving at a book that had not been priced. And the same window took SEA B88.5's `vol24h` from **1 → 36 →
+404**. **R20(c): on the first snapshot that covers a board, a candidate must qualify at BOTH the snapshot mid
+and the live mid.** It is a **tightening** (both, not either). *R16 self-check:* it changed **zero decisions
+today** — SEA B88.5 qualifies at 0.180 (gaps 0.171/0.175) *and* at 0.215 (gaps 0.206/0.210) — which is
+exactly why I am adopting it now rather than in a session where a candidate I want depends on it.
+*Kill R20(c) if: over ≥5 first-covering snapshots, snapshot and live mids agree within ~0.03 — then listing
+quotes are real prices and this is ceremony on top of R14.*
+
+**5. The COMPOSITION-RISK hypothesis got its first data point, and it points AGAINST the worry.** v35 logged
+a pre-registered check: *if the next 5 actually-swept boards produce zero trades, the 23-rule stack has
+composed into a machine that refuses everything.* **Board 1 of 5 produced a trade.** One board does not
+close the question — but the stack ran 30 NO candidates down to 1 and then took it, which is a funnel, not
+a wall. **Count: 1 swept board, 1 trade.**
+
+**Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04). One trade.**
+
+**Superseded header (v35, 2026-08-03 13:15 UTC — **R23's forgone cohort came back, and it is the first tripwire in this
 playbook ever run to completion with a verdict: 1 of 9 resolved YES against 1.31 expected, so the floor STANDS.
 But scoring it exposed that the kill clause measures the wrong thing — a "forgone candidate" is not a trade I
 would have taken. Kill clause amended in BOTH directions (a cost test on sole-blocks, an anti-entrenchment
@@ -2293,6 +2363,27 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   candidate even while it is unreliable **for** one — because the fresher source vindicated the tape.
   It establishes **nothing about PnL**: nothing settled, and I will not grade a rule by a counterfactual
   I cannot run. R20(b) remains a tightening held to a tightening's evidentiary bar.
+  **R20(c) — a board's FIRST covering snapshot is not yet a price (NEW in v36).** R20 qualifies candidates at
+  the snapshot mid on the premise that it is *"the last price contemporaneous with the forecast inputs."*
+  That premise assumes the snapshot mid **is a market price**. The AUG4 board listed at **14:02** and
+  `1400.parquet` was written at **14:02**, so every quote in it is ~0 minutes old. Measured against the live
+  book **16 minutes later**: SEA high **B90.5 0.290 → 0.075 (−0.215)** — the board's own modal bin — plus
+  SEA T84 0.055 → 0.135, LV B114.5 0.205 → 0.135, LAX low B65.5 0.280 → 0.205. Over the same window SEA
+  B88.5's `vol24h` went **1 → 36 → 404**. Those are not repricings on information; they are market makers
+  arriving at a book that had not yet been priced, and a 0.215 move on the modal bin makes **R18's ratio and
+  R5a's modality test read off a fiction**.
+  **Operationally: when the newest snapshot is the FIRST one covering the target board, a candidate must
+  qualify under R2's dual-source bar at BOTH the snapshot mid AND the live mid.** Normal R20 (snapshot only)
+  resumes once a second covering cycle exists. This is a **tightening** — both, not either — and it does not
+  disturb R20's core asymmetry: price movement still cannot *create* an entry, and R20(b) still lets vetoes
+  fire on the live book at any time.
+  **R16 self-check.** It changed **zero decisions on adoption day**: SEA B88.5 qualified at the snapshot mid
+  0.180 (gaps 0.171 / 0.175) *and* at the live mid 0.215 (gaps 0.206 / 0.210), so the trade I took is
+  unaffected either way. That is deliberate — R20(b) was written the same way, in the session where it cost
+  nothing rather than the session where I would need it.
+  *Kill R20(c) if: over ≥5 first-covering snapshots, the snapshot and live mids agree within ~0.03 across the
+  board — then opening quotes are real prices, R14's book-quality test already catches the placeholders, and
+  R20(c) is ceremony.* **First-covering boards observed: 1 (AUG4).**
 
 - **R21 (resolution-integrity veto — NEW in v30, MECHANISM ESTABLISHED in v31; the ground truth itself
   can be wrong, and in three cells it is — for a reason I can now name, test, and predict):**
@@ -2420,7 +2511,12 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
     9 in one, so (a) alone could keep a dead rule alive indefinitely — the (i)-in-v18 learning-blocker
     defect run in the restrictive direction. *If R23 reaches 10 swept boards with ≤2 sole-block firings, it
     is refusing essentially nothing that survives my other rules: narrow it to the measured 0.25–0.40
-    damage band, or retire it as ceremony on top of R7.* **Swept-board count since v33: 3; sole-blocks: 1.**
+    damage band, or retire it as ceremony on top of R7.* **Swept-board count since v33: 4; sole-blocks: 1.**
+    **v36, AUG4 board:** all 13 R22(b) candidates priced 0.02–0.30, so R23 formally refuses all 13 — but the
+    only one that reached the 0.30 line, **LAX low B65.5** (model 0.787 / NBM 0.644 vs mid 0.28), repriced to
+    **ask 0.22 with vol24h 0 / OI 6** at the live book, where **R7 and R14 fire independently**. No
+    sole-block. Four boards at one sole-block is the shape (b) was written to catch — six more boards at this
+    rate and R23 narrows or retires.
   *Both halves stay logged in the journal — R23 only earns its place if I record what it refuses AND what
   that refusal was worth.*
   *Note the deliberate gap: this floor does NOT rest on the sub-0.25 sub-band, which is **1W–5L but net
@@ -2485,6 +2581,14 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   n=0 settled). **Deliberately not acted on today:** a drought is exactly when the temptation to loosen
   peaks, this session had no board at all, and "I have not traded in a while" is not evidence about any
   rule. Board counter: **0 of 5.**
+  **FIRST DATA POINT (2026-08-03 14:35 UTC) — board 1 of 5 produced a TRADE, and the worry points the wrong
+  way so far.** The AUG4 board was the first fully sweepable one since 07-29: R22 SQL surfaced **30 NO + 13
+  YES** candidates, the stack cut the NO side to **8** on modality/(iii″)/R18 and to **1** on the live book,
+  and I took it (SEA high B88.5 NO). **That is a funnel with a non-empty output, not a wall.** Worth noting
+  *which* rules did the cutting, because it is not the zero-power vetoes I suspected: **(iii″)'s ≤0.85 entry
+  cap (4 refusals) and R14's book-quality floor (3 refusals)** did nearly all the work, and both carry real
+  measurements — (iii″) a 201-event-day backtest, R14 a founding case of 12¢ phantom edges. (ii′)/(ii″)/(ii‴)
+  refused **nothing that was not already dead**. Board counter: **1 of 5, one trade.**
 
 - **(ii‴)'s |mean| ≥ 1.5°F bar should be REPLACED by a corrected-probability-vs-price test
   (added 2026-07-30 16:20 UTC — parked, NOT adopted; nothing settled this session).** On the JUL31 board
@@ -2673,6 +2777,37 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v36** (2026-08-03, 14:35 UTC): **The first fully sweepable board since 2026-07-29, and it produced a
+  trade. ONE rule amended (R20(c)); no trading bar loosened. ONE trade: SEA high B88.5 NO ×20 @ $0.79.**
+  *Nothing settled* (`agent-settle settled=0 still_open=0`), so nothing was graded and the amendment rests on
+  a measurement rather than an outcome.
+  *The board.* AUG4 listed at 14:02; `1400.parquet` covers it (222 rows / 37 events, 26–29h lead, `model_p`
+  on 216, `nbm_p` on 222). R12′/R12″/R12‴ all satisfied for the first time in five days.
+  *The funnel, run as R22 SQL in both directions.* 30 NO candidates → 8 after non-modal + (iii″) EMPTY + R18
+  ratio <0.80 → **1** after the live book. **Six of the eight died on live-book rules**: R14 killed three
+  placeholder books (vol24h 0 / 8 / 14) and (iii″)'s ≤0.85 entry cap killed four bins that were simply too
+  cheap to sell. R9+R21 killed Denver/high, R21 killed Austin/high. The 13 YES candidates all sat at asks
+  0.02–0.30; the best (LAX low B65.5) repriced to ask 0.22 with vol24h 0, so **R7 and R14 fire independently
+  and R23 is NOT a sole blocker. R23 ledger: 4 swept boards, 1 sole-block.**
+  *The amendment — R20(c).* Measured 14:02 snapshot vs 14:18 live, 16 minutes: **SEA B90.5 0.290 → 0.075
+  (−0.215, the board's modal bin)**, SEA T84 0.055 → 0.135, LV B114.5 0.205 → 0.135, LAX low B65.5 0.280 →
+  0.205; SEA B88.5 `vol24h` 1 → 36 → 404. A board's first covering snapshot holds opening quotes, not
+  prices, which makes R18's ratio and R5a's modality test read off a fiction. **On a first-covering snapshot,
+  qualify at BOTH the snapshot mid and the live mid.** A tightening; **changed zero decisions today** (SEA
+  B88.5 qualifies at both), which is why it was adopted now.
+  *The trade.* `KXHIGHTSEA-26AUG04-B88.5` **NO ×20 @ $0.79** ($16.04 incl. fee). Surfaced by R22(a) SQL —
+  it ranks **38th** on `agent-model-view`'s sorted edge column, which is R13′/R22 doing exactly the job they
+  were written for. Both sources at the Laplace floor ⇒ (iii″) EMPTY; R15″(a) near-tail reconstruction
+  **0.0199** ⇒ NBM's low vote is real, though only **one cycle** exists so the 80%-robustness test is
+  unrunnable and that is disclosed. (ii‴) measured and **does not fire**: KSEA/high `nbm_q50 − realization`
+  over five settled days = −1.80, −1.27, −1.25, −0.52, −0.69 ⇒ mean **−1.11°F**, cold 5 of 5 and clause 3
+  would fire, but |mean| < 1.5 so clause 1 fails. That bias is **priced into the estimate** instead:
+  P(bin) = 0.020 raw, **0.146 stressed** (+1.11°F shift and σ×1.5 for R19 staleness), 0.207 at double both —
+  edge over the 0.79 entry stays positive in all three. **R19 is the candidate's main weakness and drove the
+  size cut**: `nbm_lead_hours` 48 vs `model_lead_hours` 29, gap 19 > 12, so NBM is a corroborator, not an
+  independent vote ⇒ 20 lots (~$16) against a usual $21–24.
+  *Composition-risk check, board 1 of 5:* **a trade.** The stack ran 30 candidates down to 1 and took it —
+  a funnel, not a wall. One board does not close the hypothesis; the count is now **1 swept board, 1 trade.**
 - **v35** (2026-08-03, 13:15 UTC): **R23's forgone cohort scored to completion — the first tripwire in this
   playbook ever to return a verdict. The floor STANDS (1 of 9 YES, clause needs ≥3), but scoring it showed
   the clause measures the wrong quantity. ONE kill clause amended in both directions; no trading bar

@@ -9,6 +9,111 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 14:35 UTC — **the first fully sweepable board since 07-29, and it produced a TRADE.** Nothing settled. Strategy v35 → **v36** (R20(c) added). **1 trade: SEA high B88.5 NO ×20 @ $0.79.**
+
+14:15 UTC — `agent-settle settled=0 still_open=0`. Flat at the start, **$869.21** free cash, 41 settled at
+**20W–21L, −$130.79**. Nothing settled since last session, so **I graded nothing** and the one rule change
+below rests on a measurement, not on an outcome.
+
+**The predicate chain finally closed.** Last session (14:05) I bracketed the AUG4 listing to 13:19–14:02 and
+took the fast path because `1130.parquet` was 150 minutes stale. This session `git pull` brought in
+**`1400.parquet`** (written 14:02, the same minute the board listed) with **222 rows / 37 events at 26–29h
+lead**, `model_p` on 216 and `nbm_p` on all 222. R12′ (Seattle local 07:2x, 42h to close, extreme not in
+progress), R12″ (AUG4 lows form tonight, no blackout), **R12‴ (coverage confirmed)** — all satisfied. Five
+days of fast paths, and the machinery that produced them was right about when to look.
+
+**The funnel, run as R22 SQL over the parquet in both directions — not off the sorted view.**
+30 NO candidates, 13 YES. After non-modal + (iii″) EMPTY + R18 ratio <0.80: **8 NO survivors.** Then each
+against the live book, one at a time:
+
+| candidate | snap mid | live | verdict |
+|:---|--:|:---|:---|
+| LAX low B69.5 | 0.120 | bid 0.13 | **(iii″)** NO 0.87 > 0.85; R2 edge 0.13 < 0.15 |
+| LV high B114.5 | 0.205 | bid 0.13, vol24h **14** | **(iii″)** 0.87; **R14**; R2 edge |
+| CHI high B87.5 | 0.165 | bid 0.13, vol24h **8** | **(iii″)** 0.87; **R14**; R2 edge |
+| OKC low B66.5 | 0.135 | — | **(iii″)** NO 0.88; R2 edge 0.12 |
+| DEN high B81.5 | 0.150 | — | **R9** + **R21** |
+| BOS high B87.5 | 0.205 | bid 0.22, **vol24h 0 / OI 0** | **R14**; **(ii‴)** fires too |
+| AUS high B101.5 | 0.325 | — | **R21** |
+| **SEA high B88.5** | 0.180 | bid 0.21, vol24h **404**, OI 144 | **SURVIVES → TRADED** |
+
+**Six of eight died on rules that only fire at the live book.** R14 killed three books that looked perfectly
+tradeable in the snapshot; (iii″)'s ≤0.85 entry cap killed four bins that were simply too cheap to sell.
+Neither of those is a source rule — the screen was never the binding constraint on this board.
+
+**(ii‴) measured on three cells rather than assumed** (`nbm_q50 − realization`, last 5 settled, all
+unstamped ⇒ R21-clean): **KSEA/high mean −1.11°F** (cold 5/5) — clause 3 would fire but |mean| < 1.5 so
+clause 1 fails ⇒ **does not disqualify**; **KBOS/high mean −5.16°F** (cold 5/5, corrected centre 86.86 lands
+*inside* the faded bin) ⇒ **disqualifies**, though BOS was already dead on R14, so **not a sole-block**;
+**KLAS/high mean −1.45°F**, fails clause 1 by 0.05. (ii‴) sole-blocker count unchanged at **3**.
+
+**The YES pass: R23 refused all 13, and was the sole blocker on none.** Asks ran 0.02–0.30. The only one to
+reach R7's line, **LAX low B65.5** (model 0.787 / NBM 0.644 vs mid 0.28), repriced to **ask 0.22 with
+vol24h 0 / OI 6** live, where **R7 and R14 fire independently**. **R23: swept boards 3 → 4, sole-blocks
+still 1.** That is exactly the shape R23(b)'s ceremony tripwire was written to catch; six more boards at
+this rate and the floor narrows or retires. Logged, not acted on.
+
+**STRATEGY CHANGE — v36 adds R20(c), and here is the measurement behind it.** R20 qualifies candidates at
+the *snapshot* mid because it is "the last price contemporaneous with the forecast inputs." That assumes the
+snapshot mid **is a price**. `1400.parquet` was written the same minute the board listed. Sixteen minutes
+later, live:
+
+| bin | 14:02 | 14:18 | move |
+|:---|--:|--:|--:|
+| **SEA high B90.5** | 0.290 | 0.075 | **−0.215** ← the board's modal bin |
+| SEA high T84 | 0.055 | 0.135 | +0.080 |
+| LV high B114.5 | 0.205 | 0.135 | −0.070 |
+| LAX low B65.5 | 0.280 | 0.205 | −0.075 |
+
+and SEA B88.5's `vol24h` went **1 → 36 → 404** across the same window. Market makers arriving, not
+information. A 0.215 move on the modal bin makes **R18's ratio and R5a's modality test read off a fiction**.
+**R20(c): on a board's first covering snapshot, a candidate must qualify at BOTH the snapshot mid and the
+live mid.** A tightening. **R16 self-check: it changed zero decisions today** — SEA B88.5 qualifies at 0.180
+(gaps 0.171/0.175) *and* at 0.215 (gaps 0.206/0.210) — which is precisely why I adopted it now instead of in
+a session where a trade I wanted depended on it.
+
+**THE TRADE — `KXHIGHTSEA-26AUG04-B88.5` NO ×20 @ $0.79 ($16.04 incl. fee), strategy v35.**
+Fade "Seattle high is 88–89°F on Aug 4" at 42h to close.
+- **Estimate vs market.** P(bin) = **0.020** raw; **0.146** under a deliberate stress case (+1.11°F for
+  KSEA/high's measured NBM cold bias, σ×1.5 for R19 staleness); **0.207** at double both. Market implied
+  **0.215**. Edge over the 0.79 entry: **+0.190 / +0.064 / +0.003** — positive in all three, which is the
+  honest way to state it rather than quoting the raw 0.22.
+- **Sources.** `model_p` 0.0093 and `nbm_p` 0.005, **both at the Laplace floor ⇒ (iii″) EMPTY at any price**
+  — the only qualifier in the playbook with a demonstrated edge attached (+0.134/contract on highs).
+  **R15″(a)**: binned `nbm_p` < 0.05 so reconstructed from the **near (upper) tail**, σ = (86.30 − 84.30)/
+  1.2816 = 1.563 ⇒ P(87.5 ≤ X < 89.5) = **0.0199 ≤ 0.05**, so NBM's low vote is real, not a discretization
+  artifact. **Caveat disclosed: only ONE cycle covers this board, so the 80%-of-cycles robustness test is
+  unrunnable — 1 of 1 below the bar is not the same evidence as 9 of 9.**
+- **Geometry.** (i″): model mode **T84 @0.769**, NBM mode **T84 @0.444**, faded bin **3 bins from both** —
+  clears easily, neither column degenerate. AGREEMENT, not BRACKET (both sources on the cold side).
+  R5a: non-modal on the snapshot (modal B90.5 0.290) **and** on the live book (modal B86.5 0.315) — R20(b)
+  satisfied both ways. R18 ratio **0.683**, inside the 0.33–0.76 observed support.
+- **Why R22 mattered here.** This bin ranks **38th** on `agent-model-view`'s sorted edge column at −0.17.
+  Reading the top of that table would never have found it — exactly what R13′ has been saying since v17 and
+  what R22 was written to mechanize.
+- **The weakness, stated up front.** **R19**: `nbm_lead_hours` **48** vs `model_lead_hours` **29**, gap 19 >
+  12 ⇒ **NBM is a corroborator, not an independent vote.** The case doesn't rest on NBM alone (the model
+  column has real structure, 0.769/0.194, not the floor), but the dual-source premise is weaker than usual —
+  hence the σ×1.5 haircut in the stress case and **20 lots (~$16) against my usual $21–24.** Second-order:
+  the bin moved 0.180 → 0.245 → 0.215 this session; the adverse leg was +0.065, under R5(b)'s 0.10 bar, and
+  the latest leg is *toward* my sources (R5(c) confirmation). R17: flat book, nothing to correlate with.
+- **Cell record**: Seattle/high 58% / −1.1%, n=247 — weak, which under (ii′)'s v19 demotion is a tiebreaker,
+  not a gate, and the measured NO-fade split says negative-ROI cells actually did **better** (6W–3L, +$5.02).
+
+**Composition-risk check, board 1 of 5: a trade.** v35 pre-registered that five swept boards with zero
+trades would mean 23 rules had composed into a machine that refuses everything. The first one cut 30
+candidates to 1 and took it. One board settles nothing, but note *which* rules did the cutting: **(iii″) and
+R14**, both of which carry real measurements. The zero-power vetoes I suspected — (ii′), (ii″), (ii‴) —
+refused **nothing that was not already dead**.
+
+**What I want by next session:** a second snapshot cycle covering AUG4, so I can (a) run R15″(a)'s real
+multi-cycle robustness test on the position I just opened, and (b) get R20(c)'s first out-of-sample reading
+on how far a first-covering snapshot's quotes sit from the settled book.
+
+**Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04 at risk). One trade.**
+
+---
+
 ## 2026-08-03 14:05 UTC — the AUG4 board LISTED (14:02, the earliest observation on record and still inside R12's window), but the snapshot does not cover it — R12‴ fast path. Nothing settled, holding 0 positions. 0 trades, no strategy change.
 
 14:05 UTC — `agent-settle settled=0 still_open=0`. Flat book, **$869.21** free cash, 41 settled at
