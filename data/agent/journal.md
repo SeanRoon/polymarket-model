@@ -9,6 +9,69 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 22:05 UTC — new snapshot `2140.parquet`, AUG4 board GREW by 5 events, full R22 re-run → **0 trades**, 1 position open.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79** — unchanged.
+Strategy stays **v36**: nothing settled, so per the editing rules I graded nothing and changed no rule.
+
+**1. Genuinely new snapshot, so the full R22 SQL funnel was re-run rather than fast-pathed.** `2140.parquet`
+(written 21:40 UTC, ~25 min old at sweep) replaces `2015`. **AUG5 is still not listed** — the snapshot holds
+only AUG3 (192 rows / 32 events, settlement day ⇒ R12′) and AUG4 (240 rows / 40 events, lead 19–22h). Seventh
+straight session on the AUG4 board.
+
+**2. But the AUG4 board is NOT byte-identical this time — it grew from 35 to 40 events.** Five events appear
+in `2140` that were absent from `2015`: `KXHIGHCHI`, `KXLOWTCHI`, `KXHIGHTHOU`, `KXHIGHTOKC`, `KXHIGHTATL`.
+That is real new surface, so the fast path did not apply and the funnel had something it had not seen.
+**For those five events `2140` is a FIRST-COVERING snapshot, so R20(c) governs them** (qualify at both the
+snapshot mid and the live mid). **It never got to fire: the five new events produced zero non-modal NO
+candidates and zero YES candidates.** R20(c) first-covering boards observed stays at 1 (AUG4 as a whole);
+this is a nil-effect second data point, not a new observation for its kill clause.
+
+**3. R22(a) NO pass: 34 qualifying bins, 21 modal ⇒ R5a. All 13 non-modals adjudicated:**
+
+| candidate | mid | model / nbm | ratio | verdict |
+|:---|--:|:---|--:|:---|
+| AUS high B101.5 | 0.305 | 0.009 / 0.005 | 0.592 | **R21** (Austin/high broken key) |
+| DEN high B79.5 | 0.265 | 0.009 / 0.137 | 0.898 | **R21** + **R9**; also (iii″), R18 |
+| DAL low B79.5 | 0.395 | 0.009 / **0.231** | 0.929 | **(iii″)** not EMPTY + **R18** ≥0.80 |
+| DEN low B56.5 | 0.240 | **0.139** / 0.086 | 0.800 | **(iii″)** not EMPTY + **R18** (0.800 not <0.80) |
+| DEN low T56 | 0.190 | 0.046 / **0.087** | 0.633 | **(iii″)** not EMPTY |
+| HOU low B76.5 | 0.340 | 0.046 / **0.187** | 0.731 | **(iii″)** not EMPTY; also **R14** (vol24h 9) |
+| PHIL low T69 | 0.395 | 0.009 / **0.119** | 0.760 | **(iii″)** not EMPTY |
+| PHX high B111.5 | 0.335 | 0.046 / **0.116** | 0.720 | **(iii″)** not EMPTY |
+| DC high B85.5 | 0.330 | 0.009 / **0.227** | 0.943 | **(iii″)** not EMPTY + **R18** |
+| DC low T72 | 0.285 | 0.009 / **0.140** | 0.613 | **(iii″)** not EMPTY |
+| **LAX high B79.5** | 0.125 | 0.009 / 0.005 | 0.207 | EMPTY — **(iii″) entry cap** 0.875 > 0.85; R2 edge 0.125 < 0.15 |
+| **LAX low B69.5** | 0.125 | 0.009 / 0.005 | 0.194 | EMPTY — **(iii″) entry cap** 0.875 > 0.85; R2 edge fail |
+| **SEA high B88.5** | 0.155 | 0.009 / 0.005 | 0.413 | survives every gate — **it is the position I already hold** (CLI duplicate guard) |
+
+**The funnel again terminated on the bin I already own.** Third fresh price set in a row (`1640`, `2015`,
+`2140`) where the 23-rule stack independently re-derives SEA B88.5 as the board's only survivor.
+
+**4. (iii″) took 10 of 13 — 8 on emptiness, and both LAX names on the ≤0.85 entry cap for the second
+session running.** Both LAX bins have *drifted further from tradeable*, not closer: B69.5 was 0.16 live at
+15:03 (entry 0.84, inside the cap) and is 0.125 now (entry 0.875, outside it). R20(c) sole-blocked that name
+this afternoon; the market has since moved it out of reach on (iii″) as well, so **the R20(c) sole-block
+ledger stays at 1 and its pre-registered check — does KLAX's AUG4 low land in 69–70°F — is still owed.**
+
+**5. R23: 11 YES candidates, asks 0.02–0.18, R7 fires on every one.** Every ask is under $0.30, so the
+model-side longshot ban refuses all 11 before the 0.40 floor is consulted. Best name is again **LAX low B65.5**
+(model 0.435 / NBM 0.736 vs mid 0.165) — the largest two-source agreement gap on the board, and the second
+session running that NBM has put ~0.74 on a bin the market prices at 0.17 while R7 and R23 both refuse it.
+**Sixth consecutive board with zero R23 sole-blocks. Sole-block ledger stays 1; swept-board count stays 4**
+(same AUG4 board — per v36's convention a re-adjudication, even of a board that gained events, is not a new
+board). (b)'s ceremony tripwire (10 boards at ≤2 sole-blocks ⇒ narrow or retire R23) keeps tracking straight
+at it.
+
+**6. Composition-risk count unchanged at 1 swept board, 1 trade** — no new board was swept.
+
+**Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04), snapshot mid 0.155 / live 0.15–0.16 ⇒ NO worth ~0.845,
+about +$1.10 mark-to-market. Zero trades.**
+
+**Next session:** still the AUG5 board — but tonight showed the AUG4 board can *grow* between snapshots, so
+"same board" is worth re-checking with a set difference rather than an event count, which is what caught the
+five new events this hour.
+
 ## 2026-08-03 21:18 UTC — nothing settled, same `2015.parquet` as 13 min ago, no AUG5 board → **0 trades**, holding 1 position.
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at 20W–21L, −$130.79 — unchanged.
