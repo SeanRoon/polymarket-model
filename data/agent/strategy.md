@@ -136,6 +136,45 @@ Composition-risk count stays **1 swept board, 1 trade**.
 
 **Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04), live 0.21/0.22 — flat to entry. Zero trades.**
 
+**v36 ADDENDUM — 2026-08-03 17:05 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, nothing
+graded, no rule touched. But this is the first session since v36 with a GENUINELY NEW snapshot, so the R22
+funnel was re-run from scratch — and it re-selected my open position as the board's only survivor. Zero
+trades.**
+
+`1640.parquet` landed (22 min old at 17:02; `1400.parquet` had been the newest for 2h38m across four
+sessions). **R19′ staleness: none owed.** Full R22 SQL re-run over the new file, AUG4 only.
+
+**1. The funnel independently re-derived the same single answer from a fresh price set.** R22(a) surfaced
+**25** NO candidates; after non-modal + (iii″) both-sources-≤0.05 + the ≤0.85 entry cap + R18 <0.80,
+**exactly one survived: SEA high B88.5 — the position I already hold.** No new trade is available from it
+(duplicate positions are a CLI guard, not a judgment call). This is worth one line because it is the
+closest thing to an out-of-sample check the funnel can give itself: **a price set 2h38m newer, with
+`model_p` on all 210 AUG4 rows instead of 216 of 222, ran the same 23-rule stack down to the same bin.**
+It is a stability result about the funnel, not evidence about the trade.
+
+**2. Coverage bookkeeping, and it corrects an assumption I nearly made.** `1640` carries 70 events against
+`1400`'s 37 — but restricted to AUG4 the counts are **35 events / 210 rows** vs **37 / 222**. The extra 33
+events are the AUG3 settlement-day board, which **R12′** excludes. **The AUG4 board was already fully
+listed at 14:02**, so this is the same board at fresher prices, not new surface. **Swept-board count stays
+4**, per v36's own convention that a re-adjudication is not a new board. (I checked this rather than
+assuming it, because had the board genuinely grown, the count should have moved.)
+
+**3. (iii″)'s entry cap took the only two other EMPTY non-modal bins, live-verified.** LAX low B69.5
+(bid 0.11 → NO entry **0.89**) and LAX high B79.5 (bid 0.12 → **0.88**) are both genuinely empty
+(model 0.009 / NBM 0.005) and both simply too cheap to sell. **Running (iii″) cap tally on this board:
+9 of 14 adjudicated candidates.** It remains by a wide margin the most active rule in the playbook.
+
+**4. R23 sole-block ledger: still 1, and today adds nothing — R7 fires first on all ten.** R22(b) returned
+**10** YES candidates with asks of **0.01–0.26**. Every one is under **$0.30**, so **R7** refuses each of
+them independently of R23's 0.40 floor. Best name is again **LAX low B65.5** (model 0.435 / NBM 0.725 vs
+mid 0.245) — a large two-source gap that R7 and R23 both refuse. **Five consecutive boards now where R23
+has been the sole blocker zero times; (b)'s ceremony tripwire needs 10 boards at ≤2 sole-blocks, and this
+is tracking straight at it.** Logged, not yet acted on.
+
+**5. Composition-risk count: 1 swept board, 1 trade — UNCHANGED**, because no new board was swept. The
+pre-registered check (5 swept boards, zero trades ⇒ the stack refuses everything) has had no new data
+since v36 adopted it. Waiting on the AUG5 board.
+
 **Superseded header (v35, 2026-08-03 13:15 UTC — **R23's forgone cohort came back, and it is the first tripwire in this
 playbook ever run to completion with a verdict: 1 of 9 resolved YES against 1.31 expected, so the floor STANDS.
 But scoring it exposed that the kill clause measures the wrong thing — a "forgone candidate" is not a trade I

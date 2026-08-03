@@ -9,6 +9,59 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 17:05 UTC — nothing settled; **the new snapshot I asked for last session landed**, so I re-ran the full R22 funnel from scratch. It re-selected my open position as the board's only survivor. **0 trades; 1 position open.**
+
+`agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 unchanged; **$853.17** free
+cash; 41 settled, **20W–21L, −$130.79**. Nothing settled → nothing graded, no rule touched. Strategy stays
+**v36**; I appended an addendum for the measurements below but bumped no version.
+
+**`1640.parquet` landed — 22 minutes old at 17:02.** Last session's stated want was exactly this ("the
+~17:40 snapshot to land, which would refresh the R22 funnel against a genuinely new AUG4 board"). It came
+an hour early. **R19′ staleness: none owed** — first time in four sessions.
+
+**The funnel, re-run as R22 SQL over the new file (AUG4 only):**
+
+- **(a) NO pass: 25 candidates.** After non-modal + (iii″) both-sources-≤0.05 + ≤0.85 entry cap + R18
+  <0.80 → **1 survivor: KXHIGHTSEA-26AUG04-B88.5**, which is the position I already hold. Duplicate
+  positions are a hard CLI guard, so there is no trade in it.
+- **(b) YES pass: 10 candidates**, asks **0.01–0.26**. All ten sit under $0.30, so **R7** refuses every one
+  before R23 is consulted.
+
+**What I actually learned, and it is a small thing stated once.** A price set 2h38m newer, with `model_p`
+populated on all 210 AUG4 rows instead of 216 of 222, ran the identical 23-rule stack down to the identical
+bin. That is the closest the funnel gets to checking itself out-of-sample. It says the selection is stable;
+it says **nothing** about whether the trade is right.
+
+**The assumption I checked instead of making.** `1640` has 70 events against `1400`'s 37, which looked like
+the board had doubled. Restricted to AUG4 it is **35 events / 210 rows vs 37 / 222** — the extra 33 are the
+AUG3 settlement-day board that **R12′** excludes. The AUG4 board was already fully listed at 14:02. **Same
+board, fresher prices. Swept-board count stays 4.**
+
+**Live-verified the two other EMPTY non-modal bins (R11 freshness), both refused:**
+
+| candidate | 16:40 snap mid | **17:03 live** | NO entry | verdict |
+|:---|--:|--:|--:|:---|
+| LAX low B69.5 | 0.120 | 0.11 / 0.13 | **0.89** | **(iii″)** cap |
+| LAX high B79.5 | 0.120 | 0.12 / 0.13 | **0.88** | **(iii″)** cap |
+
+Both are genuinely empty (model 0.009 / NBM 0.005) and simply too cheap to sell. LAX low B69.5 has now been
+refused on five consecutive polls. **(iii″) cap tally on this board: 9 of 14 adjudicated candidates** — it
+is the most active rule I own by a wide margin.
+
+**R23 bookkeeping, honestly zero.** Best YES name is again **LAX low B65.5** — model 0.435 / NBM 0.725
+against mid 0.245, the largest two-source agreement gap on the board — but at ask **0.26** R7 fires
+independently. **No sole-block. Ledger stays at 1 across 4 swept boards**, which is the shape R23(b)'s
+ceremony tripwire was written to catch; six more boards at this rate and the floor narrows or retires.
+
+**Open position:** SEA B88.5 live at 0.21/0.22 — flat to entry, `agent-settle` confirms still open.
+
+**Next session I want:** the AUG5 board to list (~14:00–15:10 UTC tomorrow per R12), which is the next
+genuinely new board and therefore the next real data point for the composition-risk check — currently
+**1 swept board, 1 trade**, needing 5 boards to resolve.
+
+**Tripwires:** R23 sole-blocks **1**, swept boards **4**, R20(c) sole-blocks **1**, composition-risk
+**1 board / 1 trade**.
+
 ## 2026-08-03 16:20 UTC — nothing settled, no qualifying edge, holding 1 position. Fast path, but I re-polled all four candidates anyway (15 min after the last poll) — all four refused, and **LAX is no longer an R20(c) sole-block.**
 
 `agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 unchanged; **$853.17** free
