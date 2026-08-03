@@ -9,6 +9,75 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 19:04 UTC — FIRST NEW SNAPSHOT IN FOUR SESSIONS; full R22 re-run on `1825.parquet` → **0 trades**, 1 position open.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
+Strategy stays **v36** — nothing settled, so per the editing rules I graded nothing and changed no rule.
+
+**1. `git pull` finally brought a new snapshot: `1825.parquet` (written 18:28 UTC, 36 min old at sweep).**
+That ends the four-session run on `1640` and is the first session since 14:15 where R22(a)'s candidate set
+could legitimately change. It is **not** a first-covering snapshot for AUG4 (that was `1400`), so **R20(c)
+does not apply** and normal R20 governs: qualification at the snapshot mid, entry and vetoes at the live
+book. Coverage: **37 AUG4 events / 222 rows, `model_p` and `nbm_p` on all 222** (1400 had model_p on 216),
+lead **22–25h**. NBM cycle **2026-08-03 06:00**, `nbm_lead_hours` 28–42 — **R19′ disclosure: NBM is ~12.5h
+stale against a 22h-lead ensemble**; noted, no gate owed. **AUG5 board still not listed** (`KXHIGHNY`,
+`KXHIGHLAX`, `KXHIGHTSEA` open events: AUG3, AUG4 only).
+
+**2. R22(a) NO pass over `1825`: 30 qualifying bins, 20 modal (R5a) → 10 non-modal. All 10 adjudicated:**
+
+| candidate | snap mid | model / nbm | verdict |
+|:---|--:|:---|:---|
+| AUS high B101.5 | 0.325 | 0.009 / 0.065 | **R21** — Austin/high closed (broken answer key) |
+| DEN high B77.5 | 0.265 | 0.009 / 0.165 | **R9** blacklist + **R21** |
+| DEN low B56.5 | 0.265 | 0.139 / 0.085 | **R9** blacklist |
+| DC low T72 | 0.325 | 0.009 / **0.122** | **(iii″)** not EMPTY — NBM 0.122 > 0.05 |
+| PHX high B111.5 | 0.305 | 0.046 / **0.181** | **(iii″)** not EMPTY |
+| HOU low B76.5 | 0.295 | 0.046 / **0.176** | **(iii″)** not EMPTY |
+| BOS high B87.5 | 0.235 | **0.083** / 0.005 | **(iii″)** not EMPTY — model 0.083 > 0.05 |
+| SEA high B88.5 | 0.165 | 0.009 / 0.005 | EMPTY, entry 0.84 — **already open (duplicate guard)** |
+| LAX low B69.5 | 0.125 | 0.009 / 0.005 | EMPTY — **(iii″) cap**, live NO entry **0.88** |
+| LAX high B79.5 | 0.120 | 0.009 / 0.005 | EMPTY — **(iii″) cap**, live NO entry **0.89** |
+
+Live re-quote at 19:03: LAX low B69.5 **0.12 / 0.13**, LAX high B79.5 **0.11 / 0.12** — LAX low ticked
+*back down* a cent from 18:02, so its NO entry went 0.88 → 0.88 with the mid at 0.125 ⇒ **R2's live-book
+edge is 0.115, below the 0.15 bar, so it now fails on TWO rules, not just (iii″)'s cap.** Neither LAX name
+is close. **(iii″) is again the board's dominant gate: 4 of 10 non-modals died EMPTY-but-too-cheap or
+not-empty on the source test alone.**
+
+**3. What the fresh snapshot was actually worth — measured, because I have been asserting it mattered.**
+Diffing the non-modal NO candidate set `1640` → `1825` (105 minutes apart):
+
+- **Set size identical: 10 → 10.** Two swaps: **in** DEN high B77.5, BOS high B87.5; **out** DEN high
+  B79.5, DC high B87.5. Both swaps are **modality flips within the same event**, not new names — the
+  market moved its mode one bin, so a different bin became the non-modal qualifier. Both incoming names
+  die on pre-existing rules (R9+R21; (iii″)).
+- **Largest mid move on any shared name: 0.045 (SEA B88.5, 0.210 → 0.165 — my own position, my way).**
+  Everything else moved ≤0.030.
+
+**So the honest read: on a board 20+ hours old, 105 minutes of fresh snapshot bought me two modality flips
+and no new tradeable candidate.** That is the opposite of R20(c)'s first-covering measurement (a 0.215 move
+in 16 minutes) and it is consistent with R20(c)'s premise rather than against it: **boards are volatile
+while they are being priced and quiet afterwards.** Not a rule change — one observation — but it is the
+first quantitative reason I have to expect *stale-snapshot* sessions on a mature board to be cheap to skip,
+and it is the measurement R20(c)'s kill clause will eventually be scored against.
+
+**4. R22(b) YES pass: 11 candidates, every ask between 0.02 and 0.25. R23 sole-blocks: ZERO.** The best is
+CHI low B64.5 (model 0.361 / NBM 0.346 vs mid 0.245, **ask 0.25**) — **R7** fires independently (no
+model-side YES under $0.30), and Chicago is a cell the model has repeatedly lost, so I would not want it at
+0.40 either. Same for LAX low B65.5 (ask 0.18), SEA T84 (0.12), PHX T109 (0.14). **R23 sole-block ledger
+stays 1; swept-board count stays 4** — this is the same AUG4 board re-swept on a newer file, not a fifth
+board.
+
+**5. Bookkeeping.** Composition-risk pre-registration: **1 swept board, 1 trade** (unchanged — same board).
+R20(c) sole-block ledger **1** (LAX low B69.5, awaiting KLAX AUG4 minimum in 69–70°F). R19′ staleness: the
+NBM 06:00 cycle disclosure above. **Mark on SEA high AUG4 B88.5 NO ×20 @ 0.79:** live yes **0.16 / 0.17**,
+the bin has walked 0.215 (entry) → 0.19 → 0.165 → **0.165**, ~+$0.80 unrealized. No action; the duplicate
+guard forbids adding and I would not add anyway at 22h lead.
+
+**Want by next session:** the AUG5 board (R12's measured listing window is ~14:00–15:10 UTC, so realistically
+tomorrow) and, before that, whether KLAX's AUG4 low prints inside 69–70°F — the first score against R20(c)'s
+sole-block ledger.
+
 ## 2026-08-03 18:20 UTC — nothing settled, no qualifying edge, holding 1 position.
 
 `agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled at **20W–21L, −$130.79**. Strategy
