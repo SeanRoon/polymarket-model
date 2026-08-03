@@ -9,6 +9,55 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 15:05 UTC — **R20(c) bit for the first time, 40 minutes after I adopted it, and I let it.** Nothing settled. Strategy stays **v36** (addendum only). **0 trades; 1 position open.**
+
+`agent-settle settled=0 still_open=1` — SEA high B88.5 NO ×20 still open, **$853.17** free cash, 41 settled
+at **20W–21L, −$130.79**. Nothing settled since 14:35, so **I graded nothing and changed no rule** — this is
+an addendum, not a version bump. R19′: `1400.parquet` is 63 min old at 15:05, inside the 60–110 min band for
+this window; no staleness disclosure owed.
+
+**Why this hour got more than the one-line fast path.** The newest snapshot is still `1400.parquet` — the
+same file I swept at 14:15, so R20's byte-identical fast path applies to the snapshot side and the funnel
+would return the identical candidate set. But R20(c), adopted last session, requires qualification at **both**
+the snapshot mid and the live mid, which makes a stale-snapshot re-sweep **monotone**: no bin can newly enter
+the set on a live-price move, only drop out. That capped the work at re-pricing the survivors against a book
+that was 12 minutes old when I first read it and is now 63 — exactly the immaturity R20(c) was written for.
+
+**The four live re-checks (15:03).** Of last session's 8 NO survivors, 3 are permanently dead today (DEN
+B81.5 on R9+R21, AUS B101.5 on R21, BOS B87.5 on (ii‴)) and 1 is my open position. The rest:
+
+- **LAX low B69.5 — the one that hurt.** Live 0.15/0.17: R2 edge **0.15** (model 0.01, NBM 0.01) exactly at
+  the bar, NO entry **0.85** exactly at (iii″)'s cap, R14 fine (vol24h 258), non-modal, neither source
+  degenerate. It **qualifies live and fails at the snapshot** (mid 0.120 → edge 0.11). **R20(c) is the sole
+  block.** I adopted that rule one session ago on the stated reasoning that it should go in *before* a
+  candidate I wanted depended on it — refusing to honor it the first hour it bites would have made the
+  adoption worthless. Pre-registered: log whether KLAX's AUG4 min lands in 69–70°F. **R20(c) sole-block
+  ledger: 1.** If it accrues ≥4 sole-blocks that resolve NO, the rule was costing me winners and comes off.
+- LV high B114.5 (0.13/0.16, entry 0.87), CHI high B87.5 (0.10/0.12, entry 0.90), OKC low B66.5 (0.08/0.13,
+  entry 0.92) — **all three died on (iii″)'s ≤0.85 entry cap.** All three got *cheaper* since 14:18.
+
+**What I actually learned, and it is about R14 rather than about any trade.** Three books I wrote off as
+placeholders 45 minutes ago — LV B114.5, CHI B87.5, LAX low B65.5 — went vol24h **14 → 151**, **8 → 32**,
+**0 → 36**. All cleared R14's 25 bar within 45 minutes of listing. **On a board under an hour old, R14 is
+measuring listing latency as much as liquidity**, which is independent support for R20(c)'s premise that a
+listing quote is not a price. It cost me nothing today (each of those died on (iii″) or R7 anyway, and both
+NO candidates moved the wrong way for a fade), so I am logging it, not changing R14.
+
+**(iii″) is now the busiest rule in the playbook** — 3 of 4 refusals today, 7 of 12 across this whole board.
+Every one was a bin priced too cheaply to be worth selling, which is precisely its job.
+
+**Tripwires, unchanged because this is the same board.** R23 sole-block ledger **1**, swept-board count **4**,
+composition-risk count **1 board / 1 trade**. The board's biggest two-source gap — LAX low B65.5, model 0.79
+and NBM 0.64 against a market that repriced from ask 0.22 down to **0.17** — is blocked by **R7 and R23
+jointly**, so it is again not an R23 sole block. It is, however, the single most interesting forgone name on
+this board and I want its outcome.
+
+**Trades: none.** Nothing survived; I am not manufacturing one to justify the hour.
+
+**What I want to learn by next session:** whether KLAX's AUG4 minimum lands in 69–70°F — the first entry in
+R20(c)'s cost ledger — and whether SEA high B88.5 (my only position, flat at 0.21/0.22) starts drifting once
+the AUG4 highs begin to form.
+
 ## 2026-08-03 14:35 UTC — **the first fully sweepable board since 07-29, and it produced a TRADE.** Nothing settled. Strategy v35 → **v36** (R20(c) added). **1 trade: SEA high B88.5 NO ×20 @ $0.79.**
 
 14:15 UTC — `agent-settle settled=0 still_open=0`. Flat at the start, **$869.21** free cash, 41 settled at

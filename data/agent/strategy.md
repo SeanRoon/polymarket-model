@@ -70,6 +70,72 @@ a wall. **Count: 1 swept board, 1 trade.**
 
 **Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04). One trade.**
 
+**v36 ADDENDUM — 2026-08-03 15:05 UTC. NO VERSION BUMP: `agent-settle settled=0 still_open=1`, so nothing
+settled, so per the editing rules I graded nothing and changed no rule. But R20(c) — adopted 40 minutes ago
+with "changed zero decisions today" — changed its first decision, and it cost me a candidate. Zero trades.**
+
+`agent-settle settled=0 still_open=1` — SEA high B88.5 NO ×20 still open, **$853.17** free cash, 41 settled
+at **20W–21L, −$130.79**, unchanged. **R19′ staleness: none owed.** `1400.parquet` is **63 minutes** old at
+15:05 against the 11:00–23:45 band's 60–110 min baseline.
+
+**1. R20's byte-identical fast path applies to the snapshot side, and R20(c) makes that fast path
+MONOTONE — which is a small result worth stating once.** The newest snapshot is still `1400.parquet`, the
+same file I swept at 14:15; the GHA has not committed a 1415/1430/1445 file. So re-running the R22 funnel
+would return the identical 30 NO / 13 YES candidate set. **And under R20(c) no bin can newly ENTER the set
+via a live-price move**, because R20(c) requires qualification at the snapshot mid *and* the live mid — it
+is a strict tightening on the snapshot-qualified population. Therefore on a stale-snapshot re-sweep the only
+thing that can change is that a candidate **drops out**. That capped this session's work at re-adjudicating
+the survivors against the live book, which is what I did.
+
+**2. Of the 8 NO survivors, 3 are permanently dead today (DEN B81.5 R9+R21; AUS B101.5 R21; BOS B87.5
+(ii‴)) and 1 is my open position. The other four, re-priced at 15:03:**
+
+| candidate | 14:02 snap | 14:18 live | 15:03 live | NO entry | verdict |
+|:---|--:|--:|--:|--:|:---|
+| **LAX low B69.5** | 0.120 | bid 0.13 | **0.15 / 0.17** | **0.85** | **R20(c) — SOLE BLOCK** |
+| LV high B114.5 | 0.205 | bid 0.13 | 0.13 / 0.16 | 0.87 | **(iii″)** cap |
+| CHI high B87.5 | 0.165 | bid 0.13 | 0.10 / 0.12 | 0.90 | **(iii″)** cap |
+| OKC low B66.5 | 0.135 | — | 0.08 / 0.13 | 0.92 | **(iii″)** cap |
+
+**3. LAX low B69.5 is R20(c)'s first real bite, and I am honoring it.** At the live mid **0.16** against
+model **0.01** and NBM **0.01**, the R2 edge is **0.15** — exactly the bar — and the NO entry is **0.85** —
+exactly (iii″)'s cap. It clears R14 (vol24h 258, OI 206), it is non-modal (the market's mode is B67.5 at
+0.625), and neither source is degenerate across the event (model 0.79 / NBM 0.64 on B65.5). **It qualifies
+LIVE and fails at the SNAPSHOT** — snapshot mid 0.120 gives an edge of 0.11, short of R2's 0.15. R20(c)
+refuses it on those grounds and nothing else. I adopted that rule one session ago on the explicit reasoning
+that it should be adopted *before* a candidate I wanted depended on it; declining to honor it the first hour
+it bites would make the adoption worthless. **Pre-registered:** log whether KLAX's AUG4 minimum lands in
+**69–70°F**. If R20(c) accrues ≥4 sole-blocks that resolve NO (i.e. the fades it refused would have won),
+that is the cost side of its kill clause and it comes off. **R20(c) sole-block ledger: 1.**
+
+**4. R14's "placeholder book" reading at 14:18 was substantially a TIMING artifact, and that is independent
+support for R20(c)'s premise.** Three books I called dead on volume 45 minutes ago:
+
+| book | vol24h @14:18 | vol24h @15:03 |
+|:---|--:|--:|
+| LV high B114.5 | 14 | **151** |
+| CHI high B87.5 | 8 | **32** |
+| LAX low B65.5 | 0 (OI 6) | **36** (OI 34) |
+
+**All three cleared R14's 25 bar within 45 minutes of listing.** On a board under ~1 hour old, R14 is
+measuring listing latency as much as liquidity. **This is not a rule change** — R14 cost me nothing today,
+because all three died on (iii″) or R7 independently once the price arrived, and both LV and CHI got
+*cheaper*, which is the direction that hurts a NO fade. Logged as an observation: if R14 is ever the sole
+block on a first-hour board, re-check the book before accepting it.
+
+**5. (iii″)'s entry cap remains the dominant gate.** 3 of 4 today, 4 of 8 last session — **7 of 12 on this
+board**. Every one of them was a bin the market prices too cheaply to be worth selling. That is the gate
+doing exactly the work it was written for, and it is now the single most active rule in the playbook.
+
+**6. Tripwire bookkeeping, all unchanged because this is the SAME board.** R23 sole-block ledger stays at
+**1**; swept-board count stays at **4** (a re-adjudication of a board already counted is not a new board).
+The best YES name, **LAX low B65.5**, repriced **ask 0.22 → 0.17** while gaining volume — model 0.79 / NBM
+0.64 against a market at 0.16 is the largest two-source agreement gap on the board — but **R7** (no
+model-side YES under $0.30) and **R23** (0.40 floor) both fire, so it is again **not** a sole block.
+Composition-risk count stays **1 swept board, 1 trade**.
+
+**Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04), live 0.21/0.22 — flat to entry. Zero trades.**
+
 **Superseded header (v35, 2026-08-03 13:15 UTC — **R23's forgone cohort came back, and it is the first tripwire in this
 playbook ever run to completion with a verdict: 1 of 9 resolved YES against 1.31 expected, so the floor STANDS.
 But scoring it exposed that the kill clause measures the wrong thing — a "forgone candidate" is not a trade I
