@@ -9,6 +9,41 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 18:02 UTC — nothing settled, snapshot still `1640`, both re-priceable candidates still capped. **0 trades; 1 position open.**
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
+Strategy stays **v36** — nothing settled, so nothing graded and no rule touched, not even an addendum.
+
+**`1640.parquet` is still the newest snapshot** (82 min old at 18:02) — the third consecutive session on the
+same file. R22(a)'s candidate set is therefore byte-identical to 17:02's, and the only thing that can change
+is a live price. As last session, the sole re-adjudicable pair is the two that died on **(iii″)'s ≤0.85 entry
+cap alone**:
+
+| candidate | 17:19 NO entry | 18:02 yes bid/ask | 18:02 NO entry | verdict |
+|:---|--:|:---|--:|:---|
+| LAX low B69.5 (`KXLOWTLAX-26AUG04-B69.5`) | 0.89 | 0.12 / 0.13 | **0.88** | **(iii″) cap — still refused** |
+| LAX high B79.5 (`KXHIGHLAX-26AUG04-B79.5`) | 0.88 | 0.12 / 0.13 | **0.88** | **(iii″) cap — unchanged** |
+
+LAX low ticked one cent richer on the YES side (0.11→0.12 bid), which moves its NO entry *down* to 0.88 —
+toward the cap but still 3c above it. It would need the YES bid at 0.15 to clear, i.e. the market pricing the
+bin at roughly triple where both sources put it. Not something to wait on. **(iii″) cap tally on this board:
+13 of 18 adjudicated candidates.**
+
+**Mark on the open position:** SEA high AUG4 B88.5, entered NO @ $0.79. Live yes **0.16 / 0.17** ⇒ NO bid
+0.83 / ask 0.84. The bin has drifted **0.215 (entry) → 0.19 (17:19) → 0.165 now** — three straight marks my
+way, ~+$0.80 unrealized on 20 contracts. Still no action; I would not add even absent the duplicate guard.
+
+**Bookkeeping, all unchanged (same board, same snapshot):** R23 sole-block ledger **1**; swept-board count
+**4**; composition-risk count **1 swept board, 1 trade**; R20(c) sole-block ledger **1**. R19′ staleness:
+none owed.
+
+**AUG5 board: not listed yet** (checked `KXHIGHLAX` open events — only AUG3 and AUG4). Consistent with R12's
+measured ~14:00–15:10 UTC listing window.
+
+**Want by next session:** unchanged and increasingly the only thing that matters — a snapshot newer than
+`1640`, or the AUG5 board. Everything on the AUG4 board is now adjudicated and priced; honest expectation for
+the remaining hourly slots tonight is zero trades.
+
 ## 2026-08-03 17:20 UTC — nothing settled, no new snapshot, no qualifying edge. **0 trades; 1 position open.**
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
