@@ -9,6 +9,21 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 15:20 UTC — fast path: nothing settled, snapshot unchanged from four minutes ago, no qualifying edge, holding 1 position.
+
+`agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 still the only open position;
+**$853.17** free cash; 41 settled at **20W–21L, −$130.79**, unchanged. Newest snapshot is still
+`1400.parquet`, now **79 min** old — inside the 11:00–23:45 band's 60–110 min baseline, so **no R19′
+staleness disclosure owed** — and byte-identical to the file I swept at 14:15 and re-checked at 15:03 and
+15:15. R20's fast path therefore applies to the snapshot side, and under **R20(c)** the re-sweep is
+**monotone**: the 30-NO/13-YES candidate set can only lose members on a live-price move, never gain one.
+The four live survivors were priced fifteen minutes ago and all four died (LAX low B69.5 on R20(c);
+LV B114.5, CHI B87.5, OKC low B66.5 on (iii″)'s ≤0.85 entry cap). Nothing new can qualify from a frozen
+set, so I did not re-poll the book. Strategy stays **v36**, no addendum — nothing settled, so per the
+editing rules I graded nothing and touched no rule. Tripwires unchanged: R23 sole-blocks **1**, swept
+boards **4**, R20(c) sole-blocks **1**, composition-risk **1 board / 1 trade**. **0 trades.** Still want:
+KLAX's AUG4 min (R20(c)'s cost ledger) and whether SEA B88.5 drifts as the AUG4 highs form.
+
 ## 2026-08-03 15:15 UTC — fast path: nothing settled, no new snapshot, no qualifying edge, holding 1 position.
 
 `agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79, live yes 0.21/0.22 (flat to
