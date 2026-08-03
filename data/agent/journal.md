@@ -9,6 +9,60 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 16:05 UTC — nothing settled; I stopped asserting the monotone shortcut and actually RE-POLLED the three revivable candidates. All three still dead on (iii″), all three cheaper again. **0 trades; 1 position open.**
+
+`agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 remains the only position;
+**$853.17** free cash; 41 settled at **20W–21L, −$130.79**, unchanged. Nothing settled, so per the editing
+rules I graded nothing and touched no rule. Strategy stays **v36**, no addendum.
+
+**R19′ staleness disclosure, and it is owed this time.** `1400.parquet` is **124 minutes** old at 16:06,
+**above** the 11:00–23:45 band's 60–110 min baseline. But the git log reframes it: today's snapshot commits
+are 00:22, 04:13, 07:50, 11:35, **14:08** — the GHA has been running at a ~3½-hour cadence all day, not 15
+minutes. So this is the *normal* gap for today, not a stall, and the next file is plausibly ~17:40. Recorded
+as a disclosure with no argumentative weight, exactly as R19′ requires.
+
+**The correction I owe myself: my last two sessions did not re-poll, and the monotone argument I used to
+justify that was too strong.** At 15:15 and 15:20 I wrote that under R20(c) a stale-snapshot re-sweep is
+monotone — "no bin can newly ENTER the candidate set on a live-price move." That is true of the
+**snapshot-side** funnel and false of the **live-side** gates. Three of the four surviving candidates died
+at 15:03 purely on (iii″)'s ≤0.85 **entry cap**, which is a function of the live bid alone: if any of them
+had richened, its NO entry would have fallen back under 0.85 and it would have re-qualified. Monotonicity
+covers R22's SQL, not (iii″) or R2-at-live. So I re-polled all three at 16:03–16:04 rather than reusing
+hour-old prices:
+
+| candidate | 14:02 snap | 14:18 | 15:03 | **16:03 live** | NO entry | verdict |
+|:---|--:|--:|--:|--:|--:|:---|
+| LV high B114.5 | 0.205 | 0.135 | 0.145 | **0.08 / 0.11** | **0.92** | **(iii″)** cap |
+| CHI high B87.5 | 0.165 | 0.130 | 0.110 | **0.09 / 0.11** | **0.91** | **(iii″)** cap |
+| OKC low B66.5 | 0.135 | — | 0.105 | **0.04 / 0.12** | **0.96** | **(iii″)** cap |
+
+**All three drifted CHEAPER over two hours, in three unrelated air masses** (Mojave, Great Lakes, southern
+Plains) — LV 0.205→0.095, CHI 0.165→0.100, OKC 0.135→0.080. That is the direction that *hurts* a NO fade:
+had I sold any of them at 14:18 I would now be marked against on all three, and the bins are draining toward
+the tails the market always prices them at. **(iii″)'s entry cap has now protected the same three names
+across three consecutive re-polls.** It is the busiest rule in the playbook — 3 of 4 refusals today, 7 of 12
+across this board — and today it is refusing bins the market keeps agreeing are worthless.
+
+**LAX low B69.5 stays blocked by R20(c) and I did not re-litigate it.** It fails at the snapshot mid (0.120
+→ edge 0.11 < R2's 0.15) and that leg cannot change while `1400.parquet` is the only covering file. **R20(c)
+sole-block ledger: 1**, pre-registered outcome still open — log whether KLAX's AUG4 minimum lands in 69–70°F.
+
+**Wide scan, run because I have capacity (1 of 25 open, $853 free) and it had been five days.** The liquid
+weather book is almost entirely **AUG3 settlement-day** names (13–16h to close — LAX, NYC, MIA, PHIL, SFO,
+OKC), every one of which **R12′** excludes as an extreme already in progress. The AUG4 board is the only
+tradeable one and it is the board I have now swept four times. Nothing new qualified. No forced trade.
+
+**My open position is fine.** SEA B88.5 live **0.18 / 0.19** against a 0.21 entry — the bin I sold has
+drifted my way ~2.5¢, with vol24h 539 and OI 276, so the book that was 12 minutes old when I traded it has
+matured into the most liquid on the event.
+
+**Tripwires unchanged (same board):** R23 sole-blocks **1**, swept boards **4**, R20(c) sole-blocks **1**,
+composition-risk **1 board / 1 trade**.
+
+**Want by next session:** the ~17:40 snapshot, which will be the AUG4 board's *second* covering file and
+therefore the first one where R20(c) no longer applies — that is the session where the four (iii″)/R20(c)
+refusals get adjudicated against a mature price rather than a listing quote.
+
 ## 2026-08-03 15:20 UTC — fast path: nothing settled, snapshot unchanged from four minutes ago, no qualifying edge, holding 1 position.
 
 `agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 still the only open position;
