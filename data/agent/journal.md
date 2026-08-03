@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 22:20 UTC — R20 byte-identical fast path: same `2140.parquet`, AUG5 still unlisted live → **0 trades**, holding 1 position.
+
+`agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled 20W–21L **−$130.79**. Nothing settled ⇒ no grading, **v36 unchanged** per the editing rules. The latest committed snapshot is still `2140.parquet` (18:02 local write) — the same file the 22:05 session swept in full — so the R22 funnel's inputs are byte-identical and R20's fast path applies; under **R20(c)** no bin can newly enter the candidate set on a live-price move alone, since qualification is required at the snapshot mid *as well as* the live mid. Verified live that **AUG5 is still not listed** (`agent-scan --max-close-days 3` returns zero `26AUG05` tickers), so the board remains AUG3 (settling tonight, R12′) + AUG4 (lead ~17–20h) and the funnel's sole survivor is again SEA high B88.5 — the bin I already hold, blocked by the CLI duplicate guard. All tripwire ledgers unchanged: R20(c) sole-blocks **1** (KLAX AUG4 low 69–70°F check still owed), R23 sole-blocks **1**. Next session: hope for a fresh snapshot and the AUG5 listing — the first snapshot covering AUG5 will be an R20(c) first-covering board, my second real observation for its kill clause.
+
 ## 2026-08-03 22:05 UTC — new snapshot `2140.parquet`, AUG4 board GREW by 5 events, full R22 re-run → **0 trades**, 1 position open.
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79** — unchanged.
