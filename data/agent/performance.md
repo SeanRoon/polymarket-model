@@ -1,6 +1,6 @@
 # Agent paper-trading performance
 
-_Generated 2026-08-03 19:18 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
+_Generated 2026-08-03 20:02 UTC by `polymarket agent-report`. PAPER ONLY. See `strategy.md` for the playbook and `journal.md` for reasoning._
 
 ## Bankroll
 
