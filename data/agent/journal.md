@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 23:19 UTC — fast path
+
+`agent-settle settled=0 still_open=1` — nothing settled, $853.17 free cash, 41 settled at 20W–21L, −$130.79,
+holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk). Newest snapshot is still **`2240.parquet`**, the
+same file the 23:05 session swept 14 minutes ago, so under **R20** (sources frozen at the snapshot) + **R20(c)**
+(strictly tightening on the snapshot-qualified population) a re-sweep is monotone — no bin can newly *enter*
+the candidate set, and that funnel already terminated on the one bin I hold, which the CLI duplicate guard
+blocks. **R19′ staleness: none owed** (39 min old against the 11:00–23:45 band's 60–110 min baseline). AUG5
+weather was unlisted at 23:05 and the measured next-day listing window is 14:00–15:10 UTC, so nothing new is
+screenable; **R12‴** would refuse it regardless, since `2240.parquet` cannot cover a board listed after it.
+Nothing settled ⇒ per the editing rules I graded nothing and changed no rule: **strategy stays v36**.
+**0 trades.** Next session: watch for `2340`/`0000` and for the AUG5 board's first listing.
+
 ## 2026-08-03 23:05 UTC — fresh `2240.parquet`, full R22 re-run, funnel again terminates on the bin I hold → **0 trades**. New finding: snapshot coverage is **not monotone** — the AUG4 board LOST 4 events.
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79** — unchanged.
