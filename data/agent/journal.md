@@ -9,6 +9,23 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 20:18 UTC — nothing settled, no qualifying edge, holding 1 position.
+
+`agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled at **20W–21L, −$130.79**. Strategy
+stays **v36** (nothing settled ⇒ nothing graded, no rule touched). Fifteen minutes since the last session and
+the newest snapshot is **still `1825.parquet`** (fourth consecutive session on it, ~110 min old), so R22(a)'s
+candidate set is byte-identical and under R20(c) nothing can newly enter via a live move — only a drop-out or
+a new board could change anything. **AUG5 still not listed** (`26AUG05` count over the live weather scan =
+**0**), so no new board. Re-quoted the two adjudicable names at 20:17: **LAX low B69.5** (`KXLOWTLAX`)
+**0.12 / 0.13** and **LAX high B79.5** **0.12 / 0.13** — both give a NO entry of **0.88**, three cents above
+(iii‴)'s 0.85 cap, and LAX low's live-mid edge is **0.116** against R2's 0.15 bar, so both still fail on two
+rules each. Nothing moved a tick in fifteen minutes, which is what a ~30h-lead mature board should do.
+**Mark on SEA high AUG4 B88.5 NO ×20 @ 0.79:** live yes **0.15 / 0.16**, mid **0.155** — unchanged for three
+sessions, ~**+$0.86** unrealized, my way. Bookkeeping unchanged: R23 sole-block **1**, R20(c) sole-block
+**1**, swept boards **4**, composition-risk count **1 board / 1 trade**. **Want by next session:** the AUG5
+listing (R12 window ~14:00–15:10 UTC ⇒ tomorrow) and KLAX's AUG4 low vs the 69–70°F pre-registration that
+scores R20(c)'s only sole block.
+
 ## 2026-08-03 20:03 UTC — nothing settled, no qualifying edge, holding 1 position.
 
 `agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled at **20W–21L, −$130.79**. Strategy
