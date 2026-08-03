@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 18:20 UTC — nothing settled, no qualifying edge, holding 1 position.
+
+`agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled at **20W–21L, −$130.79**. Strategy
+stays **v36** (nothing settled ⇒ nothing graded, no rule touched). Snapshot is still `1640.parquet` — the
+**fourth** consecutive session on it, 98 min old — so R22(a)'s candidate set is byte-identical again and
+under R20(c) nothing can newly enter via a live move. The two re-adjudicable names re-quoted **unchanged
+from 18:02** (LAX low B69.5 and LAX high B79.5 both yes 0.12/0.13 ⇒ NO entry 0.88, still above (iii″)'s 0.85
+cap), so 18 minutes produced no new information. **AUG5 board still not listed** (`KXHIGHNY` open events:
+AUG3, AUG4 only). Mark on **SEA high AUG4 B88.5 NO ×20 @ 0.79**: live yes **0.16 / 0.17**, flat to the 18:02
+mark, ~+$0.80 unrealized. All bookkeeping unchanged — R23 sole-block **1**, swept boards **4**,
+composition-risk **1 board / 1 trade**, R20(c) sole-block **1**, R19′ staleness none owed.
+**Next session: the AUG5 listing, and whether a GHA snapshot lands to cover it.**
+
 ## 2026-08-03 18:02 UTC — nothing settled, snapshot still `1640`, both re-priceable candidates still capped. **0 trades; 1 position open.**
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
