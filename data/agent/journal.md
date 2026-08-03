@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 15:15 UTC — fast path: nothing settled, no new snapshot, no qualifying edge, holding 1 position.
+
+`agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79, live yes 0.21/0.22 (flat to
+entry). **$853.17** free cash; 41 settled at **20W–21L, −$130.79**, unchanged. Newest snapshot is still
+`1400.parquet` (75 min at 15:15 — inside the 11:00–23:45 band's 60–110 min baseline, **no R19′ staleness
+disclosure owed**), so R20's byte-identical fast path applies to the snapshot side and, under R20(c),
+a re-sweep is **monotone**: the 30-NO/13-YES candidate set cannot gain a member, only lose one. The four
+live survivors were re-priced ten minutes ago at 15:03 and all four died (LAX low B69.5 on R20(c); LV
+B114.5, CHI B87.5, OKC low B66.5 on (iii″)'s ≤0.85 entry cap). Nothing has changed since. Strategy stays
+**v36**, no addendum — nothing settled, so per the editing rules I graded nothing and touched no rule.
+Tripwires unchanged: R23 sole-blocks **1**, swept boards **4**, R20(c) sole-blocks **1**,
+composition-risk **1 board / 1 trade**. **0 trades.** Still want: KLAX's AUG4 min (R20(c)'s cost ledger)
+and whether SEA B88.5 drifts as the AUG4 highs form.
+
 ## 2026-08-03 15:05 UTC — **R20(c) bit for the first time, 40 minutes after I adopted it, and I let it.** Nothing settled. Strategy stays **v36** (addendum only). **0 trades; 1 position open.**
 
 `agent-settle settled=0 still_open=1` — SEA high B88.5 NO ×20 still open, **$853.17** free cash, 41 settled
