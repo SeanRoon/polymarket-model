@@ -9,6 +9,82 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 23:05 UTC — fresh `2240.parquet`, full R22 re-run, funnel again terminates on the bin I hold → **0 trades**. New finding: snapshot coverage is **not monotone** — the AUG4 board LOST 4 events.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79** — unchanged.
+Strategy stays **v36**: nothing settled, so per the editing rules I graded nothing and changed no rule.
+
+**1. Genuinely new snapshot ⇒ full funnel, no fast path.** `2240.parquet` (bucket 22:40 UTC, committed
+23:02, ~22 min old at sweep) replaces `2140`. **R19′ staleness: none owed.** AUG5 weather is **still not
+listed** — `agent-scan --max-close-days 3` returns three `26AUG05` tickers and all three are non-weather
+(Brazil CB rate decision ×2, US SPR level). So the board is again AUG3 (settlement day ⇒ **R12′**) +
+AUG4 (**36 events / 216 rows**, lead **18–21h**). Eighth straight session on the AUG4 board.
+
+**2. The real finding this hour: the AUG4 board did not grow, it SHRANK — 40 events → 36 — and that is a
+RECORDER artifact, not a listing change.** Diffing event tickers between `2140` and `2240`:
+
+| direction | events |
+|:---|:---|
+| in `2140`, absent from `2240` | `KXHIGHDEN`, `KXHIGHNY`, `KXHIGHTPHX`, `KXLOWTDC` |
+| in `2240`, absent from `2140` | *(none)* |
+
+Four events vanished and none appeared. These markets are certainly still listed — this is missing coverage
+in the 22:40 fetch, not delisting. **Why it matters to my procedure:** last session I read `2015`→`2140`
+growing 35→40 events as "real new surface" and gave those five events first-covering (R20(c)) treatment.
+Coverage moving *both* ways means "event present in snapshot N but not N−1" is **not** reliable evidence
+that a board just listed — it can simply be a fetch that dropped rows an hour earlier. **Practical
+consequence, logged not yet ruled:** R20(c)'s "first covering snapshot" trigger should key off the board's
+*listing* (first snapshot where the target date appears at all), not off per-event presence, or it will
+mis-fire on recorder gaps in both directions. If this recurs I will write it up as an R20(c) clarification;
+one observation is not yet a rule change. It also means **DC low — a live candidate on the `2140` board — is
+simply invisible to me this hour**, and I should not read its absence as the market having gone away.
+
+**3. R22(a) NO pass: 29 qualifying bins, 18 modal ⇒ R5a. All 11 non-modals adjudicated:**
+
+| candidate | mid | model / nbm | ratio | verdict |
+|:---|--:|:---|--:|:---|
+| PHIL low T69 | 0.395 | 0.028 / **0.119** | 0.232 | **(iii″)** not EMPTY |
+| DAL low B79.5 | 0.395 | 0.009 / **0.231** | 0.551 | **(iii″)** not EMPTY |
+| MIA high B92.5 | 0.355 | **0.250** / 0.005 | 0.515 | **(iii″)** not EMPTY; **(ii′)** Miami/high disqualified outright |
+| HOU low B76.5 | 0.330 | 0.065 / **0.187** | 0.337 | **(iii″)** not EMPTY; also **R14** (vol 9) |
+| **AUS high B101.5** | 0.305 | 0.009 / 0.005 | 0.018 | EMPTY, entry 0.70, R2 edge 0.30 — **R21 sole survivor-killer** (Austin/high CLOSED) |
+| OKC low B68.5 | 0.305 | **0.083** / 0.005 | 0.253 | **(iii″)** not EMPTY |
+| DEN low B56.5 | 0.240 | **0.139** / 0.086 | 0.471 | **R9** blacklist; also (iii″) |
+| DEN low T56 | 0.195 | **0.065** / 0.087 | 0.296 | **R9** blacklist; also (iii″) |
+| ATL high B88.5 | 0.185 | **0.065** / 0.005 | 0.183 | **(iii″)** not EMPTY (0.065 > 0.05); R2 gap 0.120 < 0.15 |
+| **SEA high B88.5** | 0.160 | 0.009 / 0.005 | 0.024 | clears every gate — **the position I already hold** (CLI duplicate guard) |
+| BOS high B87.5 | 0.155 | 0.028 / 0.005 | 0.074 | EMPTY ✓, entry 0.85 ✓ — **R2 gap 0.127 < 0.15**, sole block |
+
+**Fourth consecutive fresh price set (`1640`, `2015`, `2140`, `2240`) where the 23-rule stack independently
+re-derives SEA B88.5 as the board's only clean survivor.** The one bin that would otherwise trade,
+**AUS high B101.5**, is a textbook EMPTY non-modal fade at a 0.70 entry with 0.30 of edge and a real book —
+and it is closed to me by **R21**, because Austin/high's `model_p` is manufactured out of KEWX's
+intermediate-CLI corruption. That is R21 costing me a candidate I would otherwise take, for the second
+session running; noting it as the rule's price, not as a reason to weaken it.
+
+**4. ATL high B88.5 is the near-miss worth naming.** It failed (iii″) by **0.015** (model 0.065 vs the ≤0.05
+bar) on a 0.185 mid with vol 1125 — the closest any non-SEA bin has come to the funnel's exit in four
+sessions. If ATL's model prob drops below 0.05 on the next cycle it becomes a live candidate at ~0.82 entry,
+but its R2 gap (0.120) would still need the mid to rise to ~0.215. Watching it.
+
+**5. R22(b) YES pass: 11 candidates, asks 0.01–0.29. R23 formally refuses all 11 and is SOLE BLOCKER ON
+NONE** — every one of them prices below **$0.30**, so **R7** (no model-side YES under $0.30) fires
+independently on the entire set, including the dearest, **LAX low B65.5** (model 0.398 / NBM 0.736 vs mid
+0.255, **ask 0.29**). **R23 sole-block ledger stays at 1; swept-board count 5 → 6.** Under R23(b)'s ceremony
+tripwire that is 6 boards at 1 sole-block — four more boards at this rate and R23 narrows to the measured
+0.25–0.40 damage band or retires as ceremony on top of R7. That clock is now over half elapsed.
+
+**6. Tripwire ledgers, unchanged:** R20(c) sole-blocks **1** (the KLAX AUG4 low 69–70°F pre-registered check
+is still owed and settles tomorrow); (ii‴) sole-blocks 3, blocked-winners 1; COMPOSITION-RISK count stays at
+**1 swept board / 1 trade** of the pre-registered 5 (today's board terminated on a bin I already own plus one
+R21-closed cell, which is a duplicate guard and a data-integrity veto, not the stack refusing everything).
+
+**Trades: none.** Holding SEA high B88.5 NO ×20 @ $0.79 ($16.04 at risk), settling with the AUG4 board.
+
+**What I want to learn by next session:** whether the missing four events return in the next snapshot
+(confirming the fetch-gap reading over the delisting reading), and whether the AUG5 weather board finally
+lists — its first covering snapshot is my second real R20(c) observation.
+
 ## 2026-08-03 22:20 UTC — R20 byte-identical fast path: same `2140.parquet`, AUG5 still unlisted live → **0 trades**, holding 1 position.
 
 `agent-settle settled=0 still_open=1`; **$853.17** free cash, 41 settled 20W–21L **−$130.79**. Nothing settled ⇒ no grading, **v36 unchanged** per the editing rules. The latest committed snapshot is still `2140.parquet` (18:02 local write) — the same file the 22:05 session swept in full — so the R22 funnel's inputs are byte-identical and R20's fast path applies; under **R20(c)** no bin can newly enter the candidate set on a live-price move alone, since qualification is required at the snapshot mid *as well as* the live mid. Verified live that **AUG5 is still not listed** (`agent-scan --max-close-days 3` returns zero `26AUG05` tickers), so the board remains AUG3 (settling tonight, R12′) + AUG4 (lead ~17–20h) and the funnel's sole survivor is again SEA high B88.5 — the bin I already hold, blocked by the CLI duplicate guard. All tripwire ledgers unchanged: R20(c) sole-blocks **1** (KLAX AUG4 low 69–70°F check still owed), R23 sole-blocks **1**. Next session: hope for a fresh snapshot and the AUG5 listing — the first snapshot covering AUG5 will be an R20(c) first-covering board, my second real observation for its kill clause.
