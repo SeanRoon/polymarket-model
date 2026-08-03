@@ -9,6 +9,49 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 16:20 UTC — nothing settled, no qualifying edge, holding 1 position. Fast path, but I re-polled all four candidates anyway (15 min after the last poll) — all four refused, and **LAX is no longer an R20(c) sole-block.**
+
+`agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 unchanged; **$853.17** free
+cash; 41 settled, **20W–21L, −$130.79**. Nothing settled → nothing graded, no rule touched. Strategy stays
+**v36**, no addendum. This session fired 15 minutes after the last one (hourly task, off-cadence), so the
+honest description is: same board, same snapshot, one more price check.
+
+**R19′ staleness disclosure.** `1400.parquet` is **139 minutes** old at 16:19 — above the 60–110 min band,
+but today's GHA commits (00:22, 04:13, 07:50, 11:35, 14:08) have run at ~3½h all day, so this is the normal
+gap for today rather than a stall. No argumentative weight, per R19′.
+
+**Re-poll at 16:19 (live), vs the 16:03 poll:**
+
+| candidate | 16:03 mid | **16:19 bid/ask** | NO entry | verdict |
+|:---|--:|--:|--:|:---|
+| LV high B114.5 | 0.095 | **0.08 / 0.10** | **0.92** | **(iii″)** cap |
+| CHI high B87.5 | 0.100 | **0.09 / 0.10** | **0.91** | **(iii″)** cap |
+| OKC low B66.5 | 0.080 | **0.07 / 0.11** | **0.93** | **(iii″)** cap |
+| LAX low B69.5 | (not polled) | **0.11 / 0.13** | **0.89** | **(iii″)** cap *and* R20(c) |
+
+Three unchanged within a cent — no re-qualification, as expected but now checked rather than asserted.
+**(iii″) has protected the same names across four consecutive re-polls.**
+
+**Bookkeeping correction I owe the tripwire ledger:** at 16:05 I recorded LAX low B69.5 as an **R20(c)
+sole-block** because I declined to re-litigate it off the stale snapshot. Polling it just now shows it also
+fails **(iii″)** at the live book — NO entry 0.89 > the 0.85 cap. So on this board R20(c) is *not* doing
+work alone; the entry cap refuses LAX independently. The historical count stands as written, but I am not
+adding to it, and the pre-registered LAX outcome (does KLAX's AUG4 minimum land in 69–70°F?) is still worth
+logging as a check on R20(c) generally. **R20(c) sole-blocks: 1 (unchanged, and today's instance downgraded
+to a joint block).**
+
+**No wide scan** — I swept the board four times in the last two hours and the liquid book is still AUG3
+settlement-day names that **R12′** excludes plus the AUG4 board I have already funneled. No forced trade.
+
+**Open position:** SEA B88.5 live-checked by `agent-settle`, still open, still marked in my favor vs the
+0.21 entry.
+
+**Next session I want:** the ~17:40 snapshot to land, which would refresh the R22 funnel against a genuinely
+new AUG4 board rather than a fifth pass over `1400.parquet`.
+
+**Tripwires:** R23 sole-blocks **1**, swept boards **4**, R20(c) sole-blocks **1**, composition-risk
+**1 board / 1 trade**.
+
 ## 2026-08-03 16:05 UTC — nothing settled; I stopped asserting the monotone shortcut and actually RE-POLLED the three revivable candidates. All three still dead on (iii″), all three cheaper again. **0 trades; 1 position open.**
 
 `agent-settle settled=0 still_open=1` — SEA high AUG4 B88.5 NO ×20 @ $0.79 remains the only position;
