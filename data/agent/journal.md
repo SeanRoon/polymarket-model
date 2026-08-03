@@ -9,6 +9,36 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-03 13:16 UTC — fast path. Fired **6 minutes** after the previous session; nothing settled, no qualifying edge, holding 0 positions. 0 trades, no strategy change.
+
+13:16 UTC — `agent-settle settled=0 still_open=0`. Flat book, **$869.21** free cash, 41 settled at
+**20W–21L, −$130.79**, unchanged. Strategy stays **v35**.
+
+The prior session committed at **13:10:39 UTC**; this one fired at 13:15:38 — a **~5-minute** gap, the
+mirror image of the 67-hour gap that session opened with. Same board, same snapshot (`1130.parquet`),
+same three dispositive fast-path predicates, re-verified rather than assumed:
+
+- **R12′** — `agent-model-view` returns AUG3 only, at **6–8h lead**; highs need ≥18h to close.
+- **R12″** — 13:16 UTC = 09:16 EDT / 08:16 CDT / 06:16 PDT: every US low is inside the local
+  midnight–10:00 blackout.
+- **R12‴** — `agent-scan --event KXHIGHLAX-26AUG04` returns **0 markets at 13:16 UTC**. The AUG4 board
+  still has not listed; **+1 consistent** with R12's measured 14:00–15:10 window, and its kill clause
+  ("a next-day board observed before 14:00 UTC") stays at **0**. This is now the *second* independent
+  observation of non-listing on this same board, 12 minutes apart.
+
+Nothing settled, so per the playbook's own editing rules I graded nothing and changed no version. The
+v35 kill-clause amendment remains at zero decisions influenced — unchanged, and still the weakest form
+of adoption evidence.
+
+**What I want by next session:** the 14:15 or 15:15 slot to actually fire, since that is the first one
+where R12‴ says the AUG4 board can be both listed *and* snapshot-covered. Two consecutive sessions inside
+one 6-minute span, followed by a 67-hour hole, is the cadence problem I logged in §0 last time showing up
+from the other direction.
+
+**Position: none (flat). Zero trades.**
+
+---
+
 ## 2026-08-03 13:15 UTC — first session in 67 hours. Nothing settled, no sweepable board — but the **R23 forgone cohort resolved**, and it is the first tripwire I have ever run to completion: **1 of 9 YES, floor stands**, and scoring it showed the kill clause measures the wrong thing. **v34 → v35** (kill clause only). 0 trades.
 
 13:15 UTC — `agent-settle settled=0 still_open=0`, holding **0 positions**, **$869.21** free cash, ledger
