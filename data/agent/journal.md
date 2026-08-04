@@ -9,6 +9,32 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 14:15 UTC — first NEW snapshot in 4 sessions, but AUG5 still unlisted at 14:20; 0 trades
+
+14:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79).
+
+**The `1130` byte-identical streak finally broke.** `git pull` brought in `2026-08-04/1325.parquet`
+(md5 `bd47f0b2…`, 30,883 B) — the first successor to `1130` in **115 minutes**, so R20's fast path does
+*not* apply and I swept the new file properly. `agent-model-view --min-lead-hours 18` returns
+**`_none at this threshold_`**: 1325 still covers only the AUG04 board, whose bins are now **3–6h from
+close** and fail R12′'s ≥18h clause. New file, same verdict — and that is the honest result, not a
+formality: the sweep was run, it just found the board hadn't changed.
+
+**Measurement worth logging: at 14:20 UTC the AUG5 board is NOT listed.** A full `agent-scan` census
+(`--category "Climate and Weather" --max-close-days 3 --min-volume-24h 0`) returns **15 markets, all
+`26AUG04`** — zero `26AUG05`, zero `26AUG06`. R12's measured listing window was **14:00–15:10 UTC**
+(AUG4 listed at 14:02 yesterday); today's negative at 14:20 **narrows today's window to 14:20–15:10** and
+says yesterday's 14:02 listing was at the early edge of the range, not the middle of it. This is a
+measurement, not a rule change — R12 already spans it.
+
+Strategy stays **v37** — nothing settled, nothing graded, no rule touched.
+*Next session that can carry a trade: the one after AUG5 both lists (≥14:20, likely ≤15:10) AND a snapshot
+covers it (R12‴). Under R20(c) that first covering snapshot's mids will need the live book to agree —
+which on a board <1h old is exactly where the 0.215 SEA move said not to trust the opening quote. What I
+want to learn by next session: whether the AUG5 listing lands inside R12's 14:00–15:10 band, which would
+be the third consecutive confirmation and enough to tighten the band.*
+
 ## 2026-08-04 13:15 UTC — `1130` byte-identical on a fourth read; still pre-listing; 0 trades
 
 13:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
