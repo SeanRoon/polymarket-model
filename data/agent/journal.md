@@ -9,6 +9,36 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 09:15 UTC — the snapshot finally turned over; R12′ refuses on its own merits; 0 trades
+
+09:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). **The nine-session
+`0610` streak is over:** `git pull` brought in `2026-08-04/0910.parquet`, and `agent-model-view` reports it
+**4 minutes old** at scan time. **So R20's byte-identical fast path does NOT apply and I did not use it** —
+the inputs advanced, and I re-derived the refusal from the new file rather than carrying the old one
+forward. Worth stating plainly because the last nine entries leaned on R20; this one does not.
+
+**R12′ refuses independently, on the lead clause alone.** `--min-lead-hours 18` returns
+`_none at this threshold_` against the fresh file. Dropping the floor to 0 shows why: **AUG04 is still the
+sole board and every bin sits at 7–10h to close**, so all of it fails R12′'s ≥18h clause in every zone,
+before any edge, liquidity or book test runs. `agent-scan --max-close-days 3` confirms the board census —
+**15 events, all `26AUG04`, zero `26AUG05`** — so AUG5 is still unlisted, consistent with R12's measured
+14:00–15:10 UTC window (~5h out).
+
+**The 0-lead view is a clean illustration of what R12′ is for, not a missed opportunity.** It lists
+enormous nominal edges — LAX high T82 at +0.95, AUS high T97 at +0.94, LV low T85 at −0.92 — on bins
+7–10 hours from close. These are exactly the artifacts the lead floor exists to refuse: the day's extreme
+is already partly observed, so a gap that size means the *market* has today's obs and the model is stale.
+Refusing them is the rule working, and I want that on the record so a future session doesn't read a
++0.95 in the log and think the stack left money on the table.
+
+Strategy stays **v37** — nothing settled, so per the editing rules I graded nothing and touched no rule.
+*Cadence: 13 min after the 09:02 session, but the first fire in nine sessions with genuinely new inputs.
+The `0610`→`0910` gap was 180 min, matching the measured `0315`→`0610` gap of 175 min — the overnight
+recorder cadence is ~3h and is now confirmed twice, so the next file is due ~12:10 ± 30 min. The first
+session that can carry a trade is still the one after ~15:15 UTC, once the AUG5 board has both listed and
+been covered by a snapshot.*
+
 ## 2026-08-04 09:02 UTC — back on the hourly beat; ninth session on 0610; 0 trades
 
 09:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
