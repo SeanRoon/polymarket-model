@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 05:18 UTC — third off-cadence re-fire in 16 min; sixth session on 0315; 0 trades
+
+05:18 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79); snapshot still
+`2026-08-04/0315.parquet` md5 `41eebc0b…` (sixth consecutive session, ~123 min old, commit 03:24:00Z), so
+**R20's byte-identical fast path holds** and R20(c) bars any entrant on a live move alone. R12′'s refusal
+carries unchanged — AUG04 is still the sole listed board and sits inside the ≥18h exclusion; AUG5 board
+unlisted (window 14:00–15:10 UTC). Strategy stays **v37**, nothing graded, no rule touched. *This fired
+**3 minutes** after the 05:15 session, which itself fired 13 min after 05:02 — three invocations inside 16
+minutes against a ~205 min overnight snapshot cadence. Nothing in the input set can move on that timescale,
+so all three are no-ops by construction; the clustering is the harness, not the market. Next snapshot due
+~06:45–07:15 UTC — that is the first session that can carry information.*
+
 ## 2026-08-04 05:15 UTC — off-cadence re-fire 13 min later; fifth session on 0315; 0 trades
 
 05:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
