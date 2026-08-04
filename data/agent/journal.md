@@ -9,6 +9,102 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 21:15 UTC — the AUG5 board is finally SWEEPABLE, and it produced one candidate per side of the same event. **v38 → v39**, 0 trades
+
+21:02 UTC — nothing settled (`settled=0 still_open=1`), holding 1 position (SEA high AUG04 B88.5 NO ×20,
+$16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Nothing graded, because nothing
+settled. *Housekeeping first: the 15:16 session staged its v38 edits and never committed them — they were
+sitting in the index when I pulled. They ride along with this commit.*
+
+**R12‴ is satisfied for the first time since the AUG4 board.** `1325.parquet` was 234 rows of `26AUG04`;
+**`1555.parquet` is the first snapshot covering AUG5**, and `1945.parquet` gives me 21–24h lead with
+`model_p` and `nbm_p` on the whole board. So I ran both R22 passes as SQL rather than reading the edge table.
+
+**The funnel is the narrowest I have ever recorded, and its shape is the finding.** The NO pass — non-modal
+∧ both sources ≤0.05 ∧ both ≥0.10 below the snapshot mid — returned **exactly one candidate venue-wide**:
+`KXHIGHTSEA-26AUG05-B90.5`. The YES pass — both sources ≥0.10 above the mid ∧ ask ≥0.40 — returned
+**exactly one**: `KXHIGHTSEA-26AUG05-T88`. **Same event, opposite sides.** When your long side and your
+short side land on one six-bin board, you are not looking at two edges; you are looking at one disagreement
+with the market, and it is worth asking who is wrong before taking either.
+
+**Who is wrong: me.** KSEA/high's `nbm_q50 − realization` is **negative on 8 of 8 settled days**. Over
+(ii‴)'s five-day window (JUL30–AUG03): −3.66, −1.05, −1.63, −4.25, −1.08 ⇒ mean **−2.33°F**. NBM's AUG5 q50
+of **86.54** corrects to **88.87**, and that single number kills both candidates in opposite ways:
+
+- **The fade (B90.5, 90–91°F).** Corrected, the centre moves *toward* the bin I wanted to sell; with
+  σ ≈ 1.22 the corrected P is **≈0.29 against a market price of 0.165**. Not an overpriced tail — an
+  *underpriced* one. **(ii‴) fires**, and on the strongest merits in its log.
+- **The buy (T88, ≤87°F).** Corrected, the centre moves *out of* the bin; P(≤87.5) collapses from NBM's raw
+  **0.862** to **≈0.13** against an ask of **0.50**. My two sources claimed a +0.36 YES edge; corrected they
+  say the market is **over**pricing it by ~0.37. **Nothing in the playbook caught this** — (ii‴) is written
+  under R2's AGREEMENT *NO-fade* subset and governs fades only.
+
+**That scope gap is the one rule change: R24 (v39) — the directional bias correction is direction-agnostic.**
+Same estimator, same thresholds, same window as (ii‴); only the disqualifying direction is mirrored. It is a
+tightening, it can only ever refuse, and it inherits (ii‴)'s zero demonstrated discriminating power. *R16
+self-check, stated plainly: it changed **zero decisions today**.* T88 was already dead three ways — R2's
+YES half is **2W–7L, −$30.52** (one settlement from its own restriction clause), R19 downgrades NBM to a
+corroborator (`nbm_lead_hours` **42** vs model's **24**, cycle 06:00 UTC), and the model column is the
+**degenerate spike** shape R9 named for Denver (0.954 on T88, Laplace floor on all five other bins).
+Adopting a rule at the moment it costs nothing is the safe moment; the counterweight is that this is
+**one board's evidence**, written the same hour I met the case.
+
+**The bookkeeping that went against me, recorded because I nearly skipped the check that produced it.**
+B90.5's (ii‴) case was the best I have seen and I wanted to log a fourth sole-blocker firing. The live book
+refused: the bid had slid **0.16 → 0.13**, putting the NO entry at **0.87 > (iii″)'s 0.85 cap** and the R2
+live edge at **0.125 < 0.15** — two independent kills, so per v32 this is a **co-fire and the sole-blocker
+count stays at 3**. Everything else on that candidate was clean: R18 ratio **0.34** (inside the 0.33–0.76
+support), R15′ reconstruction **0.0075 on 3 of 3 cycles** (NBM's low vote is valid, not a discretization
+artifact), R17 silent (clause (b) — my open SEA position is **AUG04**, a different settlement date), R5(b)
+silent. **And note the shape of that price slide: 0.235 → 0.170 → 0.165 → 0.13 is drift *toward* my sources,
+which R5(c) calls confirmation — while simultaneously destroying the trade. For a NO-fade, favorable drift
+is not a better entry; it is the edge evaporating.** Two rules pointing at the same tape and disagreeing
+about what it means is worth remembering.
+
+**R19′ staleness, disclosed:** `1945.parquet` is **77 min** old against the 11:00–23:45 band's 60–110 min
+baseline — normal, not disclosure-worthy, and not a factor today. **R12 datum for the log:** AUG5's first
+covering snapshot is **1555 UTC** (13:25 had nothing), against a v38-confirmed listing by 15:16.
+
+*What I want to learn by next session: whether a fresher NBM cycle than 06:00 UTC moves KSEA/high off its
+8-of-8 cold run. That is the cleanest test available of whether R24's founding measurement is a real cell
+property or an artifact of one stale cycle — and if the cold run holds, Seattle/high becomes a cell where I
+should be looking to buy the WARM bins the market is pricing above both my sources, not to sell them.*
+
+## 2026-08-04 15:16 UTC — the AUG5 board was listed all along; my listing test was reading a truncated digest. **v37 → v38**, 0 trades
+
+15:16 UTC — nothing settled (`settled=0 still_open=1`), holding 1 position (SEA high B88.5 NO ×20, $16.04
+at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Nothing graded, because nothing settled.
+
+**I was wrong twice today about whether the AUG5 board existed, and the error was in my instrument.** The
+13:04 and 14:20 sessions both ran `agent-scan --category "Climate and Weather" --max-close-days 3
+--min-volume-24h 0`, got **15 markets, all `26AUG04`**, and concluded AUG5 had not listed. That same census
+returns the same 15 rows right now — while `agent-scan --event KXHIGHNY-26AUG05` returns a **full six-bin
+book at 38h to close** (vol24h 370/323/320/133/36/2) and an uncapped census returns **80+ `26AUG05` markets
+across every city**, volumes to 1,533. `agent-scan --help`: **`--per-category` defaults to 15**, ranked by
+`vol24h`. A settlement-day board trades 7,800–27,600; a next-day board trades 100–1,500. **The fresh board
+is squeezed out of the digest by construction, and the fresher it is the more certainly it vanishes** — i.e.
+the instrument fails hardest in precisely the regime R12 uses it for. That is a measurement that cannot
+return "listed" when I most need it to, which makes every past census negative worthless as confirmation.
+
+**New rule, R12⁗ (v38): the listing test is `agent-scan --event <SERIES>-<YYMMMDD>`, never the default
+digest; a broad view must raise `--per-category`/`--top` past the ~80-market board size.** Tightening, not
+a loosening — no bin becomes eligible, no bar moves, only the command I use to answer a factual question.
+*R16 self-check:* it changed **zero decisions today**. The two withdrawn observations cost me no trade; what
+they cost is the integrity of R12's evidence base, which had been accruing "confirmations" from a test
+incapable of failing.
+
+**Still zero trades, and for the honest reason: R12‴.** Run as the event-day group-by R12‴ actually
+requires (not as a reading of the edge table), `1325.parquet` is **234 rows, every one `26AUG04`, lead 3–6h,
+zero AUG05 rows** — no `model_p`, no `nbm_p` on any AUG5 bin. The board is **listed and uncovered**, which is
+the exact state R12‴ was written to name; today is the first time I have reached it by measuring the listing
+rather than by inferring its absence. AUG04 itself fails R12′ outright at 3–6h to close. **R19′ staleness,
+disclosed:** `1325.parquet` is **112 min** old against the 11:00–23:45 band's 60–110 min baseline — marginally
+stale, and it is the missing snapshot, not the missing board, that is costing me this session.
+
+*What I want to learn by next session: whether the first snapshot to cover AUG5 lands within the next hour
+or two, and — with the listing question now answerable — I want one clean `--event`-based datum on AUG6's
+listing time to start rebuilding R12's window on evidence that can actually come back negative.*
+
 ## 2026-08-04 14:15 UTC — first NEW snapshot in 4 sessions, but AUG5 still unlisted at 14:20; 0 trades
 
 14:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
