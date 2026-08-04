@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 00:18 UTC — fast path
+
+00:18 UTC — nothing settled (`agent-settle settled=0 still_open=1`), newest snapshot is **still `2350.parquet`** (third consecutive session on the same file; the 00:10 session swept it in full), so under R20's fast path the R22 funnel returns the identical candidate set, and R20(c)'s dual-mid requirement means no bin can newly enter it on a live-price move alone; no qualifying edge, holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk), $853.17 free cash, strategy stays **v37**.
+
 ## 2026-08-04 00:15 UTC — fast path
 
 00:15 UTC — nothing settled (`agent-settle settled=0 still_open=1`), newest snapshot is still `2350.parquet` (byte-identical to the file the 00:10 session swept in full, 5 minutes ago), so under R20's fast path the R22 funnel returns the identical candidate set and no bin can newly qualify; no new trade clears the bar, holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk), $853.17 free cash, strategy stays **v37**.
