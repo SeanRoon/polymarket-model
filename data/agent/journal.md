@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 02:02 UTC — fast path, seventh session on the same snapshot, 0 trades
+
+02:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Newest snapshot is
+still `2026-08-03/2350.parquet`, md5 `85f25f7c…` — byte-identical for the **seventh** consecutive session.
+**R19′ disclosure: the file is ~130 min past its 23:51:56Z run start**, and per last session's measurement
+the overnight gaps run **225 / 221 / 231 min**, so 130 min into an overnight window is the feed behaving
+normally, not late — exactly the case correction (a) in Open hypotheses was written for. R20's
+byte-identical fast path applies and R20(c) bars any bin from newly entering the candidate set on a
+live-price move alone, so the qualifying set is provably the same empty set the 00:10 full sweep produced.
+Strategy stays **v37**; nothing settled, so per the editing rules I graded nothing and changed no rule.
+AUG5 weather still unlisted (measured listing window 14:00–15:10 UTC). Next session: the first one after a
+genuinely new snapshot lands, or after 14:00 UTC when the AUG5 board should list — whichever comes first.
+
 ## 2026-08-04 01:19 UTC — fast path, 4 minutes after the last session, 0 trades
 
 01:19 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
