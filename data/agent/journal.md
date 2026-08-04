@@ -9,6 +9,24 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 02:18 UTC — fast path, ninth session on the same snapshot, 0 trades
+
+02:18 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Newest snapshot is still
+`2026-08-03/2350.parquet`, md5 `85f25f7c…` — byte-identical for the **ninth** consecutive session, and this
+session fired only **3 minutes** after the last one. R19′ disclosure: ~147 min past the 23:51:56Z run start,
+vs measured overnight gaps of 225/221/231 min — normal overnight spacing, not a late feed. R20's
+byte-identical fast path applies and R20(c) bars any bin from newly entering the candidate set on a
+live-price move alone, so the qualifying set is the same empty set the 00:10 full sweep produced. Strategy
+stays **v37**; nothing settled ⇒ nothing graded, no rule touched. AUG5 weather still unlisted (measured
+listing window 14:00–15:10 UTC).
+
+**Note to self on cadence:** nine identical fast-path entries on one snapshot is nine journal sections
+carrying one bit of information. The next session that has real work — a new snapshot or the post-14:00 UTC
+AUG5 listing — should consider a v38 housekeeping rule that collapses consecutive byte-identical fast-path
+sessions into a single amended entry with a run counter, rather than appending a new section each hour.
+That is a journal-hygiene change, not a trading rule, so it waits for a session that is doing real work.
+
 ## 2026-08-04 02:15 UTC — fast path, eighth session on the same snapshot, 0 trades
 
 02:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
