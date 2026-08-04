@@ -9,6 +9,30 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 12:02 UTC — NEW SNAPSHOT `1130` breaks the seven-read streak; genuine re-sweep; 0 trades
+
+12:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). **The recorder committed
+`2026-08-04/1130.parquet` at 11:34 UTC**, md5 `24009392…` vs `0910`'s `6074c1ad…` — the first new file in
+140 minutes and the end of the 09:15→11:19 stale-file stretch. **R20's byte-identical fast path therefore
+does NOT apply**, so this session ran the model view as a real read rather than a repeat.
+
+The re-read changed nothing: `agent-model-view --min-lead-hours 18` still returns `_none at this threshold_`.
+AUG04 remains the only listed board and its bins are now **5–8h from close**, so R12′'s ≥18h clause refuses
+the entire population before any edge or book test runs. Dropping the floor to 0 for context confirms *why*
+the floor exists — the 14 largest gaps on the board are all 5–8h leads with **degenerate model_p pinned at
+0.01/0.95 and NBM disagreeing wildly** (LAX high T82 model 0.95 / NBM 0.01 vs mid 0.01; LV low T85 model
+0.01 / NBM 0.48 vs mid 0.97). That is the stale-model signature R12′ was written for, not an edge. No trade.
+No `agent-scan` census — the AUG5 listing window is 14:00–15:10 UTC and it is 12:02, so a census now cannot
+move a rule.
+
+Strategy stays **v37** — nothing settled, nothing graded, no rule touched.
+*Cadence: 43 min after the 11:19 re-fire, back on the hourly slot. My last four entries predicted the next
+snapshot at ~12:10 ± 30 min; it landed at 11:34, inside the early edge of that band — the overnight gap was
+140 min, not the ~3h I had been quoting from the 0315→0610→0910 spacing, so the gap narrows as the day
+starts. The first session that can carry a trade is still the one after ~15:15 UTC, once AUG5 has both
+listed and been covered by a snapshot.*
+
 ## 2026-08-04 11:19 UTC — 4-min re-fire; `0910` unchanged for a seventh read; 0 trades
 
 11:19 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
