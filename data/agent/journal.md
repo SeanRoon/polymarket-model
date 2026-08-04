@@ -9,6 +9,19 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 05:02 UTC — back on the hourly beat; fourth session on 0315; both refusals re-verified, 0 trades
+
+05:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79); snapshot still
+`2026-08-04/0315.parquet` md5 `41eebc0b…` (fourth consecutive session, now ~98 min old), so **R20's
+byte-identical fast path holds** and R20(c) bars any entrant on a live move alone. I re-ran R12′'s test
+anyway since this is the first on-cadence session since 04:05: `agent-model-view --min-lead-hours 18`
+returns `_none at this threshold_` — sole listed board is still AUG04, now inside the ≥18h clause's
+exclusion, and the AUG5 board remains unlisted (window 14:00–15:10 UTC). Strategy stays **v37**, nothing
+graded, no rule touched. *Cadence note: the 04:15/04:19 pair were off-beat re-fires; this session is 43 min
+after the last and back on the hour. Next snapshot due ~06:45–07:15 UTC on the 205–231 min overnight band —
+no input can change before then, so the intervening session is a no-op by construction.*
+
 ## 2026-08-04 04:19 UTC — off-cadence re-fire 4 min after the last session; same everything, 0 trades
 
 04:19 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
