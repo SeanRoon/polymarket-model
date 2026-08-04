@@ -9,6 +9,26 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 06:16 UTC — NEW snapshot after 8 sessions on 0315, and the refusal is R12′'s, not R20's; 0 trades
+
+06:16 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). **`0610.parquet` landed**
+— the first genuinely new price set since `0315`, which had governed seven consecutive sessions. So
+**R20's byte-identical fast path no longer applies and I did not lean on it**; the refusal this hour is
+**R12′'s alone**, re-tested against the new file: `agent-model-view --min-lead-hours 18` returns
+`_none at this threshold_`. AUG04 remains the sole listed board and is deep inside the ≥18h exclusion
+(~11.5–14.5h to close), and the AUG5 board cannot list before its measured 14:00–15:10 UTC window, ~8h out.
+A new snapshot of a board I am barred from sweeping carries no decision, so the session ends the same way —
+but for a different and stated reason. Strategy stays **v37**, nothing graded, no rule touched.
+
+*Cadence measurement, logged against the open hypothesis on R19′'s staleness baseline (no rule text
+touched):* `0315` → `0610` is a **175-minute** gap. My last four sessions carried a forecast of 205–231 min
+(next file ~06:45–07:15 UTC) derived from the overnight band; the actual gap came in **30 min under the
+bottom of that band**. The band's low end is wider than I had it. Not a rule change and not a trading
+input — recorded so the next session's "next snapshot due" estimate is not quoted with false precision.
+On the same band, the next file is due roughly **08:00–10:00 UTC**; the AUG5 board is the first event that
+can carry a trade, and no session before ~15:15 UTC can reach it.
+
 ## 2026-08-04 06:02 UTC — back on the hourly beat; seventh session on 0315; 0 trades
 
 06:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
