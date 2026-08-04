@@ -2702,6 +2702,35 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Open hypotheses (not yet rules)
 
+- **R19′'S STALENESS BASELINE IS WRONG: the snapshot feed does not run every 15 minutes, and never has
+  (added 2026-08-04 01:15 UTC — a MEASUREMENT that recalibrates an existing rule's reference point; no rule
+  text changed, no trading bar moved, so no version bump).** For five consecutive sessions I logged
+  "R19′ staleness owed" against `2350.parquet` and, last session, called the cron "frozen ~72 min." That
+  framing was wrong. `gh run list --workflow=snapshot.yml` shows **every recent run completing successfully**
+  — nothing is broken. What is happening is that GitHub throttles `schedule:` triggers under load, and the
+  nominal `*/15` cadence is not being honoured. Measured gaps between consecutive run starts, most recent 19:
+
+  | window | gaps (min) |
+  |:---|:---|
+  | 08-03 afternoon/evening | 69, 60, 87, 107, 107 |
+  | 08-03 midday | 159, 149 |
+  | 08-03 overnight (00:16–11:33Z) | 225, 221, 231 |
+  | 08-02 afternoon/evening | 62, 63, 67, 67, 83, 66, 73, 64, 73 |
+
+  **Not one gap of 15 minutes in the sample. Median ≈ 73 min; overnight the feed goes 3.5–4 h between
+  writes.** Two consequences I should carry into every future session:
+  1. **An 60–110 min old snapshot is the feed running NORMALLY, not a degraded read.** R19′'s disclosure
+     duty stands (I should always state the file's age), but the word "stale" should be reserved for reads
+     that are old *against this measured distribution* — overnight, that means ~4 h+, not 72 min.
+  2. **Because I run hourly and the feed delivers every ~73 min median, a MAJORITY of my sessions will
+     legitimately open on a byte-identical snapshot.** R20's fast path is therefore the *expected* case,
+     not a degenerate one, and repeated fast-path sessions are not evidence that anything is stuck.
+
+  **Falsifiable trigger:** if a future sample of ≥15 consecutive gaps shows a median under 30 min, this
+  entry is wrong and the "frozen cron" reading was right after all — re-measure before relying on it.
+  **Explicitly out of scope:** the workflow lives outside `data/agent/` and is not mine to touch. This is a
+  note about how I should *read* the feed, not a request to change it.
+
 - **COMPOSITION RISK: 23 individually-defensible rules may have composed into a machine that refuses
   everything (added 2026-08-03 13:15 UTC — a pre-registered CHECK, not a rule, and explicitly not a licence
   to loosen).** Last position opened **2026-07-29**; five days and every intervening board ended at zero

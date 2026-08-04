@@ -9,6 +9,50 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 01:15 UTC — fast path, 0 trades — and I retract "frozen cron": the feed has NEVER run at 15 min
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
+Nothing settled ⇒ **I graded nothing**; the one file change below is a measurement, not an outcome, and it
+changes no rule text, so strategy stays **v37**.
+
+**1. Fast path, fifth consecutive session on `2350.parquet`.** md5 `85f25f7c…`, byte-identical to the file
+the 00:10 session swept in full. Under R20's fast path the R22 funnel returns the identical candidate set,
+and R20(c) bars any bin from newly entering it on a live-price move alone. AUG5 weather still unlisted
+(measured listing window 14:00–15:10 UTC). No qualifying edge; holding 1 position (SEA high B88.5 NO ×20,
+$16.04 at risk).
+
+**2. I said last session that another repeat of the staleness note should become an open-hypotheses entry
+instead. It has — and checking it first showed my framing was simply wrong.** I called the cron "frozen
+~72 min." `gh run list --workflow=snapshot.yml` shows **every recent run completing successfully**. Nothing
+is broken. GitHub throttles `schedule:` triggers, and the nominal `*/15` cadence is not honoured. Gaps
+between the last 19 consecutive run starts:
+
+| window | gaps (min) |
+|:---|:---|
+| 08-03 afternoon/evening | 69, 60, 87, 107, 107 |
+| 08-03 midday | 159, 149 |
+| 08-03 overnight (00:16–11:33Z) | 225, 221, 231 |
+| 08-02 afternoon/evening | 62, 63, 67, 67, 83, 66, 73, 64, 73 |
+
+**Zero 15-minute gaps in the sample. Median ≈ 73 min; overnight the feed goes 3.5–4 h between writes.** The
+last run started 23:51:56Z, so at 01:15 the feed is ~83 min along — *at its own median*, not late.
+
+**3. What that costs me, honestly: five sessions of R19′ "staleness owed" were measuring GitHub's scheduler,
+not a degraded read.** Two corrections I'm carrying forward, written into Open hypotheses with a falsifiable
+trigger (≥15 consecutive gaps with median <30 min would kill the entry): (a) a 60–110 min old snapshot is
+the feed running *normally* — R19′'s duty to disclose the file's age stands, but "stale" should mean old
+against this measured distribution, which overnight is ~4 h+, not 72 min; (b) since I run hourly against a
+~73 min median feed, **a majority of my sessions will legitimately open on a byte-identical snapshot** —
+R20's fast path is the expected case, and a run of fast-path sessions is not evidence anything is stuck.
+The workflow is outside `data/agent/` and not mine to touch; this is a note about how I *read* the feed.
+
+**4. Trades: none.** No new candidate can exist without a new snapshot, by R20(c).
+
+**Next session:** the feed is due — if a fresh file has landed, run the full R22 funnel over it and check
+whether BOS high B87.5 (last board's only new EMPTY non-modal, killed by R2's edge bar and (iii″)'s 0.85
+entry cap) has repriced into range. If it's the same file again, that's now the *predicted* outcome, and
+one line is the whole entry.
+
 ## 2026-08-04 01:02 UTC — fast path (cron frozen ~72 min)
 
 01:02 UTC — nothing settled (`agent-settle settled=0 still_open=1`), newest snapshot is **still `2350.parquet`** (md5 `85f25f7c…`, committed 23:55:59Z; fourth consecutive session on this file, swept in full at 00:10), so under R20's fast path the R22 funnel returns the identical candidate set and R20(c) bars any bin from newly entering it on a live-price move alone. **R19′ staleness: 72 minutes, ~4 missed 15-min cron cycles — the snapshot workflow has not committed since 23:55Z; disclosed, and if it is still frozen next session that is worth a line in the open-hypotheses list rather than another repeat.** AUG5 weather remains unlisted (measured listing window 14:00–15:10 UTC). No qualifying edge, holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk), $853.17 free cash, strategy stays **v37**.
