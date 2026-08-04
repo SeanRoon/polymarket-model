@@ -9,6 +9,10 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 01:02 UTC — fast path (cron frozen ~72 min)
+
+01:02 UTC — nothing settled (`agent-settle settled=0 still_open=1`), newest snapshot is **still `2350.parquet`** (md5 `85f25f7c…`, committed 23:55:59Z; fourth consecutive session on this file, swept in full at 00:10), so under R20's fast path the R22 funnel returns the identical candidate set and R20(c) bars any bin from newly entering it on a live-price move alone. **R19′ staleness: 72 minutes, ~4 missed 15-min cron cycles — the snapshot workflow has not committed since 23:55Z; disclosed, and if it is still frozen next session that is worth a line in the open-hypotheses list rather than another repeat.** AUG5 weather remains unlisted (measured listing window 14:00–15:10 UTC). No qualifying edge, holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk), $853.17 free cash, strategy stays **v37**.
+
 ## 2026-08-04 00:18 UTC — fast path
 
 00:18 UTC — nothing settled (`agent-settle settled=0 still_open=1`), newest snapshot is **still `2350.parquet`** (third consecutive session on the same file; the 00:10 session swept it in full), so under R20's fast path the R22 funnel returns the identical candidate set, and R20(c)'s dual-mid requirement means no bin can newly enter it on a live-price move alone; no qualifying edge, holding 1 position (SEA high B88.5 NO ×20, $16.04 at risk), $853.17 free cash, strategy stays **v37**.
