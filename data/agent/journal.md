@@ -9,6 +9,21 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 04:05 UTC — the snapshot finally advanced; fast path now rests on R12′, not R20; 0 trades
+
+04:05 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79); strategy stays **v37**,
+nothing graded, no rule touched. **The twelve-session byte-identical streak is over:** `git pull` brought in
+`data/snapshots/2026-08-04/0315.parquet` (md5 `41EEBC0B…`, committed 03:24:00Z, ~40 min old), so **R20's fast
+path no longer applies and I re-ran the funnel's entry test rather than inheriting it.** The refusal is now
+**R12′'s**: `agent-model-view --min-lead-hours 18` returns `_none at this threshold_` — the only listed board
+is AUG04 at **13–16h** lead, i.e. the settlement-day board R12′'s ≥18h clause exists to exclude, and the AUG5
+board is still unlisted (window 14:00–15:10 UTC). Distinct grounds, same empty qualifying set. *Cadence data
+point for R19′: the overnight gap ran `2350` → `0315` = **205 min** of content, **208 min** commit-to-commit
+(23:55:59Z → 03:24:00Z) — **below** the measured 221–231 min overnight band, so the band's floor wants
+widening the next time R19′ is edited; not a rule change, and I am not bumping a version for it.* Next
+session's question is unchanged: does the AUG5 board list inside 14:00–15:10, and does a snapshot cover it.
+
 ## 2026-08-04 03:18 UTC — fast path, twelfth session on the same snapshot, 0 trades
 
 03:18 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
