@@ -9,6 +9,25 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 13:15 UTC — `1130` byte-identical on a fourth read; still pre-listing; 0 trades
+
+13:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Newest snapshot is
+*still* `2026-08-04/1130.parquet`, md5 `24009392…` — the **fourth** read of the same bytes (12:02, 12:15,
+13:02, now), so **R20's byte-identical fast path applies** and under R20(c) no bin can newly enter the
+candidate set on a live price move alone. The 12:02 full sweep of this exact file returned
+`_none at this threshold_` at `--min-lead-hours 18`: AUG04 is the only listed board and its bins are now
+**4–7h from close**, failing R12′'s ≥18h clause, and the large raw sub-floor gaps were degenerate model_p
+(0.01/0.95) with NBM disagreeing — the stale-model signature, not an edge. No `agent-scan` census either:
+R12's measured AUG5 listing window is **14:00–15:10 UTC** and it is 13:15, so a census 45 minutes early
+cannot move a rule.
+
+Strategy stays **v37** — nothing settled, nothing graded, no rule touched.
+*Cadence: 13 min after the 13:02 session. `1130` has now gone 101 minutes without a successor — the
+recorder's daytime spacing has been irregular all day. The first session that can carry a trade is still
+the one after ~15:15 UTC, once AUG5 has both listed and been covered by a snapshot, and R20(c) will need
+the live mid to agree with the snapshot read.*
+
 ## 2026-08-04 13:02 UTC — `1130` byte-identical on a third read; pre-listing hour; 0 trades
 
 13:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
