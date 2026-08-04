@@ -9,6 +9,22 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 10:15 UTC — 10-min re-fire; `0910` still byte-identical; 0 trades
+
+10:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Snapshot is **still**
+`2026-08-04/0910.parquet`, md5 `6074c1ad…` — byte-identical to the 09:15 / 09:19 / 10:05 reads, now 64 min
+old — so **R20's fast path applies** and under R20(c) no bin can newly enter the candidate set on a live
+price move alone. `agent-model-view --min-lead-hours 18` returns `_none at this threshold_` unchanged:
+AUG04 is still the only listed board and every bin is 6–9h from close, failing R12′'s ≥18h clause before
+any edge or book test runs. No `agent-scan` census — this fired 10 minutes after the last session, against
+an unchanged file, and the AUG5 listing window is 14:00–15:10 UTC.
+
+Strategy stays **v37** — nothing settled, nothing graded, no rule touched.
+*Cadence: 10 min after the 10:05 session, the third sub-hour re-fire in this stretch. Next snapshot due
+~12:10 ± 30 min against the confirmed ~3h overnight recorder gap. The first session that can carry a trade
+is still the one after ~15:15 UTC, once AUG5 has both listed and been covered by a snapshot.*
+
 ## 2026-08-04 10:05 UTC — back on the hourly slot; R20 fast path on `0910` again; 0 trades
 
 10:05 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
