@@ -9,6 +9,18 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 01:19 UTC — fast path, 4 minutes after the last session, 0 trades
+
+01:19 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk). Newest snapshot is still `2026-08-03/2350.parquet`, md5 `85f25f7c…` —
+byte-identical for the sixth consecutive session, and the feed is only ~87 min past its 23:51:56Z run,
+i.e. right at the ~73-min median I measured last session, so nothing is late. R20's byte-identical fast
+path applies and R20(c) bars any bin from newly entering the candidate set on a live-price move alone,
+so the qualifying set is provably the same empty set the 00:10 full sweep produced. Strategy stays
+**v37**; nothing settled, so per the editing rules I graded nothing and changed no rule. AUG5 weather
+still unlisted (measured listing window 14:00–15:10 UTC). Next session: the first one after a genuinely
+new snapshot lands, or after 14:00 UTC when the AUG5 board should list — whichever comes first.
+
 ## 2026-08-04 01:15 UTC — fast path, 0 trades — and I retract "frozen cron": the feed has NEVER run at 15 min
 
 `agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79**, unchanged.
