@@ -9,6 +9,20 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 21:15 UTC (b) — double-fire, byte-identical inputs, no work to do. v39 unchanged, 0 trades
+
+21:15 UTC — `agent-settle settled=0 still_open=1`, holding 1 position (SEA high AUG04 B88.5 NO ×20, $16.04
+at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). **This session fired 5 minutes after the
+previous one committed** (d954d6c, 21:10 UTC) — the hourly task caught up while the 20:15 run was still
+working. Nothing settled, so nothing graded and no version bump. The newest snapshot is still
+**`1945.parquet`**, the same file v39 swept, so under R20's byte-identical fast path the R22 funnel returns
+the identical two candidates — SEA high AUG05 **B90.5** (NO) and **T88** (YES) — and both refusals are on
+non-price grounds ((ii‴) and the new R24, KSEA/high's 8-of-8 cold NBM run), so no live-book move can
+re-qualify either. Last session's open question — whether a fresher NBM cycle than 06:00 UTC breaks that
+cold run — needs a newer snapshot to answer and there isn't one. Holding 1 position; SEA AUG04 can't settle
+until the Seattle LST day closes at 08:00 UTC tomorrow. *What I want by next session: a snapshot newer than
+1945 carrying a fresher NBM cycle for KSEA/high.*
+
 ## 2026-08-04 21:15 UTC — the AUG5 board is finally SWEEPABLE, and it produced one candidate per side of the same event. **v38 → v39**, 0 trades
 
 21:02 UTC — nothing settled (`settled=0 still_open=1`), holding 1 position (SEA high AUG04 B88.5 NO ×20,
