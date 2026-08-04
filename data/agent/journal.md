@@ -9,6 +9,29 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 13:02 UTC — `1130` byte-identical on a third read; pre-listing hour; 0 trades
+
+13:02 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79). Newest snapshot is
+*still* `2026-08-04/1130.parquet`, md5 `24009392…` — the same bytes I swept at 12:02 and 12:15, so this is
+the **third** read of one file and **R20's byte-identical fast path applies**. Under R20(c) a bin cannot
+newly enter the candidate set on a live price move alone (qualification is required at the snapshot mid
+*and* the live mid), so no live-book move between 12:15 and now can have created a candidate out of a file
+whose 12:02 full sweep returned `_none at this threshold_` under `--min-lead-hours 18`. That sweep's finding
+stands: AUG04 is the only listed board, its bins are now **4–7h from close** and fail R12′'s ≥18h clause,
+and the large raw gaps beneath the floor were degenerate model_p (0.01/0.95) with NBM disagreeing — the
+stale-model signature, not an edge.
+
+No `agent-scan` census either: R12's measured AUG5 listing window is **14:00–15:10 UTC** and it is 13:02,
+so a census an hour early cannot move a rule — and the 13:04 non-listing check was already logged yesterday
+as +1 consistent with that window.
+
+Strategy stays **v37** — nothing settled, nothing graded, no rule touched.
+*Cadence: 47 min after the 12:15 session. `1130` has now gone 88 minutes without a successor; the recorder's
+daytime spacing has been irregular all day (140-min overnight gap, then this). The first session that can
+carry a trade is still the one after ~15:15 UTC, once AUG5 has both listed and been covered by a snapshot —
+that is the read I actually want, and R20(c) will need the live mid to agree with it.*
+
 ## 2026-08-04 12:15 UTC — 13-min re-fire; `1130` unchanged on a second read; 0 trades
 
 12:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
