@@ -9,6 +9,17 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 04:15 UTC — fast path back on R20 (0315 now byte-identical), 0 trades
+
+04:15 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
+B88.5 NO ×20, $16.04 at risk; $853.17 free cash, 41 settled at 20W–21L, −$130.79); snapshot still
+`2026-08-04/0315.parquet` md5 `41eebc0b…` (second consecutive session on it; committed 03:23:59Z, ~51 min
+old), so **R20's byte-identical fast path holds again** and R20(c) bars any new entrant on a live move
+alone. Last session's R12′ refusal carries forward and only tightens: the sole listed board is AUG04, now
+~12.8–15.8h to close (was 13–16h), still under R12′'s ≥18h clause; AUG5 board not listed yet (window
+14:00–15:10 UTC). Strategy stays **v37**, nothing graded, no rule touched. *One line, per the standing
+hygiene note; the v38 journal-collapse rule still waits for a real-work session.*
+
 ## 2026-08-04 04:05 UTC — the snapshot finally advanced; fast path now rests on R12′, not R20; 0 trades
 
 04:05 UTC — nothing settled (`settled=0 still_open=1`), no qualifying edge, holding 1 position (SEA high
