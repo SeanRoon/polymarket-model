@@ -1,6 +1,12 @@
 # Agent strategy playbook
 
-**Version: v36** (2026-08-03 14:35 UTC — **THE FIRST SWEEPABLE BOARD IN FIVE DAYS, AND IT PRODUCED A TRADE.
+**Version: v37** (2026-08-04 00:10 UTC — **R20(c)'s TRIGGER IS CLARIFIED: "first covering snapshot" keys off
+the BOARD's first appearance, not off a single event's presence. Two consecutive sessions measured the
+recorder losing and regaining events on an already-listed board, so per-event presence is not evidence that
+a market just listed. One rule changed; no trading bar loosened; nothing settled; ZERO trades — the funnel's
+only new EMPTY non-modal (BOS high B87.5) failed R2's ≥0.15 edge bar AND (iii″)'s ≤0.85 entry cap.**)
+
+**Superseded header, retained for the record — v36** (2026-08-03 14:35 UTC — **THE FIRST SWEEPABLE BOARD IN FIVE DAYS, AND IT PRODUCED A TRADE.
 The AUG4 board listed at 14:02 and `1400.parquet` covers it, so R12‴ was satisfied for the first time since
 07-29. Both R22 passes run as SQL; one candidate survived all 23 rules — SEA high B88.5 NO @0.79, 20 lots.
 One rule amended: R20(c), because a board's FIRST covering snapshot is not yet a price.**)
@@ -2489,6 +2495,33 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
   *Kill R20(c) if: over ≥5 first-covering snapshots, the snapshot and live mids agree within ~0.03 across the
   board — then opening quotes are real prices, R14's book-quality test already catches the placeholders, and
   R20(c) is ceremony.* **First-covering boards observed: 1 (AUG4).**
+  **R20(c) TRIGGER CLARIFIED in v37 — "first covering snapshot" means the first snapshot in which the TARGET
+  DATE appears at all, NOT the first snapshot in which a given EVENT appears.** As written, "the first
+  covering snapshot" invites a per-event reading: an event absent from snapshot N−1 and present in N looks
+  newly listed. **It usually is not — the recorder's coverage of an already-listed board moves in BOTH
+  directions**, measured on two consecutive sessions of the AUG4 board:
+
+  | transition | events | lost | gained |
+  |:---|--:|:---|:---|
+  | `2140` → `2240` | 40 → 36 | KXHIGHDEN, KXHIGHNY, KXHIGHTPHX, KXLOWTDC | *(none)* |
+  | `2240` → `2350` | 36 → 37 | KXLOWTCHI, KXLOWTAUS | KXHIGHNY, KXHIGHTPHX, KXLOWTDC |
+
+  The three "gained" events at 23:50 are the same three that vanished at 22:40, and NY high came back with
+  **vol24h 1877** — a mature book, not an opening quote. So a fetch gap, not a listing. Under the per-event
+  reading R20(c) would have demanded live-mid co-qualification for three deep books whose prices had been
+  live for ten hours, which is not the failure mode R20(c) was written for (a board 12 minutes old with
+  makers still arriving). **Operationally: R20(c) applies only on the board's genuine first covering
+  snapshot — for AUG4 that was `1400.parquet`, and it is spent. Normal R20 (snapshot mid only) governs every
+  later cycle regardless of per-event gaps.**
+  *Direction, stated honestly:* this **narrows** when a tightening applies, so it is a loosening and carries
+  the higher evidentiary bar. Against that: it rests on a measurement repeated across two sessions, not on a
+  candidate's optics; the mechanism (recorder fetch gaps) is independently visible in the lost-event column,
+  which no listing story can explain; and it **changed zero decisions this session** — R20(c) fired on
+  nothing, because the only new EMPTY non-modal died on R2's edge bar and (iii″)'s entry cap. **R16
+  self-check passed on the same terms v36 and R20(b) were adopted under: written in the session where it
+  costs nothing.**
+  *Kill this clarification if: a board is ever observed to list event-by-event over several snapshots (then
+  per-event first-covering is real and the board-level key is too coarse). Log any such case.*
 
 - **R21 (resolution-integrity veto — NEW in v30, MECHANISM ESTABLISHED in v31; the ground truth itself
   can be wrong, and in three cells it is — for a reason I can now name, test, and predict):**
@@ -2882,6 +2915,39 @@ agent edits it. Every trade in the ledger cites the version that motivated it, s
 
 ## Changelog
 
+- **v37** (2026-08-04, 00:10 UTC): **ONE rule clarified — R20(c)'s "first covering snapshot" trigger is
+  BOARD-level, not per-event. ZERO trades.** *Nothing settled* (`agent-settle settled=0 still_open=1`), so
+  nothing was graded and the change rests on a measurement.
+  *The evidence.* Second consecutive session in which the AUG4 board's event coverage moved **both** ways:
+  `2140`→`2240` lost 4 events and gained none; `2240`→`2350` lost KXLOWTCHI/KXLOWTAUS and regained exactly
+  the three that had vanished (KXHIGHNY, KXHIGHTPHX, KXLOWTDC) — NY high with **vol24h 1877**, i.e. a
+  ten-hour-old book, not an opening quote. A per-event reading of R20(c) would impose a first-hour rule on
+  mature books; a listing story cannot explain the lost column at all. **Loosening, so held to the higher
+  bar: two sessions of measurement, and it changed zero decisions today.**
+  *The funnel, R22 SQL over `2350.parquet` (AUG4, 37 events / 222 rows, 17–20h lead).* **30 NO candidates,
+  18 modal ⇒ R5a. Of the 12 non-modals, exactly 3 are (iii″) EMPTY:** SEA high B88.5 (**my open position** —
+  the funnel re-selected it for the third straight fresh snapshot), AUS high B101.5 (**R21** closed cell +
+  the degenerate `model_p` 0.954 on T97 that R21 predicts), and **BOS high B87.5 — the only genuinely new
+  candidate on the board, refused on two independent grounds.**
+  *Why BOS high B87.5 died, and the timing lesson in it.* Snapshot mid **0.155** vs model **0.0278** / NBM
+  **0.005** ⇒ gaps **0.127 / 0.150**: the model gap misses **R2's ≥0.15 edge bar**. Live at 00:05 the book is
+  **0.14 / 0.15**, so the NO entry is **0.86 > (iii″)'s 0.85 cap** — a veto R20(b) lets fire on the live tape.
+  Everything else passed: non-modal (mode B85.5 @0.385), **R18 ratio 0.403** (mid-support), (i″) clears on
+  d_nbm = 3, R14 clean (vol24h 483, spread 0.01), bias −1.24°F so (ii′) passes, both columns non-degenerate,
+  R15″(a) near-tail reconstruction **0.0380 < 0.05** so NBM's floor value is a real low vote. **The tape shows
+  why it was never takeable:** 0.205 → 0.235 → 0.225 → 0.155 → 0.155 → 0.155 → live 0.145, while `model_p`
+  ran 0.046 → 0.083 → 0.083 → 0.083 → 0.0278. **The emptiness leg and the price leg were never satisfied at
+  the same time** — when the bin was still worth selling (0.225–0.235) the model sat at 0.083, above (iii″)'s
+  bar; by the time the model fell to 0.028 the market had already priced the fade out. That is R5(c)
+  confirmation drift, not a missed entry, and (iii″)'s cap is the rule that says so.
+  *The YES pass: 14 candidates, asks **0.01–0.21**, all below R23's 0.40 floor.* The best is **LAX low B65.5**
+  (model 0.398 / NBM 0.736 vs mid 0.195, ask 0.21) — and unlike last session it now clears **R14** (vol24h
+  **395**, OI 393, spread 0.03), is non-modal, and sits outside R12″'s low blackout (LA local 17:07). **R7 is
+  debatable here — NBM (0.736) is the dominant vote, not `model_p` (0.398), which is the DC low B72.5
+  out-of-scope shape — so I am scoring this as an R23 SOLE-BLOCK rather than take the reading that protects
+  the rule. R23 ledger: 4 swept boards, 2 sole-blocks.** Under (b)'s ceremony tripwire that is a healthier
+  firing rate than 1-in-4; pre-registered: log KLAX's AUG4 minimum against the 65–66°F bin.
+  *Composition-risk check:* unchanged at **1 swept board, 1 trade** — AUG4 is the same board, already counted.
 - **v36** (2026-08-03, 14:35 UTC): **The first fully sweepable board since 2026-07-29, and it produced a
   trade. ONE rule amended (R20(c)); no trading bar loosened. ONE trade: SEA high B88.5 NO ×20 @ $0.79.**
   *Nothing settled* (`agent-settle settled=0 still_open=0`), so nothing was graded and the amendment rests on

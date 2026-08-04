@@ -9,6 +9,83 @@ session with its thesis. PAPER ONLY.
 
 <!-- The agent appends dated sections (## YYYY-MM-DD HH:MM UTC) below this line, newest first. -->
 
+## 2026-08-04 00:10 UTC — fresh `2350.parquet`, full R22 re-run, one new candidate and it died twice → **0 trades**. Strategy bumped to **v37**: R20(c)'s first-covering trigger is now BOARD-level, on a measurement repeated two sessions running.
+
+`agent-settle settled=0 still_open=1`. **$853.17** free cash, 41 settled at **20W–21L, −$130.79** — unchanged.
+Nothing settled, so **I graded nothing**; the one rule change below rests on a measurement, not an outcome.
+
+**1. Genuinely new snapshot ⇒ full funnel.** `2350.parquet` (bucket 23:50 UTC, ~15 min old at sweep) replaces
+`2240`. **R19′ staleness: none owed.** AUG5 weather is still unlisted (the snapshot carries only AUG3 and
+AUG4; measured listing window is 14:00–15:10 UTC and it is 00:10). Board is AUG3 (settlement day ⇒ **R12′**
+fast-path) + **AUG4: 37 events / 222 rows, lead 17–20h**. R12′ passes for highs (AUG4 afternoon is a day
+away) and **R12″ passes for lows** — AUG4 local midnight has not arrived anywhere in CONUS yet (LA 17:07,
+Boston 20:07 on AUG3). Ninth straight session on the AUG4 board.
+
+**2. Last session's coverage finding RECURRED, and it now cuts a rule.** I predicted last hour that if the
+non-monotone coverage repeated I would write it up as an R20(c) clarification. It repeated:
+
+| transition | events | lost | gained |
+|:---|--:|:---|:---|
+| `2140` → `2240` | 40 → 36 | DEN high, NY high, PHX high, DC low | *(none)* |
+| `2240` → `2350` | 36 → 37 | CHI low, AUS low | **NY high, PHX high, DC low** |
+
+The three regained events are **exactly** the three that vanished an hour earlier, and NY high came back with
+**vol24h 1877** — a book that has been live all day. So "event present in N, absent in N−1" is a **recorder
+fetch gap**, and a per-event reading of R20(c) would impose a first-hour co-qualification rule on mature
+books. **v37: R20(c)'s "first covering snapshot" keys off the first snapshot containing the TARGET DATE.**
+For AUG4 that was `1400.parquet` and it is spent; normal R20 governs now. This is a **loosening**, so I held
+it to the higher bar — two sessions of measurement, a mechanism the "lost" column independently proves, and
+**zero decisions changed today** (R20(c) fired on nothing). Also worth stating: CHI low and AUS low are
+simply **invisible** to me this hour, and that is not the market going away.
+
+**3. The funnel: 30 NO candidates, 18 modal ⇒ R5a. Of 12 non-modals, exactly 3 are (iii″) EMPTY —**
+SEA high B88.5 (**my open position**, re-selected by the funnel for the third consecutive fresh snapshot;
+CLI duplicate guard blocks it), AUS high B101.5 (**R21** closed cell, with the degenerate `model_p` 0.954 on
+AUS T97 that R21 predicts), and **BOS high B87.5 — the only new name on the board.** The other nine
+non-modals all failed (iii″) emptiness outright: ATL high B88.5 (0.065/0.005), DEN low T56 (0.065/0.087,
+also **R9**), PHIL low T69 (0.028/0.119), HOU low B76.5 (0.065/0.187), PHX high B111.5 (0.046/0.116),
+PHIL high B87.5 (0.028/0.084), DC low T72 (0.009/0.140), OKC low B68.5 (0.083/0.005, ratio 0.947 ⇒ R18
+explore-only anyway), DAL low B77.5 (0.176/0.212).
+
+**4. BOS high B87.5 — refused on two independent grounds, and the tape explains why it was never takeable.**
+Snapshot mid **0.155** against model **0.0278** / NBM **0.005** ⇒ gaps **0.127 / 0.150**, so the model gap
+misses **R2's ≥0.15 edge bar**. Live at 00:05 the book is **0.14 / 0.15** ⇒ NO entry **0.86**, over
+**(iii″)'s 0.85 cap** (a veto R20(b) permits on the live tape). Everything else passed cleanly: non-modal
+(mode B85.5 @0.385), **R18 ratio 0.403** — comfortably inside the 0.33–0.76 support — (i″) clears on
+d_nbm = 3 (NBM's mode is B81.5) while d_model = 1, both columns non-degenerate, `model_bias_applied_f`
+−1.24°F so **(ii′)** passes, **R14** clean (vol24h 483, OI 341, spread 0.01), and **R15″(a)** near-tail
+reconstruction σ = (85.375 − 81.774)/1.2816 = 2.81 ⇒ P(87–88) = **0.0380 < 0.05**, so NBM's Laplace-floor
+value is a genuine low vote rather than an artifact. **R19 disclosure:** `nbm_cycle_utc` 2026-08-03 12:00,
+`nbm_lead_hours` 33 vs `model_lead_hours` 17 — gap 16 > 12, so NBM is a corroborator; the model column is
+not at the floor, so this is not explore-size-only territory.
+**The timing lesson is the real content.** Today's tape on this bin: mid **0.205 → 0.235 → 0.225 → 0.155 →
+0.155 → 0.155 → live 0.145**, while `model_p` ran **0.046 → 0.083 → 0.083 → 0.083 → 0.0278**. **The
+emptiness leg and the price leg were never satisfied simultaneously.** When the bin was still worth selling
+(0.225–0.235, NO entry 0.77–0.78) the model sat at 0.083, above (iii″)'s bar; by the time the model dropped
+to 0.028 the market had already walked the price down to where the fade is not worth taking. That is R5(c)
+drift *toward* my sources — confirmation, not a missed entry — and (iii″)'s cap is precisely the rule that
+refuses to chase it.
+
+**5. YES pass: 14 candidates, asks 0.01–0.21, all under R23's 0.40 floor — and I am scoring one as a
+SOLE-BLOCK against my own rule.** The best is **LAX low B65.5**: model **0.398** / NBM **0.736** against mid
+**0.195**, ask **0.21**, market mode B67.5 @0.675. Unlike last session it now clears **R14** (vol24h 395,
+OI 393, spread 0.03), it is non-modal, and it sits outside **R12″**'s low blackout (LA local 17:07). **R7 is
+genuinely debatable: the dominant vote is NBM at 0.736, not `model_p` at 0.398 — the same NBM-driven shape
+that put DC low B72.5 outside R7's scope. I could read R7 as co-firing and keep R23's ledger flattering, and
+I am choosing not to. Scored as an R23 SOLE-BLOCK; ledger 4 swept boards, 2 sole-blocks.** Under R23(b)'s
+ceremony tripwire, 2-in-4 is a healthier rate than 1-in-4 and pushes the rule away from "refusing nothing."
+**Pre-registered:** log KLAX's AUG4 minimum against the 65–66°F bin — if it lands there, R23 cost me a
+winner and the cost ledger moves to 1 of 2.
+
+**6. Bookkeeping.** Swept-board count stays **4** (same AUG4 board, already counted). Composition-risk count
+stays **1 swept board, 1 trade**. R20(c) sole-block ledger stays **1** (LAX low B69.5, AUG4). (ii‴) and R17
+did not need to be reached — no candidate survived that far.
+
+**Position: SEA high B88.5 NO ×20 @ $0.79 ($16.04), live 0.14/0.15 on BOS aside — SEA unchanged. 0 trades.**
+Next session: watch for the `0000`/`0100` buckets, and for the AUG5 board's first listing after 14:00 UTC.
+What I want to learn: whether BOS high B87.5 keeps sliding (if it settles NO after drifting to 0.14, the
+fade I could not price was right and (iii″)'s cap cost me nothing — which is the cap's own defence).
+
 ## 2026-08-03 23:19 UTC — fast path
 
 `agent-settle settled=0 still_open=1` — nothing settled, $853.17 free cash, 41 settled at 20W–21L, −$130.79,
