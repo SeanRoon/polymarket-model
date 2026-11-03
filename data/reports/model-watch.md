@@ -12,6 +12,42 @@ See `docs/model-watch-agent.md` for how this is scheduled and how to run it by h
 
 <!-- The agent appends dated sections (## YYYY-MM-DD) below this line, newest first. -->
 
+## 2026-11-03
+
+_Diagnostics source: FRESH (11-02 resolve) — `data/reports/diagnostics.md` at 2026-11-02 22:14 UTC. **First model-watch analysis of 11-02 data.** Git window (8d): **zero model/calibration/config code changes** (~103rd consecutive day — only Snapshot, Market-snapshot, Resolve, and model-watch commits). Config unchanged: live cells remain **Austin/high + Denver/high + San Antonio/high**; `emos_stations` = KLAX/KMDW/KMIA/KNYC; `signal_excluded_cells` = KMDW/(high+low), KAUS/low, KDEN/low, KSAT/low. Issue #7 (poisoning bug) still OPEN (day 102 — zero comments; only open issue; no open PRs). `$ARGUMENTS` = `issues`; 0 new critical flags (regression_wow = warn severity) → no new issues opened._
+
+- **regression_wow: 4 fires — BIGGEST SINGLE-DAY IMPROVEMENT OF FALL CYCLE (↓7 from yesterday's 11). ✅ Philadelphia/high CLEARED after 7 consecutive (end of mid-Atlantic warm episode). ✅ Boston/high + Boston/low CLEARED. ✅ Dallas/low CLEARED. ✅ Washington DC/low CLEARED. ✅ Seattle/low CLEARED. ✅ Houston/low CLEARED. ✅ Las Vegas/high CLEARED. Active fires: Atlanta/high 3rd consecutive (+0.067, 0.088→0.155, KATL excl — escalating), Las Vegas/low NEW (+0.054, 0.143→0.196, KLAS excl), LA/high 7th consecutive (+0.038, 0.150→0.188, KLAX excl/EMOS — compressing strongly), Philadelphia/low 5th consecutive (+0.030, 0.199→0.229, KPHL excl — decelerating). All live cells absent (11th consecutive clean day). No code change in 8d window → fall onset; 103rd consecutive day of this attribution.**
+
+- **✅ Philadelphia/high CLEARED after 7-consecutive** (episode arc: +0.145→+0.136→+0.136→+0.104→+0.044→absent). The mid-Atlantic warm anomaly that co-fired NYC, Philly, Boston, and DC simultaneously through late October has fully resolved. Philadelphia/low (5th consecutive, +0.030) is decelerating and should clear in 1–2 more reads.
+
+- **Atlanta/high: 3rd consecutive fire, ESCALATING** (+0.067, 0.088→0.155; KATL excl). Gap widened from yesterday's +0.054 — Southeast fall frontal pattern accelerating, not plateauing as last read suggested. Absolute Brier 0.155 vs long-run market 0.045 (per eval.md); the WoW regression is severe but KATL is fully excluded (model Brier 0.178 vs market 0.070, gap +0.108 over n=5646). No capital at risk. Monitor for 4th consecutive.
+
+- **LA/high: 7th consecutive, strong compression** (+0.038, 0.150→0.188; KLAX excl/EMOS). Prior-7d Brier rose from 0.109 to 0.150 — the bad days are now entering both rolling windows (both dirty), compressing the WoW gap from yesterday's +0.106 to +0.038. Absolute Brier 0.188 (↓ from 0.216 yesterday). Episode is subsiding; if prior-7d continues rising to meet current-7d the flag will clear in 1–2 reads. EMOS emos_improves_model active (0.136 vs model 0.177 vs market 0.064, n=2970). KLAX fully excluded; no capital at risk.
+
+- **✅ Miami/high emos_improves_model RETURNED** (EMOS Brier 0.126 vs model 0.147 vs market 0.075, n=2592). Breaks the 3-consecutive absence streak flagged in the 11-02 and 11-01 memos. KMIA/high fit concern resolved; monitor for recurrence. Miami/low: absent **21st consecutive** — sustained KMIA/low fit failure ongoing. No action warranted until emos_underperforms fires.
+
+- **EMOS: 6 cells emos_improves_model** (Chicago/low 0.163/0.200/0.068 n=3198; LA/high 0.136/0.177/0.064 n=2970; LA/low 0.164/0.187/0.060 n=3192; Miami/high 0.126/0.147/0.075 n=2592 — RETURNED; NYC/high 0.130/0.155/0.064 n=2676; NYC/low 0.162/0.200/0.076 n=2850). No promotion candidates near threshold (all EMOS-to-market gaps 0.051–0.076).
+
+- **Denver/low NBM: all-3-lead, 7th consecutive** (0-6h gap 0.022, 6-24h gap 0.028, 24-72h gap 0.029; KDEN/low excl — live city). Hard constraint in force (operator mandate 2026-07-16). Operator flag from 10-24 on record; no action by agent.
+
+- **Washington DC/high NBM: 2-of-3 again** (0-6h gap 0.038, 24-72h gap 0.037; 6-24h absent; KDCA excl). 6-24h bucket absent 2nd consecutive day since the streak reset on 11-01. Potential new streak count = 1 (2-of-3 does not count toward 3-consecutive threshold). Standing rec `("KDCA", "low"): 0.5` active (84th read).
+
+- **KSEA/low NBM: 101st read** (all-3-lead: 0-6h 0.070, 6-24h 0.062, 24-72h 0.076; KSEA excl). Continuation post-milestone. Standing rec `("KSEA", "low"): 0.5` — 101st read (since 07-25). Memo-only.
+
+- **KMDW/low: all-3-lead, 54th consecutive** (0-6h gap 0.089, 6-24h gap 0.064, 24-72h gap 0.073; KMDW excl). Standing rec `("KMDW", "low"): 0.5` — memo-only; Sean applies.
+
+- **KDFW/high: 1-of-3 (0-6h only; gap 0.027), 54th read post-solidification.** Stable. Standing rec `("KDFW", "high"): 0.5` — memo-only; Sean applies.
+
+- **KSFO/high NBM: 16th consecutive 0-of-3 post re-hold-trigger** (re-hold 10-20; hold stands). Rec `("KSFO", "high"): 0.5` remains on HOLD pending 2 fresh consecutive 2-of-3 reads (standing since 10-01).
+
+- **Issue #7 carry-forward (day 102):** Still OPEN (created 07-24, zero comments — **102 days, no action**). Fix branch `fix/resolution-preliminary-cli` exists unmerged. All live cells performing normally (11th consecutive clean day), but poisoning continues to contaminate all evaluation metrics. **Operator action urgently required: merging `fix/resolution-preliminary-cli` remains the single highest-leverage available action.**
+
+- **Regressions:** No code change in 8d window (103rd consecutive day). Net −7 fires (4 total — largest single-session improvement of the October–November fall cycle). Philadelphia/high CLEARED (major positive — 7-consecutive episode resolved). Boston dual-kind, Dallas/low, DC/low, Seattle/low, Houston/low all cleared. Atlanta/high 3rd consecutive, escalating (Southeast frontal; KATL excl). LA/high 7th consecutive compressing (episode subsiding; KLAX excl). Philadelphia/low 5th consecutive decelerating (episode tail; KPHL excl). Las Vegas/low new fire (KLAS excl). All live cells clean for 11th consecutive day.
+
+- **Recalibration:** `("KSFO", "high"): 0.5` — **HOLD: 16th consecutive 0-of-3 post re-hold-trigger (pending 2 fresh consecutive 2-of-3 reads)** (standing since 10-01). Add `("KMDW", "low"): 0.5` — all-3-lead, **54th consecutive** (standing since 09-13, Read 54). Add `("KDFW", "high"): 0.5` — 1-of-3 (0-6h only; stable), 54th read (standing since 09-16, Read 54). Standing (one-line each): (1) `("KLAS", "low"): 0.7` — 110th read (since 07-17). (2) `("KATL", "low"): 0.5` — 110th read (since 07-17). (3) `("KSEA", "low"): 0.5` — 101st read (since 07-25). (4) `("KSFO", "low"): 0.5` — 93rd read (since 08-02). (5) Add KHOU+KBOS to `DEFAULT_EMOS_STATIONS` — 91st read (since 08-03). (6) `("KPHL", "low"): 0.5` — 88th read (since 08-07). (7) `("KDCA", "low"): 0.5` — 84th read (since 08-11). (8) `("KMSP", "low"): 0.5` — 84th read (since 08-11). (9) `("KNYC", "low"): 0.5` — 73rd read (since 08-16). (10) `("KDFW", "low"): 0.5` — 74th read (since 08-21). (11) `("KLAX", "low"): 0.5` — 72nd read (since 08-23). (12) `("KMIA", "low"): 0.5` — tracking suspended (21st consecutive nbm_beats_ecmwf absence). Memo-only on all; Sean applies.
+
+- **No change since last run:** exclusion_holds on 16 excluded stations (chronic; all miscalibrated — same set). No `reenable_candidate`, no `exclude_candidate`. **No draft PR** (no eligible exclusion-list flag). **No new issue** ($ARGUMENTS = `issues`; 0 new critical flags — regression_wow = warn severity; Issue #7 already open — day 102, urgently overdue).
+
 ## 2026-11-02
 
 _Diagnostics source: FRESH (11-01 resolve) — `data/reports/diagnostics.md` at 2026-11-01 18:20 UTC. **First model-watch analysis of 11-01 data.** Git window (8d): **zero model/calibration/config code changes** (~102nd consecutive day — only Snapshot, Market-snapshot, Resolve, and model-watch commits). Config unchanged: live cells remain **Austin/high + Denver/high + San Antonio/high**; `emos_stations` = KLAX/KMDW/KMIA/KNYC; `signal_excluded_cells` = KMDW/(high+low), KAUS/low, KDEN/low, KSAT/low. Issue #7 (poisoning bug) still OPEN (day 101 — zero comments; only open issue; no open PRs). `$ARGUMENTS` = `issues`; 0 new critical flags (regression_wow = warn severity) → no new issues opened._
